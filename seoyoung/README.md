@@ -22,3 +22,21 @@ https://github.com/ssut/py-hanspell
 https://ttsopenai.com/ : 유료 <br>
 https://velog.io/@fragrance_0/10.-TTS로-나만의-음성비서-만들기 : 무료 but 딱딱한 말투
 
+<br>
+
+## 07/16
+### 1. OCR 모델 검색 <br>
+- 모델 비교 <br>
+https://devocean.sk.com/blog/techBoardDetail.do?ID=165524&boardType=techBlog
+- Tesseract <br>
+https://colab.research.google.com/drive/1xrLV_Q7w202B4iXGYWPM7QFCwXnRsKQ_
+
+정확도가 다소 떨어져서 API 사용 또는 모델 튜닝 고려 중
+
+
+<br>
+
+### 2. REST API 작성 <br>
+- 회원
+- 받아쓰기
+- 커뮤니티
