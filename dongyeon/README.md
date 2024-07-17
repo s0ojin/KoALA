@@ -48,3 +48,16 @@
 - 다양한 언어 모델 제공
 - Tesseract와 비슷
 - 버전 컨트롤 필요 
+
+### 7.17 :bulb:
+#### API 설계
+#### API 설계 규칙
+1. 소문자로 작성한다. (대문자는 사용하지 않는다.)
+2. **복수형으로 작성 (예시.** http://api.college.com/students/3248234/courses, http://api.college.com/students/3248234/courses/physics**)**
+3. 언더바는 쓰지 않는다. (-로 변경)
+4. 마지막에는 /를 포함하지 않는다.
+5. 계층관계 구분 시 슬래시 구분자를 사용한다.
+6. 행위는 표현하지 않는다. (메서드를 이용한다.)
+7. 파일 확장자는 포함하지 않는다. (Aceept 요청 헤더를 활용)
+8. **컨트롤 자원을 의미하는 경우 예외적으로 동사를 허용 (예시.** [http://api.college.com/course/writing →](http://api.college.com/course/writing) http://api.college.com/course/write**)**
+9. GET / 보안이 필요없는 정보일 때 → 파라미터값으로 전달
