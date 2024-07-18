@@ -40,3 +40,18 @@ https://colab.research.google.com/drive/1xrLV_Q7w202B4iXGYWPM7QFCwXnRsKQ_
 - 회원
 - 받아쓰기
 - 커뮤니티
+
+<br>
+
+## 07/17
+### 1. REST API 명세서 작성 <br>
+- 1차 작성 완료 <br>
+- WebRTC, JWT 관련 API는 공부 후 추가 예정 <br>
+
+<br>
+
+## 07/18
+### 1. 프로젝트 디렉토리 설정
+- 도메인방식으로 진행 <br>
+- 엔티티 파일 모두 생성 <br>
+- jpa 일부 작성 <br>
