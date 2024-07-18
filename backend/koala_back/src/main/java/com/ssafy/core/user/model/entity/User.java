@@ -1,18 +1,19 @@
 package com.ssafy.core.user.model.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.ssafy.core.koala.model.entity.Koala;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
 @Getter
 @Setter
+@Entity
+@Table(name = "users")
 public class User {
 
     @Id
-//    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long userId;
 
@@ -27,8 +28,10 @@ public class User {
 
     @Column(name = "leaves")
     private Integer leaves;
-    @Column(name = "koala_id")
-    private Long koalaId;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "koala_id", referencedColumnName = "koala_id")
+    private Koala koala;
 
     @Column(name = "user_level")
     private Integer userLevel;
