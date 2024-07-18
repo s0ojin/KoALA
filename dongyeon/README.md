@@ -61,3 +61,14 @@
 7. 파일 확장자는 포함하지 않는다. (Aceept 요청 헤더를 활용)
 8. **컨트롤 자원을 의미하는 경우 예외적으로 동사를 허용 (예시.** [http://api.college.com/course/writing →](http://api.college.com/course/writing) http://api.college.com/course/write**)**
 9. GET / 보안이 필요없는 정보일 때 → 파라미터값으로 전달
+
+### 7.18 :bulb:
+#### SQL TimeStamp와 DateTime의 차이
+#### 타임스탬프
+- 날짜 제한, not null, timezone 적용 가능
+- 한계 : 32비트 정수형, 최대 초가 지나면 오버플로우 발생한다. 
+- mysql 버전올리면 해결 가능
+- 글로벌 서비스에는 타임존적용 가능해서 더 유리할 수 있다.
+#### 데이트타임
+- 날짜 제한이 없다.
+- null 가능하다.
