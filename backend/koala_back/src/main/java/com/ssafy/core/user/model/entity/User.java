@@ -1,11 +1,15 @@
 package com.ssafy.core.user.model.entity;
 
 import com.ssafy.core.koala.model.entity.Koala;
+import com.ssafy.core.sentence.model.entity.ReviewSentence;
+import com.ssafy.core.sentence.model.entity.Sentence;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -35,6 +39,13 @@ public class User {
 
     @Column(name = "user_level")
     private Integer userLevel;
+
     @Column(name = "user_created_at")
     private Date userCreatedAt;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Sentence> sentences;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ReviewSentence> reviewSentences;
 }
