@@ -48,4 +48,7 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ReviewSentence> reviewSentences;
+
+    @OneToMany(mappedBy = "studyTimeId.user")
+    private List<StudyTime> studyTimes;
 }
