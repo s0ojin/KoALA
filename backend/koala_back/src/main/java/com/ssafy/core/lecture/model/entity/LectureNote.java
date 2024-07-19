@@ -1,4 +1,4 @@
-package com.ssafy.core.lectures.model.entity;
+package com.ssafy.core.lecture.model.entity;
 
 import com.ssafy.core.user.model.entity.User;
 import jakarta.persistence.*;

@@ -4,6 +4,7 @@ import com.ssafy.core.user.model.entity.User;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Sentence {
@@ -26,4 +27,10 @@ public class Sentence {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToMany(mappedBy = "sentence", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<LectureSentence> lectureSentences;
+
+    @OneToMany(mappedBy = "sentence", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ReviewSentence> reviewSentences;
 }

@@ -1,5 +1,7 @@
-package com.ssafy.core.lectures.model.entity;
+package com.ssafy.core.lecture.model.entity;
 
+import com.ssafy.core.sentence.model.entity.LectureSentence;
+import com.ssafy.core.user.model.entity.StudyTime;
 import com.ssafy.core.user.model.entity.Teacher;
 import jakarta.persistence.*;
 
@@ -29,4 +31,9 @@ public class Lecture {
     @OneToMany(mappedBy = "lecture", fetch = FetchType.LAZY)
     private List<LectureNote> lectureNotes;
 
+    @OneToMany(mappedBy = "lectureDayId.lecture")
+    private List<LectureDay> lectureDays;
+
+    @OneToMany(mappedBy = "lecture", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<LectureSentence> lectureSentences;
 }

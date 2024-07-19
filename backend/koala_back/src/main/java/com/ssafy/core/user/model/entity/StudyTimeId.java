@@ -1,6 +1,5 @@
-package com.ssafy.core.sentence.model.entity;
+package com.ssafy.core.user.model.entity;
 
-import com.ssafy.core.user.model.entity.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.JoinColumn;

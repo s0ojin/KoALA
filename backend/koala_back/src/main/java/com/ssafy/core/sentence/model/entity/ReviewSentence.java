@@ -16,8 +16,9 @@ public class ReviewSentence {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name = "sentece_id")
-    private Long sentenceId;
+    @ManyToOne
+    @JoinColumn(name = "sentece_id")
+    private Sentence sentence;
     
     @Column(name = "review_sentence_created_at")
     private Date reviewSentenceCreatedAt;

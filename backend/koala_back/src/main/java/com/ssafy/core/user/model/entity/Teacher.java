@@ -1,6 +1,6 @@
 package com.ssafy.core.user.model.entity;
 
-import com.ssafy.core.lectures.model.entity.Lecture;
+import com.ssafy.core.lecture.model.entity.Lecture;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
