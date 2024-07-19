@@ -51,7 +51,24 @@ https://colab.research.google.com/drive/1xrLV_Q7w202B4iXGYWPM7QFCwXnRsKQ_
 <br>
 
 ## 07/18
-### 1. 프로젝트 디렉토리 설정
+### 1. 프로젝트 디렉토리 설정 <br>
 - 도메인방식으로 진행 <br>
 - 엔티티 파일 모두 생성 <br>
 - jpa 일부 작성 <br>
+
+<br>
+
+## 07/19
+### 1. 스프링부트 Entity 설정 <br>
+- jpa랑 모두 연결 <br>
+### 2. ERD 수정 <br>
+- 권한 테이블 추가 <br>
+- 수강 강의 테이블 추가 <br>
+- 강의 테이블 재설정 <br>
+### 3. Jeep, Problem, Try
+- Keep: 현재 만족하는 부분 / 계속 이어갔으면 하는 부분 <br>
+- Problem: 불편한 부분 / 개선이 필요하다고 생각하는 부분 <br>
+- Try: Problem에 대한 해결책, 다음 회고 때 판별 가능한 것, 당장 실행가능한 것 <br>
+- 목적: 짧은 시간에 구성원의 생각응ㄹ 공유하고, 실행가능하고 측정 가능한 Action을 도축
+
+<br>
