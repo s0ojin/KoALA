@@ -1,6 +1,9 @@
 package com.ssafy.core.user.model.entity;
 
+import com.ssafy.core.board.model.entity.Board;
+import com.ssafy.core.board.model.entity.BoardComment;
 import com.ssafy.core.koala.model.entity.Koala;
+import com.ssafy.core.lectures.model.entity.LectureNote;
 import com.ssafy.core.sentence.model.entity.ReviewSentence;
 import com.ssafy.core.sentence.model.entity.Sentence;
 import jakarta.persistence.*;
@@ -51,4 +54,17 @@ public class User {
 
     @OneToMany(mappedBy = "studyTimeId.user")
     private List<StudyTime> studyTimes;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Teacher teacher;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<LectureNote> lectureNotes;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Board> boards;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<BoardComment> boardComments;
+
 }
