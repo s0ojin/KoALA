@@ -1,4 +1,4 @@
-package com.ssafy.global.dto;
+package com.ssafy.global.auth.jwt.dto;
 
 import lombok.Builder;
 

@@ -3,6 +3,7 @@ package com.ssafy.global.auth.jwt;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
@@ -28,7 +29,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 // "/users/register" 경로에 대한 모든 요청을 허용
-                                .requestMatchers("/users/register").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/users").permitAll()
                                 // 다른 모든 요청은 인증을 필요로 함
                                 .anyRequest().authenticated()
                 )

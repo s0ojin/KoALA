@@ -1,6 +1,6 @@
 package com.ssafy.global.auth.jwt;
 
-import com.ssafy.global.dto.JwtToken;
+import com.ssafy.global.auth.jwt.dto.JwtToken;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
