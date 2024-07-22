@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="01c6df5e-a0f2-4246-81ea-d2f5a678114f" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/koala/model/entity/Koala.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/koala/model/entity/Koala.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/lecture/model/entity/Lecture.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/lecture/model/entity/Lecture.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
