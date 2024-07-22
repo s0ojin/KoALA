@@ -5,10 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="01c6df5e-a0f2-4246-81ea-d2f5a678114f" name="변경" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/sentence/model/entity/LectureSentence.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/sentence/model/entity/LectureSentence.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/sentence/model/entity/ReviewSentence.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/sentence/model/entity/ReviewSentence.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/sentence/model/entity/Sentence.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/sentence/model/entity/Sentence.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/lecture/model/entity/Lecture.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/lecture/model/entity/Lecture.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/user/model/entity/Teacher.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/user/model/entity/UserDetail.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/user/model/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/user/model/entity/User.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,6 +38,7 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;juhyung&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;

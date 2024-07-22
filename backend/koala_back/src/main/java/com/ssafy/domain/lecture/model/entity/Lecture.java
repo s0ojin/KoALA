@@ -1,7 +1,7 @@
 package com.ssafy.domain.lecture.model.entity;
 
 import com.ssafy.domain.sentence.model.entity.LectureSentence;
-import com.ssafy.domain.user.model.entity.Teacher;
+import com.ssafy.domain.user.model.entity.UserDetail;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 
@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static jakarta.persistence.CascadeType.*;
 import static jakarta.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PROTECTED;
 
@@ -24,7 +23,7 @@ public class Lecture {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "teacher_id")
-    private Teacher teacher;
+    private UserDetail teacher;
 
     @Column(name = "lecture_title")
     private String lectureTitle;

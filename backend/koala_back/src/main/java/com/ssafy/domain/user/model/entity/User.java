@@ -56,7 +56,7 @@ public class User {
     private List<StudyTime> studyTimes;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Teacher teacher;
+    private UserDetail teacher;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<LectureNote> lectureNotes;
