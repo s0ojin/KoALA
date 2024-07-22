@@ -2,13 +2,22 @@ package com.ssafy.domain.sentence.model.entity;
 
 import com.ssafy.domain.user.model.entity.User;
 import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
+import static jakarta.persistence.CascadeType.*;
+import static jakarta.persistence.FetchType.*;
+import static lombok.AccessLevel.PROTECTED;
+
 @Entity
+@Table(name = "sentences")
+@NoArgsConstructor(access = PROTECTED)
 public class Sentence {
-    @Id
+
+    @Id @GeneratedValue
     @Column(name = "sentence_id")
     private Long sentenceId;
 
@@ -22,15 +31,15 @@ public class Sentence {
     private Integer senetenceLength;
 
     @Column(name = "sentence_created_at")
-    private Date sentenceCreatedAt;
+    private LocalDateTime sentenceCreatedAt;
 
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "sentence", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<LectureSentence> lectureSentences;
+    @OneToMany(mappedBy = "sentence", cascade = ALL, orphanRemoval = true, fetch = LAZY)
+    private List<LectureSentence> lectureSentences = new ArrayList<>();
 
-    @OneToMany(mappedBy = "sentence", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<ReviewSentence> reviewSentences;
+    @OneToMany(mappedBy = "sentence", cascade = ALL, orphanRemoval = true, fetch = LAZY)
+    private List<ReviewSentence> reviewSentences = new ArrayList<>();
 }

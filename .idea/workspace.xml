@@ -5,7 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="01c6df5e-a0f2-4246-81ea-d2f5a678114f" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/lecture/model/entity/Lecture.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/lecture/model/entity/Lecture.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/sentence/model/entity/LectureSentence.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/sentence/model/entity/LectureSentence.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/sentence/model/entity/ReviewSentence.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/sentence/model/entity/ReviewSentence.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/sentence/model/entity/Sentence.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/sentence/model/entity/Sentence.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,13 +35,13 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "git-widget-placeholder": "juhyung",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;git-widget-placeholder&quot;: &quot;juhyung&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="KoalaBackApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
