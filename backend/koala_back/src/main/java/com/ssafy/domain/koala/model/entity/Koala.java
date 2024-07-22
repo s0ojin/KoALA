@@ -2,19 +2,23 @@ package com.ssafy.domain.koala.model.entity;
 
 import com.ssafy.domain.user.model.entity.User;
 import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+
+import static jakarta.persistence.FetchType.LAZY;
+import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Table(name = "koala")
+@NoArgsConstructor(access = PROTECTED)
 public class Koala {
 
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue
     @Column(name = "koala_id")
     private Long koalaId;
 
-    @OneToOne(mappedBy = "koala")
+    @OneToOne(mappedBy = "koala", fetch = LAZY)
     private User user;
 
     @Column(name = "koala_name")
@@ -26,6 +30,6 @@ public class Koala {
     @Column(name = "koala_type")
     private Integer koalaType;
     @Column(name = "koala_created_at")
-    private Date koalaCreatedAt;
+    private LocalDateTime koalaCreatedAt;
 
 }
