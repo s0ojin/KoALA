@@ -18,7 +18,7 @@ public class UserDetail {
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne
     @MapsId
     @JoinColumn(name = "user_id")
     private User user;

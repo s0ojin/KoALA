@@ -8,19 +8,25 @@ import com.ssafy.domain.sentence.model.entity.ReviewSentence;
 import com.ssafy.domain.sentence.model.entity.Sentence;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+
+import static jakarta.persistence.CascadeType.*;
+import static jakarta.persistence.FetchType.*;
+import static lombok.AccessLevel.PROTECTED;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "users")
+@NoArgsConstructor(access = PROTECTED)
 public class User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue
     @Column(name = "user_id")
     private Long userId;
 
@@ -36,7 +42,7 @@ public class User {
     @Column(name = "leaves")
     private Integer leaves;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = ALL, fetch = LAZY, orphanRemoval = true)
     @JoinColumn(name = "koala_id", referencedColumnName = "koala_id")
     private Koala koala;
 
@@ -44,27 +50,27 @@ public class User {
     private Integer userLevel;
 
     @Column(name = "user_created_at")
-    private Date userCreatedAt;
+    private LocalDateTime userCreatedAt;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Sentence> sentences;
+    @OneToMany(mappedBy = "user", cascade = ALL, fetch = LAZY, orphanRemoval = true)
+    private List<Sentence> sentences = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<ReviewSentence> reviewSentences;
+    @OneToMany(mappedBy = "user", cascade = ALL, fetch = LAZY, orphanRemoval = true)
+    private List<ReviewSentence> reviewSentences = new ArrayList<>();
 
     @OneToMany(mappedBy = "studyTimeId.user")
-    private List<StudyTime> studyTimes;
+    private List<StudyTime> studyTimes = new ArrayList<>();
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private UserDetail teacher;
+    @OneToOne(mappedBy = "user", cascade = ALL, fetch = LAZY, orphanRemoval = true)
+    private UserDetail userDetail;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<LectureNote> lectureNotes;
+    @OneToMany(mappedBy = "user", cascade = ALL, fetch = LAZY, orphanRemoval = true)
+    private List<LectureNote> lectureNotes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Board> boards;
+    @OneToMany(mappedBy = "user", cascade = ALL, fetch = LAZY, orphanRemoval = true)
+    private List<Board> boards = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<BoardComment> boardComments;
+    @OneToMany(mappedBy = "user", cascade = ALL, fetch = LAZY, orphanRemoval = true)
+    private List<BoardComment> boardComments = new ArrayList<>();
 
 }
