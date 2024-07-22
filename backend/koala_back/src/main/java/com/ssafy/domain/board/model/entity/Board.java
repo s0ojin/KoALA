@@ -13,6 +13,7 @@ import static jakarta.persistence.FetchType.*;
 import static lombok.AccessLevel.*;
 
 @Entity
+@Table(name = "board")
 @NoArgsConstructor(access = PROTECTED)
 public class Board {
 

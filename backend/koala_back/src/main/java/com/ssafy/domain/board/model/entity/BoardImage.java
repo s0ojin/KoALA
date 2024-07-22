@@ -7,6 +7,7 @@ import static jakarta.persistence.FetchType.*;
 import static lombok.AccessLevel.PROTECTED;
 
 @Entity
+@Table(name = "board_images")
 @NoArgsConstructor(access = PROTECTED)
 public class BoardImage {
 

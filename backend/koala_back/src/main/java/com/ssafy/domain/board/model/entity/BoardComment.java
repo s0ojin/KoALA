@@ -10,6 +10,7 @@ import static jakarta.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PROTECTED;
 
 @Entity
+@Table(name = "board_comment")
 @NoArgsConstructor(access = PROTECTED)
 public class BoardComment {
 
