@@ -15,6 +15,7 @@ import java.util.Objects;
 import static lombok.AccessLevel.*;
 
 @Getter
+@Setter
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PROTECTED)
 @Embeddable

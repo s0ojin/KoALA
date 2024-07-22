@@ -5,27 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="01c6df5e-a0f2-4246-81ea-d2f5a678114f" name="변경" comment="">
-      <change afterPath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/lecture/model/entity/LectureSchedule.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/lecture/model/entity/RegisteredLecture.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/lecture/model/entity/RegisteredLectureId.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/user/model/entity/Auth.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/user/model/entity/Ranking.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/board/model/entity/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/board/model/entity/Board.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/board/model/entity/BoardComment.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/board/model/entity/BoardComment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/board/model/entity/BoardImage.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/board/model/entity/BoardImage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/koala/model/entity/Koala.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/koala/model/entity/Koala.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/lecture/model/entity/Lecture.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/lecture/model/entity/Lecture.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/lecture/model/entity/LectureDay.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/lecture/model/entity/LectureDayId.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/lecture/model/entity/LectureNote.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/lecture/model/entity/LectureNote.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/sentence/model/entity/LectureSentence.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/sentence/model/entity/LectureSentence.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/sentence/model/entity/ReviewSentence.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/sentence/model/entity/ReviewSentence.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/sentence/model/entity/Sentence.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/sentence/model/entity/Sentence.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/user/model/entity/StudyTime.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/user/model/entity/StudyTime.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/lecture/model/entity/RegisteredLectureId.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/lecture/model/entity/RegisteredLectureId.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/user/model/entity/StudyTimeId.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/user/model/entity/StudyTimeId.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/user/model/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/user/model/entity/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/user/model/entity/UserDetail.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/koala_back/src/main/java/com/ssafy/domain/user/model/entity/UserDetail.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
