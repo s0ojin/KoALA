@@ -11,7 +11,8 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 public class BoardImage {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "board_img_id")
     private Long boardImgId;
 
