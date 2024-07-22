@@ -2,19 +2,25 @@ package com.ssafy.domain.board.model.entity;
 
 import com.ssafy.domain.user.model.entity.User;
 import jakarta.persistence.*;
+import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
+import static jakarta.persistence.CascadeType.*;
+import static jakarta.persistence.FetchType.*;
+import static lombok.AccessLevel.*;
+
 @Entity
+@NoArgsConstructor(access = PROTECTED)
 public class Board {
 
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue
     @Column(name = "board_id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -25,17 +31,17 @@ public class Board {
     private String content;
 
     @Column(name = "board_created_at")
-    private Date boardCreatedAt;
+    private LocalDateTime boardCreatedAt;
 
     @Column(name = "board_modified_at")
-    private Date boardModifiedAt;
+    private LocalDateTime boardModifiedAt;
 
     @Column(name = "hit")
     private Integer hit;
 
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<BoardComment> boardComments;
+    @OneToMany(mappedBy = "board", cascade = ALL, orphanRemoval = true, fetch = LAZY)
+    private List<BoardComment> boardComments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<BoardImage> boardImages;
+    @OneToMany(mappedBy = "board", cascade = ALL, orphanRemoval = true, fetch = LAZY)
+    private List<BoardImage> boardImages = new ArrayList<>();
 }
