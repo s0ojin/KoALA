@@ -9,9 +9,7 @@ import com.ssafy.domain.lecture.model.entity.RegisteredLecture;
 import com.ssafy.domain.sentence.model.entity.ReviewSentence;
 import com.ssafy.domain.sentence.model.entity.Sentence;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -24,8 +22,9 @@ import static lombok.AccessLevel.PROTECTED;
 @Entity
 @Getter
 @Table(name = "users")
-@NoArgsConstructor(access = PROTECTED)
-@AllArgsConstructor(access = PROTECTED)
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString(of = {"loginId", "name", "nickname"})
 public class User {
 
     @Id
@@ -94,5 +93,17 @@ public class User {
 
     @OneToOne(mappedBy = "user", cascade = ALL, fetch = LAZY, orphanRemoval = true)
     private Ranking ranking;
+
+    public User(Long userId, String loginId, String password, Auth auth, String name, String nickname, Integer leaves, Long userExp, Integer userLevel) {
+        this.userId = userId;
+        this.loginId = loginId;
+        this.password = password;
+        this.auth = auth;
+        this.name = name;
+        this.nickname = nickname;
+        this.leaves = leaves;
+        this.userExp = userExp;
+        this.userLevel = userLevel;
+    }
 
 }

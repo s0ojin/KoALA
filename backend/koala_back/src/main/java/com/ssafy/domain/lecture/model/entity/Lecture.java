@@ -2,12 +2,10 @@ package com.ssafy.domain.lecture.model.entity;
 
 import com.ssafy.domain.sentence.model.entity.LectureSentence;
 import com.ssafy.domain.user.model.entity.User;
-import com.ssafy.domain.user.model.entity.UserDetail;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,10 +13,10 @@ import static jakarta.persistence.CascadeType.*;
 import static jakarta.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PROTECTED;
 
-@Entity
 @Getter
+@Entity
 @Table(name = "lectures")
-@NoArgsConstructor(access = PROTECTED)
+@NoArgsConstructor
 public class Lecture {
 
     @Id
@@ -50,4 +48,16 @@ public class Lecture {
 
     @OneToMany(mappedBy = "lecture", cascade = ALL, fetch = LAZY, orphanRemoval = true)
     private List<RegisteredLecture> registeredLectures = new ArrayList<>();
+
+    public Lecture(User teacher, String lectureTitle, String lectureDetail, String lectureUrl, int isOpen) {
+        this.teacher = teacher;
+        this.lectureTitle = lectureTitle;
+        this.lectureDetail = lectureDetail;
+        this.lectureUrl = lectureUrl;
+        this.isOpen = isOpen;
+    }
+
+//    public Long getLectureId() {
+//        return lectureId;
+//    }
 }

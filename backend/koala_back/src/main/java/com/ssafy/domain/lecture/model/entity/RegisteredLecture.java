@@ -12,7 +12,7 @@ import static lombok.AccessLevel.*;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = PROTECTED)
+@NoArgsConstructor
 @Table(name = "registered_lecture")
 public class RegisteredLecture implements Serializable {
 
@@ -29,11 +29,11 @@ public class RegisteredLecture implements Serializable {
     @JoinColumn(name = "lecture_id")
     private Lecture lecture;
 
-    public RegisteredLecture(User user, Lecture lecture) {
-        this.user = user;
-        this.lecture = lecture;
-        this.id = new RegisteredLectureId(user.getUserId(), lecture.getLectureId());
-    }
+//    public RegisteredLecture(User user, Lecture lecture) {
+//        this.user = user;
+//        this.lecture = lecture;
+//        this.id = new RegisteredLectureId(user.getUserId(), lecture.getLectureId());
+//    }
 
 
 }
