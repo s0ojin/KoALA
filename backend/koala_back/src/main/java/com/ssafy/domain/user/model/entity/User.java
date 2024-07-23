@@ -29,7 +29,7 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class User implements UserDetails {
-
+// Spring Security는 인증 및 권한 부여 과정에서 UserDetails 객체를 사용
     @Id
     @GeneratedValue
     @Column(name = "user_id")
@@ -110,12 +110,13 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // 알아보기 쉽게 일반적으로 이름 반환한다고 함ㄴ
+        // 알아보기 쉽게 일반적으로 이름 반환한다고 함
         return List.of(new SimpleGrantedAuthority(auth.getAuthName()));
     }
 
     @Override
     public String getUsername() {
+        // 식별할 수 있는 값
         return this.loginId;
     }
 
