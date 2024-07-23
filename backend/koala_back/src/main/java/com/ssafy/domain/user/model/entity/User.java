@@ -10,9 +10,13 @@ import com.ssafy.domain.sentence.model.entity.ReviewSentence;
 import com.ssafy.domain.sentence.model.entity.Sentence;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import static jakarta.persistence.CascadeType.ALL;
@@ -22,10 +26,9 @@ import static lombok.AccessLevel.PROTECTED;
 @Entity
 @Getter
 @Table(name = "users")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-//@ToString(of = {"loginId", "name", "nickname"})
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue
@@ -104,5 +107,42 @@ public class User {
         this.userExp = userExp;
         this.userLevel = userLevel;
     }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        // 알아보기 쉽게 일반적으로 이름 반환한다고 함ㄴ
+        return List.of(new SimpleGrantedAuthority(auth.getAuthName()));
+    }
+
+    @Override
+    public String getUsername() {
+        return this.loginId;
+    }
+
+    @Override
+    public String getPassword() {
+        return this.password;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
 
 }
