@@ -29,7 +29,7 @@ class UserTest {
         em.persist(auth);
 
         User user = new User("loginId", "password", auth, "name", "nickname", 0, 0L, 1);
-        log.info("user: {}", user);
+//        log.info("user: {}", user);
         em.persist(user);
 
         User findUser = em.find(User.class, user.getUserId());
