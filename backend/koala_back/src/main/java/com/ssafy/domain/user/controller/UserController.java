@@ -2,6 +2,7 @@ package com.ssafy.domain.user.controller;
 
 import com.ssafy.domain.user.model.dto.request.UserAddRequest;
 import com.ssafy.domain.user.service.UserService;
+import com.ssafy.domain.user.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
