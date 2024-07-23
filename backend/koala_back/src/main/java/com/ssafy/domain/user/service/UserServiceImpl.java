@@ -1,6 +1,8 @@
 package com.ssafy.domain.user.service;
 
+import com.ssafy.domain.koala.model.entity.Koala;
 import com.ssafy.domain.user.model.dto.request.UserAddRequest;
+import com.ssafy.domain.user.model.entity.Auth;
 import com.ssafy.domain.user.model.entity.User;
 import com.ssafy.domain.user.repository.UserRepository;
 import com.ssafy.global.auth.jwt.JwtTokenProvider;
@@ -26,13 +28,16 @@ public class UserServiceImpl implements UserService {
     // 회원가입
     @Transactional
     public void signUp(UserAddRequest userAddRequest) {
-        userRepository.save(User.builder()
-                .loginId(userAddRequest.getLoginId())
-                .password(userAddRequest.getPassword())
-                .name(userAddRequest.getName())
-                .nickname(userAddRequest.getNickname())
-                .build());
-        // TODO -> 코알라 생성, 권한 생성, 경험치/레벨/유칼립투스 생성
+        Auth auth = new Auth("user");
+        User user = new User(
+                userAddRequest.getLoginId(),
+                userAddRequest.getPassword(),
+                auth, userAddRequest.getName(),
+                userAddRequest.getNickname(),
+                0, 0L, 1);
+
+        userRepository.save(user);
+//        Koala koala = new Koala(user, "코알라", 0, 0, 0);
     }
 
 
