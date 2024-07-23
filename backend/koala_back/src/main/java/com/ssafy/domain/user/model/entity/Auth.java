@@ -14,7 +14,7 @@ import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = PROTECTED)
+@NoArgsConstructor
 @Table(name = "auth")
 public class Auth {
 
@@ -29,8 +29,8 @@ public class Auth {
     @OneToMany(mappedBy = "auth", cascade = ALL, fetch = LAZY)
     private List<User> users = new ArrayList<>();
 
-    public Auth(String user) {
-        this.authName = user;
+    public Auth(String authName) {
+        this.authName = authName;
     }
 
 }

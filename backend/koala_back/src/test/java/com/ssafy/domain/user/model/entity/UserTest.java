@@ -32,12 +32,14 @@ class UserTest {
 //        log.info("user: {}", user);
         em.persist(user);
 
+        em.flush();
+        em.clear();
+
         User findUser = em.find(User.class, user.getUserId());
 
-        assertEquals(user, findUser);
+        assertEquals(user.getUserId(), findUser.getUserId());
 
         em.remove(findUser);
-        em.remove(auth);
 
         assertNull(em.find(User.class, user.getUserId()));
     }
