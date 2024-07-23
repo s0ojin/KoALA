@@ -5,8 +5,8 @@ import Logo from '/public/images/logo.svg'
 import NextBtn from '/public/icons/next-btn.svg'
 import BackBtn from '/public/icons/arrow-left.svg'
 import Link from 'next/link'
-import Image from 'next/image'
 import { useState } from 'react'
+import AuthLayout from '@/app/_components/AuthLayout'
 
 export default function SignUp() {
   const [page, setPage] = useState(1)
@@ -22,7 +22,7 @@ export default function SignUp() {
   }
 
   return (
-    <>
+    <AuthLayout>
       <div className="relative bg-white max-w-[600px] mx-auto mt-24 py-10 px-24 flex flex-col items-center rounded-[60px]">
         <h1 className="text-center py-10">
           <Logo />
@@ -164,46 +164,6 @@ export default function SignUp() {
           </Link>
         </p>
       </div>
-      <Image
-        src="/images/cloud.svg"
-        alt="cloud"
-        width={240}
-        height={240}
-        priority
-        className="absolute bottom-10 left-10"
-      />
-      <Image
-        src="/images/cloud.svg"
-        alt="cloud"
-        width={200}
-        height={200}
-        priority
-        className="absolute top-40 right-0 translate-x-10"
-      />
-      <Image
-        src="/images/cloud.svg"
-        alt="cloud"
-        width={150}
-        height={150}
-        priority
-        className="absolute top-10 left-2/3 translate-x-10"
-      />
-      <Image
-        src="/images/koala-sleep.png"
-        alt="koala-sleep"
-        width={100}
-        height={100}
-        priority
-        className="absolute top-2 left-2/3 translate-x-14"
-      />
-      <Image
-        src="/images/koala-tree.png"
-        alt="koala-tree"
-        width={460}
-        height={460}
-        priority
-        className="absolute bottom-0 translate-y-2 left-28"
-      />
-    </>
+    </AuthLayout>
   )
 }
