@@ -5,3 +5,24 @@
 body {
   background-color: #eaf5ff;
 }
+
+@layer components {
+  .input {
+    @apply h-14 px-5 pt-1 w-full rounded-full border border-slate-300 focus:outline-primary-400;
+  }
+  .input-label {
+    @apply absolute text-gray-400 top-4 left-5 px-2 transition peer-focus:-top-2 peer-focus:bg-white peer-focus:text-primary-400 peer-focus:text-sm peer-focus:transition-all;
+  }
+  .peer:not(:placeholder-shown) + .input-label {
+    @apply -top-2 bg-white text-sm;
+  }
+  .input:not(:placeholder-shown) + .input-label {
+    @apply -top-2 bg-white text-sm;
+  }
+  .error-message {
+    @apply ml-6 mt-1 text-sm text-red-500 transition-opacity duration-300;
+  }
+  .submit-btn {
+    @apply h-14 text-center text-white rounded-full text-lg transition-colors duration-300;
+  }
+}
