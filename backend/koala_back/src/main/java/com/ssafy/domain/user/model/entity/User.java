@@ -24,7 +24,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(of = {"loginId", "name", "nickname"})
+//@ToString(of = {"loginId", "name", "nickname"})
 public class User {
 
     @Id
@@ -94,8 +94,7 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = ALL, fetch = LAZY, orphanRemoval = true)
     private Ranking ranking;
 
-    public User(Long userId, String loginId, String password, Auth auth, String name, String nickname, Integer leaves, Long userExp, Integer userLevel) {
-        this.userId = userId;
+    public User(String loginId, String password, Auth auth, String name, String nickname, Integer leaves, Long userExp, Integer userLevel) {
         this.loginId = loginId;
         this.password = password;
         this.auth = auth;

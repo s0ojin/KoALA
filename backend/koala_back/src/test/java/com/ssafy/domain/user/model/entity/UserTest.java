@@ -28,18 +28,18 @@ class UserTest {
         Auth auth = new Auth("user");
         em.persist(auth);
 
-        User user = new User(1L, "loginId", "password", auth, "name", "nickname", 0, 0L, 1);
+        User user = new User("loginId", "password", auth, "name", "nickname", 0, 0L, 1);
         log.info("user: {}", user);
         em.persist(user);
 
-        User findUser = em.find(User.class, user);
+        User findUser = em.find(User.class, user.getUserId());
 
         assertEquals(user, findUser);
 
-//        em.remove(findUser);
-//        em.remove(auth);
-//
-//        assertNull(em.find(User.class, user));
+        em.remove(findUser);
+        em.remove(auth);
+
+        assertNull(em.find(User.class, user.getUserId()));
     }
 
 }
