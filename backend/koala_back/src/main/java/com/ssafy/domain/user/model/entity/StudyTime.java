@@ -1,22 +1,39 @@
 package com.ssafy.domain.user.model.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
+import java.io.Serializable;
+
+import static jakarta.persistence.FetchType.*;
+import static lombok.AccessLevel.*;
+
 @Entity
-public class StudyTime {
-    @EmbeddedId
-    private StudyTimeId studyTimeId;
+@Getter
+@NoArgsConstructor(access = PROTECTED)
+@AllArgsConstructor(access = PROTECTED)
+@Table(name = "study_time")
+@IdClass(StudyTimeId.class)
+public class StudyTime implements Serializable {
 
-    @Column(name = "talk_time")
-    private Integer talkTime;
+    @Id
+    @Column(name = "time_cal_type")
+    private Integer timeCalType;
 
-    @Column(name = "sentence_num")
-    private Integer sentenceNum;
+    @Id
+    @Column(name = "user_id")
+    private Long userId;
 
-    @Column(name = "lecture_num")
-    private Integer lectureNum;
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    private User user;
+
+    @Column(name = "talk_time", nullable = false)
+    private Integer talkTime = 0;
+
+    @Column(name = "sentence_num", nullable = false)
+    private Integer sentenceNum = 0;
+
+    @Column(name = "lecture_num", nullable = false)
+    private Integer lectureNum = 0;
 }
