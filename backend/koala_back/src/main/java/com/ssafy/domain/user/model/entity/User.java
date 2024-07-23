@@ -116,7 +116,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        // 식별할 수 있는 값
+        // 유일한 값
         return this.loginId;
     }
 
@@ -144,6 +144,4 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
-
 }
