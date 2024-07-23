@@ -4,6 +4,7 @@ import com.ssafy.domain.koala.model.validation.KoalaValidation;
 import com.ssafy.domain.user.model.entity.User;
 import jakarta.persistence.*;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -14,6 +15,7 @@ import static jakarta.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PROTECTED;
 
 @Entity
+@Getter
 @Table(name = "koala")
 @NoArgsConstructor(access = PROTECTED)
 public class Koala {
