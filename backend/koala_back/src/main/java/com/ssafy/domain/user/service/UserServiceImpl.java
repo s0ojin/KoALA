@@ -24,11 +24,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public JwtToken signIn(String loginId, String password) {
         // loginId + password 를 기반으로 Authentication 객체 생성
-        // 이때 authentication은 인증 여부를 확인하는 authenticated 값이 false
+        // 이때 authentication은 인증 여부를 확인하는 authenticated 값이 false (생성될때는 인증 X)
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginId, password);
 
         // 실제 검증. authenticate() 메서드를 통해 요청된 User 에 대한 검증 진행
         // authenticate 메서드가 실행될 때 CustomUserDetailsService 에서 만든 loadUserByUsername 메서드 실행
+        // UsernamePasswordAuthenticationToken의 loginId와 password를 이용해 조회된 사용자 정보가 일치하는지 확인
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
         // 인증 정보를 기반으로 JWT 토큰 생성
@@ -36,3 +37,22 @@ public class UserServiceImpl implements UserService {
         return jwtToken;
     }
 }
+
+/*
+[사용자 입력]
+    ↓
+[UsernamePasswordAuthenticationToken 생성]
+    ↓
+[AuthenticationManager.authenticate() 호출]
+    ↓
+[CustomUserDetailsService.loadUserByUsername() 호출]
+    ↓
+[사용자 정보 검증]
+    ↓
+[인증 성공 - Authentication 객체 반환]
+    ↓
+[JwtTokenProvider.generateToken() 호출]
+    ↓
+[JWT 토큰 생성 및 반환]
+
+ */
