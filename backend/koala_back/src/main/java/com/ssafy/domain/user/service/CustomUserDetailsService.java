@@ -18,7 +18,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     private UserDetails createUserDetails(User user) {
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getLoginId())
-                .password(user.getPassword()) // 인코딩된 값이 넘어옴
+                .password(passwordEncoder.encode(user.getPassword()))
                 .roles(user.getAuth().getAuthName())
                 .build();
     }

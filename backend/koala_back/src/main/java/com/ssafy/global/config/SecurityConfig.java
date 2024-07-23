@@ -31,11 +31,12 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 // HTTP 요청에 대한 권한을 설정
                 .authorizeHttpRequests(authorizeRequests ->
-                        authorizeRequests
-                                // "/users/register" 경로에 대한 모든 요청을 허용
-                                .requestMatchers(HttpMethod.POST, "/users").permitAll()
-                                // 다른 모든 요청은 인증을 필요로 함
-                                .anyRequest().authenticated()
+                                authorizeRequests
+                                        // "/users/register" 경로에 대한 모든 요청을 허용
+//                                .requestMatchers(HttpMethod.POST, "/users").permitAll()
+                                        .requestMatchers("/users/login").permitAll()
+                                        // 다른 모든 요청은 인증을 필요로 함
+                                        .anyRequest().authenticated()
                 )
                 // JwtAuthenticationFilter를 UsernamePasswordAuthenticationFilter 이전에 실행되도록 추가
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
