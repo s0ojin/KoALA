@@ -8,6 +8,7 @@ import com.ssafy.domain.lecture.model.entity.LectureNote;
 import com.ssafy.domain.lecture.model.entity.RegisteredLecture;
 import com.ssafy.domain.sentence.model.entity.ReviewSentence;
 import com.ssafy.domain.sentence.model.entity.Sentence;
+import com.ssafy.domain.user.model.validation.UserValidation;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ssafy.domain.user.model.validation.UserValidation.*;
 import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PROTECTED;
@@ -94,6 +96,7 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = ALL, fetch = LAZY, orphanRemoval = true)
     private Ranking ranking;
 
+    // test용
     public User(String loginId, String password, Auth auth, String name, String nickname, Integer leaves, Long userExp, Integer userLevel) {
         this.loginId = loginId;
         this.password = password;
@@ -101,6 +104,29 @@ public class User {
         this.name = name;
         this.nickname = nickname;
         this.leaves = leaves;
+        this.userExp = userExp;
+        this.userLevel = userLevel;
+    }
+
+    @Builder
+    public User(
+            final String loginId,
+            final String password,
+            final Auth auth,
+            final String name,
+            final String nickname,
+            final Integer leaves,
+            final Koala koala,
+            final Long userExp,
+            final Integer userLevel) {
+        validate(loginId, password, auth, name, nickname, leaves, koala, userExp, userLevel);
+        this.loginId = loginId;
+        this.password = password;
+        this.auth = auth;
+        this.name = name;
+        this.nickname = nickname;
+        this.leaves = leaves;
+        this.koala = koala;
         this.userExp = userExp;
         this.userLevel = userLevel;
     }
