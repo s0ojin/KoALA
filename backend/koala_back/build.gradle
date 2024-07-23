@@ -24,7 +24,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'io.github.cdimascio:spring-dotenv:2.2.0'
+    implementation 'io.github.cdimascio:dotenv-java:3.0.0'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -42,7 +42,7 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     implementation 'org.mariadb.jdbc:mariadb-java-client:3.0.4'
-    implementation 'org.json:json:20220320'
+    implementation 'org.json:json:20231013'
 
 }
 
