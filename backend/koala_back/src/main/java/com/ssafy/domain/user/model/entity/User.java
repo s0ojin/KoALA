@@ -32,7 +32,7 @@ import static lombok.AccessLevel.PROTECTED;
 @AllArgsConstructor
 @Builder
 public class User implements UserDetails {
-// Spring Security는 인증 및 권한 부여 과정에서 UserDetails 객체를 사용
+    // Spring Security는 인증 및 권한 부여 과정에서 UserDetails 객체를 사용
     @Id
     @GeneratedValue
     @Column(name = "user_id")
