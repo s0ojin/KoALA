@@ -6,7 +6,6 @@ import com.ssafy.domain.user.model.entity.Auth;
 import com.ssafy.domain.user.repository.UserRepository;
 import com.ssafy.global.auth.jwt.JwtTokenProvider;
 import com.ssafy.global.auth.jwt.dto.JwtToken;
-import com.ssafy.global.error.exception.UserException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -30,11 +29,11 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserDto signUp(SignUpDto signUpDto) {
         if (userRepository.existsByLoginId(signUpDto.getLoginId())) {
-            throw new UserException("이미 사용 중인 사용자 아이디입니다.");
+            throw new IllegalArgumentException("이미 사용 중인 사용자 아이디입니다.");
         }
         String encodedPassword = passwordEncoder.encode(signUpDto.getPassword());
         Auth auth = new Auth("user");
-        System.out.println("******************"+ auth.getAuthId());
+        System.out.println(auth.getAuthId());
         return UserDto.toDto(userRepository.save(signUpDto.toEntity(encodedPassword, auth)));
     }
 
