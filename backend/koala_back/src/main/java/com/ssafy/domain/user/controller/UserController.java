@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -42,9 +43,22 @@ public class UserController {
         return jwtToken;
     }
 
+    @PostMapping("/refresh")
+    public ResponseEntity<?> refresh(@RequestBody String refreshToken) {
+        JwtToken newToken = userService.generateNewAccessToken(refreshToken);
+        return ResponseEntity.ok(newToken);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(@RequestBody String accessToken) {
+//        userService.logout(accessToken);
+        SecurityContextHolder.clearContext();
+        return ResponseEntity.ok().body("logout successful");
+    }
+
     @PostMapping ("/test")
     public String test(){
-        return "success";
+        return "테스트 성공";
     }
 
 }

@@ -7,9 +7,11 @@ import com.ssafy.domain.user.repository.AuthRepository;
 import com.ssafy.domain.user.repository.UserRepository;
 import com.ssafy.global.auth.jwt.JwtTokenProvider;
 import com.ssafy.global.auth.jwt.dto.JwtToken;
+import com.ssafy.global.error.exception.TokenException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,6 +57,19 @@ public class UserServiceImpl implements UserService {
         // 인증 정보를 기반으로 JWT 토큰 생성
         JwtToken jwtToken = jwtTokenProvider.generateToken(authentication);
         return jwtToken;
+    }
+
+    public JwtToken generateNewAccessToken(String refreshToken) {
+        if (!jwtTokenProvider.validateRefreshToken(refreshToken)) {
+            throw new TokenException("Invalid Refresh Token");
+        }
+        String loginId = jwtTokenProvider.getAuthentication(refreshToken).getName();
+        String newAccessToken = jwtTokenProvider.generateAccessToken(loginId);
+        return JwtToken.builder()
+                .grantType("Bearer")
+                .accessToken(newAccessToken)
+                .refreshToken(refreshToken) // 기존 Refresh Token은 기대로 사용합니다
+                .build();
     }
 
 }

@@ -1,6 +1,7 @@
 package com.ssafy.global.auth.jwt;
 
 import com.ssafy.global.auth.jwt.dto.JwtToken;
+import com.ssafy.global.error.exception.TokenException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -106,15 +107,34 @@ public class JwtTokenProvider {
             return true;
         } catch (SecurityException | MalformedJwtException e) {
             log.info("Invalid JWT Token", e);
+            throw new TokenException("Invalid JWT Token");
         } catch (ExpiredJwtException e) {
             log.info("Expired JWT Token", e);
-
+            throw new TokenException("Expired JWT Token");
         } catch (UnsupportedJwtException e) {
             log.info("Unsupported JWT Token", e);
+            throw new TokenException("Unsupported JWT Token");
         } catch (IllegalArgumentException e) {
             log.info("JWT claims string is empty.", e);
+            throw new TokenException("JWT claims string is empty.");
         }
-        return false;
+    }
+
+    public boolean validateRefreshToken(String token) {
+        try {
+            return validateToken(token);
+        } catch (JwtException | IllegalArgumentException e) {
+            throw new TokenException("Invalid Refresh Token");
+        }
+    }
+
+    public String generateAccessToken(String username) {
+        return Jwts.builder()
+                .setSubject(username)
+                .claim("type", "access")
+                .setExpiration(new Date(System.currentTimeMillis() + accessTokenExpireTime))
+                .signWith(secretKey, SignatureAlgorithm.HS256)
+                .compact();
     }
 
 }
