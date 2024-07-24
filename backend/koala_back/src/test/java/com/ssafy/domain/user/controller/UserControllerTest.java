@@ -37,14 +37,14 @@ class UserControllerTest {
         signUpDto = SignUpDto.builder()
                 .loginId("test1")
                 .password("test")
-                .name("김싸피")
+                .name("싸피짱")
                 .nickname("싸피짱")
                 .build();
-        testRestTemplate.getRestTemplate().getMessageConverters()
-                .add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
     }
 
+
     @Test
+    @Transactional
     void signUp() {
         String url = "http://localhost:" + randomServerPort + "/users";
         ResponseEntity<UserDto> responseEntity = testRestTemplate.postForEntity(url, signUpDto, UserDto.class);
@@ -52,6 +52,7 @@ class UserControllerTest {
         // 응답 검증
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         UserDto savedUserDto = responseEntity.getBody();
+        assertThat(savedUserDto).isNotNull();
         assertThat(savedUserDto.getLoginId()).isEqualTo(signUpDto.getLoginId());
         assertThat(savedUserDto.getName()).isEqualTo(signUpDto.getName());
         assertThat(savedUserDto.getNickname()).isEqualTo(signUpDto.getNickname());
