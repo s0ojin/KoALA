@@ -1,7 +1,7 @@
 import Header from './_components/header'
 // import Cards from "./_components/cards"
 import CardSlide from './_components/carousel/CardSlide'
-import CardFlip from './_components/carousel/CardFlip'
+import Cloud from '/public/images/cloud.svg'
 
 export default function Main() {
   return (
