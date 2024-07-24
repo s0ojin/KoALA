@@ -1,4 +1,4 @@
-import OnlineLearingPanel from '@/app/online-learning/_components/OnlineLearningPanel'
+import OnlineLearningPanel from '@/app/online-learning/_components/OnlineLearningPanel'
 import OnlineLearningTabList from '@/app/online-learning/_components/OnlineLearningTabList'
 
 export default function OnlineLearningRoom() {
@@ -8,7 +8,9 @@ export default function OnlineLearningRoom() {
         <img src="https://images.unsplash.com/photo-1544168190-79c17527004f?q=80&w=1888&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
       </div>
       <OnlineLearningTabList />
-      <OnlineLearningPanel />
+      <OnlineLearningPanel tabId="lecture-chat">
+        <div></div>
+      </OnlineLearningPanel>
     </div>
   )
 }
