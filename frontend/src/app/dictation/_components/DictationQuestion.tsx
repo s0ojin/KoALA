@@ -2,8 +2,10 @@
 
 import { useState } from 'react'
 import Notification from '/public/icons/notification.svg'
-import Repeat from '/public/icons/repeat.svg'
-import SoundWave from './SoundWave'
+import Repeat from '/public/icons/re-button.svg'
+import Rocket from '/public/images/rocket.svg'
+import Cloud from '/public/images/cloud.svg'
+import SoundWave from '@/app/dictation/_components/SoundWave'
 
 export default function DictationQuestion() {
   const [isToggled, setIsToggled] = useState(false)
@@ -13,8 +15,14 @@ export default function DictationQuestion() {
   }
 
   return (
-    <div className="w-full max-w-[800px] inline-flex flex-col gap-3">
-      <label className="flex cursor-pointer w-auto self-end mr-16 rounded-full">
+    <div className="w-full max-w-[800px] inline-flex flex-col gap-3 relative ">
+      <p className="absolute left-0 top-2 transform -translate-x-28">
+        <Cloud />
+      </p>
+      <p className="absolute right-0 bottom-0 z-10 transform translate-x-20 translate-y-14">
+        <Cloud />
+      </p>
+      <label className="flex cursor-pointer w-auto self-end mr-16 rounded-full z-10">
         <input
           type="checkbox"
           value=""
@@ -35,22 +43,27 @@ export default function DictationQuestion() {
           peer-checked:bg-white"
         ></div>
       </label>
-      <div className="h-full min-h-[160px] w-full inline-flex gap-5 items-center border-primary-400 border-[4px] rounded-full  bg-white pl-[64px] pr-[51px]">
-        <p className="cursor-pointer">
-          <Notification />
+      <div className="relative">
+        <p className="absolute bottom-[80px] right-[50px]">
+          <Rocket />
         </p>
-        {isToggled ? (
-          <p className="text-primary-700 text-3xl font-medium">
-            선생님 저희 애는 친구를 때릴 애가 아닙니다.
+        <div className="h-full min-h-[160px] w-full inline-flex gap-5 items-center border-primary-400 border-[4px] rounded-full  bg-white pl-[64px] pr-[51px]">
+          <p>
+            <Notification width="60" height="60" />
           </p>
-        ) : (
-          <p className="m-auto">
-            <SoundWave />
-          </p>
-        )}
-        <p className="cursor-pointer">
-          <Repeat />
-        </p>
+          {isToggled ? (
+            <p className="text-primary-700 text-3xl font-medium">
+              선생님 저희 애는 친구를 때릴 애가 아닙니다.
+            </p>
+          ) : (
+            <p className="m-auto">
+              <SoundWave />
+            </p>
+          )}
+          <button className="cursor-pointer z-10 text-primary-400">
+            <Repeat />
+          </button>
+        </div>
       </div>
     </div>
   )

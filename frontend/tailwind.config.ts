@@ -37,6 +37,9 @@ const config: Config = {
         'primary-800': '#0F0A6A',
         'primary-900': '#070348',
       },
+      gridTemplateColumns: {
+        '14': 'repeat(14, minmax(80px, 80px))',
+      },
     },
   },
   plugins: [],
