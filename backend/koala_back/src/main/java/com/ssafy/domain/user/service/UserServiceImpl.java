@@ -1,15 +1,16 @@
 package com.ssafy.domain.user.service;
 
-import com.ssafy.domain.koala.model.entity.Koala;
-import com.ssafy.domain.user.model.dto.request.UserAddRequest;
+import com.ssafy.domain.user.model.dto.request.SignUpDto;
+import com.ssafy.domain.user.model.dto.request.UserDto;
 import com.ssafy.domain.user.model.entity.Auth;
-import com.ssafy.domain.user.model.entity.User;
+import com.ssafy.domain.user.repository.AuthRepository;
 import com.ssafy.domain.user.repository.UserRepository;
 import com.ssafy.global.auth.jwt.JwtTokenProvider;
 import com.ssafy.global.auth.jwt.dto.JwtToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -21,23 +22,21 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final AuthRepository authRepository;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider jwtTokenProvider;
-
+    private final PasswordEncoder passwordEncoder;
 
     // 회원가입
     @Transactional
-    public void signUp(UserAddRequest userAddRequest) {
-        Auth auth = new Auth("user");
-        User user = new User(
-                userAddRequest.getLoginId(),
-                userAddRequest.getPassword(),
-                auth, userAddRequest.getName(),
-                userAddRequest.getNickname(),
-                0, 0L, 1);
-
-        userRepository.save(user);
-//        Koala koala = new Koala(user, "코알라", 0, 0, 0);
+    public UserDto signUp(SignUpDto signUpDto) {
+        if (userRepository.existsByLoginId(signUpDto.getLoginId())) {
+            throw new IllegalArgumentException("이미 사용 중인 사용자 아이디입니다.");
+        }
+        String encodedPassword = passwordEncoder.encode(signUpDto.getPassword());
+        Auth auth = authRepository.findByAuthName("user");
+        System.out.println(auth.getAuthId());
+        return UserDto.toDto(userRepository.save(signUpDto.toEntity(encodedPassword, auth)));
     }
 
 

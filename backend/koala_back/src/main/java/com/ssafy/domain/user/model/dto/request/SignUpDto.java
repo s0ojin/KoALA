@@ -1,14 +1,17 @@
 package com.ssafy.domain.user.model.dto.request;
 
+import com.ssafy.domain.user.model.entity.Auth;
 import com.ssafy.domain.user.model.entity.User;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.json.JSONObject;
 
+import java.time.LocalDateTime;
+
 @Getter
 @NoArgsConstructor
 @Builder
-public class UserAddRequest {
+public class SignUpDto {
 
     // null, "", "   " 데이터 전부 걸러낸다.
     @NotBlank(message = "유저 아이디는 필수 입력 값입니다.")
@@ -23,25 +26,38 @@ public class UserAddRequest {
     @NotBlank(message = "유저 닉네임은 필수 입력 값입니다.")
     private String nickname;
 
-    public UserAddRequest(JSONObject jsonObject) {
+    public SignUpDto(JSONObject jsonObject) {
         this.loginId = jsonObject.getString("loginId");
         this.password = jsonObject.getString("password");
         this.name = jsonObject.getString("name");
         this.nickname = jsonObject.getString("nickname");
     }
 
-    public UserAddRequest(User user) {
+    public SignUpDto(User user) {
         this.loginId = user.getLoginId();
         this.password = user.getPassword();
         this.name = user.getName();
         this.nickname = user.getNickname();
     }
 
-    public UserAddRequest(String loginId, String password, String name, String nickname) {
+    public SignUpDto(String loginId, String password, String name, String nickname) {
         this.loginId = loginId;
         this.password = password;
         this.name = name;
         this.nickname = nickname;
     }
 
+    public User toEntity(String encodedPassword, Auth auth) {
+        return User.builder()
+                .loginId(loginId)
+                .password(encodedPassword)
+                .name(name)
+                .nickname(nickname)
+                .auth(auth)
+//                .leaves(0)
+//                .userExp(0L)
+//                .userLevel(0)
+//                .userCreatedAt(LocalDateTime.now())
+                .build();
+    }
 }
