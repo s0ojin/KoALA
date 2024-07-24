@@ -30,6 +30,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@Builder
 public class User implements UserDetails {
 // Spring Security는 인증 및 권한 부여 과정에서 UserDetails 객체를 사용
     @Id
@@ -53,20 +54,20 @@ public class User implements UserDetails {
     @Column(name = "nickname", nullable = false)
     private String nickname;
 
-    @Column(name = "leaves", nullable = false)
+    @Column(name = "leaves")
     private Integer leaves;
 
     @OneToOne(cascade = ALL, fetch = LAZY, orphanRemoval = true)
     @JoinColumn(name = "koala_id")
     private Koala koala;
 
-    @Column(name = "user_exp", nullable = false)
+    @Column(name = "user_exp")
     private Long userExp;
 
-    @Column(name = "user_level", nullable = false)
+    @Column(name = "user_level")
     private Integer userLevel;
 
-    @Column(name = "user_created_at", nullable = false)
+    @Column(name = "user_created_at")
     private LocalDateTime userCreatedAt = LocalDateTime.now();
 
     @OneToMany(mappedBy = "teacher", cascade = ALL, fetch = LAZY, orphanRemoval = true)
@@ -111,28 +112,28 @@ public class User implements UserDetails {
         this.userLevel = userLevel;
     }
 
-    @Builder
-    public User(
-            final String loginId,
-            final String password,
-            final Auth auth,
-            final String name,
-            final String nickname,
-            final Integer leaves,
-            final Koala koala,
-            final Long userExp,
-            final Integer userLevel) {
-        validate(loginId, password, auth, name, nickname, leaves, koala, userExp, userLevel);
-        this.loginId = loginId;
-        this.password = password;
-        this.auth = auth;
-        this.name = name;
-        this.nickname = nickname;
-        this.leaves = leaves;
-        this.koala = koala;
-        this.userExp = userExp;
-        this.userLevel = userLevel;
-    }
+//    @Builder
+//    public User(
+//            final String loginId,
+//            final String password,
+//            final Auth auth,
+//            final String name,
+//            final String nickname,
+//            final Integer leaves,
+//            final Koala koala,
+//            final Long userExp,
+//            final Integer userLevel) {
+//        validate(loginId, password, auth, name, nickname, leaves, koala, userExp, userLevel);
+//        this.loginId = loginId;
+//        this.password = password;
+//        this.auth = auth;
+//        this.name = name;
+//        this.nickname = nickname;
+//        this.leaves = leaves;
+//        this.koala = koala;
+//        this.userExp = userExp;
+//        this.userLevel = userLevel;
+//    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -170,4 +171,5 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }
