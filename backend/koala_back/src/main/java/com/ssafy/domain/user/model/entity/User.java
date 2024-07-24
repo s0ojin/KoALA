@@ -11,6 +11,7 @@ import com.ssafy.domain.sentence.model.entity.Sentence;
 import com.ssafy.domain.user.model.validation.UserValidation;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -55,50 +56,61 @@ public class User implements UserDetails {
     private String nickname;
 
     @Column(name = "leaves")
-    private Integer leaves;
-
-    @OneToOne(cascade = ALL, fetch = LAZY, orphanRemoval = true)
-    @JoinColumn(name = "koala_id")
-    private Koala koala;
+    @Builder.Default
+    private Integer leaves = 0;
 
     @Column(name = "user_exp")
-    private Long userExp;
+    @Builder.Default
+    private Long userExp = 0L;
 
     @Column(name = "user_level")
-    private Integer userLevel;
+    @Builder.Default
+    private Integer userLevel = 0;
 
     @Column(name = "user_created_at")
+    @Builder.Default
     private LocalDateTime userCreatedAt = LocalDateTime.now();
 
+    @Builder.Default
     @OneToMany(mappedBy = "teacher", cascade = ALL, fetch = LAZY, orphanRemoval = true)
     private List<Lecture> lectures = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = ALL, fetch = LAZY, orphanRemoval = true)
     private List<Sentence> sentences = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = ALL, fetch = LAZY, orphanRemoval = true)
     private List<ReviewSentence> reviewSentences = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = ALL, fetch = LAZY, orphanRemoval = true)
     private List<StudyTime> studyTimes = new ArrayList<>();
 
     @OneToOne(mappedBy = "user", cascade = ALL, fetch = LAZY, orphanRemoval = true)
     private UserDetail userDetail;
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = ALL, fetch = LAZY, orphanRemoval = true)
     private List<RegisteredLecture> registeredLectures = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = ALL, fetch = LAZY, orphanRemoval = true)
     private List<LectureNote> lectureNotes = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = ALL, fetch = LAZY, orphanRemoval = true)
     private List<Board> boards = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = ALL, fetch = LAZY, orphanRemoval = true)
     private List<BoardComment> boardComments = new ArrayList<>();
 
     @OneToOne(mappedBy = "user", cascade = ALL, fetch = LAZY, orphanRemoval = true)
     private Ranking ranking;
+
+    @OneToMany(mappedBy = "user", cascade = ALL, fetch = LAZY, orphanRemoval = true)
+    private List<Koala> koalas;
 
     // test용
     public User(String loginId, String password, Auth auth, String name, String nickname, Integer leaves, Long userExp, Integer userLevel) {

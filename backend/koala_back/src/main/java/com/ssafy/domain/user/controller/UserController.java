@@ -28,8 +28,8 @@ public class UserController {
 //    public ResponseEntity<?> signUp(@RequestBody JSONObject jsonObject) {
 //        SignUpDto signUpDto = new SignUpDto(jsonObject);
         UserDto savedUserDto = userService.signUp(signUpDto); // 이걸 반환해도 됨
-        return ResponseEntity.ok().body(savedUserDto);
-        //return ResponseEntity.ok().body("회원가입 성공!");
+//        return ResponseEntity.ok().body(savedUserDto);
+        return ResponseEntity.ok().body("회원가입 성공!");
     }
 
     @PostMapping("/login")
