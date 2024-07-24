@@ -2,17 +2,17 @@
 
 import ChatIcon from '/public/icons/chat.svg'
 import NoteIcon from '/public/icons/notebook.svg'
-import ResourceIcon from '/public/icons/edit.svg'
+import WriteIcon from '/public/icons/edit.svg'
 import { useState } from 'react'
 
 const tabs = [
-  { id: 0, label: '강의노트', icon: <ResourceIcon /> },
-  { id: 1, label: '수업자료', icon: <NoteIcon /> },
-  { id: 2, label: '채팅', icon: <ChatIcon /> },
+  { id: 'lecture-note', label: '강의노트', icon: <WriteIcon /> },
+  { id: 'lecture-handout', label: '수업자료', icon: <NoteIcon /> },
+  { id: 'lecture-chat', label: '채팅', icon: <ChatIcon /> },
 ]
 
-export default function OnlineLearningNav() {
-  const [tabIndex, setTabIndex] = useState(0)
+export default function OnlineLearningTabList() {
+  const [tabIndex, setTabIndex] = useState(tabs[0].id)
   return (
     <div className="fixed py-6 right-0 w-20 h-full bg-white flex flex-col items-center gap-2">
       {tabs.map((tab) => (
