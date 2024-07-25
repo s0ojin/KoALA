@@ -30,6 +30,7 @@ public class Auth {
     private List<User> users = new ArrayList<>();
 
     public Auth(String authName) {
+        this.authId = 1L;
         this.authName = authName;
     }
 
