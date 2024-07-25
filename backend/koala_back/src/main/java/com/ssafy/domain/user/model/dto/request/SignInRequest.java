@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 @ToString
 @NoArgsConstructor
-public class SignInDto {
+public class SignInRequest {
     private String loginId;
     private String password;
 }

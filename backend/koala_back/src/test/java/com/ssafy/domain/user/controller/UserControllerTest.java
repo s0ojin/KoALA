@@ -1,7 +1,7 @@
 package com.ssafy.domain.user.controller;
 
-import com.ssafy.domain.user.model.dto.request.SignUpDto;
-import com.ssafy.domain.user.model.dto.response.UserDto;
+import com.ssafy.domain.user.model.dto.request.SignUpRequest;
+import com.ssafy.domain.user.model.dto.response.UserResponse;
 import com.ssafy.domain.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,12 +26,12 @@ class UserControllerTest {
     TestRestTemplate testRestTemplate;
     @LocalServerPort
     int randomServerPort;
-    private SignUpDto signUpDto;
+    private SignUpRequest signUpRequest;
 
     @BeforeEach
     void beforeEach() {
         // Member 회원가입
-        signUpDto = SignUpDto.builder()
+        signUpRequest = SignUpRequest.builder()
                 .loginId("test1")
                 .password("test")
                 .name("싸피짱")
@@ -45,15 +45,15 @@ class UserControllerTest {
     @Rollback
     void signUp() {
         String url = "http://localhost:" + randomServerPort + "/users";
-        ResponseEntity<UserDto> responseEntity = testRestTemplate.postForEntity(url, signUpDto, UserDto.class);
+        ResponseEntity<UserResponse> responseEntity = testRestTemplate.postForEntity(url, signUpRequest, UserResponse.class);
 
         // 응답 검증
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-        UserDto savedUserDto = responseEntity.getBody();
+        UserResponse savedUserResponse = responseEntity.getBody();
 //        assertThat(savedUserDto).isNotNull();
-        assertThat(savedUserDto.getLoginId()).isEqualTo(signUpDto.getLoginId());
-        assertThat(savedUserDto.getName()).isEqualTo(signUpDto.getName());
-        assertThat(savedUserDto.getNickname()).isEqualTo(signUpDto.getNickname());
+        assertThat(savedUserResponse.getLoginId()).isEqualTo(signUpRequest.getLoginId());
+        assertThat(savedUserResponse.getName()).isEqualTo(signUpRequest.getName());
+        assertThat(savedUserResponse.getNickname()).isEqualTo(signUpRequest.getNickname());
 //        ResponseEntity<String> responseEntity = testRestTemplate.postForEntity(url, signUpDto, String.class);
 //
 //        // 응답 검증

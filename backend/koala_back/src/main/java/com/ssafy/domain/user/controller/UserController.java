@@ -1,8 +1,8 @@
 package com.ssafy.domain.user.controller;
 
-import com.ssafy.domain.user.model.dto.request.SignInDto;
-import com.ssafy.domain.user.model.dto.request.SignUpDto;
-import com.ssafy.domain.user.model.dto.response.UserDto;
+import com.ssafy.domain.user.model.dto.request.SignInRequest;
+import com.ssafy.domain.user.model.dto.request.SignUpRequest;
+import com.ssafy.domain.user.model.dto.response.UserResponse;
 import com.ssafy.domain.user.service.UserService;
 import com.ssafy.global.auth.jwt.dto.JwtToken;
 import lombok.RequiredArgsConstructor;
@@ -25,19 +25,19 @@ public class UserController {
     //} 반환
 
     @PostMapping
-    public ResponseEntity<?> signUp(@RequestBody SignUpDto signUpDto) {
+    public ResponseEntity<?> signUp(@RequestBody SignUpRequest signUpRequest) {
 //    public ResponseEntity<?> signUp(@RequestBody JSONObject jsonObject) {
 //        SignUpDto signUpDto = new SignUpDto(jsonObject);
-        UserDto savedUserDto = userService.signUp(signUpDto); // 이걸 반환해도 됨
-        System.out.println(savedUserDto.getNickname());
+        UserResponse savedUserResponse = userService.signUp(signUpRequest); // 이걸 반환해도 됨
+        System.out.println(savedUserResponse.getNickname());
 //        return ResponseEntity.ok().body(savedUserDto);
-        return ResponseEntity.ok().body(savedUserDto);
+        return ResponseEntity.ok().body(savedUserResponse);
     }
 
     @PostMapping("/login")
-    public JwtToken signIn(@RequestBody SignInDto signInDto) {
-        String loginId = signInDto.getLoginId();
-        String password = signInDto.getPassword();
+    public JwtToken signIn(@RequestBody SignInRequest signInRequest) {
+        String loginId = signInRequest.getLoginId();
+        String password = signInRequest.getPassword();
         JwtToken jwtToken = userService.signIn(loginId, password);
         log.info("request loginId: {}, password: {}", loginId, password);
         log.info("jwtToken accessToken: {}, refreshToken: {}", jwtToken.getAccessToken(), jwtToken.getRefreshToken());
