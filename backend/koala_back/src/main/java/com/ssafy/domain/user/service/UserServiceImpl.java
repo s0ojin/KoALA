@@ -72,6 +72,16 @@ public class UserServiceImpl implements UserService {
                 .build();
     }
 
+    @Override
+    public boolean checkLoginId(String loginId) {
+        return userRepository.existsByLoginId(loginId);
+    }
+
+    @Override
+    public boolean checkNickname(String nickname) {
+        return userRepository.existsByNickname(nickname);
+    }
+
 }
 
 /*

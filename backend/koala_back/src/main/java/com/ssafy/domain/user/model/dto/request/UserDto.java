@@ -21,7 +21,7 @@ public class UserDto {
     private Long userExp;
     private Integer userLevel;
     private LocalDateTime userCreatedAt;
-    private Auth auth;
+    private Long authId;
 
     public static UserDto toDto(User user) {
         return UserDto.builder()
@@ -34,20 +34,7 @@ public class UserDto {
                 .userExp(user.getUserExp())
                 .userLevel(user.getUserLevel())
                 .userCreatedAt(user.getUserCreatedAt())
-                .auth(user.getAuth())
-                .build();
-    }
-
-    public User toEntity(String encodedPassword) {
-        return User.builder()
-                .loginId(this.loginId)
-                .password(encodedPassword) // 인코딩된 비밀번호 사용
-                .auth(this.auth)
-                .name(this.name)
-                .nickname(this.nickname)
-                .leaves(this.leaves)
-                .userExp(this.userExp)
-                .userLevel(this.userLevel)
+                .authId(user.getAuth().getAuthId())
                 .build();
     }
 }

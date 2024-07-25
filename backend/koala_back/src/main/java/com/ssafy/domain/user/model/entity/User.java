@@ -1,5 +1,6 @@
 package com.ssafy.domain.user.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.ssafy.domain.board.model.entity.Board;
 import com.ssafy.domain.board.model.entity.BoardComment;
 import com.ssafy.domain.koala.model.entity.Koala;
