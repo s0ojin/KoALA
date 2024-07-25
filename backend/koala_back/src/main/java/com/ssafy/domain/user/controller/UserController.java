@@ -4,7 +4,6 @@ import com.ssafy.domain.user.model.dto.request.SignInRequest;
 import com.ssafy.domain.user.model.dto.request.SignUpRequest;
 import com.ssafy.domain.user.model.dto.request.UserUpdateRequest;
 import com.ssafy.domain.user.model.dto.response.UserResponse;
-import com.ssafy.domain.user.repository.UserRepository;
 import com.ssafy.domain.user.service.UserService;
 import com.ssafy.global.auth.jwt.dto.JwtToken;
 import com.ssafy.global.common.UserInfoProvider;
@@ -67,7 +66,6 @@ public class UserController {
         SecurityContextHolder.clearContext();
         return ResponseEntity.ok().body("logout successful");
     }
-
 
 
     @GetMapping("/check/check-id/{loginId}")
