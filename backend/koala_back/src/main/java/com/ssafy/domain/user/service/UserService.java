@@ -8,4 +8,7 @@ public interface UserService {
     public JwtToken signIn(String loginId, String password);
     public UserDto signUp(SignUpDto signUpDto);
     public JwtToken generateNewAccessToken(String refreshToken);
+
+    public boolean checkLoginId(String loginId);
+    public boolean checkNickname(String nickname);
 }

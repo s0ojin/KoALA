@@ -59,15 +59,18 @@ public class UserController {
         return ResponseEntity.ok().body("logout successful");
     }
 
-    @PostMapping("/test")
-    public String test() {
-        return "테스트 성공";
+    @GetMapping("/check/check-id/{loginId}")
+    public ResponseEntity<?> checkLoginId(@PathVariable String loginId) {
+        boolean isExist = userService.checkLoginId(loginId);
+        String message = isExist ? "이미 사용 중인 아이디입니다." : "사용 가능한 아이디입니다.";
+        return ResponseEntity.ok().body(new JSONObject().put("available", !isExist).put("message", message).toString());
     }
 
-
-    @ExceptionHandler(TokenException.class)
-    public ResponseEntity<String> handleTokenException(TokenException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNAUTHORIZED);
+    @GetMapping("/check/check-name/{nickname}")
+    public ResponseEntity<?> checkNickname(@PathVariable String nickname) {
+        boolean isExist = userService.checkNickname(nickname);
+        String message = isExist ? "이미 사용 중인 닉네임입니다." : "사용 가능한 닉네임입니다.";
+        return ResponseEntity.ok().body(new JSONObject().put("available", !isExist).put("message", message).toString());
     }
 
 }
