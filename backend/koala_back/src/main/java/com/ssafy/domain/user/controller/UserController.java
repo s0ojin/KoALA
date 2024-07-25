@@ -71,10 +71,4 @@ public class UserController {
         return ResponseEntity.ok().body(new JSONObject().put("available", !isExist).put("message", message).toString());
     }
 
-//    @PatchMapping("/users")
-//    public ResponseEntity<?> updateUser(@RequestBody UserUpdateRequest userUpdateRequest){
-//        User user = userService.updateUser(userUpdateRequest);
-//
-//    }
-
 }
