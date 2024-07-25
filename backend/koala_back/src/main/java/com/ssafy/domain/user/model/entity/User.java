@@ -48,7 +48,6 @@ public class User implements UserDetails {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "auth_id", nullable = false)
-    @JsonBackReference
     private Auth auth;
 
     @Column(name = "name", nullable = false)

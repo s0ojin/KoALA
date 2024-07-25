@@ -27,7 +27,6 @@ public class Auth {
     @Column(name = "auth_name")
     private String authName = "user";
 
-    @JsonIgnore
     @OneToMany(mappedBy = "auth", fetch = LAZY)
     private List<User> users = new ArrayList<>();
 
