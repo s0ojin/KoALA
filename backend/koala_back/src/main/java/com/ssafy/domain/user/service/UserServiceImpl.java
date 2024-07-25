@@ -1,7 +1,7 @@
 package com.ssafy.domain.user.service;
 
 import com.ssafy.domain.user.model.dto.request.SignUpDto;
-import com.ssafy.domain.user.model.dto.request.UserDto;
+import com.ssafy.domain.user.model.dto.response.UserDto;
 import com.ssafy.domain.user.model.entity.Auth;
 import com.ssafy.domain.user.repository.AuthRepository;
 import com.ssafy.domain.user.repository.UserRepository;
@@ -11,7 +11,6 @@ import com.ssafy.global.error.exception.TokenException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

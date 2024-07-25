@@ -1,6 +1,5 @@
-package com.ssafy.domain.user.model.dto.request;
+package com.ssafy.domain.user.model.dto.response;
 
-import com.ssafy.domain.user.model.entity.Auth;
 import com.ssafy.domain.user.model.entity.User;
 import lombok.*;
 
