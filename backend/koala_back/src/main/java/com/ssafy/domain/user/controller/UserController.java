@@ -2,6 +2,7 @@ package com.ssafy.domain.user.controller;
 
 import com.ssafy.domain.user.model.dto.request.SignInRequest;
 import com.ssafy.domain.user.model.dto.request.SignUpRequest;
+import com.ssafy.domain.user.model.dto.request.UserUpdateRequest;
 import com.ssafy.domain.user.model.dto.response.UserResponse;
 import com.ssafy.domain.user.service.UserService;
 import com.ssafy.global.auth.jwt.dto.JwtToken;
@@ -38,6 +39,7 @@ public class UserController {
     public JwtToken signIn(@RequestBody SignInRequest signInRequest) {
         String loginId = signInRequest.getLoginId();
         String password = signInRequest.getPassword();
+        System.out.println(password);
         JwtToken jwtToken = userService.signIn(loginId, password);
         log.info("request loginId: {}, password: {}", loginId, password);
         log.info("jwtToken accessToken: {}, refreshToken: {}", jwtToken.getAccessToken(), jwtToken.getRefreshToken());
@@ -52,7 +54,7 @@ public class UserController {
 
     @PostMapping("/logout")
     public ResponseEntity<?> logout(@RequestBody String accessToken) {
-//        userService.logout(accessToken);
+//       userService.logout(accessToken);
         SecurityContextHolder.clearContext();
         return ResponseEntity.ok().body("logout successful");
     }
@@ -71,10 +73,11 @@ public class UserController {
         return ResponseEntity.ok().body(new JSONObject().put("available", !isExist).put("message", message).toString());
     }
 
-//    @PatchMapping("/users")
-//    public ResponseEntity<?> updateUser(@RequestBody UserUpdateRequest userUpdateRequest){
-//        User user = userService.updateUser(userUpdateRequest);
-//
-//    }
+    @PatchMapping("/users")
+    public ResponseEntity<?> updateUser(@RequestBody UserUpdateRequest userUpdateRequest){
+        UserResponse userResponse = userService.updateUser(userUpdateRequest);
+        log.info("userNick 및 password 업데이트");
+        return ResponseEntity.ok().body(userResponse);
+    }
 
 }
