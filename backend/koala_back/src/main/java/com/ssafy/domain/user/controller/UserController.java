@@ -2,14 +2,12 @@ package com.ssafy.domain.user.controller;
 
 import com.ssafy.domain.user.model.dto.request.SignInDto;
 import com.ssafy.domain.user.model.dto.request.SignUpDto;
-import com.ssafy.domain.user.model.dto.request.UserDto;
+import com.ssafy.domain.user.model.dto.response.UserDto;
 import com.ssafy.domain.user.service.UserService;
 import com.ssafy.global.auth.jwt.dto.JwtToken;
-import com.ssafy.global.error.exception.TokenException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
