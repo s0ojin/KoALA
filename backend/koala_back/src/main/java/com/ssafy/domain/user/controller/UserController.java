@@ -30,8 +30,8 @@ public class UserController {
 //        SignUpDto signUpDto = new SignUpDto(jsonObject);
         UserResponse savedUserResponse = userService.signUp(signUpRequest); // 이걸 반환해도 됨
         System.out.println(savedUserResponse.getNickname());
-//        return ResponseEntity.ok().body(savedUserDto);
-        return ResponseEntity.ok().body(savedUserResponse);
+//        return ResponseEntity.ok().body(savedUserResponse);
+        return ResponseEntity.ok().body("Sign up successful");
     }
 
     @PostMapping("/login")
