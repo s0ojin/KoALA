@@ -43,6 +43,7 @@ public class JwtTokenProvider {
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim("auth", authorities)
+                .claim("type", "access")
                 .setExpiration(new Date(System.currentTimeMillis() + accessTokenExpireTime))
                 .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
@@ -51,6 +52,7 @@ public class JwtTokenProvider {
 
         String refreshToken =Jwts.builder()
                 .setExpiration(new Date(System.currentTimeMillis() + refreshTokenExpireTime))
+                .claim("type", "refresh")
                 .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
 
