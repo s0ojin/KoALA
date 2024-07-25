@@ -1,6 +1,7 @@
 package com.ssafy.domain.user.service;
 
 import com.ssafy.domain.user.model.dto.request.SignUpRequest;
+import com.ssafy.domain.user.model.dto.request.UserUpdateRequest;
 import com.ssafy.domain.user.model.dto.response.UserResponse;
 import com.ssafy.global.auth.jwt.dto.JwtToken;
 
@@ -12,5 +13,6 @@ public interface UserService {
     public boolean checkLoginId(String loginId);
     public boolean checkNickname(String nickname);
 
+    public UserResponse updateUser(UserUpdateRequest userUpdateRequest);
     public Long getCurrentUserId();
 }
