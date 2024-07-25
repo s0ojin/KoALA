@@ -1,7 +1,7 @@
 package com.ssafy.domain.user.service;
 
 import com.ssafy.domain.user.model.dto.request.SignUpDto;
-import com.ssafy.domain.user.model.dto.request.UserDto;
+import com.ssafy.domain.user.model.dto.response.UserDto;
 import com.ssafy.global.auth.jwt.dto.JwtToken;
 
 public interface UserService {
