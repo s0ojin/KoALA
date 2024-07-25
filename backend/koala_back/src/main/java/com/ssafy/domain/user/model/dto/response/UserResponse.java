@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserDto {
+public class UserResponse {
     private Long userId;
     private String loginId;
     private String password;
@@ -22,8 +22,8 @@ public class UserDto {
     private LocalDateTime userCreatedAt;
     private Long authId;
 
-    public static UserDto toDto(User user) {
-        return UserDto.builder()
+    public static UserResponse toDto(User user) {
+        return UserResponse.builder()
                 .userId(user.getUserId())
                 .loginId(user.getLoginId())
                 .password(user.getPassword()) // 이미 인코딩된 비밀번호를 사용
