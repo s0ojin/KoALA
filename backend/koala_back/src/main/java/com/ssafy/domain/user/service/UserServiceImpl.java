@@ -1,8 +1,10 @@
 package com.ssafy.domain.user.service;
 
 import com.ssafy.domain.user.model.dto.request.SignUpRequest;
+import com.ssafy.domain.user.model.dto.request.UserUpdateRequest;
 import com.ssafy.domain.user.model.dto.response.UserResponse;
 import com.ssafy.domain.user.model.entity.Auth;
+import com.ssafy.domain.user.model.entity.User;
 import com.ssafy.domain.user.repository.AuthRepository;
 import com.ssafy.domain.user.repository.UserRepository;
 import com.ssafy.global.auth.jwt.JwtTokenProvider;
@@ -12,11 +14,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -28,8 +33,8 @@ public class UserServiceImpl implements UserService {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
+    private final UserUpdateRequest userUpdateRequest;
 
-    private Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
     // 회원가입
     @Transactional
@@ -42,7 +47,6 @@ public class UserServiceImpl implements UserService {
         System.out.println(auth.getAuthId());
         return UserResponse.toDto(userRepository.save(signUpRequest.toEntity(encodedPassword, auth)));
     }
-
 
     @Transactional
     @Override
@@ -61,6 +65,7 @@ public class UserServiceImpl implements UserService {
         return jwtToken;
     }
 
+    @Override
     public JwtToken generateNewAccessToken(String refreshToken) {
         if (!jwtTokenProvider.validateRefreshToken(refreshToken)) {
             throw new TokenException("Invalid Refresh Token");
@@ -82,6 +87,27 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean checkNickname(String nickname) {
         return userRepository.existsByNickname(nickname);
+    }
+
+    @Override
+    public Long getCurrentUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String loginId;
+        if (authentication != null && authentication.isAuthenticated()) {
+            Object principal = authentication.getPrincipal();
+            if (principal instanceof UserDetails) {
+                loginId = ((UserDetails) principal).getUsername(); // loginId 반환
+            } else {
+                loginId = principal.toString(); // principal이 String 타입인 경우
+            }
+
+            User user = userRepository.findByLoginId(loginId)
+                    .orElseThrow(() -> null);
+            if(user != null) {
+                return user.getUserId();
+            }
+        }
+        return null; // 인증되지 않은 경우
     }
 
 }
