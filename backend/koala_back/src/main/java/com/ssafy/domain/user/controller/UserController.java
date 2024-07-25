@@ -71,4 +71,11 @@ public class UserController {
         return ResponseEntity.ok().body(new JSONObject().put("available", !isExist).put("message", message).toString());
     }
 
+    @DeleteMapping
+    public ResponseEntity<?> deleteUser() {
+        Long currentUserId = userService.getCurrentUserId();
+        userService.deleteUser(currentUserId);
+        return ResponseEntity.ok().body("회원 탈퇴 완료!");
+    }
+
 }
