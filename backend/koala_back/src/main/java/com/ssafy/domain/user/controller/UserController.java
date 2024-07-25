@@ -49,4 +49,11 @@ public class UserController {
         return ResponseEntity.ok().body(new JSONObject().put("available", !isExist).put("message", message).toString());
     }
 
+    @GetMapping("/check/check-name/{nickname}")
+    public ResponseEntity<?> checkNickname(@PathVariable String nickname) {
+        boolean isExist = userService.checkNickname(nickname);
+        String message = isExist ? "이미 사용 중인 닉네임입니다." : "사용 가능한 닉네임입니다.";
+        return ResponseEntity.ok().body(new JSONObject().put("available", !isExist).put("message", message).toString());
+    }
+
 }
