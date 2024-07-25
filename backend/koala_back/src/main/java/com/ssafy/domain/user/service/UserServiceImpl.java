@@ -114,8 +114,8 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void deleteUser(Long userId) {
-        userRepository.delete(userRepository.findById(userId).orElseThrow(()-> new NoSuchElementException("User not found with ID: " + userId)));
+    public void deleteUser(User user) {
+        userRepository.delete(user);
     }
 
 }
