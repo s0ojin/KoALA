@@ -57,6 +57,11 @@ public class UserServiceImpl implements UserService {
         return jwtToken;
     }
 
+    @Override
+    public boolean checkLoginId(String loginId) {
+        return userRepository.existsByLoginId(loginId);
+    }
+
 }
 
 /*
