@@ -4,6 +4,7 @@ import com.ssafy.domain.user.model.dto.request.SignInRequest;
 import com.ssafy.domain.user.model.dto.request.SignUpRequest;
 import com.ssafy.domain.user.model.dto.request.UserUpdateRequest;
 import com.ssafy.domain.user.model.dto.response.UserResponse;
+import com.ssafy.domain.user.model.entity.User;
 import com.ssafy.domain.user.service.UserService;
 import com.ssafy.global.auth.jwt.dto.JwtToken;
 import com.ssafy.global.common.UserInfoProvider;
@@ -13,6 +14,8 @@ import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @Slf4j
 @RestController
