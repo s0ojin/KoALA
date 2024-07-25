@@ -33,7 +33,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests ->
                                 authorizeRequests
                                         // "/users/register" 경로에 대한 모든 요청을 허용
-//                                        .requestMatchers("/users/login").permitAll()
+                                        .requestMatchers("/users/login").permitAll()
                                         .requestMatchers("/users").permitAll()
                                         // 다른 모든 요청은 인증을 필요로 함
                                         .anyRequest().authenticated()

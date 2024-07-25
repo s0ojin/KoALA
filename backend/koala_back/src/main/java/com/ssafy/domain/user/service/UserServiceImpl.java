@@ -3,12 +3,15 @@ package com.ssafy.domain.user.service;
 import com.ssafy.domain.user.model.dto.request.SignUpDto;
 import com.ssafy.domain.user.model.dto.request.UserDto;
 import com.ssafy.domain.user.model.entity.Auth;
+import com.ssafy.domain.user.repository.AuthRepository;
 import com.ssafy.domain.user.repository.UserRepository;
 import com.ssafy.global.auth.jwt.JwtTokenProvider;
 import com.ssafy.global.auth.jwt.dto.JwtToken;
+import com.ssafy.global.error.exception.TokenException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final AuthRepository authRepository;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
@@ -32,7 +36,7 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("이미 사용 중인 사용자 아이디입니다.");
         }
         String encodedPassword = passwordEncoder.encode(signUpDto.getPassword());
-        Auth auth = new Auth("user");
+        Auth auth = authRepository.findByAuthName("user");
         System.out.println(auth.getAuthId());
         return UserDto.toDto(userRepository.save(signUpDto.toEntity(encodedPassword, auth)));
     }
@@ -53,6 +57,19 @@ public class UserServiceImpl implements UserService {
         // 인증 정보를 기반으로 JWT 토큰 생성
         JwtToken jwtToken = jwtTokenProvider.generateToken(authentication);
         return jwtToken;
+    }
+
+    public JwtToken generateNewAccessToken(String refreshToken) {
+        if (!jwtTokenProvider.validateRefreshToken(refreshToken)) {
+            throw new TokenException("Invalid Refresh Token");
+        }
+        String loginId = jwtTokenProvider.getAuthentication(refreshToken).getName();
+        String newAccessToken = jwtTokenProvider.generateAccessToken(loginId);
+        return JwtToken.builder()
+                .grantType("Bearer")
+                .accessToken(newAccessToken)
+                .refreshToken(refreshToken) // 기존 Refresh Token은 기대로 사용합니다
+                .build();
     }
 
 }

@@ -5,10 +5,13 @@ import com.ssafy.domain.user.model.dto.request.SignUpDto;
 import com.ssafy.domain.user.model.dto.request.UserDto;
 import com.ssafy.domain.user.service.UserService;
 import com.ssafy.global.auth.jwt.dto.JwtToken;
+import com.ssafy.global.error.exception.TokenException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -33,7 +36,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public JwtToken signIn(@RequestBody SignInDto signInDto){
+    public JwtToken signIn(@RequestBody SignInDto signInDto) {
         String loginId = signInDto.getLoginId();
         String password = signInDto.getPassword();
         JwtToken jwtToken = userService.signIn(loginId, password);
@@ -42,9 +45,28 @@ public class UserController {
         return jwtToken;
     }
 
-    @PostMapping ("/test")
-    public String test(){
-        return "success";
+    @PostMapping("/refresh")
+    public ResponseEntity<?> refresh(@RequestBody String refreshToken) {
+        JwtToken newToken = userService.generateNewAccessToken(refreshToken);
+        return ResponseEntity.ok(newToken);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(@RequestBody String accessToken) {
+//        userService.logout(accessToken);
+        SecurityContextHolder.clearContext();
+        return ResponseEntity.ok().body("logout successful");
+    }
+
+    @PostMapping("/test")
+    public String test() {
+        return "테스트 성공";
+    }
+
+
+    @ExceptionHandler(TokenException.class)
+    public ResponseEntity<String> handleTokenException(TokenException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 
 }
