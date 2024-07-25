@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class JwtToken {
-    private String grantType;
+    private String grantType; //  Bearer
     private String accessToken;
     private String refreshToken;
 }
