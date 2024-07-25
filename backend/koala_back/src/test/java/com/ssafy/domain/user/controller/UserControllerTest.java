@@ -49,15 +49,22 @@ class UserControllerTest {
     @Rollback
     void signUp() {
         String url = "http://localhost:" + randomServerPort + "/users";
-        ResponseEntity<UserDto> responseEntity = testRestTemplate.postForEntity(url, signUpDto, UserDto.class);
+//        ResponseEntity<UserDto> responseEntity = testRestTemplate.postForEntity(url, signUpDto, UserDto.class);
+//
+//        // 응답 검증
+//        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+//        UserDto savedUserDto = responseEntity.getBody();
+//        assertThat(savedUserDto).isNotNull();
+//        assertThat(savedUserDto.getLoginId()).isEqualTo(signUpDto.getLoginId());
+//        assertThat(savedUserDto.getName()).isEqualTo(signUpDto.getName());
+//        assertThat(savedUserDto.getNickname()).isEqualTo(signUpDto.getNickname());
+        ResponseEntity<String> responseEntity = testRestTemplate.postForEntity(url, signUpDto, String.class);
 
         // 응답 검증
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-        UserDto savedUserDto = responseEntity.getBody();
-        assertThat(savedUserDto).isNotNull();
-        assertThat(savedUserDto.getLoginId()).isEqualTo(signUpDto.getLoginId());
-        assertThat(savedUserDto.getName()).isEqualTo(signUpDto.getName());
-        assertThat(savedUserDto.getNickname()).isEqualTo(signUpDto.getNickname());
+        String message = responseEntity.getBody();
+        assertThat(message).isEqualTo("회원가입 성공!");
+
 
     }
 
