@@ -9,4 +9,5 @@ public interface UserService {
     public UserDto signUp(SignUpDto signUpDto);
 
     public boolean checkLoginId(String loginId);
+    public boolean checkNickname(String nickname);
 }
