@@ -1,6 +1,5 @@
 package com.ssafy.domain.user.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.ssafy.domain.board.model.entity.Board;
 import com.ssafy.domain.board.model.entity.BoardComment;
 import com.ssafy.domain.koala.model.entity.Koala;
@@ -9,10 +8,8 @@ import com.ssafy.domain.lecture.model.entity.LectureNote;
 import com.ssafy.domain.lecture.model.entity.RegisteredLecture;
 import com.ssafy.domain.sentence.model.entity.ReviewSentence;
 import com.ssafy.domain.sentence.model.entity.Sentence;
-import com.ssafy.domain.user.model.validation.UserValidation;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,13 +19,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static com.ssafy.domain.user.model.validation.UserValidation.*;
 import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.FetchType.LAZY;
-import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Getter
+@Setter
 @Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor

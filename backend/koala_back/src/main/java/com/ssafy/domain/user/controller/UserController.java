@@ -30,8 +30,8 @@ public class UserController {
 //        SignUpDto signUpDto = new SignUpDto(jsonObject);
         UserResponse savedUserResponse = userService.signUp(signUpRequest); // 이걸 반환해도 됨
         System.out.println(savedUserResponse.getNickname());
-//        return ResponseEntity.ok().body(savedUserDto);
-        return ResponseEntity.ok().body(savedUserResponse);
+//        return ResponseEntity.ok().body(savedUserResponse);
+        return ResponseEntity.ok().body("Sign up successful");
     }
 
     @PostMapping("/login")
@@ -70,5 +70,11 @@ public class UserController {
         String message = isExist ? "이미 사용 중인 닉네임입니다." : "사용 가능한 닉네임입니다.";
         return ResponseEntity.ok().body(new JSONObject().put("available", !isExist).put("message", message).toString());
     }
+
+//    @PatchMapping("/users")
+//    public ResponseEntity<?> updateUser(@RequestBody UserUpdateRequest userUpdateRequest){
+//        User user = userService.updateUser(userUpdateRequest);
+//
+//    }
 
 }

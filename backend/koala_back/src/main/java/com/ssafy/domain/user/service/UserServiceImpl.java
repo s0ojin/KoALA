@@ -10,6 +10,8 @@ import com.ssafy.domain.user.repository.UserRepository;
 import com.ssafy.global.auth.jwt.JwtTokenProvider;
 import com.ssafy.global.auth.jwt.dto.JwtToken;
 import com.ssafy.global.error.exception.TokenException;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -18,9 +20,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -87,6 +88,26 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean checkNickname(String nickname) {
         return userRepository.existsByNickname(nickname);
+    }
+
+    @Override
+    public UserResponse updateUser(UserUpdateRequest userUpdateRequest) {
+        Long currentUserId = getCurrentUserId();
+        if (currentUserId == null) {
+            throw new IllegalStateException("Current user ID is null. User might not be authenticated.");
+        }
+
+        Optional<User> optionalUser = userRepository.findById(currentUserId);
+        if (!optionalUser.isPresent()) {
+            throw new NoSuchElementException("User not found with ID: " + currentUserId);
+        }
+
+        User user = optionalUser.get();
+        String encodedPassword = passwordEncoder.encode(userUpdateRequest.getPassword());
+        user.setNickname(userUpdateRequest.getNickname());
+        user.setPassword(encodedPassword);
+
+        return UserResponse.toDto(userRepository.save(user));
     }
 
     @Override
