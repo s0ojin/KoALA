@@ -14,5 +14,5 @@ public interface UserService {
     public boolean checkNickname(String nickname);
 
     public UserResponse updateUser(UserUpdateRequest userUpdateRequest);
-    public Long getCurrentUserId();
+
 }
