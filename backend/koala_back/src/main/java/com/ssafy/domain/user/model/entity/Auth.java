@@ -1,5 +1,6 @@
 package com.ssafy.domain.user.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,11 +27,11 @@ public class Auth {
     @Column(name = "auth_name")
     private String authName = "user";
 
-    @OneToMany(mappedBy = "auth", cascade = ALL, fetch = LAZY)
+    @JsonIgnore
+    @OneToMany(mappedBy = "auth", fetch = LAZY)
     private List<User> users = new ArrayList<>();
 
     public Auth(String authName) {
-        this.authId = 1L;
         this.authName = authName;
     }
 

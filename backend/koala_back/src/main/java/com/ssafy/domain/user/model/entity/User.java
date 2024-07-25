@@ -1,5 +1,6 @@
 package com.ssafy.domain.user.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.ssafy.domain.board.model.entity.Board;
 import com.ssafy.domain.board.model.entity.BoardComment;
 import com.ssafy.domain.koala.model.entity.Koala;
@@ -47,6 +48,7 @@ public class User implements UserDetails {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "auth_id", nullable = false)
+    @JsonBackReference
     private Auth auth;
 
     @Column(name = "name", nullable = false)
