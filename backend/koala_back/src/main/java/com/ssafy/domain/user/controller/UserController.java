@@ -7,6 +7,7 @@ import com.ssafy.domain.user.model.dto.response.UserResponse;
 import com.ssafy.domain.user.repository.UserRepository;
 import com.ssafy.domain.user.service.UserService;
 import com.ssafy.global.auth.jwt.dto.JwtToken;
+import com.ssafy.global.common.UserInfoProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
@@ -21,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
-    private final UserRepository userRepository;
+    private final UserInfoProvider userInfoProvider;
 
     // 회원가입 성공하면 {
     //	"message": "회원가입 성공!"
@@ -84,7 +85,7 @@ public class UserController {
 
     @DeleteMapping
     public ResponseEntity<?> deleteUser() {
-        Long currentUserId = userService.getCurrentUserId();
+        Long currentUserId = userInfoProvider.getCurrentUserId();
         userService.deleteUser(currentUserId);
         return ResponseEntity.ok().body("회원 탈퇴 완료!");
     }
