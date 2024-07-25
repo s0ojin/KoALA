@@ -84,8 +84,11 @@ public class UserController {
 
     @DeleteMapping
     public ResponseEntity<?> deleteUser() {
-        Long currentUserId = userInfoProvider.getCurrentUserId();
-        userService.deleteUser(currentUserId);
+        Optional<User> currentUser = userInfoProvider.getCurrentUser();
+        if (!currentUser.isPresent()) {
+            return ResponseEntity.badRequest().body("No user found");
+        }
+        userService.deleteUser(currentUser.get());
         return ResponseEntity.ok().body("Delete successful");
     }
 
