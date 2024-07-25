@@ -41,7 +41,8 @@ public class UserController {
     @PatchMapping
     public ResponseEntity<?> updateUser(@RequestBody UserUpdateRequest userUpdateRequest) {
         UserResponse userResponse = userService.updateUser(userUpdateRequest);
-        return ResponseEntity.ok().body(userResponse);
+//        return ResponseEntity.ok().body(userResponse);
+        return ResponseEntity.ok().body("Update successful");
     }
 
     @PostMapping("/login")
@@ -79,7 +80,7 @@ public class UserController {
     @GetMapping("/check/check-name/{nickname}")
     public ResponseEntity<?> checkNickname(@PathVariable String nickname) {
         boolean isExist = userService.checkNickname(nickname);
-        String message = isExist ? "이미 사용 중인 닉네임입니다." : "사용 가능한 닉네임입니다.";
+        String message = isExist ? "Not Available Nickname" : "Available Nickname";
         return ResponseEntity.ok().body(new JSONObject().put("available", !isExist).put("message", message).toString());
     }
 
@@ -87,7 +88,7 @@ public class UserController {
     public ResponseEntity<?> deleteUser() {
         Long currentUserId = userInfoProvider.getCurrentUserId();
         userService.deleteUser(currentUserId);
-        return ResponseEntity.ok().body("회원 탈퇴 완료!");
+        return ResponseEntity.ok().body("Delete successful");
     }
 
 }
