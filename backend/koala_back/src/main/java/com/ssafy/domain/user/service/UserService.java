@@ -8,13 +8,11 @@ import com.ssafy.global.auth.jwt.dto.JwtToken;
 public interface UserService {
     public JwtToken signIn(String loginId, String password);
     public UserResponse signUp(SignUpRequest signUpRequest);
+    public UserResponse updateUser(UserUpdateRequest userUpdateRequest);
+    public void deleteUser(Long userId);
+
     public JwtToken generateNewAccessToken(String refreshToken);
 
     public boolean checkLoginId(String loginId);
     public boolean checkNickname(String nickname);
-
-    public UserResponse updateUser(UserUpdateRequest userUpdateRequest);
-    public Long getCurrentUserId();
-
-    public void deleteUser(Long userId);
 }

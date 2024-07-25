@@ -9,6 +9,7 @@ import com.ssafy.domain.user.repository.AuthRepository;
 import com.ssafy.domain.user.repository.UserRepository;
 import com.ssafy.global.auth.jwt.JwtTokenProvider;
 import com.ssafy.global.auth.jwt.dto.JwtToken;
+import com.ssafy.global.common.UserInfoProvider;
 import com.ssafy.global.error.exception.TokenException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +35,7 @@ public class UserServiceImpl implements UserService {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
-    private final UserUpdateRequest userUpdateRequest;
+    private final UserInfoProvider userInfoProvider;
 
 
     // 회원가입
@@ -90,9 +91,10 @@ public class UserServiceImpl implements UserService {
         return userRepository.existsByNickname(nickname);
     }
 
+    @Transactional
     @Override
     public UserResponse updateUser(UserUpdateRequest userUpdateRequest) {
-        Long currentUserId = getCurrentUserId();
+        Long currentUserId = userInfoProvider.getCurrentUserId();
         if (currentUserId == null) {
             throw new IllegalStateException("Current user ID is null. User might not be authenticated.");
         }
@@ -106,28 +108,9 @@ public class UserServiceImpl implements UserService {
         String encodedPassword = passwordEncoder.encode(userUpdateRequest.getPassword());
         user.setNickname(userUpdateRequest.getNickname());
         user.setPassword(encodedPassword);
-
         return UserResponse.toDto(userRepository.save(user));
     }
 
-    @Override
-    public Long getCurrentUserId() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || !authentication.isAuthenticated()) {
-            log.warn("Authentication is null or not authenticated");
-            return null;
-        }
-
-        Object principal = authentication.getPrincipal();
-        String loginId = principal instanceof UserDetails ? ((UserDetails) principal).getUsername() : principal.toString();
-
-        return userRepository.findByLoginId(loginId)
-                .map(User::getUserId)
-                .orElseGet(() -> {
-                    log.warn("No user found with login ID: {}", loginId);
-                    return null;
-                });
-    }
 
     @Transactional
     @Override
