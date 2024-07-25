@@ -92,22 +92,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public Long getCurrentUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String loginId;
-        if (authentication != null && authentication.isAuthenticated()) {
-            Object principal = authentication.getPrincipal();
-            if (principal instanceof UserDetails) {
-                loginId = ((UserDetails) principal).getUsername(); // loginId 반환
-            } else {
-                loginId = principal.toString(); // principal이 String 타입인 경우
-            }
-
-            User user = userRepository.findByLoginId(loginId)
-                    .orElseThrow(() -> null);
-            if(user != null) {
-                return user.getUserId();
-            }
+        if (authentication == null || !authentication.isAuthenticated()) {
+            log.warn("Authentication is null or not authenticated");
+            return null;
         }
-        return null; // 인증되지 않은 경우
+
+        Object principal = authentication.getPrincipal();
+        String loginId = principal instanceof UserDetails ? ((UserDetails) principal).getUsername() : principal.toString();
+
+        return userRepository.findByLoginId(loginId)
+                .map(User::getUserId)
+                .orElseGet(() -> {
+                    log.warn("No user found with login ID: {}", loginId);
+                    return null;
+                });
     }
 
 }
