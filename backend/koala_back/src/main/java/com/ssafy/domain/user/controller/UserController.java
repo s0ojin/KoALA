@@ -2,7 +2,9 @@ package com.ssafy.domain.user.controller;
 
 import com.ssafy.domain.user.model.dto.request.SignInRequest;
 import com.ssafy.domain.user.model.dto.request.SignUpRequest;
+import com.ssafy.domain.user.model.dto.request.UserUpdateRequest;
 import com.ssafy.domain.user.model.dto.response.UserResponse;
+import com.ssafy.domain.user.repository.UserRepository;
 import com.ssafy.domain.user.service.UserService;
 import com.ssafy.global.auth.jwt.dto.JwtToken;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
+    private final UserRepository userRepository;
 
     // 회원가입 성공하면 {
     //	"message": "회원가입 성공!"
@@ -32,6 +35,12 @@ public class UserController {
         System.out.println(savedUserResponse.getNickname());
 //        return ResponseEntity.ok().body(savedUserDto);
         return ResponseEntity.ok().body(savedUserResponse);
+    }
+
+    @PatchMapping
+    public ResponseEntity<?> updateUser(@RequestBody UserUpdateRequest userUpdateRequest) {
+        UserResponse userResponse = userService.updateUser(userUpdateRequest);
+        return ResponseEntity.ok().body(userResponse);
     }
 
     @PostMapping("/login")
@@ -56,6 +65,8 @@ public class UserController {
         SecurityContextHolder.clearContext();
         return ResponseEntity.ok().body("logout successful");
     }
+
+
 
     @GetMapping("/check/check-id/{loginId}")
     public ResponseEntity<?> checkLoginId(@PathVariable String loginId) {

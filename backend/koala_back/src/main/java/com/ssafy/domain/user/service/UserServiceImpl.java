@@ -90,6 +90,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.existsByNickname(nickname);
     }
 
+    @Transactional
     @Override
     public UserResponse updateUser(UserUpdateRequest userUpdateRequest) {
         Long currentUserId = getCurrentUserId();
@@ -106,7 +107,6 @@ public class UserServiceImpl implements UserService {
         String encodedPassword = passwordEncoder.encode(userUpdateRequest.getPassword());
         user.setNickname(userUpdateRequest.getNickname());
         user.setPassword(encodedPassword);
-
         return UserResponse.toDto(userRepository.save(user));
     }
 
