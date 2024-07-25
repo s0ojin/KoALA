@@ -11,4 +11,6 @@ public interface UserService {
 
     public boolean checkLoginId(String loginId);
     public boolean checkNickname(String nickname);
+
+    public Long getCurrentUserId();
 }
