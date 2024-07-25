@@ -42,9 +42,11 @@ public class UserController {
         return jwtToken;
     }
 
-    @PostMapping ("/test")
-    public String test(){
-        return "success";
+    @GetMapping("/check/check-id/{loginId}")
+    public ResponseEntity<?> checkLoginId(@PathVariable String loginId) {
+        boolean isExist = userService.checkLoginId(loginId);
+        String message = isExist ? "이미 사용 중인 아이디입니다." : "사용 가능한 아이디입니다.";
+        return ResponseEntity.ok().body(new JSONObject().put("available", !isExist).put("message", message).toString());
     }
 
 }
