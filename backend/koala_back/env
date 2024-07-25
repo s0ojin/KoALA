@@ -1,8 +1,0 @@
-JWT_SECRET=64461f01e1af406da538b9c48d801ce59142452199ff112fb5404c8e7e98e3ff
-JWT_ACCESS_TOKEN_MS=1800000
-JWT_REFRESH_TOKEN_MS=7200000
-
-SPRING_DATASOURCE_URL=jdbc:mysql://stg-yswa-kr-practice-db-master.mariadb.database.azure.com:3306/S11P12A502?useSSL=true&requireSSL=false&serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
-SPRING_DATASOURCE_USERNAME=S11P12A502@stg-yswa-kr-practice-db-master.mariadb.database.azure.com
-SPRING_DATASOURCE_PASSWORD=hc7A5eScrk
-SPRING_DATASOURCE_DRIVER_CLASS_NAME=com.mysql.cj.jdbc.Driver
