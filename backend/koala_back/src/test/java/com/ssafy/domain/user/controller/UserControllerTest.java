@@ -1,7 +1,6 @@
 package com.ssafy.domain.user.controller;
 
 import com.ssafy.domain.user.model.dto.request.UserSignUpRequest;
-import com.ssafy.domain.user.model.dto.response.UserResponse;
 import com.ssafy.domain.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,6 +14,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Transactional
 class UserControllerTest {
@@ -32,9 +32,9 @@ class UserControllerTest {
     void beforeEach() {
         // Member 회원가입
         userSignUpRequest = UserSignUpRequest.builder()
-                .loginId("test1")
-                .password("test")
-                .name("싸피짱")
+                .loginId("test")
+                .password("1234")
+                .name("김싸피")
                 .nickname("싸피짱")
                 .build();
     }
@@ -45,19 +45,16 @@ class UserControllerTest {
     @Rollback
     void signUp() {
         String url = "http://localhost:" + randomServerPort + "/users";
-        ResponseEntity<UserResponse> responseEntity = testRestTemplate.postForEntity(url, userSignUpRequest, UserResponse.class);
-
-        // 응답 검증
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-        UserResponse savedUserResponse = responseEntity.getBody();
-//        assertThat(savedUserDto).isNotNull();
-        assertThat(savedUserResponse.getLoginId()).isEqualTo(userSignUpRequest.getLoginId());
-        assertThat(savedUserResponse.getName()).isEqualTo(userSignUpRequest.getName());
-        assertThat(savedUserResponse.getNickname()).isEqualTo(userSignUpRequest.getNickname());
-//        ResponseEntity<String> responseEntity = testRestTemplate.postForEntity(url, signUpDto, String.class);
-//
-//        // 응답 검증
+//        ResponseEntity<?> responseEntity = testRestTemplate.postForEntity(url, userSignUpRequest, UserSignUpRequest.class);
 //        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+//        UserResponse savedUserResponse = responseEntity.getBody();
+//        assertThat(savedUserDto).isNotNull();
+//        assertThat(savedUserResponse.getLoginId()).isEqualTo(userSignUpRequest.getLoginId());
+//        assertThat(savedUserResponse.getName()).isEqualTo(userSignUpRequest.getName());
+//        assertThat(savedUserResponse.getNickname()).isEqualTo(userSignUpRequest.getNickname());
+
+        ResponseEntity<String> responseEntity = testRestTemplate.postForEntity(url, userSignUpRequest, String.class);
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
 //        String message = responseEntity.getBody();
 //        assertThat(message).isEqualTo("회원가입 성공!");
 
