@@ -52,10 +52,6 @@ public class UserSignUpRequest {
                 .name(name)
                 .nickname(nickname)
                 .auth(auth)
-//                .leaves(0)
-//                .userExp(0L)
-//                .userLevel(0)
-//                .userCreatedAt(LocalDateTime.now())
                 .build();
     }
 }
