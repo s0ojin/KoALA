@@ -48,14 +48,15 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public JwtToken signIn(@RequestBody UserSignInRequest userSignInRequest) {
+    public ResponseEntity<JwtToken> signIn(@RequestBody UserSignInRequest userSignInRequest) {
         String loginId = userSignInRequest.getLoginId();
         String password = userSignInRequest.getPassword();
         JwtToken jwtToken = userService.signIn(loginId, password);
         log.info("request loginId: {}, password: {}", loginId, password);
         log.info("jwtToken accessToken: {}, refreshToken: {}", jwtToken.getAccessToken(), jwtToken.getRefreshToken());
-        return jwtToken;
+        return ResponseEntity.ok().body(jwtToken);
     }
+
 
     @PostMapping("/refresh")
     public ResponseEntity<?> refresh(@RequestBody String refreshToken) {
