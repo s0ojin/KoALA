@@ -3,7 +3,6 @@
 import ChatIcon from '/public/icons/chat.svg'
 import NoteIcon from '/public/icons/notebook.svg'
 import WriteIcon from '/public/icons/edit.svg'
-import { useState } from 'react'
 
 export type TabId = 'lecture-note' | 'lecture-handout' | 'lecture-chat'
 
@@ -25,7 +24,7 @@ export const tabList: Tab[] = [
     id: 'lecture-handout',
     label: '수업자료',
     icon: <NoteIcon />,
-    description: '선생님이 제공한 문장 중에서 복습하고 싶은 문장을 저장하세요!',
+    description: '수업자료 중 복습하고 싶은 문장을 저장하세요!',
   },
   {
     id: 'lecture-chat',
@@ -35,8 +34,15 @@ export const tabList: Tab[] = [
   },
 ]
 
-export default function OnlineLearningTabList() {
-  const [activeTab, setActiveTab] = useState(tabList[0].id)
+interface OnlineLearningTabListProps {
+  activeTab: TabId
+  setActiveTab: React.Dispatch<React.SetStateAction<TabId>>
+}
+
+export default function OnlineLearningTabList({
+  activeTab,
+  setActiveTab,
+}: OnlineLearningTabListProps) {
   return (
     <div className="fixed py-6 right-0 w-20 h-full bg-white flex flex-col items-center gap-2">
       {tabList.map((tab) => (
