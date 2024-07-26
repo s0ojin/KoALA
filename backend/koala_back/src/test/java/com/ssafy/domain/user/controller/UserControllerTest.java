@@ -32,10 +32,10 @@ class UserControllerTest {
     void beforeEach() {
         // Member 회원가입
         userSignUpRequest = UserSignUpRequest.builder()
-                .loginId("test")
+                .loginId("goraniz")
                 .password("1234")
-                .name("김싸피")
-                .nickname("싸피짱")
+                .name("고동연")
+                .nickname("고라니")
                 .build();
     }
 
