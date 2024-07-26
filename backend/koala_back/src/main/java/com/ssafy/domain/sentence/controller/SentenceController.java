@@ -22,6 +22,10 @@ public class SentenceController {
     @GetMapping
     public ResponseEntity<?> getDictationSentence(@RequestParam String topic){
         List<SentenceDictationResponse> sentenceList = sentenceService.randomSentence(topic);
-        return ResponseEntity.ok().body(sentenceList);
+        if(sentenceList == null || sentenceList.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }else {
+            return ResponseEntity.ok().body(sentenceList);
+        }
     }
 }
