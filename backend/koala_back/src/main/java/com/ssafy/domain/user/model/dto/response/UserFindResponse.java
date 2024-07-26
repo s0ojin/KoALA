@@ -8,14 +8,14 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class FindUserResponse {
+public class UserFindResponse {
     private Long userId;
     private String longinId;
     private String nickname;
     private String name;
 
-    public static FindUserResponse toDto(User user) {
-        return FindUserResponse.builder()
+    public static UserFindResponse toDto(User user) {
+        return UserFindResponse.builder()
                 .userId(user.getUserId())
                 .longinId(user.getLoginId())
                 .nickname(user.getNickname())

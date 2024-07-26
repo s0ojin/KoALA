@@ -1,6 +1,6 @@
 package com.ssafy.domain.user.service;
 
-import com.ssafy.domain.user.model.dto.request.SignUpRequest;
+import com.ssafy.domain.user.model.dto.request.UserSignUpRequest;
 import com.ssafy.domain.user.model.dto.request.UserUpdateRequest;
 import com.ssafy.domain.user.model.dto.response.FindUserResponse;
 import com.ssafy.domain.user.model.dto.response.UserResponse;
@@ -17,8 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,14 +39,14 @@ public class UserServiceImpl implements UserService {
 
     // 회원가입
     @Transactional
-    public UserResponse signUp(SignUpRequest signUpRequest) {
-        if (userRepository.existsByLoginId(signUpRequest.getLoginId())) {
+    public UserResponse signUp(UserSignUpRequest userSignUpRequest) {
+        if (userRepository.existsByLoginId(userSignUpRequest.getLoginId())) {
             throw new IllegalArgumentException("이미 사용 중인 사용자 아이디입니다.");
         }
-        String encodedPassword = passwordEncoder.encode(signUpRequest.getPassword());
+        String encodedPassword = passwordEncoder.encode(userSignUpRequest.getPassword());
         Auth auth = authRepository.findByAuthName("user");
         System.out.println(auth.getAuthId());
-        return UserResponse.toDto(userRepository.save(signUpRequest.toEntity(encodedPassword, auth)));
+        return UserResponse.toDto(userRepository.save(userSignUpRequest.toEntity(encodedPassword, auth)));
     }
 
     @Transactional
@@ -115,8 +113,8 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void deleteUser(Long userId) {
-        userRepository.delete(userRepository.findById(userId).orElseThrow(()-> new NoSuchElementException("User not found with ID: " + userId)));
+    public void deleteUser(User user) {
+        userRepository.delete(user);
     }
 
 //    @Transactional

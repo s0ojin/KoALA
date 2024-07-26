@@ -14,15 +14,20 @@ import java.util.Optional;
 @Component
 public class UserInfoProvider {
     private final UserRepository userRepository;
-    private final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
     public UserInfoProvider(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
+    private Authentication getAuthentication() {
+        return SecurityContextHolder.getContext().getAuthentication();
+    }
+
     public Optional<User> getCurrentUser() {
+        Authentication authentication = getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {
             log.warn("Authentication is null or not authenticated");
-            return null;
+            return Optional.empty();
         }
         Object principal = authentication.getPrincipal();
         String loginId = principal instanceof UserDetails ? ((UserDetails) principal).getUsername() : principal.toString();
@@ -30,6 +35,7 @@ public class UserInfoProvider {
     }
 
     public Long getCurrentUserId() {
+        Authentication authentication = getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {
             log.warn("Authentication is null or not authenticated");
             return null;
@@ -43,10 +49,10 @@ public class UserInfoProvider {
                     log.warn("No user found with login ID: {}", loginId);
                     return null;
                 });
-
     }
 
-    public String getCurrentLoginId(){
+    public String getCurrentLoginId() {
+        Authentication authentication = getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {
             log.warn("Authentication is null or not authenticated");
             return null;
@@ -55,7 +61,8 @@ public class UserInfoProvider {
         return principal instanceof UserDetails ? ((UserDetails) principal).getUsername() : principal.toString();
     }
 
-    public String getCurrentNickname(){
+    public String getCurrentNickname() {
+        Authentication authentication = getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {
             log.warn("Authentication is null or not authenticated");
             return null;
