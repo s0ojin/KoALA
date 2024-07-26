@@ -3,7 +3,7 @@
 'use client'
 
 import Image from 'next/image';
-import { ReactElement, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { Virtual, Autoplay } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import CardFlip from '@/app/online-learning/_components/carousel/CardFlip';
