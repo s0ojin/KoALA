@@ -1,6 +1,6 @@
 package com.ssafy.domain.user.service;
 
-import com.ssafy.domain.user.model.dto.request.SignUpRequest;
+import com.ssafy.domain.user.model.dto.request.UserSignUpRequest;
 import com.ssafy.domain.user.model.dto.request.UserUpdateRequest;
 import com.ssafy.domain.user.model.dto.response.UserResponse;
 import com.ssafy.domain.user.model.entity.Auth;
@@ -38,14 +38,14 @@ public class UserServiceImpl implements UserService {
 
     // 회원가입
     @Transactional
-    public UserResponse signUp(SignUpRequest signUpRequest) {
-        if (userRepository.existsByLoginId(signUpRequest.getLoginId())) {
+    public UserResponse signUp(UserSignUpRequest userSignUpRequest) {
+        if (userRepository.existsByLoginId(userSignUpRequest.getLoginId())) {
             throw new IllegalArgumentException("이미 사용 중인 사용자 아이디입니다.");
         }
-        String encodedPassword = passwordEncoder.encode(signUpRequest.getPassword());
+        String encodedPassword = passwordEncoder.encode(userSignUpRequest.getPassword());
         Auth auth = authRepository.findByAuthName("user");
         System.out.println(auth.getAuthId());
-        return UserResponse.toDto(userRepository.save(signUpRequest.toEntity(encodedPassword, auth)));
+        return UserResponse.toDto(userRepository.save(userSignUpRequest.toEntity(encodedPassword, auth)));
     }
 
     @Transactional

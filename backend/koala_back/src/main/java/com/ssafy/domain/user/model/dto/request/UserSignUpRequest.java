@@ -9,7 +9,7 @@ import org.json.JSONObject;
 @Getter
 @NoArgsConstructor
 @Builder
-public class SignUpRequest {
+public class UserSignUpRequest {
 
     // null, "", "   " 데이터 전부 걸러낸다.
     @NotBlank(message = "유저 아이디는 필수 입력 값입니다.")
@@ -24,21 +24,21 @@ public class SignUpRequest {
     @NotBlank(message = "유저 닉네임은 필수 입력 값입니다.")
     private String nickname;
 
-    public SignUpRequest(JSONObject jsonObject) {
+    public UserSignUpRequest(JSONObject jsonObject) {
         this.loginId = jsonObject.getString("loginId");
         this.password = jsonObject.getString("password");
         this.name = jsonObject.getString("name");
         this.nickname = jsonObject.getString("nickname");
     }
 
-    public SignUpRequest(User user) {
+    public UserSignUpRequest(User user) {
         this.loginId = user.getLoginId();
         this.password = user.getPassword();
         this.name = user.getName();
         this.nickname = user.getNickname();
     }
 
-    public SignUpRequest(String loginId, String password, String name, String nickname) {
+    public UserSignUpRequest(String loginId, String password, String name, String nickname) {
         this.loginId = loginId;
         this.password = password;
         this.name = name;

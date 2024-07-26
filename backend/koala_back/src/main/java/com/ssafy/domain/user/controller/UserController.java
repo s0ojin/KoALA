@@ -1,7 +1,7 @@
 package com.ssafy.domain.user.controller;
 
-import com.ssafy.domain.user.model.dto.request.SignInRequest;
-import com.ssafy.domain.user.model.dto.request.SignUpRequest;
+import com.ssafy.domain.user.model.dto.request.UserSignInRequest;
+import com.ssafy.domain.user.model.dto.request.UserSignUpRequest;
 import com.ssafy.domain.user.model.dto.request.UserUpdateRequest;
 import com.ssafy.domain.user.model.dto.response.UserResponse;
 import com.ssafy.domain.user.model.entity.User;
@@ -31,10 +31,10 @@ public class UserController {
     //} 반환
 
     @PostMapping
-    public ResponseEntity<?> signUp(@RequestBody SignUpRequest signUpRequest) {
+    public ResponseEntity<?> signUp(@RequestBody UserSignUpRequest userSignUpRequest) {
 //    public ResponseEntity<?> signUp(@RequestBody JSONObject jsonObject) {
 //        SignUpDto signUpDto = new SignUpDto(jsonObject);
-        UserResponse savedUserResponse = userService.signUp(signUpRequest); // 이걸 반환해도 됨
+        UserResponse savedUserResponse = userService.signUp(userSignUpRequest); // 이걸 반환해도 됨
         System.out.println(savedUserResponse.getNickname());
 //        return ResponseEntity.ok().body(savedUserResponse);
         return ResponseEntity.ok().body("Sign up successful");
@@ -48,9 +48,9 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public JwtToken signIn(@RequestBody SignInRequest signInRequest) {
-        String loginId = signInRequest.getLoginId();
-        String password = signInRequest.getPassword();
+    public JwtToken signIn(@RequestBody UserSignInRequest userSignInRequest) {
+        String loginId = userSignInRequest.getLoginId();
+        String password = userSignInRequest.getPassword();
         JwtToken jwtToken = userService.signIn(loginId, password);
         log.info("request loginId: {}, password: {}", loginId, password);
         log.info("jwtToken accessToken: {}, refreshToken: {}", jwtToken.getAccessToken(), jwtToken.getRefreshToken());
