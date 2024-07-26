@@ -25,7 +25,7 @@ export default function SignUp() {
     <AuthLayout>
       <div className="relative bg-white max-w-[600px] mx-auto mt-24 py-10 px-24 flex flex-col items-center rounded-[60px]">
         <h1 className="text-center py-10">
-          <Logo />
+          <Logo width="210" height="56" />
           <p className="text-primary-400 text-2xl font-medium">회원가입</p>
         </h1>
 
