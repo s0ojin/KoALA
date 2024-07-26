@@ -26,13 +26,6 @@ public class UserSignUpRequest {
     @NotBlank(message = "유저 닉네임은 필수 입력 값입니다.")
     private String nickname;
 
-    public UserSignUpRequest(JSONObject jsonObject) {
-        this.loginId = jsonObject.getString("loginId");
-        this.password = jsonObject.getString("password");
-        this.name = jsonObject.getString("name");
-        this.nickname = jsonObject.getString("nickname");
-    }
-
     public UserSignUpRequest(User user) {
         this.loginId = user.getLoginId();
         this.password = user.getPassword();

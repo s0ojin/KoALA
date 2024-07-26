@@ -5,10 +5,7 @@ import com.ssafy.domain.sentence.service.SentenceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,13 +16,22 @@ import java.util.List;
 public class SentenceController {
 
     private final SentenceService sentenceService;
+
     @GetMapping
-    public ResponseEntity<?> getDictationSentence(@RequestParam String topic){
+    public ResponseEntity<?> getDictationSentence(@RequestParam String topic) {
         List<SentenceDictationResponse> sentenceList = sentenceService.randomSentence(topic);
-        if(sentenceList == null || sentenceList.isEmpty()){
+        if (sentenceList == null || sentenceList.isEmpty()) {
             return ResponseEntity.noContent().build();
-        }else {
+        } else {
             return ResponseEntity.ok().body(sentenceList);
         }
     }
+
+    @PostMapping("writing-test")
+    public ResponseEntity<?> testWritingPapers(@RequestParam String topic) {
+
+
+        return null;
+    }
+
 }

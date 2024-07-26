@@ -1,7 +1,12 @@
 package com.ssafy.domain.sentence.model.dto.request;
 
-import com.ssafy.domain.sentence.model.entity.Sentence;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
+@Getter
+@ToString
+@NoArgsConstructor
 public class SentenceTestRequest {
     private Long sentenceId;
     String userSentence;
