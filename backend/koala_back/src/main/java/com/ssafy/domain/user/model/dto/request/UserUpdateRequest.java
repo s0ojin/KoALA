@@ -8,7 +8,6 @@ import lombok.ToString;
 import org.springframework.stereotype.Service;
 
 @Getter
-@Service
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
