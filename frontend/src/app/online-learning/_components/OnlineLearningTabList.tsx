@@ -44,7 +44,7 @@ export default function OnlineLearningTabList({
   setActiveTab,
 }: OnlineLearningTabListProps) {
   return (
-    <div className="fixed py-6 right-0 w-20 h-full bg-white flex flex-col items-center gap-2">
+    <div className="z-10 fixed py-6 right-0 w-20 h-screen bg-white flex flex-col items-center gap-2">
       {tabList.map((tab) => (
         <button
           onClick={() => setActiveTab(tab.id)}
