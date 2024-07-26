@@ -7,7 +7,6 @@ import com.ssafy.domain.user.model.dto.response.UserFindResponse;
 import com.ssafy.domain.user.model.dto.response.UserResponse;
 import com.ssafy.domain.user.service.UserService;
 import com.ssafy.global.auth.jwt.dto.JwtToken;
-import com.ssafy.global.common.UserInfoProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
@@ -22,24 +21,15 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
-    private final UserInfoProvider userInfoProvider;
 
     @PostMapping
     public ResponseEntity<?> signUp(@RequestBody UserSignUpRequest userSignUpRequest) {
-//    public ResponseEntity<?> signUp(@RequestBody JSONObject jsonObject) {
-//        SignUpDto signUpDto = new SignUpDto(jsonObject);
         UserResponse savedUserResponse = userService.signUp(userSignUpRequest); // 이걸 반환해도 됨
         System.out.println(savedUserResponse.getNickname());
 //        return ResponseEntity.ok().body(savedUserResponse);
         return ResponseEntity.ok().body(new JSONObject().put("message", "Signup successful").toString());
     }
 
-    @PatchMapping
-    public ResponseEntity<?> updateUser(@RequestBody UserUpdateRequest userUpdateRequest) {
-        UserResponse userResponse = userService.updateUser(userUpdateRequest);
-//        return ResponseEntity.ok().body(userResponse);
-        return ResponseEntity.ok().body(new JSONObject().put("message", "Update successful").toString());
-    }
 
     @PostMapping("/login")
     public ResponseEntity<JwtToken> signIn(@RequestBody UserSignInRequest userSignInRequest) {
@@ -79,22 +69,23 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<?> findUser() {
+    public ResponseEntity<?> getUser() {
         UserFindResponse userFindResponse = userService.findUser();
         return ResponseEntity.ok().body(userFindResponse);
     }
+
 
     @PatchMapping
     public ResponseEntity<?> updateUser(@RequestBody UserUpdateRequest userUpdateRequest) {
         UserResponse userResponse = userService.updateUser(userUpdateRequest);
 //        return ResponseEntity.ok().body(userResponse);
-        return ResponseEntity.ok().body("회원 수정 완료!");
+        return ResponseEntity.ok().body(new JSONObject().put("message", "Update successful").toString());
     }
 
     @DeleteMapping
     public ResponseEntity<?> deleteUser() {
         userService.deleteUser();
-        return ResponseEntity.ok().body("회원 탈퇴 완료!");
+        return ResponseEntity.ok().body(new JSONObject().put("message", "Delete successful").toString());
     }
 
 }
