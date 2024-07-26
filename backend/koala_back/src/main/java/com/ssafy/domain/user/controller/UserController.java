@@ -3,6 +3,7 @@ package com.ssafy.domain.user.controller;
 import com.ssafy.domain.user.model.dto.request.SignInRequest;
 import com.ssafy.domain.user.model.dto.request.SignUpRequest;
 import com.ssafy.domain.user.model.dto.request.UserUpdateRequest;
+import com.ssafy.domain.user.model.dto.response.FindUserResponse;
 import com.ssafy.domain.user.model.dto.response.UserResponse;
 import com.ssafy.domain.user.repository.UserRepository;
 import com.ssafy.domain.user.service.UserService;
@@ -37,6 +38,13 @@ public class UserController {
 //        return ResponseEntity.ok().body(savedUserResponse);
         return ResponseEntity.ok().body("Sign up successful");
     }
+
+//    @GetMapping
+//    public ResponseEntity<?> findUser(){
+//        FindUserResponse findUserResponse =  userService.findUser();
+//        return ResponseEntity.ok().body("Read successful");
+//    }
+
 
     @PatchMapping
     public ResponseEntity<?> updateUser(@RequestBody UserUpdateRequest userUpdateRequest) {
