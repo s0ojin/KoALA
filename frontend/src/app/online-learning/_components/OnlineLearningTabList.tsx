@@ -4,7 +4,7 @@ import ChatIcon from '/public/icons/chat.svg'
 import NoteIcon from '/public/icons/notebook.svg'
 import WriteIcon from '/public/icons/edit.svg'
 
-export type TabId = 'lecture-note' | 'lecture-handout' | 'lecture-chat'
+export type TabId = 'lecture-note' | 'lecture-handout' | 'lecture-chat' | 'none'
 
 interface Tab {
   id: TabId
@@ -47,7 +47,13 @@ export default function OnlineLearningTabList({
     <div className="z-10 fixed py-6 right-0 w-20 h-screen bg-white flex flex-col items-center gap-2">
       {tabList.map((tab) => (
         <button
-          onClick={() => setActiveTab(tab.id)}
+          onClick={() => {
+            if (tab.id === activeTab) {
+              setActiveTab('none')
+            } else {
+              setActiveTab(tab.id)
+            }
+          }}
           key={tab.id}
           className={`flex flex-col items-center gap-1 w-full py-2 text-primary-400 hover:font-medium ${activeTab === tab.id && 'bg-primary-400 text-white'}`}
         >
