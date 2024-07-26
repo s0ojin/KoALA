@@ -10,7 +10,7 @@ public interface UserService {
     public JwtToken signIn(String loginId, String password);
     public UserResponse signUp(UserSignUpRequest userSignUpRequest);
     public UserResponse updateUser(UserUpdateRequest userUpdateRequest);
-    public void deleteUser(User user);
+    public void deleteUser();
 
     public JwtToken generateNewAccessToken(String refreshToken);
 

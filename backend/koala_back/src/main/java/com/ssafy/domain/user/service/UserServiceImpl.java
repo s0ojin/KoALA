@@ -109,11 +109,14 @@ public class UserServiceImpl implements UserService {
         return UserResponse.toDto(userRepository.save(user));
     }
 
-
     @Transactional
     @Override
-    public void deleteUser(User user) {
-        userRepository.delete(user);
+    public void deleteUser() {
+        Optional<User> currentUser = userInfoProvider.getCurrentUser();
+        if (!currentUser.isPresent() || currentUser.get().getUserId() == null) {
+            throw new NoSuchElementException("User not found");
+        }
+        userRepository.delete(currentUser.get());
     }
 
 }

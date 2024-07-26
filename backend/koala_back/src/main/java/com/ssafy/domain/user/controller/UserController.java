@@ -26,10 +26,6 @@ public class UserController {
     private final UserService userService;
     private final UserInfoProvider userInfoProvider;
 
-    // 회원가입 성공하면 {
-    //	"message": "회원가입 성공!"
-    //} 반환
-
     @PostMapping
     public ResponseEntity<?> signUp(@RequestBody UserSignUpRequest userSignUpRequest) {
 //    public ResponseEntity<?> signUp(@RequestBody JSONObject jsonObject) {
@@ -38,13 +34,6 @@ public class UserController {
         System.out.println(savedUserResponse.getNickname());
 //        return ResponseEntity.ok().body(savedUserResponse);
         return ResponseEntity.ok().body("Sign up successful");
-    }
-
-    @PatchMapping
-    public ResponseEntity<?> updateUser(@RequestBody UserUpdateRequest userUpdateRequest) {
-        UserResponse userResponse = userService.updateUser(userUpdateRequest);
-//        return ResponseEntity.ok().body(userResponse);
-        return ResponseEntity.ok().body("Update successful");
     }
 
     @PostMapping("/login")
@@ -70,7 +59,6 @@ public class UserController {
         return ResponseEntity.ok().body("logout successful");
     }
 
-
     @GetMapping("/check/check-id/{loginId}")
     public ResponseEntity<?> checkLoginId(@PathVariable String loginId) {
         boolean isExist = userService.checkLoginId(loginId);
@@ -85,14 +73,17 @@ public class UserController {
         return ResponseEntity.ok().body(new JSONObject().put("available", !isExist).put("message", message).toString());
     }
 
+    @PatchMapping
+    public ResponseEntity<?> updateUser(@RequestBody UserUpdateRequest userUpdateRequest) {
+        UserResponse userResponse = userService.updateUser(userUpdateRequest);
+//        return ResponseEntity.ok().body(userResponse);
+        return ResponseEntity.ok().body("회원 수정 완료!");
+    }
+
     @DeleteMapping
     public ResponseEntity<?> deleteUser() {
-        Optional<User> currentUser = userInfoProvider.getCurrentUser();
-        if (!currentUser.isPresent()) {
-            return ResponseEntity.badRequest().body("No user found");
-        }
-        userService.deleteUser(currentUser.get());
-        return ResponseEntity.ok().body("Delete successful");
+        userService.deleteUser();
+        return ResponseEntity.ok().body("회원 탈퇴 완료!");
     }
 
 }
