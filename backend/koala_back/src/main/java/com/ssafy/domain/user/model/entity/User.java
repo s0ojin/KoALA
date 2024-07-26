@@ -109,40 +109,6 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = ALL, fetch = LAZY, orphanRemoval = true)
     private List<Koala> koalas;
 
-    // test용
-    public User(String loginId, String password, Auth auth, String name, String nickname, Integer leaves, Long userExp, Integer userLevel) {
-        this.loginId = loginId;
-        this.password = password;
-        this.auth = auth;
-        this.name = name;
-        this.nickname = nickname;
-        this.leaves = leaves;
-        this.userExp = userExp;
-        this.userLevel = userLevel;
-    }
-
-//    @Builder
-//    public User(
-//            final String loginId,
-//            final String password,
-//            final Auth auth,
-//            final String name,
-//            final String nickname,
-//            final Integer leaves,
-//            final Koala koala,
-//            final Long userExp,
-//            final Integer userLevel) {
-//        validate(loginId, password, auth, name, nickname, leaves, koala, userExp, userLevel);
-//        this.loginId = loginId;
-//        this.password = password;
-//        this.auth = auth;
-//        this.name = name;
-//        this.nickname = nickname;
-//        this.leaves = leaves;
-//        this.koala = koala;
-//        this.userExp = userExp;
-//        this.userLevel = userLevel;
-//    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
