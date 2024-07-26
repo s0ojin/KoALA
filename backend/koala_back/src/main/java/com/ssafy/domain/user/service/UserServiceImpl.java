@@ -2,6 +2,7 @@ package com.ssafy.domain.user.service;
 
 import com.ssafy.domain.user.model.dto.request.UserSignUpRequest;
 import com.ssafy.domain.user.model.dto.request.UserUpdateRequest;
+import com.ssafy.domain.user.model.dto.response.UserFindResponse;
 import com.ssafy.domain.user.model.dto.response.UserResponse;
 import com.ssafy.domain.user.model.entity.Auth;
 import com.ssafy.domain.user.model.entity.User;
@@ -117,6 +118,23 @@ public class UserServiceImpl implements UserService {
             throw new NoSuchElementException("User not found");
         }
         userRepository.delete(currentUser.get());
+    }
+
+    @Transactional
+    @Override
+    public UserFindResponse findUser() {
+        String currentLoginId = userInfoProvider.getCurrentLoginId();
+        if (currentLoginId == null) {
+            throw new IllegalStateException("Current login_ID is null. User might not be authenticated.");
+        }
+
+        Optional<User> optionalUser = userRepository.findByLoginId(currentLoginId);
+        if (!optionalUser.isPresent()) {
+            throw new NoSuchElementException("User not found with login_ID: " + currentLoginId);
+        }
+
+        User user = optionalUser.get();
+        return UserFindResponse.toDto(user);
     }
 
 }

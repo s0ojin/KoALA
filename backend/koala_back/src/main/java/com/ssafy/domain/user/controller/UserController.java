@@ -3,6 +3,7 @@ package com.ssafy.domain.user.controller;
 import com.ssafy.domain.user.model.dto.request.UserSignInRequest;
 import com.ssafy.domain.user.model.dto.request.UserSignUpRequest;
 import com.ssafy.domain.user.model.dto.request.UserUpdateRequest;
+import com.ssafy.domain.user.model.dto.response.UserFindResponse;
 import com.ssafy.domain.user.model.dto.response.UserResponse;
 import com.ssafy.domain.user.model.entity.User;
 import com.ssafy.domain.user.service.UserService;
@@ -36,6 +37,20 @@ public class UserController {
         return ResponseEntity.ok().body("Sign up successful");
     }
 
+    @GetMapping
+    public ResponseEntity<?> findUser(){
+        UserFindResponse userFindResponse =  userService.findUser();
+        return ResponseEntity.ok().body(userFindResponse);
+    }
+
+
+    @PatchMapping
+    public ResponseEntity<?> updateUser(@RequestBody UserUpdateRequest userUpdateRequest) {
+        UserResponse userResponse = userService.updateUser(userUpdateRequest);
+//        return ResponseEntity.ok().body(userResponse);
+        return ResponseEntity.ok().body("회원 수정 완료!");
+    }
+
     @PostMapping("/login")
     public ResponseEntity<JwtToken> signIn(@RequestBody UserSignInRequest userSignInRequest) {
         String loginId = userSignInRequest.getLoginId();
@@ -60,6 +75,7 @@ public class UserController {
         return ResponseEntity.ok().body("logout successful");
     }
 
+
     @GetMapping("/check/check-id/{loginId}")
     public ResponseEntity<?> checkLoginId(@PathVariable String loginId) {
         boolean isExist = userService.checkLoginId(loginId);
@@ -72,13 +88,6 @@ public class UserController {
         boolean isExist = userService.checkNickname(nickname);
         String message = isExist ? "Not Available Nickname" : "Available Nickname";
         return ResponseEntity.ok().body(new JSONObject().put("available", !isExist).put("message", message).toString());
-    }
-
-    @PatchMapping
-    public ResponseEntity<?> updateUser(@RequestBody UserUpdateRequest userUpdateRequest) {
-        UserResponse userResponse = userService.updateUser(userUpdateRequest);
-//        return ResponseEntity.ok().body(userResponse);
-        return ResponseEntity.ok().body("회원 수정 완료!");
     }
 
     @DeleteMapping
