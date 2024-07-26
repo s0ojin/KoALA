@@ -1,5 +1,6 @@
 package com.ssafy.domain.user.model.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ssafy.domain.user.model.entity.Auth;
 import com.ssafy.domain.user.model.entity.User;
 import jakarta.validation.constraints.NotBlank;
@@ -13,6 +14,7 @@ public class UserSignUpRequest {
 
     // null, "", "   " 데이터 전부 걸러낸다.
     @NotBlank(message = "유저 아이디는 필수 입력 값입니다.")
+    @JsonProperty("login_id")
     private String loginId;
 
     @NotBlank(message = "유저 비밀번호는 필수 입력 값입니다.")

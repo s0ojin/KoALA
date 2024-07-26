@@ -108,14 +108,10 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public UserResponse updateUser(UserUpdateRequest userUpdateRequest) {
-        Long currentUserId = userInfoProvider.getCurrentUserId();
-        if (currentUserId == null) {
-            throw new IllegalStateException("Current user ID is null. User might not be authenticated.");
-        }
 
-        Optional<User> optionalUser = userRepository.findById(currentUserId);
-        if (!optionalUser.isPresent()) {
-            throw new NoSuchElementException("User not found with ID: " + currentUserId);
+        Optional<User> optionalUser = userInfoProvider.getCurrentUser();
+        if (optionalUser.isEmpty()) {
+            throw new NoSuchElementException("User not found");
         }
 
         User user = optionalUser.get();
@@ -129,7 +125,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser() {
         Optional<User> currentUser = userInfoProvider.getCurrentUser();
-        if (!currentUser.isPresent() || currentUser.get().getUserId() == null) {
+        if (currentUser.isEmpty() || currentUser.get().getUserId() == null) {
             throw new NoSuchElementException("User not found");
         }
         userRepository.delete(currentUser.get());
