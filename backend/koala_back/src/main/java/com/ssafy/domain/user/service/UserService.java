@@ -9,14 +9,14 @@ import com.ssafy.global.auth.jwt.dto.JwtToken;
 import org.springframework.transaction.annotation.Transactional;
 
 public interface UserService {
-    public JwtToken signIn(String loginId, String password);
     public UserResponse signUp(UserSignUpRequest userSignUpRequest);
-    public UserResponse updateUser(UserUpdateRequest userUpdateRequest);
-    public void deleteUser();
-    public UserFindResponse findUser();
-
+    public JwtToken signIn(String loginId, String password);
     public JwtToken generateNewAccessToken(String refreshToken);
 
     public boolean checkLoginId(String loginId);
     public boolean checkNickname(String nickname);
+
+    public UserFindResponse findUser();
+    public UserResponse updateUser(UserUpdateRequest userUpdateRequest);
+    public void deleteUser();
 }

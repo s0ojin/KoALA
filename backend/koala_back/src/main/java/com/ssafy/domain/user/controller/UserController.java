@@ -5,7 +5,6 @@ import com.ssafy.domain.user.model.dto.request.UserSignUpRequest;
 import com.ssafy.domain.user.model.dto.request.UserUpdateRequest;
 import com.ssafy.domain.user.model.dto.response.UserFindResponse;
 import com.ssafy.domain.user.model.dto.response.UserResponse;
-import com.ssafy.domain.user.model.entity.User;
 import com.ssafy.domain.user.service.UserService;
 import com.ssafy.global.auth.jwt.dto.JwtToken;
 import com.ssafy.global.common.UserInfoProvider;
@@ -15,8 +14,6 @@ import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -37,20 +34,6 @@ public class UserController {
         return ResponseEntity.ok().body("Sign up successful");
     }
 
-    @GetMapping
-    public ResponseEntity<?> findUser(){
-        UserFindResponse userFindResponse =  userService.findUser();
-        return ResponseEntity.ok().body(userFindResponse);
-    }
-
-
-    @PatchMapping
-    public ResponseEntity<?> updateUser(@RequestBody UserUpdateRequest userUpdateRequest) {
-        UserResponse userResponse = userService.updateUser(userUpdateRequest);
-//        return ResponseEntity.ok().body(userResponse);
-        return ResponseEntity.ok().body("회원 수정 완료!");
-    }
-
     @PostMapping("/login")
     public ResponseEntity<JwtToken> signIn(@RequestBody UserSignInRequest userSignInRequest) {
         String loginId = userSignInRequest.getLoginId();
@@ -60,7 +43,6 @@ public class UserController {
         log.info("jwtToken accessToken: {}, refreshToken: {}", jwtToken.getAccessToken(), jwtToken.getRefreshToken());
         return ResponseEntity.ok().body(jwtToken);
     }
-
 
     @PostMapping("/refresh")
     public ResponseEntity<?> refresh(@RequestBody String refreshToken) {
@@ -75,7 +57,6 @@ public class UserController {
         return ResponseEntity.ok().body("logout successful");
     }
 
-
     @GetMapping("/check/check-id/{loginId}")
     public ResponseEntity<?> checkLoginId(@PathVariable String loginId) {
         boolean isExist = userService.checkLoginId(loginId);
@@ -88,6 +69,19 @@ public class UserController {
         boolean isExist = userService.checkNickname(nickname);
         String message = isExist ? "Not Available Nickname" : "Available Nickname";
         return ResponseEntity.ok().body(new JSONObject().put("available", !isExist).put("message", message).toString());
+    }
+
+    @GetMapping
+    public ResponseEntity<?> findUser() {
+        UserFindResponse userFindResponse = userService.findUser();
+        return ResponseEntity.ok().body(userFindResponse);
+    }
+
+    @PatchMapping
+    public ResponseEntity<?> updateUser(@RequestBody UserUpdateRequest userUpdateRequest) {
+        UserResponse userResponse = userService.updateUser(userUpdateRequest);
+//        return ResponseEntity.ok().body(userResponse);
+        return ResponseEntity.ok().body("회원 수정 완료!");
     }
 
     @DeleteMapping

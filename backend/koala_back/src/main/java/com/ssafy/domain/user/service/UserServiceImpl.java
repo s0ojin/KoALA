@@ -36,8 +36,6 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserInfoProvider userInfoProvider;
 
-
-    // 회원가입
     @Transactional
     public UserResponse signUp(UserSignUpRequest userSignUpRequest) {
         if (userRepository.existsByLoginId(userSignUpRequest.getLoginId())) {
@@ -92,6 +90,23 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
+    public UserFindResponse findUser() {
+        String currentLoginId = userInfoProvider.getCurrentLoginId();
+        if (currentLoginId == null) {
+            throw new IllegalStateException("Current login_ID is null. User might not be authenticated.");
+        }
+
+        Optional<User> optionalUser = userRepository.findByLoginId(currentLoginId);
+        if (!optionalUser.isPresent()) {
+            throw new NoSuchElementException("User not found with login_ID: " + currentLoginId);
+        }
+
+        User user = optionalUser.get();
+        return UserFindResponse.toDto(user);
+    }
+
+    @Transactional
+    @Override
     public UserResponse updateUser(UserUpdateRequest userUpdateRequest) {
         Long currentUserId = userInfoProvider.getCurrentUserId();
         if (currentUserId == null) {
@@ -118,23 +133,6 @@ public class UserServiceImpl implements UserService {
             throw new NoSuchElementException("User not found");
         }
         userRepository.delete(currentUser.get());
-    }
-
-    @Transactional
-    @Override
-    public UserFindResponse findUser() {
-        String currentLoginId = userInfoProvider.getCurrentLoginId();
-        if (currentLoginId == null) {
-            throw new IllegalStateException("Current login_ID is null. User might not be authenticated.");
-        }
-
-        Optional<User> optionalUser = userRepository.findByLoginId(currentLoginId);
-        if (!optionalUser.isPresent()) {
-            throw new NoSuchElementException("User not found with login_ID: " + currentLoginId);
-        }
-
-        User user = optionalUser.get();
-        return UserFindResponse.toDto(user);
     }
 
 }
