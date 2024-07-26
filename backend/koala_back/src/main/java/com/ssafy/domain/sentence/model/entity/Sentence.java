@@ -3,6 +3,7 @@ package com.ssafy.domain.sentence.model.entity;
 import com.ssafy.domain.user.model.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -19,6 +20,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Table(name = "sentences")
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PROTECTED)
+@Builder
 public class Sentence {
 
     @Id
