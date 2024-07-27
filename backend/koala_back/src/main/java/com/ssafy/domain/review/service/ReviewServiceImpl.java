@@ -19,19 +19,18 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class ReviewServiceImpl implements ReviewService {
 
-    ReviewRepository reviewRepository;
-    SentenceRepository sentenceRepository;
-    UserInfoProvider userInfoProvider;
+    final ReviewRepository reviewRepository;
+    final SentenceRepository sentenceRepository;
+    final UserInfoProvider userInfoProvider;
 
     @Override
     @Transactional
     public void createReviewSentence(ReviewSaveRequest reviewSaveRequest) {
-        Sentence sentence = sentenceRepository.findById(reviewSaveRequest.getSentenceId()).orElseThrow();
-        Optional<User> currentUser = userInfoProvider.getCurrentUser();
-        if(currentUser.isEmpty()) {
-            throw new IllegalArgumentException("로그인이 필요합니다.");
-        }
-        ReviewSentence reviewSentence = reviewSaveRequest.toReviewSentenceEntity(sentence, currentUser.get());
+        Optional<Sentence> optionalSentence = sentenceRepository.findById(reviewSaveRequest.getSentenceId());
+        Sentence sentence = optionalSentence.orElseThrow(() -> new IllegalArgumentException("해당 문장이 존재하지 않습니다."));
+
+        User currentUser = userInfoProvider.getCurrentUser();
+        ReviewSentence reviewSentence = reviewSaveRequest.toReviewSentenceEntity(sentence, currentUser);
         reviewRepository.save(reviewSentence);
     }
 

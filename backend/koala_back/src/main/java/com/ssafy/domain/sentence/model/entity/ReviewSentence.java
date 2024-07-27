@@ -34,6 +34,7 @@ public class ReviewSentence {
     private Sentence sentence;
 
     @Column(name = "review_sentence_created_at")
+    @Builder.Default
     private LocalDateTime reviewSentenceCreatedAt = LocalDateTime.now();
 
 }
