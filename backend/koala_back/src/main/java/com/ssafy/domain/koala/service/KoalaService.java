@@ -4,5 +4,5 @@ import com.ssafy.domain.koala.model.dto.response.KoalaResponse;
 
 public interface KoalaService {
 
-    public KoalaResponse findKoala();
+	KoalaResponse findKoala();
 }
