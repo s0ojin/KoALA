@@ -45,7 +45,8 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        // BCrypt Encoder 사용
+        // 기본적으로는 BCrypt가 설정되며, 필요에 따라 다른 알고리즘을 추가
+        // 비밀번호에 어떤 해시 알고리즘이 사용되었는지를 비밀번호와 함께 저장
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
