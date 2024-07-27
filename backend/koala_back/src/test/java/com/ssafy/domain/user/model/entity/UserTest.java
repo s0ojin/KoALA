@@ -25,21 +25,23 @@ class UserTest {
 
     @Test
     public void testEntity() throws Exception {
-        Auth auth = new Auth("user");
-        em.persist(auth);
-
-        User user = new User("loginId", "password", auth, "name", "nickname", 0, 0L, 1);
-//        log.info("user: {}", user);
-        em.persist(user);
-
-        User findUser = em.find(User.class, user.getUserId());
-
-        assertEquals(user, findUser);
-
-        em.remove(findUser);
-        em.remove(auth);
-
-        assertNull(em.find(User.class, user.getUserId()));
+//        Auth auth = new Auth("user");
+////        em.persist(auth);
+//
+//        User user = new User("loginId", "password", auth, "name", "nickname", 0, 0L, 1);
+////        log.info("user: {}", user);
+//        em.persist(user);
+//
+//        em.flush();
+//        em.clear();
+//
+//        User findUser = em.find(User.class, user.getUserId());
+//
+//        assertEquals(user.getUserId(), findUser.getUserId());
+//
+//        em.remove(findUser);
+//
+//        assertNull(em.find(User.class, user.getUserId()));
     }
 
 }

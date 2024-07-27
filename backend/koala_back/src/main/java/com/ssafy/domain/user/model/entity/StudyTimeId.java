@@ -1,9 +1,6 @@
 package com.ssafy.domain.user.model.entity;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +9,7 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.util.Objects;
 
-import static lombok.AccessLevel.*;
+import static lombok.AccessLevel.PROTECTED;
 
 @Getter
 @Setter

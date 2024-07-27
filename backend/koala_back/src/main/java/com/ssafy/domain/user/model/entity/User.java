@@ -8,7 +8,6 @@ import com.ssafy.domain.lecture.model.entity.LectureNote;
 import com.ssafy.domain.lecture.model.entity.RegisteredLecture;
 import com.ssafy.domain.sentence.model.entity.ReviewSentence;
 import com.ssafy.domain.sentence.model.entity.Sentence;
-import com.ssafy.domain.user.model.validation.UserValidation;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,18 +19,18 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static com.ssafy.domain.user.model.validation.UserValidation.*;
 import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.FetchType.LAZY;
-import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Getter
+@Setter
 @Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@Builder
 public class User implements UserDetails {
-// Spring Security는 인증 및 권한 부여 과정에서 UserDetails 객체를 사용
+    // Spring Security는 인증 및 권한 부여 과정에서 UserDetails 객체를 사용
     @Id
     @GeneratedValue
     @Column(name = "user_id")
@@ -53,86 +52,63 @@ public class User implements UserDetails {
     @Column(name = "nickname", nullable = false)
     private String nickname;
 
-    @Column(name = "leaves", nullable = false)
-    private Integer leaves;
+    @Column(name = "leaves")
+    @Builder.Default
+    private Integer leaves = 0;
 
-    @OneToOne(cascade = ALL, fetch = LAZY, orphanRemoval = true)
-    @JoinColumn(name = "koala_id")
-    private Koala koala;
+    @Column(name = "user_exp")
+    @Builder.Default
+    private Long userExp = 0L;
 
-    @Column(name = "user_exp", nullable = false)
-    private Long userExp;
+    @Column(name = "user_level")
+    @Builder.Default
+    private Integer userLevel = 0;
 
-    @Column(name = "user_level", nullable = false)
-    private Integer userLevel;
-
-    @Column(name = "user_created_at", nullable = false)
+    @Column(name = "user_created_at")
+    @Builder.Default
     private LocalDateTime userCreatedAt = LocalDateTime.now();
 
+    @Builder.Default
     @OneToMany(mappedBy = "teacher", cascade = ALL, fetch = LAZY, orphanRemoval = true)
     private List<Lecture> lectures = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = ALL, fetch = LAZY, orphanRemoval = true)
     private List<Sentence> sentences = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = ALL, fetch = LAZY, orphanRemoval = true)
     private List<ReviewSentence> reviewSentences = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = ALL, fetch = LAZY, orphanRemoval = true)
     private List<StudyTime> studyTimes = new ArrayList<>();
 
     @OneToOne(mappedBy = "user", cascade = ALL, fetch = LAZY, orphanRemoval = true)
     private UserDetail userDetail;
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = ALL, fetch = LAZY, orphanRemoval = true)
     private List<RegisteredLecture> registeredLectures = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = ALL, fetch = LAZY, orphanRemoval = true)
     private List<LectureNote> lectureNotes = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = ALL, fetch = LAZY, orphanRemoval = true)
     private List<Board> boards = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = ALL, fetch = LAZY, orphanRemoval = true)
     private List<BoardComment> boardComments = new ArrayList<>();
 
     @OneToOne(mappedBy = "user", cascade = ALL, fetch = LAZY, orphanRemoval = true)
     private Ranking ranking;
 
-    // test용
-    public User(String loginId, String password, Auth auth, String name, String nickname, Integer leaves, Long userExp, Integer userLevel) {
-        this.loginId = loginId;
-        this.password = password;
-        this.auth = auth;
-        this.name = name;
-        this.nickname = nickname;
-        this.leaves = leaves;
-        this.userExp = userExp;
-        this.userLevel = userLevel;
-    }
+    @OneToMany(mappedBy = "user", cascade = ALL, fetch = LAZY, orphanRemoval = true)
+    private List<Koala> koalas;
 
-    @Builder
-    public User(
-            final String loginId,
-            final String password,
-            final Auth auth,
-            final String name,
-            final String nickname,
-            final Integer leaves,
-            final Koala koala,
-            final Long userExp,
-            final Integer userLevel) {
-        validate(loginId, password, auth, name, nickname, leaves, koala, userExp, userLevel);
-        this.loginId = loginId;
-        this.password = password;
-        this.auth = auth;
-        this.name = name;
-        this.nickname = nickname;
-        this.leaves = leaves;
-        this.koala = koala;
-        this.userExp = userExp;
-        this.userLevel = userLevel;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -170,4 +146,5 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }

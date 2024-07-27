@@ -25,11 +25,11 @@ public class Koala {
     @Column(name = "koala_id")
     private Long koalaId;
 
-    @OneToOne(mappedBy = "koala", fetch = LAZY)
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "koala_name", nullable = false)
-    @ColumnDefault("코알라")
+    @Column(name = "koala_name", nullable = false, columnDefinition = "varchar(20) default '코알라'")
     private String koalaName;
 
     @Column(name = "koala_level", nullable = false)

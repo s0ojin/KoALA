@@ -3,6 +3,7 @@ package com.ssafy.domain.sentence.model.entity;
 import com.ssafy.domain.user.model.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,8 +11,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static jakarta.persistence.CascadeType.*;
-import static jakarta.persistence.FetchType.*;
+import static jakarta.persistence.CascadeType.ALL;
+import static jakarta.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PROTECTED;
 
 @Entity
@@ -19,6 +20,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Table(name = "sentences")
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PROTECTED)
+@Builder
 public class Sentence {
 
     @Id
@@ -30,7 +32,7 @@ public class Sentence {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "setence_text")
+    @Column(name = "sentence_text")
     private String sentenceText;
 
     @Column(name = "topic_category")

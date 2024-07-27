@@ -1,20 +1,17 @@
 package com.ssafy.domain.user.model.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.FetchType.LAZY;
-import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = PROTECTED)
+@NoArgsConstructor
 @Table(name = "auth")
 public class Auth {
 
@@ -26,11 +23,11 @@ public class Auth {
     @Column(name = "auth_name")
     private String authName = "user";
 
-    @OneToMany(mappedBy = "auth", cascade = ALL, fetch = LAZY)
+    @OneToMany(mappedBy = "auth", fetch = LAZY)
     private List<User> users = new ArrayList<>();
 
-    public Auth(String user) {
-        this.authName = user;
+    public Auth(String authName) {
+        this.authName = authName;
     }
 
 }
