@@ -17,10 +17,10 @@ import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Getter
+@Builder
 @Table(name = "sentences")
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PROTECTED)
-@Builder
 public class Sentence {
 
     @Id
@@ -41,7 +41,8 @@ public class Sentence {
     @Column(name = "sentence_length")
     private Integer sentenceLength;
 
-    @Column(name = "sentence_created_at", nullable = false)
+    @Builder.Default
+    @Column(name = "sentence_created_at")
     private LocalDateTime sentenceCreatedAt = LocalDateTime.now();
 
     @OneToMany(mappedBy = "sentence", cascade = ALL, orphanRemoval = true, fetch = LAZY)
