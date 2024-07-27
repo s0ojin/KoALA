@@ -109,12 +109,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponse updateUser(UserUpdateRequest userUpdateRequest) {
 
-        Optional<User> optionalUser = userInfoProvider.getCurrentUser();
-        if (optionalUser.isEmpty()) {
-            throw new NoSuchElementException("User not found");
-        }
+        User user = userInfoProvider.getCurrentUser();
 
-        User user = optionalUser.get();
         String encodedPassword = passwordEncoder.encode(userUpdateRequest.getPassword());
         user.setNickname(userUpdateRequest.getNickname());
         user.setPassword(encodedPassword);
@@ -124,11 +120,8 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void deleteUser() {
-        Optional<User> currentUser = userInfoProvider.getCurrentUser();
-        if (currentUser.isEmpty() || currentUser.get().getUserId() == null) {
-            throw new NoSuchElementException("User not found");
-        }
-        userRepository.delete(currentUser.get());
+        User user = userInfoProvider.getCurrentUser();
+        userRepository.delete(user);
     }
 
 }
