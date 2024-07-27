@@ -1,39 +1,52 @@
 package com.ssafy.domain.user.model.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
-
-import java.io.Serializable;
-
 import static jakarta.persistence.FetchType.*;
 import static lombok.AccessLevel.*;
 
+import java.io.Serializable;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 @Entity
 @Getter
-@NoArgsConstructor(access = PROTECTED)
-@AllArgsConstructor(access = PROTECTED)
+@Builder
 @Table(name = "study_time")
 @IdClass(StudyTimeId.class)
+@NoArgsConstructor(access = PROTECTED)
+@AllArgsConstructor(access = PROTECTED)
 public class StudyTime implements Serializable {
 
-    @Id
-    @Column(name = "time_cal_type")
-    private Integer timeCalType;
+	@Id
+	@Column(name = "time_cal_type")
+	private Integer timeCalType;
 
-    @Id
-    @Column(name = "user_id")
-    private Long userId;
+	@Id
+	@Column(name = "user_id")
+	private Long userId;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
-    private User user;
+	@ManyToOne(fetch = LAZY)
+	@JoinColumn(name = "user_id", insertable = false, updatable = false)
+	private User user;
 
-    @Column(name = "talk_time", nullable = false)
-    private Integer talkTime = 0;
+	@Builder.Default
+	@Column(name = "talk_time")
+	private Integer talkTime = 0;
 
-    @Column(name = "sentence_num", nullable = false)
-    private Integer sentenceNum = 0;
+	@Builder.Default
+	@Column(name = "sentence_num")
+	private Integer sentenceNum = 0;
 
-    @Column(name = "lecture_num", nullable = false)
-    private Integer lectureNum = 0;
+	@Builder.Default
+	@Column(name = "lecture_num")
+	private Integer lectureNum = 0;
 }
