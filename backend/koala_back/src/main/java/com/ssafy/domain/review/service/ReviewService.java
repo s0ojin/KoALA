@@ -6,4 +6,6 @@ public interface ReviewService {
 
     public void createReviewSentence(ReviewSaveRequest reviewSaveRequest);
 
+    public void deleteReviewSentence(Long reviewSentenceId);
+
 }
