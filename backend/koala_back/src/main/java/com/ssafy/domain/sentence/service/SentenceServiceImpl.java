@@ -1,6 +1,7 @@
 package com.ssafy.domain.sentence.service;
 
 import com.ssafy.domain.review.model.dto.request.ReviewSentenceRequest;
+import com.ssafy.domain.review.repository.ReviewRepository;
 import com.ssafy.domain.sentence.model.dto.request.SentenceTestRequest;
 import com.ssafy.domain.sentence.model.dto.response.SentenceDictationResponse;
 import com.ssafy.domain.sentence.model.dto.response.SentenceTestResponse;
@@ -8,9 +9,10 @@ import com.ssafy.domain.sentence.model.entity.ReviewSentence;
 import com.ssafy.domain.sentence.model.entity.Sentence;
 import com.ssafy.domain.sentence.repository.SentenceRepository;
 import com.ssafy.domain.user.model.entity.User;
-import com.ssafy.domain.user.repository.ReviewSentenceRepository;
 import com.ssafy.domain.user.repository.UserRepository;
 import com.ssafy.global.common.UserInfoProvider;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,10 +29,9 @@ import java.util.stream.Collectors;
 @Slf4j
 public class SentenceServiceImpl implements SentenceService {
     private final SentenceRepository sentenceRepository;
-    private final ReviewSentenceRepository reviewSentenceRepository;
     private final UserRepository userRepository;
+    private final ReviewRepository reviewRepository;
     private final UserInfoProvider userInfoProvider;
-
 
     @Override
     public List<SentenceDictationResponse> randomSentence(String topic) {
@@ -85,7 +86,7 @@ public class SentenceServiceImpl implements SentenceService {
         }
 
         // 1. 복습페이지에 틀린 문장 저장
-        reviewSentenceRepository.saveAll(reviewSentences);
+        reviewRepository.saveAll(reviewSentences);
 //        System.out.println(leaves);
         // 2. 유칼립투스 증가
         // 문제 별로 토글을 키고 했다면 -> 1개

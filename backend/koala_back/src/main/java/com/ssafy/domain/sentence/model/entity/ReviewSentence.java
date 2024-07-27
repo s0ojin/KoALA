@@ -33,7 +33,8 @@ public class ReviewSentence {
     @JoinColumn(name = "sentence_id", nullable = false)
     private Sentence sentence;
 
-    @Column(name = "review_sentence_created_at", nullable = false)
+    @Column(name = "review_sentence_created_at")
+    @Builder.Default
     private LocalDateTime reviewSentenceCreatedAt = LocalDateTime.now();
 
 }
