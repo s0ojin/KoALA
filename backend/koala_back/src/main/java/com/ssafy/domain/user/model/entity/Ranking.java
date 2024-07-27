@@ -1,29 +1,37 @@
 package com.ssafy.domain.user.model.entity;
 
-import jakarta.persistence.*;
+import static jakarta.persistence.FetchType.*;
+import static lombok.AccessLevel.*;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import static jakarta.persistence.FetchType.*;
-import static lombok.AccessLevel.PROTECTED;
-
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PROTECTED)
 public class Ranking {
 
-    @Id
-    @Column(name = "user_id")
-    private Long userId;
+	@Id
+	@Column(name = "user_id")
+	private Long userId;
 
-    @OneToOne(fetch = LAZY)
-    @MapsId
-    @JoinColumn(name = "user_id")
-    private User user;
+	@MapsId
+	@OneToOne(fetch = LAZY)
+	@JoinColumn(name = "user_id")
+	private User user;
 
-    @Column(name = "ranking", nullable = false)
-    private Integer ranking;
+    @Builder.Default
+	@Column(name = "ranking")
+	private Integer ranking = 0;
 
 }
