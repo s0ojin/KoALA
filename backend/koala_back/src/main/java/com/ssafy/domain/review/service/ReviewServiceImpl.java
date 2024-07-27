@@ -26,12 +26,26 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     @Transactional
     public void createReviewSentence(ReviewSaveRequest reviewSaveRequest) {
-        Optional<Sentence> optionalSentence = sentenceRepository.findById(reviewSaveRequest.getSentenceId());
-        Sentence sentence = optionalSentence.orElseThrow(() -> new IllegalArgumentException("해당 문장이 존재하지 않습니다."));
+        Sentence sentence = sentenceRepository.findById(reviewSaveRequest.getSentenceId())
+            .orElseThrow(() -> new IllegalArgumentException("해당 문장이 존재하지 않습니다."));
 
         User currentUser = userInfoProvider.getCurrentUser();
         ReviewSentence reviewSentence = reviewSaveRequest.toReviewSentenceEntity(sentence, currentUser);
         reviewRepository.save(reviewSentence);
+    }
+
+    @Override
+    @Transactional
+    public void deleteReviewSentence(Long reviewSentenceId) {
+        ReviewSentence reviewSentence = reviewRepository.findById(reviewSentenceId)
+            .orElseThrow(() -> new IllegalArgumentException("해당 리뷰가 존재하지 않습니다."));
+
+        User currentUser = userInfoProvider.getCurrentUser();
+        if (!reviewSentence.getUser().equals(currentUser)) {
+            throw new IllegalArgumentException("해당 리뷰를 삭제할 권한이 없습니다.");
+        }
+
+        reviewRepository.delete(reviewSentence);
     }
 
 }
