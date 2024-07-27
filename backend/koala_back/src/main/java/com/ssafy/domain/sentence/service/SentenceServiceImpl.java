@@ -7,14 +7,18 @@ import com.ssafy.domain.sentence.model.dto.response.SentenceTestResponse;
 import com.ssafy.domain.sentence.model.entity.ReviewSentence;
 import com.ssafy.domain.sentence.model.entity.Sentence;
 import com.ssafy.domain.sentence.repository.SentenceRepository;
+import com.ssafy.domain.user.model.entity.User;
 import com.ssafy.domain.user.repository.ReviewSentenceRepository;
+import com.ssafy.domain.user.repository.UserRepository;
 import com.ssafy.global.common.UserInfoProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -24,15 +28,19 @@ import java.util.stream.Collectors;
 public class SentenceServiceImpl implements SentenceService {
     private final SentenceRepository sentenceRepository;
     private final ReviewSentenceRepository reviewSentenceRepository;
+    private final UserRepository userRepository;
     private final UserInfoProvider userInfoProvider;
+
 
     @Override
     public List<SentenceDictationResponse> randomSentence(String topic) {
         List<Sentence> sentences;
-        if (topic.equals("사용자")) {
-            sentences =  sentenceRepository.findRandomSentencesByUser(userInfoProvider.getCurrentUserId());
+        if(topic.isEmpty()){
+            sentences = sentenceRepository.findRandomSentences(userInfoProvider.getCurrentUserId());
+        } else if (topic.equals("사용자")) {
+            sentences = sentenceRepository.findRandomSentencesByUser(userInfoProvider.getCurrentUserId());
         } else {
-            sentences =  sentenceRepository.findRandomSentencesByTopic(topic);
+            sentences = sentenceRepository.findRandomSentencesByTopic(topic);
         }
 
         return sentences.stream()
@@ -42,28 +50,50 @@ public class SentenceServiceImpl implements SentenceService {
 
     @Override
     public List<SentenceTestResponse> testWritingPaper(List<SentenceTestRequest> writingPaper) {
-        // 여기서 받아쓰기 알고리즘 진행해주세요...
+        List<SentenceTestResponse> sentenceTestResponses = new ArrayList<>();
+        List<ReviewSentence> reviewSentences = new ArrayList<>();
+        User user = userInfoProvider.getCurrentUser();
 
-        for(int i = 0; i < writingPaper.size(); i++){
-//            SentenceTestRequest question = writingPaper.get(i);
+        int leaves = 0;
 
+        for (SentenceTestRequest request : writingPaper) {
+            Optional<Sentence> originSentence = sentenceRepository.findById(request.getSentenceId());
+            if (originSentence.isEmpty()) {
+                return null; // null 반환 대신 적절한 예외를 던지거나 빈 리스트를 반환하는 것이 좋습니다.
+            }
+
+            String originText = originSentence.get().getSentenceText();
+            String userText = request.getUserSentence();
+            String resultTag;
+            boolean correct;
+
+            if (originText.equals(userText)) {
+                resultTag = userText;
+                correct = true;
+                if (request.isToggled()) { // 토클을 켜고 함
+                    leaves += 1;
+                } else { // 토글을 끄고 함
+                    leaves += 2;
+                }
+            } else {
+                resultTag = makeResultTag(originText, userText);
+                reviewSentences.add(new ReviewSentenceRequest(request.getSentenceId()).toEntity(originSentence.get(), user));
+                correct = false;
+            }
+
+            sentenceTestResponses.add(new SentenceTestResponse(originText, userText, resultTag, correct));
         }
 
-
-        int leaves;
-        int sentenceNum;
-        List<ReviewSentenceRequest> wrongAnswer = List.of(); // 오답 문장
-        List<ReviewSentence> reviewSentences = wrongAnswer.stream()
-                .map(request -> {
-                    Sentence sentence = sentenceRepository.findById(request.getSentenceId())
-                            .orElseThrow(() -> new IllegalArgumentException("Invalid sentence ID: " + request.getSentenceId()));
-                    return request.toEntity(sentence, userInfoProvider.getCurrentUser().get());
-                })
-                .collect(Collectors.toList());
-
+        // 1. 복습페이지에 틀린 문장 저장
         reviewSentenceRepository.saveAll(reviewSentences);
+//        System.out.println(leaves);
+        // 2. 유칼립투스 증가
+        // 문제 별로 토글을 키고 했다면 -> 1개
+        // 문제 별로 토글을 끄고 했다면 -> 2개
+        user.setLeaves(user.getLeaves() + leaves);
+        userRepository.save(user);
 
-        return List.of();
+        return sentenceTestResponses; // 3. 틀린거 보여주기
     }
 
     public String makeResultTag(String originText, String userText) {
@@ -80,11 +110,12 @@ public class SentenceServiceImpl implements SentenceService {
                 answerIndex++;
             } else {
                 if (correctChar == ' ') {
-                    // 정답에서는 띄어야 하는데 답안이 공백이 아닌 경우
-                    result.append("<span class='extra-char'>").append(answerChar).append("</span>");
+                    // 정답에서는 공백인데 답안이 공백이 아닌 경우
+//                    result.append("<span class='extra-char'>").append(answerChar).append("</span>");
+                    result.append("<span class='extra-char'> </span>");
                     correctIndex++;
                 } else if (answerChar == ' ') {
-                    // 정답에서는 들여쓰기 해야 하는데 답안이 공백인 경우
+                    // 정답에서는 공백이 아닌데 답안이 공백인 경우
                     result.append("<span class='missing-char'> </span>");
                     answerIndex++;
                 } else {
@@ -100,6 +131,14 @@ public class SentenceServiceImpl implements SentenceService {
         while (answerIndex < userText.length()) {
             result.append("<span class='char-error'>").append(userText.charAt(answerIndex)).append("</span>");
             answerIndex++;
+        }
+
+        if(userText.length() < originText.length()){
+            correctIndex = originText.length() - userText.length();
+            while (correctIndex < originText.length()) {
+                result.append("<span class='char-error'>").append(originText.charAt(correctIndex)).append("</span>");
+                correctIndex++;
+            }
         }
 
         return result.toString();

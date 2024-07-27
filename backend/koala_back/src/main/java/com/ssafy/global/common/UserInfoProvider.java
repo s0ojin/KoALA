@@ -6,9 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
 
 @Slf4j
 @Component
@@ -23,15 +22,16 @@ public class UserInfoProvider {
         return SecurityContextHolder.getContext().getAuthentication();
     }
 
-    public Optional<User> getCurrentUser() {
+    public User getCurrentUser() {
         Authentication authentication = getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {
             log.warn("Authentication is null or not authenticated");
-            return Optional.empty();
+            throw new BadCredentialsException("User is not authenticated");
         }
         Object principal = authentication.getPrincipal();
         String loginId = principal instanceof UserDetails ? ((UserDetails) principal).getUsername() : principal.toString();
-        return userRepository.findByLoginId(loginId);
+        return userRepository.findByLoginId(loginId)
+                .orElseThrow(() -> new BadCredentialsException("User not found with login ID: " + loginId));
     }
 
     public Long getCurrentUserId() {
@@ -45,17 +45,14 @@ public class UserInfoProvider {
 
         return userRepository.findByLoginId(loginId)
                 .map(User::getUserId)
-                .orElseGet(() -> {
-                    log.warn("No user found with login ID: {}", loginId);
-                    return null;
-                });
+                .orElseThrow(() -> new BadCredentialsException("No user found with login ID: " + loginId));
     }
 
     public String getCurrentLoginId() {
         Authentication authentication = getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {
             log.warn("Authentication is null or not authenticated");
-            return null;
+            throw new BadCredentialsException("User is not authenticated");
         }
         Object principal = authentication.getPrincipal();
         return principal instanceof UserDetails ? ((UserDetails) principal).getUsername() : principal.toString();
@@ -65,16 +62,13 @@ public class UserInfoProvider {
         Authentication authentication = getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {
             log.warn("Authentication is null or not authenticated");
-            return null;
+            throw new BadCredentialsException("User is not authenticated");
         }
         Object principal = authentication.getPrincipal();
         String loginId = principal instanceof UserDetails ? ((UserDetails) principal).getUsername() : principal.toString();
 
         return userRepository.findByLoginId(loginId)
                 .map(User::getNickname)
-                .orElseGet(() -> {
-                    log.warn("No user found with login ID: {}", loginId);
-                    return null;
-                });
+                .orElseThrow(() -> new BadCredentialsException("No user found with login ID: " + loginId));
     }
 }

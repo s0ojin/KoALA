@@ -41,10 +41,11 @@ public class UserController {
         return ResponseEntity.ok().body(jwtToken);
     }
 
-    @PostMapping("/refresh")
-    public ResponseEntity<?> refresh(@RequestBody String refreshToken) {
-        JwtToken newToken = userService.generateNewAccessToken(refreshToken);
-        return ResponseEntity.ok(newToken);
+    @GetMapping("/refresh")
+    public ResponseEntity<?> refresh() {
+//        JwtToken newToken = userService.generateNewAccessToken(refreshToken);
+//        return ResponseEntity.ok(newToken);
+        return null; // 수정중,,,
     }
 
     @PostMapping("/logout")

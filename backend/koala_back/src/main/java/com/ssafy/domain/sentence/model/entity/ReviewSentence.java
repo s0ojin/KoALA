@@ -30,7 +30,7 @@ public class ReviewSentence {
     private User user;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "sentece_id", nullable = false)
+    @JoinColumn(name = "sentence_id", nullable = false)
     private Sentence sentence;
 
     @Column(name = "review_sentence_created_at", nullable = false)
