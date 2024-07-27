@@ -34,6 +34,7 @@ public class SentenceServiceImpl implements SentenceService {
     private final UserInfoProvider userInfoProvider;
 
     @Override
+    @Transactional
     public List<SentenceDictationResponse> randomSentence(String topic) {
         List<Sentence> sentences;
         if(topic.isEmpty()){
@@ -50,6 +51,7 @@ public class SentenceServiceImpl implements SentenceService {
     }
 
     @Override
+    @Transactional
     public List<SentenceTestResponse> testWritingPaper(List<SentenceTestRequest> writingPaper) {
         List<SentenceTestResponse> sentenceTestResponses = new ArrayList<>();
         List<ReviewSentence> reviewSentences = new ArrayList<>();
@@ -60,7 +62,7 @@ public class SentenceServiceImpl implements SentenceService {
         for (SentenceTestRequest request : writingPaper) {
             Optional<Sentence> originSentence = sentenceRepository.findById(request.getSentenceId());
             if (originSentence.isEmpty()) {
-                return null; // null 반환 대신 적절한 예외를 던지거나 빈 리스트를 반환하는 것이 좋습니다.
+                return null;
             }
 
             String originText = originSentence.get().getSentenceText();
@@ -92,11 +94,13 @@ public class SentenceServiceImpl implements SentenceService {
         // 문제 별로 토글을 키고 했다면 -> 1개
         // 문제 별로 토글을 끄고 했다면 -> 2개
         user.setLeaves(user.getLeaves() + leaves);
+        System.out.println(user.getLeaves());
         userRepository.save(user);
 
-        return sentenceTestResponses; // 3. 틀린거 보여주기
+        return sentenceTestResponses; // 3. 틀린g거 보여주기
     }
 
+    @Override
     public String makeResultTag(String originText, String userText) {
         StringBuilder result = new StringBuilder();
         int correctIndex = 0;
@@ -135,7 +139,7 @@ public class SentenceServiceImpl implements SentenceService {
         }
 
         if(userText.length() < originText.length()){
-            correctIndex = originText.length() - userText.length();
+            correctIndex = userText.length();
             while (correctIndex < originText.length()) {
                 result.append("<span class='char-error'>").append(originText.charAt(correctIndex)).append("</span>");
                 correctIndex++;
