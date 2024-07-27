@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class KoalaResponse {
+
     private Long koalaId;
     private String koalaName;
     private Integer koalaLevel;
@@ -19,11 +20,11 @@ public class KoalaResponse {
 
     public static KoalaResponse toDto(Koala koala) {
         return KoalaResponse.builder()
-                .koalaId(koala.getKoalaId())
-                .koalaName(koala.getKoalaName())
-                .koalaLevel(koala.getKoalaLevel())
-                .koalaExp(koala.getKoalaExp())
-                .koalaType(koala.getKoalaType())
-                .build();
+            .koalaId(koala.getKoalaId())
+            .koalaName(koala.getKoalaName())
+            .koalaLevel(koala.getKoalaLevel())
+            .koalaExp(koala.getKoalaExp())
+            .koalaType(koala.getKoalaType())
+            .build();
     }
 }

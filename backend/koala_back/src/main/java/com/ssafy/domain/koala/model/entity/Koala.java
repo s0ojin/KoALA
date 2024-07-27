@@ -57,11 +57,11 @@ public class Koala {
 
     @Builder
     public Koala(
-            final User user,
-            final String koalaName,
-            final Integer koalaLevel,
-            final Integer koalaExp,
-            final Integer koalaType) {
+        final User user,
+        final String koalaName,
+        final Integer koalaLevel,
+        final Integer koalaExp,
+        final Integer koalaType) {
         validate(koalaName, koalaLevel, koalaExp, koalaType);
         this.user = user;
         this.koalaName = koalaName;
