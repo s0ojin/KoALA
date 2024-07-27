@@ -1,21 +1,20 @@
 package com.ssafy.domain.sentence.service;
 
 import com.ssafy.domain.review.model.dto.request.ReviewSentenceRequest;
+import com.ssafy.domain.review.repository.ReviewRepository;
 import com.ssafy.domain.sentence.model.dto.request.SentenceTestRequest;
 import com.ssafy.domain.sentence.model.dto.response.SentenceDictationResponse;
 import com.ssafy.domain.sentence.model.dto.response.SentenceTestResponse;
 import com.ssafy.domain.sentence.model.entity.ReviewSentence;
 import com.ssafy.domain.sentence.model.entity.Sentence;
 import com.ssafy.domain.sentence.repository.SentenceRepository;
-import com.ssafy.domain.user.repository.ReviewSentenceRepository;
 import com.ssafy.global.common.UserInfoProvider;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -23,7 +22,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class SentenceServiceImpl implements SentenceService {
     private final SentenceRepository sentenceRepository;
-    private final ReviewSentenceRepository reviewSentenceRepository;
+    private final ReviewRepository reviewRepository;
     private final UserInfoProvider userInfoProvider;
 
     @Override
@@ -61,7 +60,7 @@ public class SentenceServiceImpl implements SentenceService {
                 })
                 .collect(Collectors.toList());
 
-        reviewSentenceRepository.saveAll(reviewSentences);
+        reviewRepository.saveAll(reviewSentences);
 
         return List.of();
     }
