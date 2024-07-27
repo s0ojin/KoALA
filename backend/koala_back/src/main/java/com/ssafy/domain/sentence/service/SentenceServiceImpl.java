@@ -44,6 +44,12 @@ public class SentenceServiceImpl implements SentenceService {
     public List<SentenceTestResponse> testWritingPaper(List<SentenceTestRequest> writingPaper) {
         // 여기서 받아쓰기 알고리즘 진행해주세요...
 
+        for(int i = 0; i < writingPaper.size(); i++){
+//            SentenceTestRequest question = writingPaper.get(i);
+
+        }
+
+
         int leaves;
         int sentenceNum;
         List<ReviewSentenceRequest> wrongAnswer = List.of(); // 오답 문장
@@ -60,5 +66,42 @@ public class SentenceServiceImpl implements SentenceService {
         return List.of();
     }
 
+    public String makeResultTag(String originText, String userText) {
+        StringBuilder result = new StringBuilder();
+        int correctIndex = 0;
+        int answerIndex = 0;
+        while (correctIndex < originText.length() && answerIndex < userText.length()) {
+            char correctChar = originText.charAt(correctIndex);
+            char answerChar = userText.charAt(answerIndex);
 
+            if (correctChar == answerChar) {
+                result.append(correctChar);  // 정답인 경우
+                correctIndex++;
+                answerIndex++;
+            } else {
+                if (correctChar == ' ') {
+                    // 정답에서는 띄어야 하는데 답안이 공백이 아닌 경우
+                    result.append("<span class='extra-char'>").append(answerChar).append("</span>");
+                    correctIndex++;
+                } else if (answerChar == ' ') {
+                    // 정답에서는 들여쓰기 해야 하는데 답안이 공백인 경우
+                    result.append("<span class='missing-char'> </span>");
+                    answerIndex++;
+                } else {
+                    // 글자 자체가 틀린 경우
+                    result.append("<span class='char-error'>").append(answerChar).append("</span>");
+                    correctIndex++;
+                    answerIndex++;
+                }
+            }
+        }
+
+        // 남은 답안 인덱스 처리
+        while (answerIndex < userText.length()) {
+            result.append("<span class='char-error'>").append(userText.charAt(answerIndex)).append("</span>");
+            answerIndex++;
+        }
+
+        return result.toString();
+    }
 }

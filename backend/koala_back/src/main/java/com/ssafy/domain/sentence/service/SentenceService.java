@@ -12,4 +12,7 @@ public interface SentenceService {
 
     // 채점 알고리즘
     public List<SentenceTestResponse> testWritingPaper(List<SentenceTestRequest> writingPaper);
+
+    // 채점 태그 변환 알고리즘
+    public String makeResultTag(String correct, String answer);
 }
