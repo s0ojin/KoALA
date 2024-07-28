@@ -9,7 +9,7 @@ export default function OnlineLearningSideBar() {
   const [activeTab, setActiveTab] = useState<TabId>('none')
 
   return (
-    <div className="overflow-hidden h-screen">
+    <div className="max-w-md h-screen">
       <OnlineLearningTabList
         activeTab={activeTab}
         setActiveTab={setActiveTab}

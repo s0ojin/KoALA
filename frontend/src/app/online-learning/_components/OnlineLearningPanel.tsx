@@ -30,9 +30,9 @@ export default function OnlineLearningPanel({
       animate="visible"
       exit="exit"
       transition={{ type: 'just', duration: 0.3 }}
-      className="bg-white w-[52rem] h-screen rounded-tl-[3rem] overflow-hidden shadow-lg mr-20"
+      className="bg-white w-[28rem] h-screen rounded-tl-[3rem] shadow-lg"
     >
-      <div className="h-28 shadow-md p-6 flex flex-col justify-center gap-1">
+      <div className="h-28 rounded-tl-[3rem] shadow-md p-6 flex flex-col justify-center gap-1">
         <h2 className="font-medium text-xl">{activeTabInfo?.label}</h2>
         <div className="flex items-center gap-1">
           <NotiIcon width="24" height="24" />
