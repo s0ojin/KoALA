@@ -30,7 +30,7 @@ export default function OnlineLearningPanel({
       animate="visible"
       exit="exit"
       transition={{ type: 'just', duration: 0.3 }}
-      className="bg-white w-[28rem] h-screen rounded-tl-[3rem] shadow-lg"
+      className="bg-white flex flex-col w-[28rem] h-screen rounded-tl-[3rem] shadow-lg"
     >
       <div className="h-28 rounded-tl-[3rem] shadow-md p-6 flex flex-col justify-center gap-1">
         <h2 className="font-medium text-xl">{activeTabInfo?.label}</h2>
@@ -39,7 +39,7 @@ export default function OnlineLearningPanel({
           <p className="mx-2">{activeTabInfo?.description}</p>
         </div>
       </div>
-      {children}
+      <div className="p-5 flex-1">{children}</div>
     </motion.div>
   )
 }
