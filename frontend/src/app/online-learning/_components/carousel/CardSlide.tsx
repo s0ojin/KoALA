@@ -64,14 +64,14 @@ export default function CardSlide() {
   }
 
   return (
-    <div className='flex mt-24 max-w-[75rem] min-w-[48rem] h-[26rem] mx-auto'>
+    <div className='flex mt-24 max-w-[75rem] min-w-[48rem] max-h-[26rem] mx-auto'>
       <div className='m-auto'>
         <button onClick={handlePrev} className={ cardList.length <= 3 ? 'hidden' : '' }>
           <Image src={ChevronLeft} className='w-[2.5rem]' alt='chevron-left'/>
         </button>
       </div>
       <Swiper
-        className='max-w-[60rem] max-h-[26rem] m-auto'
+        className='max-w-[60rem] m-auto'
         modules={[Virtual, Autoplay]}
         onActiveIndexChange={(e)=>setSwiperIndex(e.realIndex)}
         onSwiper={(e) => {setSwiper(e)}}

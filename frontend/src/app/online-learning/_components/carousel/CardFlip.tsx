@@ -52,7 +52,7 @@ export default function CardFlip({...props}) {
 
     return (
       <motion.div
-        className='min-w-[10rem] h-[28rem]'
+        className='min-w-[10rem] aspect-[5/7]'
         onClick={handleClick}
         transition={spring}
         style={{
