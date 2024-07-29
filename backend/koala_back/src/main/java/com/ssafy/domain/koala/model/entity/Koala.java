@@ -76,4 +76,20 @@ public class Koala {
 		this.koalaName = koalaName;
 	}
 
+	// exp 100이면 level 2로 변경하고 exp 0으로 초기화
+	public void increaseKoalaLevel() {
+		validateKoalaLevel(koalaLevel);
+		this.koalaLevel++;
+	}
+
+	// increase 호출되면 1증가
+	public void increaseKoalaExp() {
+		validateKoalaExp(koalaExp);
+		this.koalaExp++;
+		if (koalaExp == 100) {
+			increaseKoalaLevel();
+			this.koalaExp = 0;
+		}
+	}
+
 }
