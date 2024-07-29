@@ -22,4 +22,8 @@ public interface UserService {
 	UserResponse updateUser(UserUpdateRequest userUpdateRequest);
 
 	void deleteUser();
+
+	void increaseUserExp();
+
+	void increaseUserLevel();
 }

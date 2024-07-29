@@ -120,11 +120,31 @@ public class UserServiceImpl implements UserService {
 		return UserResponse.toDto(userRepository.save(user));
 	}
 
-	@Transactional
 	@Override
+	@Transactional
 	public void deleteUser() {
 		User user = userInfoProvider.getCurrentUser();
 		userRepository.delete(user);
+	}
+
+	@Override
+	@Transactional
+	public void increaseUserExp() {
+		User user = userInfoProvider.getCurrentUser();
+		user.increaseUserExp();
+		if (user.getUserExp() >= 100) {
+			increaseUserLevel();
+			user.setUserExp(100L - user.getUserExp());
+		}
+		userRepository.save(user);
+	}
+
+	@Override
+	@Transactional
+	public void increaseUserLevel() {
+		User user = userInfoProvider.getCurrentUser();
+		user.increaseUserLevel();
+		userRepository.save(user);
 	}
 
 }

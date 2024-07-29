@@ -33,4 +33,9 @@ public class KoalaController {
 		return ResponseEntity.ok().body(koalaService.updateKoalaName(koalaNameRequest, koalaId));
 	}
 
+	@GetMapping("/{koala_id}/leaves")
+	public ResponseEntity<?> increaseKoalaExp(@PathVariable("koala_id") Long koalaId) {
+		return ResponseEntity.ok().body(koalaService.increaseKoalaExp(koalaId));
+	}
+
 }
