@@ -71,4 +71,9 @@ public class Koala {
 		this.koalaExp = koalaExp;
 	}
 
+	public void updateKoalaName(final String koalaName) {
+		validateKoalaName(koalaName);
+		this.koalaName = koalaName;
+	}
+
 }
