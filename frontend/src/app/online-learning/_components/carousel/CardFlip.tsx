@@ -22,7 +22,7 @@ export default function CardFlip({...props}) {
     const [rotateYaxis, setRotateYaxis] = useState(0)
     const ref = useRef(null)
 
-    const handleMouseMove = (event) => {
+    const handleMouseMove = (event: React.MouseEvent<HTMLElement>) => {
       const element = ref.current
       const elementRect = element.getBoundingClientRect()
       const elementWidth = elementRect.width
@@ -52,7 +52,7 @@ export default function CardFlip({...props}) {
 
     return (
       <motion.div
-        className='w-[20rem] h-[26rem]'
+        className='min-w-[10rem] h-[28rem]'
         onClick={handleClick}
         transition={spring}
         style={{
@@ -62,7 +62,6 @@ export default function CardFlip({...props}) {
       >
         <motion.div
           ref={ref}
-          // whileHover={{ scale: 1.1 }} //Change the scale of zooming in when hovering
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseEnd}
           transition={spring}
