@@ -1,64 +1,74 @@
 package com.ssafy.domain.koala.model.entity;
 
-import com.ssafy.domain.koala.model.validation.KoalaValidation;
-import com.ssafy.domain.user.model.entity.User;
-import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
+import static com.ssafy.domain.koala.model.validation.KoalaValidation.*;
+import static jakarta.persistence.FetchType.*;
+import static lombok.AccessLevel.*;
 
 import java.time.LocalDateTime;
 
-import static com.ssafy.domain.koala.model.validation.KoalaValidation.*;
-import static jakarta.persistence.FetchType.LAZY;
-import static lombok.AccessLevel.PROTECTED;
+import com.ssafy.domain.user.model.entity.User;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@Builder
 @Table(name = "koala")
 @NoArgsConstructor(access = PROTECTED)
+@AllArgsConstructor(access = PROTECTED)
 public class Koala {
 
-    @Id
-    @GeneratedValue
-    @Column(name = "koala_id")
-    private Long koalaId;
+	@Id
+	@GeneratedValue
+	@Column(name = "koala_id")
+	private Long koalaId;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+	@ManyToOne(fetch = LAZY)
+	@JoinColumn(name = "user_id", nullable = false)
+	private User user;
 
-    @Column(name = "koala_name", nullable = false, columnDefinition = "varchar(20) default '코알라'")
-    private String koalaName;
+	@Builder.Default
+	@Column(name = "koala_name")
+	private String koalaName = "코알라";
 
-    @Column(name = "koala_level", nullable = false)
-    @ColumnDefault("1")
-    private Integer koalaLevel;
+	@Builder.Default
+	@Column(name = "koala_level")
+	private Integer koalaLevel = 1;
 
-    @Column(name = "koala_exp", nullable = false)
-    @ColumnDefault("0")
-    private Integer koalaExp;
+	@Builder.Default
+	@Column(name = "koala_exp")
+	private Integer koalaExp = 0;
 
-    @Column(name = "koala_type", nullable = false)
-    @ColumnDefault("1")
-    private Integer koalaType;
+	@Builder.Default
+	@Column(name = "koala_type")
+	private Integer koalaType = 1;
 
-    @Column(name = "koala_created_at", nullable = false)
-    private LocalDateTime koalaCreatedAt = LocalDateTime.now();
+	@Builder.Default
+	@Column(name = "koala_created_at")
+	private LocalDateTime koalaCreatedAt = LocalDateTime.now();
 
-    @Builder
-    public Koala(
-            final User user,
-            final String koalaName,
-            final Integer koalaLevel,
-            final Integer koalaExp,
-            final Integer koalaType) {
-        validate(koalaName, koalaLevel, koalaExp, koalaType);
-        this.user = user;
-        this.koalaName = koalaName;
-        this.koalaLevel = koalaLevel;
-        this.koalaExp = koalaExp;
-    }
+	@Builder
+	public Koala(
+		final User user,
+		final String koalaName,
+		final Integer koalaLevel,
+		final Integer koalaExp,
+		final Integer koalaType) {
+		validate(koalaName, koalaLevel, koalaExp, koalaType);
+		this.user = user;
+		this.koalaName = koalaName;
+		this.koalaLevel = koalaLevel;
+		this.koalaExp = koalaExp;
+	}
 
 }

@@ -1,39 +1,47 @@
 package com.ssafy.domain.sentence.model.entity;
 
+import static jakarta.persistence.FetchType.*;
+import static lombok.AccessLevel.*;
+
+import java.time.LocalDateTime;
+
 import com.ssafy.domain.user.model.entity.User;
-import jakarta.persistence.*;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
-import static jakarta.persistence.FetchType.LAZY;
-import static lombok.AccessLevel.PROTECTED;
-
 @Entity
 @Getter
+@Builder
 @Table(name = "review_sentences")
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PROTECTED)
-@Builder
 public class ReviewSentence {
 
-    @Id
-    @GeneratedValue
-    @Column(name = "review_sentence_id")
-    private Long reviewSentenceId;
+	@Id
+	@GeneratedValue
+	@Column(name = "review_sentence_id")
+	private Long reviewSentenceId;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+	@ManyToOne(fetch = LAZY)
+	@JoinColumn(name = "user_id", nullable = false)
+	private User user;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "sentece_id", nullable = false)
-    private Sentence sentence;
+	@ManyToOne(fetch = LAZY)
+	@JoinColumn(name = "sentence_id", nullable = false)
+	private Sentence sentence;
 
-    @Column(name = "review_sentence_created_at", nullable = false)
-    private LocalDateTime reviewSentenceCreatedAt = LocalDateTime.now();
+	@Builder.Default
+	@Column(name = "review_sentence_created_at")
+	private LocalDateTime reviewSentenceCreatedAt = LocalDateTime.now();
 
 }

@@ -1,14 +1,20 @@
 package com.ssafy.domain.lecture.model.entity;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import static jakarta.persistence.FetchType.*;
+import static lombok.AccessLevel.*;
 
 import java.time.LocalTime;
 
-import static jakarta.persistence.FetchType.LAZY;
-import static lombok.AccessLevel.PROTECTED;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
@@ -17,23 +23,22 @@ import static lombok.AccessLevel.PROTECTED;
 @Table(name = "lecture_schedule")
 public class LectureSchedule {
 
-    @Id
-    @GeneratedValue
-    @Column(name = "lecture_schedule_id")
-    private Long lectureScheduleId;
+	@Id
+	@GeneratedValue
+	@Column(name = "lecture_schedule_id")
+	private Long lectureScheduleId;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "lecture_id", nullable = false)
-    private Lecture lecture;
+	@ManyToOne(fetch = LAZY)
+	@JoinColumn(name = "lecture_id", nullable = false)
+	private Lecture lecture;
 
-    @Column(name = "day", nullable = false)
-    private int day;
+	@Column(name = "day", nullable = false)
+	private int day;
 
-    @Column(name = "start_time", nullable = false)
-    private LocalTime startTime;
+	@Column(name = "start_time", nullable = false)
+	private LocalTime startTime;
 
-    @Column(name = "end_time", nullable = false)
-    private LocalTime endTime;
-
+	@Column(name = "end_time", nullable = false)
+	private LocalTime endTime;
 
 }

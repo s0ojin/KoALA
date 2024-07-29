@@ -5,23 +5,23 @@ import com.ssafy.domain.sentence.model.entity.ReviewSentence;
 import com.ssafy.domain.sentence.model.entity.Sentence;
 import com.ssafy.domain.user.model.entity.User;
 
-import lombok.AllArgsConstructor;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Getter
-@ToString
 @NoArgsConstructor
-@AllArgsConstructor
-public class ReviewSentenceRequest {
+public class ReviewSaveRequest {
+
+	@NotBlank(message = "문장 아이디는 필수 입력 값입니다.")
 	@JsonProperty("sentence_id")
 	private Long sentenceId;
 
-	public ReviewSentence toEntity(Sentence sentence, User user) {
+	public ReviewSentence toReviewSentenceEntity(Sentence sentence, User user) {
 		return ReviewSentence.builder()
 			.sentence(sentence)
 			.user(user)
 			.build();
 	}
+
 }
