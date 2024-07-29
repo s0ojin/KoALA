@@ -55,6 +55,7 @@ public class KoalaServiceImpl implements KoalaService {
 		}
 
 		// 코알라 경험치 증가
+		user.decreaseLeaves();
 		koala.increaseKoalaExp();
 
 		return KoalaResponse.toDto(koalaRepository.save(koala));

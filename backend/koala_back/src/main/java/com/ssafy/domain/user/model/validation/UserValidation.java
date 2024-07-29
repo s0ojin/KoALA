@@ -42,6 +42,15 @@ public class UserValidation {
 		}
 	}
 
+	public static void validateDecreaseLeaves(final Integer leaves) {
+		if (leaves == null) {
+			throw new UserException("유저의 잎은 필수 값입니다.");
+		}
+		if (leaves <= 0) {
+			throw new UserException("유저의 잎은 0보다 작을 수 없습니다.");
+		}
+	}
+
 	public static void validateKoala(final Koala koala) {
 		if (koala == null) {
 			throw new UserException("유저의 코알라는 필수 값입니다.");

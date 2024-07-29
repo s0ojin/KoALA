@@ -1,5 +1,6 @@
 package com.ssafy.domain.user.model.entity;
 
+import static com.ssafy.domain.user.model.validation.UserValidation.*;
 import static jakarta.persistence.CascadeType.*;
 import static jakarta.persistence.FetchType.*;
 import static lombok.AccessLevel.*;
@@ -21,6 +22,7 @@ import com.ssafy.domain.lecture.model.entity.LectureNote;
 import com.ssafy.domain.lecture.model.entity.RegisteredLecture;
 import com.ssafy.domain.sentence.model.entity.ReviewSentence;
 import com.ssafy.domain.sentence.model.entity.Sentence;
+import com.ssafy.domain.user.model.validation.UserValidation;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -179,6 +181,7 @@ public class User implements UserDetails {
 	}
 
 	public void decreaseLeaves() {
+		validateDecreaseLeaves(this.leaves);
 		this.leaves--;
 	}
 

@@ -132,9 +132,9 @@ public class UserServiceImpl implements UserService {
 	public void increaseUserExp() {
 		User user = userInfoProvider.getCurrentUser();
 		user.increaseUserExp();
-		if (user.getUserExp() == 100) {
+		if (user.getUserExp() >= 100) {
 			increaseUserLevel();
-			user.setUserExp(0L);
+			user.setUserExp(100L - user.getUserExp());
 		}
 		userRepository.save(user);
 	}
