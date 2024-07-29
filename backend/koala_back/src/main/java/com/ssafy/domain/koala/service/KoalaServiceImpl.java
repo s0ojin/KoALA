@@ -42,4 +42,20 @@ public class KoalaServiceImpl implements KoalaService {
 		koala.updateKoalaName(koalaNameRequest.getKoalaName());
 		return KoalaResponse.toDto(koalaRepository.save(koala));
 	}
+
+	@Override
+	@Transactional
+	public KoalaResponse increaseKoalaExp(Long koalaId) {
+		// user 정보와 비교해서 koala의 user 정보가 일치하는지 확인
+		User user = userInfoProvider.getCurrentUser();
+		Koala koala = koalaRepository.findById(koalaId)
+			.orElseThrow(() -> new IllegalArgumentException("해당 id의 코알라 정보가 존재하지 않습니다."));
+		if (!koala.getUser().equals(user)) {
+			throw new IllegalArgumentException("해당 유저의 코알라 정보와 일치하지 않습니다.");
+		}
+
+		// 코알라 경험치 증가
+		koala.increaseKoalaExp();
+		return KoalaResponse.toDto(koalaRepository.save(koala));
+	}
 }
