@@ -40,7 +40,6 @@ public class KoalaServiceImpl implements KoalaService {
 
 		// 코알라 이름 변경
 		koala.updateKoalaName(koalaNameRequest.getKoalaName());
-		koalaRepository.save(koala);
-		return KoalaResponse.toDto(koala);
+		return KoalaResponse.toDto(koalaRepository.save(koala));
 	}
 }
