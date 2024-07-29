@@ -2,11 +2,13 @@
 
 'use client'
 
-import Image from 'next/image';
-import { useState } from 'react';
+import Image from 'next/image'
+import ChevronLeft from '/public/icons/chevron-left.svg'
+import ChevronRight from '/public/icons/chevron-right.svg'
+import { useState } from 'react'
 import { Virtual, Autoplay } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import CardFlip from '@/app/online-learning/_components/carousel/CardFlip';
+import CardFlip from '@/app/online-learning/_components/carousel/CardFlip'
 // Import Swiper styles
 import 'swiper/css'
 import 'swiper/css/navigation'
@@ -36,12 +38,12 @@ const cardList = [
     schedule: '월 수 금 15:00 ~ 17:00',
     pagelink: '/1'
   },
-  { lecture: '안녕5',
-    teacher: '빡빡이 아저씨야.',
-    description: '식당에 들어설 때부터 마주칠 수 있는 다양한 상황에서 나올 수 있는 대화를 다룹니다. <식당에 방문 했을 때 I> 수업을 먼저 수강해야합니다.',
-    schedule: '월 수 금 15:00 ~ 17:00',
-    pagelink: '/1'
-  },
+  // { lecture: '안녕5',
+  //   teacher: '빡빡이 아저씨야.',
+  //   description: '식당에 들어설 때부터 마주칠 수 있는 다양한 상황에서 나올 수 있는 대화를 다룹니다. <식당에 방문 했을 때 I> 수업을 먼저 수강해야합니다.',
+  //   schedule: '월 수 금 15:00 ~ 17:00',
+  //   pagelink: '/1'
+  // },
 ]
 
 export default function CardSlide() {
@@ -62,20 +64,20 @@ export default function CardSlide() {
   }
 
   return (
-    <div className='flex mt-24 w-[80rem] min-h-[26rem] mx-auto'>
+    <div className='flex mt-24 max-w-[75rem] min-w-[48rem] h-[26rem] mx-auto'>
       <div className='m-auto'>
-        <button onClick={handlePrev}>
-          <img src="https://w7.pngwing.com/pngs/551/108/png-transparent-arrow-illustration-arrow-icon-right-arrow-angle-web-design-internet-thumbnail.png" className="w-[2.5rem] rotate-180" alt="" />
+        <button onClick={handlePrev} className={ cardList.length <= 3 ? 'hidden' : '' }>
+          <Image src={ChevronLeft} className='w-[2.5rem]' alt='chevron-left'/>
         </button>
       </div>
       <Swiper
-        className='w-[70rem] m-auto'
+        className='max-w-[60rem] max-h-[26rem] m-auto'
         modules={[Virtual, Autoplay]}
         onActiveIndexChange={(e)=>setSwiperIndex(e.realIndex)}
         onSwiper={(e) => {setSwiper(e)}}
         slidesPerView={3}
-        centeredSlides={true}
-        spaceBetween={50}
+        centeredSlides={false}
+        spaceBetween={30}
         loop={true}
         autoplay={{
           delay: 5000, // 5초마다 자동 재생
@@ -83,14 +85,14 @@ export default function CardSlide() {
         }}
       >
         {slides.map((slideContent, index) => (
-          <SwiperSlide key={slideContent} virtualIndex={index}>
+          <SwiperSlide key={index} virtualIndex={index}>
             {slideContent}
           </SwiperSlide>
         ))}
       </Swiper>
       <div className='m-auto'>
-        <button onClick={handleNext}>
-          <img src="https://w7.pngwing.com/pngs/551/108/png-transparent-arrow-illustration-arrow-icon-right-arrow-angle-web-design-internet-thumbnail.png" className="w-[2.5rem]" alt="" />
+        <button onClick={handleNext} className={ cardList.length <= 3 ? 'hidden' : '' }>
+          <Image src={ChevronRight} className='w-[2.5rem]' alt='chevron-right'/>
         </button>
       </div>
     </div>
