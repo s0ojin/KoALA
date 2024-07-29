@@ -1,7 +1,10 @@
 package com.ssafy.domain.koala.service;
 
+import com.ssafy.domain.koala.model.dto.request.KoalaNameRequest;
 import com.ssafy.domain.koala.model.dto.response.KoalaResponse;
+import com.ssafy.domain.koala.model.entity.Koala;
 import com.ssafy.domain.koala.repository.KoalaRepository;
+import com.ssafy.domain.user.model.entity.User;
 import com.ssafy.global.common.UserInfoProvider;
 
 import lombok.RequiredArgsConstructor;
@@ -24,4 +27,18 @@ public class KoalaServiceImpl implements KoalaService {
 		return KoalaResponse.toDto(koalaRepository.findByUser(userInfoProvider.getCurrentUser()));
 	}
 
+	@Override
+	@Transactional
+	public KoalaResponse updateKoalaName(KoalaNameRequest koalaNameRequest) {
+		// user 정보와 비교해서 koala의 user 정보가 일치하는지 확인
+		Koala koala = koalaRepository.findByUser(userInfoProvider.getCurrentUser());
+		User user = userInfoProvider.getCurrentUser();
+		if (!koala.getUser().equals(user)) {
+			throw new IllegalArgumentException("해당 유저의 코알라 정보와 일치하지 않습니다.");
+		}
+
+		// 코알라 이름 변경
+		koalaRepository.save(koalaNameRequest.toEntity(koala, koalaNameRequest.getKoalaName()));
+		return KoalaResponse.toDto(koala);
+	}
 }
