@@ -66,12 +66,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public JwtToken generateNewAccessToken(HttpServletRequest request) {
-        String refreshToken  = jwtTokenProvider.resolveToken(request);
+    public JwtToken generateNewAccessToken(String refreshToken) {
         if (!jwtTokenProvider.validateRefreshToken(refreshToken)) {
             throw new TokenException("Invalid Refresh Token");
         }
-        String loginId = jwtTokenProvider.getAuthentication(refreshToken).getName();
+        
+        String loginId = userInfoProvider.getCurrentLoginId();
         String newAccessToken = jwtTokenProvider.generateAccessToken(loginId);
         return JwtToken.builder()
                 .grantType("Bearer")

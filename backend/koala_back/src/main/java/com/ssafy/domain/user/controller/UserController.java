@@ -7,11 +7,13 @@ import com.ssafy.domain.user.model.dto.response.UserFindResponse;
 import com.ssafy.domain.user.model.dto.response.UserResponse;
 import com.ssafy.domain.user.service.UserService;
 import com.ssafy.global.auth.jwt.dto.JwtToken;
+import com.ssafy.global.auth.jwt.dto.RefreshToken;
 import com.ssafy.global.error.exception.TokenException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -44,13 +46,14 @@ public class UserController {
     }
 
     @GetMapping("/refresh")
-    public ResponseEntity<?> refresh(HttpServletRequest request) {
-        try {
-            JwtToken newToken = userService.generateNewAccessToken(request);
-            return ResponseEntity.ok().body(newToken);
-        } catch (TokenException e) {
-            return ResponseEntity.status(401).body("Invalid or expired refresh token");
+    public ResponseEntity<?> refresh(@RequestBody RefreshToken request) {
+        String refreshToken = request.getRefreshToken();
+        if (refreshToken == null || refreshToken.isEmpty()) {
+            return ResponseEntity.badRequest().body("Refresh token is missing");
         }
+
+        JwtToken jwtToken = userService.generateNewAccessToken(refreshToken);
+        return ResponseEntity.ok(jwtToken);
     }
 
     @PostMapping("/logout")

@@ -89,7 +89,7 @@ public class JwtTokenProvider {
     }
 
     // accessToken
-    private Claims parseClaims(String accessToken) {
+    public Claims parseClaims(String accessToken) {
         try {
             return Jwts.parserBuilder()
                     .setSigningKey(secretKey)
@@ -133,8 +133,9 @@ public class JwtTokenProvider {
     }
 
     public String generateAccessToken(String username) {
-        return Jwts.builder()
-                .setSubject(username)
+        String accessToken = Jwts.builder()
+                .setSubject(authentication.getName())
+                .claim("auth", authorities)
                 .claim("type", "access")
                 .setExpiration(new Date(System.currentTimeMillis() + accessTokenExpireTime))
                 .signWith(secretKey, SignatureAlgorithm.HS256)
