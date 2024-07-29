@@ -7,5 +7,5 @@ public interface KoalaService {
 
 	KoalaResponse findKoala();
 
-	KoalaResponse updateKoalaName(KoalaNameRequest koalaNameRequest);
+	KoalaResponse updateKoalaName(KoalaNameRequest koalaNameRequest, Long koalaId);
 }
