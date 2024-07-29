@@ -7,6 +7,8 @@ import com.ssafy.domain.user.model.dto.response.UserFindResponse;
 import com.ssafy.domain.user.model.dto.response.UserResponse;
 import com.ssafy.domain.user.service.UserService;
 import com.ssafy.global.auth.jwt.dto.JwtToken;
+import com.ssafy.global.error.exception.TokenException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
@@ -42,10 +44,13 @@ public class UserController {
     }
 
     @GetMapping("/refresh")
-    public ResponseEntity<?> refresh() {
-//        JwtToken newToken = userService.generateNewAccessToken(refreshToken);
-//        return ResponseEntity.ok(newToken);
-        return null; // 수정중,,,
+    public ResponseEntity<?> refresh(HttpServletRequest request) {
+        try {
+            JwtToken newToken = userService.generateNewAccessToken(request);
+            return ResponseEntity.ok().body(newToken);
+        } catch (TokenException e) {
+            return ResponseEntity.status(401).body("Invalid or expired refresh token");
+        }
     }
 
     @PostMapping("/logout")

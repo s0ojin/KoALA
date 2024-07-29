@@ -12,6 +12,7 @@ import com.ssafy.global.auth.jwt.JwtTokenProvider;
 import com.ssafy.global.auth.jwt.dto.JwtToken;
 import com.ssafy.global.common.UserInfoProvider;
 import com.ssafy.global.error.exception.TokenException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -65,7 +66,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public JwtToken generateNewAccessToken(String refreshToken) {
+    public JwtToken generateNewAccessToken(HttpServletRequest request) {
+        String refreshToken  = jwtTokenProvider.resolveToken(request);
         if (!jwtTokenProvider.validateRefreshToken(refreshToken)) {
             throw new TokenException("Invalid Refresh Token");
         }
@@ -74,7 +76,7 @@ public class UserServiceImpl implements UserService {
         return JwtToken.builder()
                 .grantType("Bearer")
                 .accessToken(newAccessToken)
-                .refreshToken(refreshToken) // 기존 Refresh Token은 기대로 사용합니다
+                .refreshToken(refreshToken) // 기존 Refresh Token은 그대로 사용합니다
                 .build();
     }
 

@@ -6,12 +6,13 @@ import com.ssafy.domain.user.model.dto.response.UserFindResponse;
 import com.ssafy.domain.user.model.dto.response.UserResponse;
 import com.ssafy.domain.user.model.entity.User;
 import com.ssafy.global.auth.jwt.dto.JwtToken;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 public interface UserService {
     public UserResponse signUp(UserSignUpRequest userSignUpRequest);
     public JwtToken signIn(String loginId, String password);
-    public JwtToken generateNewAccessToken(String refreshToken);
+    public JwtToken generateNewAccessToken(HttpServletRequest request);
 
     public boolean checkLoginId(String loginId);
     public boolean checkNickname(String nickname);
