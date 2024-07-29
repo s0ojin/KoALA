@@ -166,16 +166,16 @@ public class User implements UserDetails {
 		this.userLevel++;
 	}
 
-	public void increaseUserLevel(Integer value) {
-		this.userLevel += value;
-	}
-
 	public void increaseUserExp() {
 		this.userExp++;
-		if (this.userExp == 100) {
+		if (this.userExp >= 100) {
 			increaseUserLevel();
-			this.userExp = 0L;
+			this.userExp =- 100L;
 		}
+	}
+
+	public void increaseUserExp(Integer value) {
+		this.userExp += value;
 	}
 
 	public void decreaseLeaves() {
