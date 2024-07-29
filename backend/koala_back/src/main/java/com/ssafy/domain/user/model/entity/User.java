@@ -178,4 +178,8 @@ public class User implements UserDetails {
 		}
 	}
 
+	public void decreaseLeaves() {
+		this.leaves--;
+	}
+
 }
