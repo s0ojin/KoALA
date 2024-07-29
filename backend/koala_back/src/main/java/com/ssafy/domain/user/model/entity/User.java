@@ -162,4 +162,16 @@ public class User implements UserDetails {
 		return true;
 	}
 
+	public void increaseUserLevel() {
+		this.userLevel++;
+	}
+
+	public void increaseUserExp() {
+		this.userExp++;
+		if (this.userExp == 100) {
+			increaseUserLevel();
+			this.userExp = 0L;
+		}
+	}
+
 }
