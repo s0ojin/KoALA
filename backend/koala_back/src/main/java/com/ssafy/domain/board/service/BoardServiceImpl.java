@@ -28,16 +28,22 @@ public class BoardServiceImpl implements BoardService {
 	private final BoardCommentService boardCommentService;
 
 	@Override
-	public BoardDetailResponse getBoard(Long boardId, Pageable pageable) {
-		Page<BoardCommentResponse> comments = boardCommentService.getCommentsByBoardId(boardId, pageable);
-		return BoardDetailResponse.toDto(boardRepository.findById(boardId).orElseThrow(), comments);
-	}
-
-	@Override
 	@Transactional
 	public BoardResponse createBoard(BoardCreateRequest boardCreateRequest) {
 		User user = userInfoProvider.getCurrentUser();
 		return BoardResponse.toDto(boardRepository.save(boardCreateRequest.toEntity(user)));
+	}
+
+	@Override
+	public Page<BoardResponse> getBoards(Pageable pageable) {
+		Page<Board> boards = boardRepository.findAll(pageable);
+		return boards.map(BoardResponse::toDto);
+	}
+
+	@Override
+	public BoardDetailResponse getBoard(Long boardId, Pageable pageable) {
+		Page<BoardCommentResponse> comments = boardCommentService.getCommentsByBoardId(boardId, pageable);
+		return BoardDetailResponse.toDto(boardRepository.findById(boardId).orElseThrow(), comments);
 	}
 
 	@Override

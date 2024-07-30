@@ -35,7 +35,7 @@ public class BoardController {
 		BoardResponse boardCreateResponse = boardService.createBoard(boardCreateRequest);
 		return ResponseEntity.status(HttpStatus.CREATED).body(boardCreateResponse);
 	}
-	
+
 
 	@GetMapping("/{board_id}/comments")
 	public ResponseEntity<?> getBoard(@PathVariable("board_id") Long boardId, Pageable pageable) {
