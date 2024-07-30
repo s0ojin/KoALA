@@ -1,15 +1,5 @@
 package com.ssafy.domain.user.service;
 
-import java.util.NoSuchElementException;
-import java.util.Optional;
-
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.ssafy.domain.user.model.dto.request.UserSignUpRequest;
 import com.ssafy.domain.user.model.dto.request.UserUpdateRequest;
 import com.ssafy.domain.user.model.dto.response.UserFindResponse;
@@ -21,20 +11,22 @@ import com.ssafy.domain.user.repository.UserRepository;
 import com.ssafy.global.auth.jwt.JwtTokenProvider;
 import com.ssafy.global.auth.jwt.dto.JwtToken;
 import com.ssafy.global.common.UserInfoProvider;
-import com.ssafy.global.error.exception.TokenException;
-import jakarta.servlet.http.HttpServletRequest;
-
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -159,12 +151,10 @@ public class UserServiceImpl implements UserService {
             }
             String encodedPassword = userOptional.get().getPassword();
             List<GrantedAuthority> authorities = new ArrayList<>();
-            // 사용자 권한을 동적으로 설정
             authorities.add(new SimpleGrantedAuthority("ROLE_user"));
             UserDetails userDetails = new org.springframework.security.core.userdetails.User(loginId, encodedPassword, authorities);
             Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, encodedPassword, authorities);
-            JwtToken jwtToken = jwtTokenProvider.generateToken(authentication);
-            return jwtToken;
+            return jwtTokenProvider.generateNewToken(authentication, refreshToken);
         }
         return null;
     }

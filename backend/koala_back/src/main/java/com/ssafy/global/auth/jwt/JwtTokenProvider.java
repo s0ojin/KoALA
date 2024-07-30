@@ -5,7 +5,6 @@ import com.ssafy.global.error.exception.TokenException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -16,10 +15,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 import javax.crypto.SecretKey;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -54,7 +51,7 @@ public class JwtTokenProvider {
 
         System.out.println("Access Token: " + accessToken);
 
-        String refreshToken =Jwts.builder()
+        String refreshToken = Jwts.builder()
                 .setSubject(authentication.getName())
                 .setExpiration(new Date(System.currentTimeMillis() + refreshTokenExpireTime))
                 .claim("type", "refresh")
@@ -63,7 +60,47 @@ public class JwtTokenProvider {
 
         System.out.println("Refresh Token: " + refreshToken);
 
-        System.out.println(authentication.getName()+": authentication 이름");
+        System.out.println(authentication.getName() + ": authentication 이름");
+
+        return JwtToken.builder()
+                .grantType("Bearer")
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
+    }
+
+    public JwtToken generateNewToken(Authentication authentication, String refreshToken) {
+        String authorities = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+
+        // Access Token 생성
+        String accessToken = Jwts.builder()
+                .setSubject(authentication.getName())
+                .claim("auth", authorities)
+                .claim("type", "access")
+                .setExpiration(new Date(System.currentTimeMillis() + accessTokenExpireTime))
+                .signWith(secretKey, SignatureAlgorithm.HS256)
+                .compact();
+
+        System.out.println("Access Token: " + accessToken);
+
+        Claims claims = parseClaims(refreshToken);
+        Date refreshTokenExpiration = claims.getExpiration();
+        long currentTime = System.currentTimeMillis();
+        long fiveHoursInMills = 5 * 60 * 60 * 1000L;
+        if (refreshTokenExpiration.getTime() - currentTime < fiveHoursInMills) {
+            refreshToken = Jwts.builder()
+                    .setSubject(authentication.getName())
+                    .setExpiration(new Date(System.currentTimeMillis() + refreshTokenExpireTime))
+                    .claim("type", "refresh")
+                    .signWith(secretKey, SignatureAlgorithm.HS256)
+                    .compact();
+        }
+
+        System.out.println("Refresh Token: " + refreshToken);
+
+        System.out.println(authentication.getName() + ": authentication 이름");
 
         return JwtToken.builder()
                 .grantType("Bearer")
@@ -74,16 +111,16 @@ public class JwtTokenProvider {
 
 
     // JWT 토큰에서 사용자 인증 정보를 추출하여 Authentication 객체를 생성하는 메서드
-    public Authentication getAuthentication(String accessToken){
+    public Authentication getAuthentication(String accessToken) {
         // Authentication은 Spring Security에서 인증된 사용자의 정보를 나타내는 인터페이스이다.
         // Jwt 토큰 복호화
         Claims claims = parseClaims(accessToken);
         log.info("claim 정보: " + claims.get("type"));
 
-        if(claims.get("type").equals("refresh"))
+        if (claims.get("type").equals("refresh"))
             return null;
 
-        if(claims.get("auth") == null){
+        if (claims.get("auth") == null) {
             throw new RuntimeException("권한 정보가 없는 토큰입니다.");
         }
 
@@ -137,25 +174,6 @@ public class JwtTokenProvider {
         }
     }
 
-    public boolean validateRefreshToken(String token) {
-        try {
-            return validateToken(token);
-        } catch (SecurityException | MalformedJwtException e) {
-            log.info("Invalid JWT Token", e);
-            throw new TokenException("Invalid JWT Token", HttpStatus.FORBIDDEN);
-        } catch (ExpiredJwtException e) {
-            log.info("Expired JWT Token", e);
-            throw new TokenException("Expired JWT Token", HttpStatus.UNAUTHORIZED);
-        } catch (UnsupportedJwtException e) {
-            log.info("Unsupported JWT Token", e);
-            throw new TokenException("Unsupported JWT Token" ,HttpStatus.FORBIDDEN);
-        } catch (IllegalArgumentException e) {
-            log.info("JWT claims string is empty.", e);
-            throw new TokenException("JWT claims string is empty.",HttpStatus.FORBIDDEN);
-        }
-    }
-
-
 
     // Request Header에서 토큰 정보 추출
     /*
@@ -164,7 +182,6 @@ public class JwtTokenProvider {
     예를 들어, 헤더 값이 "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."과 같이 설정된다.
     서버는 요청을 처리하는 과정에서 resolveToken 메서드를 호출하여 "Authorization" 헤더에서 JWT 토큰을 추출한다.
      */
-
 
 
 }
