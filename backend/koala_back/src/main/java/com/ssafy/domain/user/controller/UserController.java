@@ -5,18 +5,20 @@ import com.ssafy.domain.user.model.dto.request.UserSignUpRequest;
 import com.ssafy.domain.user.model.dto.request.UserUpdateRequest;
 import com.ssafy.domain.user.model.dto.response.UserFindResponse;
 import com.ssafy.domain.user.model.dto.response.UserResponse;
+import com.ssafy.domain.user.repository.UserRepository;
 import com.ssafy.domain.user.service.UserService;
+import com.ssafy.global.auth.jwt.JwtTokenProvider;
 import com.ssafy.global.auth.jwt.dto.JwtToken;
-import com.ssafy.global.auth.jwt.dto.RefreshToken;
-import com.ssafy.global.error.exception.TokenException;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -26,6 +28,9 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final UserRepository userRepository;
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
     @PostMapping
     public ResponseEntity<?> signUp(@RequestBody UserSignUpRequest userSignUpRequest) {
@@ -52,6 +57,12 @@ public class UserController {
         SecurityContextHolder.clearContext();
         return ResponseEntity.ok().body("logout successful");
     }
+
+//    @GetMapping("/refresh")
+//    public ResponseEntity<?> refresh(HttpServletRequest request) {
+//
+//    }
+
 
     @GetMapping("/check/check-id/{loginId}")
     public ResponseEntity<?> checkLoginId(@PathVariable String loginId) {

@@ -72,6 +72,7 @@ public class JwtTokenProvider {
                 .build();
     }
 
+
     // JWT 토큰에서 사용자 인증 정보를 추출하여 Authentication 객체를 생성하는 메서드
     public Authentication getAuthentication(String accessToken){
         // Authentication은 Spring Security에서 인증된 사용자의 정보를 나타내는 인터페이스이다.

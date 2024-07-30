@@ -18,5 +18,4 @@ public interface UserService {
     public UserResponse updateUser(UserUpdateRequest userUpdateRequest);
     public void deleteUser();
 
-
 }
