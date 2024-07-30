@@ -47,6 +47,12 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
+	public Page<BoardResponse> getBoardsSortedByHit(Pageable pageable) {
+		Page<Board> boards = boardRepository.findAllByOrderByHitDesc(pageable);
+		return boards.map(BoardResponse::toDto);
+	}
+
+	@Override
 	@Transactional
 	public void increaseCommentNum(Long boardId) {
 		Board board = boardRepository.findById(boardId).orElseThrow();
