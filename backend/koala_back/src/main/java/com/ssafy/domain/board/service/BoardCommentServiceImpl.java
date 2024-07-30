@@ -46,4 +46,11 @@ public class BoardCommentServiceImpl implements BoardCommentService {
 		return BoardCommentResponse.toDto(boardCommentRepository.save(
 			boardCommentCreateRequest.toEntity(userInfoProvider.getCurrentUser(), currentBoard)));
 	}
+
+	@Override
+	@Transactional
+	public void deleteComment(Long commentId) {
+		boardCommentRepository.delete(boardCommentRepository.findById(commentId)
+			.orElseThrow(() -> new IllegalArgumentException("댓글이 존재하지 않습니다.")));
+	}
 }

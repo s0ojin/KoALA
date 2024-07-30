@@ -11,4 +11,6 @@ public interface BoardCommentService {
 	Page<BoardCommentResponse> getCommentsByBoardId(Long boardId, Pageable pageable);
 
 	BoardCommentResponse createComment(Long boardId, BoardCommentCreateRequest boardCommentCreateRequest);
+
+	void deleteComment(Long commentId);
 }
