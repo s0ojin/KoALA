@@ -66,4 +66,16 @@ public class Board {
 
 	@OneToMany(mappedBy = "board", cascade = ALL, orphanRemoval = true, fetch = LAZY)
 	private List<BoardImage> boardImages = new ArrayList<>();
+
+	public void increaseHit() {
+		this.hit++;
+	}
+
+	public void increaseCommentNum() {
+		this.commentNum++;
+	}
+
+	public void decreaseCommentNum() {
+		this.commentNum--;
+	}
 }
