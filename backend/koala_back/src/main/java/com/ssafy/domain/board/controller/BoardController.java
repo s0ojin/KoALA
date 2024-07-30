@@ -71,4 +71,10 @@ public class BoardController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(boardCommentResponse);
 	}
 
+	@DeleteMapping("/comments/{comment_id}")
+	public ResponseEntity<?> deleteComment(@PathVariable("comment_id") Long commentId) {
+		boardCommentService.deleteComment(commentId);
+		return ResponseEntity.ok(new JSONObject().put("message", "댓글 삭제 성공!").toString());
+	}
+
 }
