@@ -10,8 +10,11 @@ import com.ssafy.global.auth.jwt.dto.JwtToken;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.web.csrf.InvalidCsrfTokenException;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -20,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/users")
 public class UserController {
 
-	private final UserService userService;
+    private final UserService userService;
 
     @PostMapping
     public ResponseEntity<?> signUp(@RequestBody UserSignUpRequest userSignUpRequest) {
@@ -46,6 +49,24 @@ public class UserController {
 //        userService.logout(accessToken);
         SecurityContextHolder.clearContext();
         return ResponseEntity.ok().body("logout successful");
+    }
+
+    @GetMapping("/refresh")
+    public ResponseEntity<?> refreshToken(@RequestHeader("Authorization") String bearerToken) {
+        try {
+            JwtToken jwtToken = userService.createNewToken(bearerToken);
+            if (jwtToken != null) {
+                return ResponseEntity.ok().body(jwtToken);
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or expired refresh token");
+            }
+        } catch (UsernameNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        } catch (InvalidCsrfTokenException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid refresh token");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred");
+        }
     }
 
     @GetMapping("/check/check-id/{loginId}")
