@@ -2,6 +2,7 @@ package com.ssafy.domain.board.model.dto.request;
 
 import static lombok.AccessLevel.*;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ssafy.domain.board.model.entity.Board;
 import com.ssafy.domain.user.model.entity.User;
 
@@ -16,7 +17,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = PROTECTED)
 public class BoardCreateRequest {
 
+	@JsonProperty("board_title")
 	private String title;
+	@JsonProperty("board_content")
 	private String content;
 
 	public Board toEntity(User user) {
