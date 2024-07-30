@@ -16,5 +16,5 @@ public class BoardController {
 
 	private final BoardService boardService;
 
-	
+
 }
