@@ -1,15 +1,5 @@
 package com.ssafy.domain.user.service;
 
-import java.util.NoSuchElementException;
-import java.util.Optional;
-
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.ssafy.domain.user.model.dto.request.UserSignUpRequest;
 import com.ssafy.domain.user.model.dto.request.UserUpdateRequest;
 import com.ssafy.domain.user.model.dto.response.UserFindResponse;
@@ -22,9 +12,18 @@ import com.ssafy.global.auth.jwt.JwtTokenProvider;
 import com.ssafy.global.auth.jwt.dto.JwtToken;
 import com.ssafy.global.common.UserInfoProvider;
 import com.ssafy.global.error.exception.TokenException;
+import jakarta.servlet.http.HttpServletRequest;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -38,94 +37,80 @@ public class UserServiceImpl implements UserService {
 	private final PasswordEncoder passwordEncoder;
 	private final UserInfoProvider userInfoProvider;
 
-	@Transactional
-	public UserResponse signUp(UserSignUpRequest userSignUpRequest) {
-		if (userRepository.existsByLoginId(userSignUpRequest.getLoginId())) {
-			throw new IllegalArgumentException("이미 사용 중인 사용자 아이디입니다.");
-		}
-		String encodedPassword = passwordEncoder.encode(userSignUpRequest.getPassword());
-		Auth auth = authRepository.findByAuthName("user");
-		System.out.println(auth.getAuthId());
-		return UserResponse.toDto(userRepository.save(userSignUpRequest.toEntity(encodedPassword, auth)));
-	}
+    @Transactional
+    public UserResponse signUp(UserSignUpRequest userSignUpRequest) {
+        if (userRepository.existsByLoginId(userSignUpRequest.getLoginId())) {
+            throw new IllegalArgumentException("이미 사용 중인 사용자 아이디입니다.");
+        }
+        String encodedPassword = passwordEncoder.encode(userSignUpRequest.getPassword());
+        Auth auth = authRepository.findByAuthName("user");
+        System.out.println(auth.getAuthId());
+        return UserResponse.toDto(userRepository.save(userSignUpRequest.toEntity(encodedPassword, auth)));
+    }
 
-	@Transactional
-	@Override
-	public JwtToken signIn(String loginId, String password) {
-		// loginId + password 를 기반으로 Authentication 객체 생성
-		// 이때 authentication은 인증 여부를 확인하는 authenticated 값이 false (생성될때는 인증 X)
-		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginId,
-			password);
-		System.out.println("여기");
-		// 실제 검증. authenticate() 메서드를 통해 요청된 User 에 대한 검증 진행
-		// authenticate 메서드가 실행될 때 CustomUserDetailsService 에서 만든 loadUserByUsername 메서드 실행
-		// UsernamePasswordAuthenticationToken의 loginId와 password를 이용해 조회된 사용자 정보가 일치하는지 확인
-		Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-		System.out.println("jwt를 생성합니다");
-		// 인증 정보를 기반으로 JWT 토큰 생성
-		JwtToken jwtToken = jwtTokenProvider.generateToken(authentication);
-		return jwtToken;
-	}
+    @Transactional
+    @Override
+    public JwtToken signIn(String loginId, String password) {
+        // loginId + password 를 기반으로 Authentication 객체 생성
+        // 이때 authentication은 인증 여부를 확인하는 authenticated 값이 false (생성될때는 인증 X)
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginId, password);
+        // 실제 검증. authenticate() 메서드를 통해 요청된 User 에 대한 검증 진행
+        // authenticate 메서드가 실행될 때 CustomUserDetailsService 에서 만든 loadUserByUsername 메서드 실행
+        // UsernamePasswordAuthenticationToken의 loginId와 password를 이용해 조회된 사용자 정보가 일치하는지 확인
+        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+        System.out.println("jwt를 생성합니다");
+        // 인증 정보를 기반으로 JWT 토큰 생성
+        JwtToken jwtToken = jwtTokenProvider.generateToken(authentication);
+        return jwtToken;
+    }
 
-	@Override
-	public JwtToken generateNewAccessToken(String refreshToken) {
-		if (!jwtTokenProvider.validateRefreshToken(refreshToken)) {
-			throw new TokenException("Invalid Refresh Token");
-		}
-		String loginId = jwtTokenProvider.getAuthentication(refreshToken).getName();
-		String newAccessToken = jwtTokenProvider.generateAccessToken(loginId);
-		return JwtToken.builder()
-			.grantType("Bearer")
-			.accessToken(newAccessToken)
-			.refreshToken(refreshToken) // 기존 Refresh Token은 기대로 사용합니다
-			.build();
-	}
 
-	@Override
-	public boolean checkLoginId(String loginId) {
-		return userRepository.existsByLoginId(loginId);
-	}
 
-	@Override
-	public boolean checkNickname(String nickname) {
-		return userRepository.existsByNickname(nickname);
-	}
+    @Override
+    public boolean checkLoginId(String loginId) {
+        return userRepository.existsByLoginId(loginId);
+    }
 
-	@Transactional
-	@Override
-	public UserFindResponse findUser() {
-		String currentLoginId = userInfoProvider.getCurrentLoginId();
-		if (currentLoginId == null) {
-			throw new IllegalStateException("Current login_ID is null. User might not be authenticated.");
-		}
+    @Override
+    public boolean checkNickname(String nickname) {
+        return userRepository.existsByNickname(nickname);
+    }
 
-		Optional<User> optionalUser = userRepository.findByLoginId(currentLoginId);
-		if (!optionalUser.isPresent()) {
-			throw new NoSuchElementException("User not found with login_ID: " + currentLoginId);
-		}
+    @Transactional
+    @Override
+    public UserFindResponse findUser() {
+        String currentLoginId = userInfoProvider.getCurrentLoginId();
+        if (currentLoginId == null) {
+            throw new IllegalStateException("Current login_ID is null. User might not be authenticated.");
+        }
 
-		User user = optionalUser.get();
-		return UserFindResponse.toDto(user);
-	}
+        Optional<User> optionalUser = userRepository.findByLoginId(currentLoginId);
+        if (!optionalUser.isPresent()) {
+            throw new NoSuchElementException("User not found with login_ID: " + currentLoginId);
+        }
 
-	@Transactional
-	@Override
-	public UserResponse updateUser(UserUpdateRequest userUpdateRequest) {
+        User user = optionalUser.get();
+        return UserFindResponse.toDto(user);
+    }
 
-		User user = userInfoProvider.getCurrentUser();
+    @Transactional
+    @Override
+    public UserResponse updateUser(UserUpdateRequest userUpdateRequest) {
 
-		String encodedPassword = passwordEncoder.encode(userUpdateRequest.getPassword());
-		user.setNickname(userUpdateRequest.getNickname());
-		user.setPassword(encodedPassword);
-		return UserResponse.toDto(userRepository.save(user));
-	}
+        User user = userInfoProvider.getCurrentUser();
 
-	@Override
-	@Transactional
-	public void deleteUser() {
-		User user = userInfoProvider.getCurrentUser();
-		userRepository.delete(user);
-	}
+        String encodedPassword = passwordEncoder.encode(userUpdateRequest.getPassword());
+        user.setNickname(userUpdateRequest.getNickname());
+        user.setPassword(encodedPassword);
+        return UserResponse.toDto(userRepository.save(user));
+    }
+
+    @Transactional
+    @Override
+    public void deleteUser() {
+        User user = userInfoProvider.getCurrentUser();
+        userRepository.delete(user);
+    }
 
 	@Override
 	@Transactional
