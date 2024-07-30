@@ -22,6 +22,11 @@ public class BoardServiceImpl implements BoardService {
 	private final BoardRepository boardRepository;
 
 	@Override
+	public BoardResponse getBoard(Long boardId) {
+		return BoardResponse.toDto(boardRepository.findById(boardId).orElseThrow());
+	}
+
+	@Override
 	@Transactional
 	public BoardResponse createBoard(BoardCreateRequest boardCreateRequest) {
 		User user = userInfoProvider.getCurrentUser();
