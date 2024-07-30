@@ -1,8 +1,10 @@
 package com.ssafy.domain.board.controller;
 
+import org.json.JSONObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,6 +54,12 @@ public class BoardController {
 		BoardDetailResponse boardDetailResponse = boardService.getBoard(boardId, pageable);
 		boardService.increaseHit(boardId);
 		return ResponseEntity.ok().body(boardDetailResponse);
+	}
+
+	@DeleteMapping("/{board_id}")
+	public ResponseEntity<?> deleteBoard(@PathVariable("board_id") Long boardId) {
+		boardService.deleteBoard(boardId);
+		return ResponseEntity.ok(new JSONObject().put("message", "게시글 삭제 성공!").toString());
 	}
 
 	@PostMapping("/{board_id}/comments")
