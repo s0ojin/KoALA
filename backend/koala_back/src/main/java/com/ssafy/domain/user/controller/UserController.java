@@ -1,6 +1,7 @@
 package com.ssafy.domain.user.controller;
 
 import org.json.JSONObject;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,7 +37,7 @@ public class UserController {
 		UserResponse savedUserResponse = userService.signUp(userSignUpRequest); // 이걸 반환해도 됨
 		System.out.println(savedUserResponse.getNickname());
 		//        return ResponseEntity.ok().body(savedUserResponse);
-		return ResponseEntity.ok().body(new JSONObject().put("message", "Signup successful").toString());
+		return ResponseEntity.status(HttpStatus.CREATED).body(new JSONObject().put("message", "Signup successful").toString());
 	}
 
 	@PostMapping("/login")

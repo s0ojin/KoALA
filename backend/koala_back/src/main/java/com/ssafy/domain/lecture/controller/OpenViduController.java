@@ -16,7 +16,7 @@ import java.util.Map;
 @CrossOrigin(origins = "*")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/lectures")
+@RequestMapping("/lectures/openvidu")
 public class OpenViduController {
 
     private final OpenVidu openvidu;
@@ -28,7 +28,7 @@ public class OpenViduController {
             Session session = openvidu.createSession(properties);
             JSONObject response = new JSONObject();
             response.put("sessionId", session.getSessionId());
-            return ResponseEntity.ok().body(response.toString());
+            return ResponseEntity.status(HttpStatus.CREATED).body(response.toString());
         } catch (OpenViduJavaClientException | OpenViduHttpException e) {
             log.error("Error creating session", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -49,7 +49,7 @@ public class OpenViduController {
             Connection connection = session.createConnection(properties);
             JSONObject response = new JSONObject();
             response.put("token", connection.getToken());
-            return ResponseEntity.ok().body(response.toString());
+            return ResponseEntity.status(HttpStatus.CREATED).body(response.toString());
         } catch (OpenViduJavaClientException | OpenViduHttpException e) {
             log.error("Error creating connection", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

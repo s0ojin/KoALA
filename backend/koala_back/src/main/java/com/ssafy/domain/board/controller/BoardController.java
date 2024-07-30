@@ -1,5 +1,6 @@
 package com.ssafy.domain.board.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,7 +25,7 @@ public class BoardController {
 	@PostMapping
 	public ResponseEntity<?> createBoard(@RequestBody BoardCreateRequest boardCreateRequest) {
 		BoardResponse boardResponse = boardService.createBoard(boardCreateRequest);
-		return ResponseEntity.ok().body(boardResponse);
+		return ResponseEntity.status(HttpStatus.CREATED).body(boardResponse);
 	}
 
 }
