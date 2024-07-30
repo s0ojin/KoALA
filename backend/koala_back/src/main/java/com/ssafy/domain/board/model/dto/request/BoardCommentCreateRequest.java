@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = PROTECTED)
 public class BoardCommentCreateRequest {
 
-	@JsonProperty("board_id")
+	@JsonProperty("comment_content")
 	private String commentContent;
 
 	public BoardComment toEntity(User user, Board board) {
@@ -28,6 +28,5 @@ public class BoardCommentCreateRequest {
 			.board(board)
 			.build();
 	}
-
 
 }
