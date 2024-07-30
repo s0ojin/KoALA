@@ -12,6 +12,7 @@ import com.ssafy.global.auth.jwt.JwtTokenProvider;
 import com.ssafy.global.auth.jwt.dto.JwtToken;
 import com.ssafy.global.common.UserInfoProvider;
 import com.ssafy.global.error.exception.TokenException;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 
 import lombok.RequiredArgsConstructor;
@@ -21,10 +22,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.csrf.InvalidCsrfTokenException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -57,15 +65,19 @@ public class UserServiceImpl implements UserService {
         // loginId + password 를 기반으로 Authentication 객체 생성
         // 이때 authentication은 인증 여부를 확인하는 authenticated 값이 false (생성될때는 인증 X)
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginId, password);
+        System.out.println(authenticationToken);
         // 실제 검증. authenticate() 메서드를 통해 요청된 User 에 대한 검증 진행
         // authenticate 메서드가 실행될 때 CustomUserDetailsService 에서 만든 loadUserByUsername 메서드 실행
         // UsernamePasswordAuthenticationToken의 loginId와 password를 이용해 조회된 사용자 정보가 일치하는지 확인
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        System.out.println("jwt를 생성합니다");
+        System.out.println(authentication);
+
         // 인증 정보를 기반으로 JWT 토큰 생성
         JwtToken jwtToken = jwtTokenProvider.generateToken(authentication);
         return jwtToken;
     }
+
+
 
 
 
@@ -134,6 +146,31 @@ public class UserServiceImpl implements UserService {
 		user.increaseUserLevel();
 		userRepository.save(user);
 	}
+
+    @Override
+    public JwtToken createNewToken(String bearerToken) {
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            String refreshToken = bearerToken.substring(7);
+            if (!jwtTokenProvider.validateToken(refreshToken)) {
+                throw new IllegalArgumentException("Invalid refresh token");
+            }
+            Claims claims = jwtTokenProvider.parseClaims(refreshToken);
+            String loginId = claims.get("sub").toString();
+            Optional<User> userOptional = userRepository.findByLoginId(loginId);
+            if (!userOptional.isPresent()) {
+                throw new UsernameNotFoundException("User not found with loginId: " + loginId);
+            }
+            String encodedPassword = userOptional.get().getPassword();
+            List<GrantedAuthority> authorities = new ArrayList<>();
+            // 사용자 권한을 동적으로 설정
+            authorities.add(new SimpleGrantedAuthority("ROLE_user"));
+            UserDetails userDetails = new org.springframework.security.core.userdetails.User(loginId, encodedPassword, authorities);
+            Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, encodedPassword, authorities);
+            JwtToken jwtToken = jwtTokenProvider.generateToken(authentication);
+            return jwtToken;
+        }
+        return null;
+    }
 
 }
 

@@ -21,4 +21,6 @@ public interface UserService {
 
     void increaseUserExp();
     void increaseUserLevel();
+
+    JwtToken createNewToken(String bearerToken);
 }
