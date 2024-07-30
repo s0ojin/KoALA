@@ -5,7 +5,6 @@ import com.ssafy.domain.user.model.dto.request.UserUpdateRequest;
 import com.ssafy.domain.user.model.dto.response.UserFindResponse;
 import com.ssafy.domain.user.model.dto.response.UserResponse;
 import com.ssafy.global.auth.jwt.dto.JwtToken;
-import jakarta.servlet.http.HttpServletRequest;
 
 public interface UserService {
     public UserResponse signUp(UserSignUpRequest userSignUpRequest);
