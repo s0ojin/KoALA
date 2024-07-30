@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 public interface UserService {
     public UserResponse signUp(UserSignUpRequest userSignUpRequest);
     public JwtToken signIn(String loginId, String password);
-    public JwtToken generateNewAccessToken(String refreshToken);
 
     public boolean checkLoginId(String loginId);
     public boolean checkNickname(String nickname);
