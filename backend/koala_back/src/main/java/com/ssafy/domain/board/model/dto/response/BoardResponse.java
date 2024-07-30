@@ -2,11 +2,6 @@ package com.ssafy.domain.board.model.dto.response;
 
 import static lombok.AccessLevel.*;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.data.domain.Page;
-
 import com.ssafy.domain.board.model.entity.Board;
 
 import lombok.AllArgsConstructor;
@@ -28,9 +23,8 @@ public class BoardResponse {
 	private int likeCount;
 	private int viewCount;
 	private String createdAt;
-	private Page<BoardCommentResponse> comments;
 
-	public static BoardResponse toDto(Board board, Page<BoardCommentResponse> comments) {
+	public static BoardResponse toDto(Board board) {
 		return BoardResponse.builder()
 			.boardId(board.getId())
 			.title(board.getTitle())
@@ -39,7 +33,6 @@ public class BoardResponse {
 			.commentNum(board.getCommentNum())
 			.viewCount(board.getHit())
 			.createdAt(board.getBoardCreatedAt().toString())
-			.comments(comments)
 			.build();
 	}
 }
