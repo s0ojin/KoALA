@@ -9,19 +9,19 @@ const SCALE_FACTOR = 0.06
 const CARD_LIST = [
   {
     title: '받아쓰기',
-    content: '받아쓰기 관련 내용입니다',
+    content: '음성을 듣고 쓰기 연습을 해요',
   },
   {
     title: 'AI회화',
-    content: 'AI회화 관련 내용입니다',
+    content: '다양한 상황을 AI와 대화해요',
   },
   {
     title: '화상수업',
-    content: '화상수업 관련 내용입니다',
+    content: '한국인 강사와 함께 한국어를 즐겁게 배워보아요',
   },
   {
     title: '복습하기',
-    content: '복습하기 관련 내용입니다',
+    content: '반복 학습으로 실력UP!',
   },
 ]
 
