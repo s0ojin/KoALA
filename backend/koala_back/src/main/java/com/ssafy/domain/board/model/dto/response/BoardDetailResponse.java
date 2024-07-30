@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PROTECTED)
-public class BoardCreateResponse {
+public class BoardDetailResponse {
 
 	private Long boardId;
 	private String title;
@@ -25,9 +25,10 @@ public class BoardCreateResponse {
 	private int likeCount;
 	private int viewCount;
 	private String createdAt;
+	private Page<BoardCommentResponse> comments;
 
-	public static BoardCreateResponse toDto(Board board) {
-		return BoardCreateResponse.builder()
+	public static BoardDetailResponse toDto(Board board, Page<BoardCommentResponse> comments) {
+		return BoardDetailResponse.builder()
 			.boardId(board.getId())
 			.title(board.getTitle())
 			.content(board.getContent())
@@ -35,6 +36,7 @@ public class BoardCreateResponse {
 			.commentNum(board.getCommentNum())
 			.viewCount(board.getHit())
 			.createdAt(board.getBoardCreatedAt().toString())
+			.comments(comments)
 			.build();
 	}
 }

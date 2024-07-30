@@ -7,8 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.domain.board.model.dto.request.BoardCreateRequest;
 import com.ssafy.domain.board.model.dto.response.BoardCommentResponse;
-import com.ssafy.domain.board.model.dto.response.BoardCreateResponse;
 import com.ssafy.domain.board.model.dto.response.BoardResponse;
+import com.ssafy.domain.board.model.dto.response.BoardDetailResponse;
 import com.ssafy.domain.board.model.entity.Board;
 import com.ssafy.domain.board.repository.BoardRepository;
 import com.ssafy.domain.user.model.entity.User;
@@ -28,16 +28,16 @@ public class BoardServiceImpl implements BoardService {
 	private final BoardCommentService boardCommentService;
 
 	@Override
-	public BoardResponse getBoard(Long boardId, Pageable pageable) {
+	public BoardDetailResponse getBoard(Long boardId, Pageable pageable) {
 		Page<BoardCommentResponse> comments = boardCommentService.getCommentsByBoardId(boardId, pageable);
-		return BoardResponse.toDto(boardRepository.findById(boardId).orElseThrow(), comments);
+		return BoardDetailResponse.toDto(boardRepository.findById(boardId).orElseThrow(), comments);
 	}
 
 	@Override
 	@Transactional
-	public BoardCreateResponse createBoard(BoardCreateRequest boardCreateRequest) {
+	public BoardResponse createBoard(BoardCreateRequest boardCreateRequest) {
 		User user = userInfoProvider.getCurrentUser();
-		return BoardCreateResponse.toDto(boardRepository.save(boardCreateRequest.toEntity(user)));
+		return BoardResponse.toDto(boardRepository.save(boardCreateRequest.toEntity(user)));
 	}
 
 	@Override

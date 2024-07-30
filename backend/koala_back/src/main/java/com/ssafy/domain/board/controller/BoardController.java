@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.domain.board.model.dto.request.BoardCommentCreateRequest;
 import com.ssafy.domain.board.model.dto.request.BoardCreateRequest;
 import com.ssafy.domain.board.model.dto.response.BoardCommentResponse;
-import com.ssafy.domain.board.model.dto.response.BoardCreateResponse;
 import com.ssafy.domain.board.model.dto.response.BoardResponse;
+import com.ssafy.domain.board.model.dto.response.BoardDetailResponse;
 import com.ssafy.domain.board.service.BoardCommentService;
 import com.ssafy.domain.board.service.BoardService;
 
@@ -30,17 +30,18 @@ public class BoardController {
 	private final BoardService boardService;
 	private final BoardCommentService boardCommentService;
 
-	@GetMapping("/{board_id}/comments")
-	public ResponseEntity<?> getBoard(@PathVariable("board_id") Long boardId, Pageable pageable) {
-		BoardResponse boardResponse = boardService.getBoard(boardId, pageable);
-		boardService.increaseHit(boardId);
-		return ResponseEntity.ok().body(boardResponse);
-	}
-
 	@PostMapping
 	public ResponseEntity<?> createBoard(@RequestBody BoardCreateRequest boardCreateRequest) {
-		BoardCreateResponse boardCreateResponse = boardService.createBoard(boardCreateRequest);
+		BoardResponse boardCreateResponse = boardService.createBoard(boardCreateRequest);
 		return ResponseEntity.status(HttpStatus.CREATED).body(boardCreateResponse);
+	}
+	
+
+	@GetMapping("/{board_id}/comments")
+	public ResponseEntity<?> getBoard(@PathVariable("board_id") Long boardId, Pageable pageable) {
+		BoardDetailResponse boardDetailResponse = boardService.getBoard(boardId, pageable);
+		boardService.increaseHit(boardId);
+		return ResponseEntity.ok().body(boardDetailResponse);
 	}
 
 	@PostMapping("/{board_id}/comments")

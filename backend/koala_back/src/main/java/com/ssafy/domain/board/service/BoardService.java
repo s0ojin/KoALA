@@ -3,14 +3,14 @@ package com.ssafy.domain.board.service;
 import org.springframework.data.domain.Pageable;
 
 import com.ssafy.domain.board.model.dto.request.BoardCreateRequest;
-import com.ssafy.domain.board.model.dto.response.BoardCreateResponse;
 import com.ssafy.domain.board.model.dto.response.BoardResponse;
+import com.ssafy.domain.board.model.dto.response.BoardDetailResponse;
 
 public interface BoardService {
 
-	BoardResponse getBoard(Long boardId, Pageable pageable);
+	BoardDetailResponse getBoard(Long boardId, Pageable pageable);
 
-	BoardCreateResponse createBoard(BoardCreateRequest boardCreateRequest);
+	BoardResponse createBoard(BoardCreateRequest boardCreateRequest);
 
 	void increaseCommentNum(Long boardId);
 
