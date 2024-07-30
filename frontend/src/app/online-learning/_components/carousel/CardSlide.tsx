@@ -64,18 +64,18 @@ export default function CardSlide() {
   }
 
   return (
-    <div className='flex mt-24 max-w-[75rem] min-w-[48rem] max-h-[26rem] mx-auto'>
+    <div className='flex mt-24 mx-auto max-h-[26rem] min-w-[48rem] m-auto max-w-[75rem]'>
       <div className='m-auto'>
         <button onClick={handlePrev} className={ cardList.length <= 3 ? 'hidden' : '' }>
-          <Image src={ChevronLeft} className='w-[2.5rem]' alt='chevron-left'/>
+          <Image src={ChevronLeft} className='max-w-[2.5rem] md:mx-[1rem] lg:mx-[2.5rem]' alt='chevron-left'/>
         </button>
       </div>
       <Swiper
-        className='max-w-[60rem] m-auto'
+        className={cardList.length < 2 ? 'max-w-[20rem]': (cardList.length < 3 ? 'max-w-[40rem]' : 'max-w-[60rem]' )}
         modules={[Virtual, Autoplay]}
         onActiveIndexChange={(e)=>setSwiperIndex(e.realIndex)}
         onSwiper={(e) => {setSwiper(e)}}
-        slidesPerView={3}
+        slidesPerView={(cardList.length < 3) ? cardList.length : 3 }
         centeredSlides={false}
         spaceBetween={30}
         loop={true}
@@ -92,7 +92,7 @@ export default function CardSlide() {
       </Swiper>
       <div className='m-auto'>
         <button onClick={handleNext} className={ cardList.length <= 3 ? 'hidden' : '' }>
-          <Image src={ChevronRight} className='w-[2.5rem]' alt='chevron-right'/>
+          <Image src={ChevronRight} className='max-w-[2.5rem] md:mx-[1rem] lg:mx-[2.5rem]' alt='chevron-right'/>
         </button>
       </div>
     </div>

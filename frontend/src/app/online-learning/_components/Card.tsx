@@ -14,12 +14,12 @@ export default function Card ({...props}) {
           />
           {/* <Image src={Photo} alt="Lecture Card" className='w-full h-full object-cover blur-2xl' layout='fill'/> */}
         </div>
-        <div className='relative bg-white rounded-tl-3xl mt-5 mx-5 md:pt-2 lg:pt-8 px-6 h-full'>
-          <p className="text-gray-700 font-bold md:text-lg lg:text-xl text-center lg:mb-[1.5rem] md:mb-[0.5rem] break-words">
+        <div className='relative bg-white rounded-tl-3xl h-full mt-5 mx-5 px-6 md:pt-2 lg:pt-6'>
+          <p className="text-gray-700 font-bold break-words text-center md:truncate md:text-lg md:mb-[0.5rem] lg:text-xl lg:mb-[1rem]">
             {props.lecture}
           </p>
           <div className='w-full aspect-square overflow-hidden mb-[0.5rem]'>
-            <p className="text-gray-700 md:text-sm lg:text-base overflow-hidden break-words">
+            <p className="text-gray-700 overflow-hidden break-words md:text-sm lg:text-base">
               {props.description}
             </p>
           </div>
