@@ -39,7 +39,7 @@ export default function OnlineLearningPanel({
           <p className="mx-2">{activeTabInfo?.description}</p>
         </div>
       </div>
-      <div className="p-5 flex-1">{children}</div>
+      <div className="p-5 flex-1 overflow-auto">{children}</div>
     </motion.div>
   )
 }
