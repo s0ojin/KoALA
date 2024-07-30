@@ -18,14 +18,14 @@ body {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #999999;
+  background: #d8d8d8;
   border-radius: 5px;
   cursor: pointer;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #666666;
+  background: #afafaf;
 }
 
 @layer components {
