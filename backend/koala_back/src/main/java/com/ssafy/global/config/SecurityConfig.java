@@ -34,7 +34,9 @@ public class SecurityConfig {
                                 authorizeRequests
                                         // "/users/register" 경로에 대한 모든 요청을 허용
                                         .requestMatchers("/users/login").permitAll()
+                                        .requestMatchers("/users/refresh").permitAll()
                                         .requestMatchers("/users").permitAll()
+//                                        .requestMatchers("/chat").permitAll()
                                         // 다른 모든 요청은 인증을 필요로 함
                                         .anyRequest().authenticated()
                 )

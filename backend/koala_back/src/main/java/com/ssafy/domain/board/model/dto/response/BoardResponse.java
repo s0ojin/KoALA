@@ -21,7 +21,7 @@ public class BoardResponse {
 	private String nickname;
 	private int commentNum;
 	private int likeCount;
-	private int viewCount;
+	private int hit;
 	private String createdAt;
 
 	public static BoardResponse toDto(Board board) {
@@ -31,7 +31,7 @@ public class BoardResponse {
 			.content(board.getContent())
 			.nickname(board.getUser().getNickname())
 			.commentNum(board.getCommentNum())
-			.viewCount(board.getHit())
+			.hit(board.getHit())
 			.createdAt(board.getBoardCreatedAt().toString())
 			.build();
 	}
