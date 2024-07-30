@@ -46,21 +46,6 @@ public class UserController {
         return ResponseEntity.ok().body(jwtToken);
     }
 
-//    @PostMapping("/refresh")
-//    public ResponseEntity<?> refreshAccessToken(HttpServletRequest request) {
-//        String refreshToken = request.getHeader("Authorization");
-//        if (StringUtils.hasText(refreshToken) && refreshToken.startsWith("Bearer")) {
-//            refreshToken = refreshToken.substring(7);
-//        }
-//
-//        if (refreshToken == null || refreshToken.isEmpty()) {
-//            return ResponseEntity.badRequest().body("Refresh token is missing");
-//        }
-//
-//        JwtToken newToken = userService.refreshAccessToken(refreshToken);
-//        return ResponseEntity.ok().body(newToken);
-//    }
-
     @PostMapping("/logout")
     public ResponseEntity<?> logout(@RequestBody String accessToken) {
 //        userService.logout(accessToken);

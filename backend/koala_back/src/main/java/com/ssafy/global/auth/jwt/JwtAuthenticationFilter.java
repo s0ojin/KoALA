@@ -12,32 +12,42 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.GenericFilterBean;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
 @RequiredArgsConstructor
-public class JwtAuthenticationFilter extends GenericFilterBean {
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
     private final JwtTokenProvider jwtTokenProvider;
 
-
-    @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        // Request Header에서 JWT 토큰 추출
-        String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
-
-        try {
-            // validateToken으로 유효성 검사
-            if (token != null && jwtTokenProvider.validateToken(token)) {
-                // 토큰이 유효하면 토큰에서 Authentication 객체 가져와서 SecurityContext에 저장
-                Authentication authentication = jwtTokenProvider.getAuthentication(token);
-                SecurityContextHolder.getContext().setAuthentication(authentication); // 전역 접근 가능
-            }
-            chain.doFilter(request, response);
-        } catch (TokenException e) {
-            HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-            httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        }
-
+    public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider) {
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
+        try {
+            String token = resolveToken(request);
+            if (token != null) {
+                jwtTokenProvider.validateToken(token);
+                Authentication authentication = jwtTokenProvider.getAuthentication(token);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
+            filterChain.doFilter(request, response);
+        } catch (TokenException e) {
+            response.setStatus(e.getHttpStatus().value());
+            response.setContentType("application/json");
+            response.getWriter().write("{\"message\": \"" + e.getMessage() + "\"}");
+        }
+    }
+
+    private String resolveToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader("Authorization");
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
+        }
+        return null;
+    }
 }

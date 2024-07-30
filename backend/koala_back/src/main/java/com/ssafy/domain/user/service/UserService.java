@@ -4,10 +4,8 @@ import com.ssafy.domain.user.model.dto.request.UserSignUpRequest;
 import com.ssafy.domain.user.model.dto.request.UserUpdateRequest;
 import com.ssafy.domain.user.model.dto.response.UserFindResponse;
 import com.ssafy.domain.user.model.dto.response.UserResponse;
-import com.ssafy.domain.user.model.entity.User;
 import com.ssafy.global.auth.jwt.dto.JwtToken;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.transaction.annotation.Transactional;
 
 public interface UserService {
     public UserResponse signUp(UserSignUpRequest userSignUpRequest);
@@ -19,4 +17,6 @@ public interface UserService {
     public UserFindResponse findUser();
     public UserResponse updateUser(UserUpdateRequest userUpdateRequest);
     public void deleteUser();
+
+
 }
