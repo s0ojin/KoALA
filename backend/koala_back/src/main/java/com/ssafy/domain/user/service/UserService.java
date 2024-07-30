@@ -10,18 +10,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface UserService {
     UserResponse signUp(UserSignUpRequest userSignUpRequest);
-    JwtToken signIn(String loginId, String password);
-	UserResponse signUp(UserSignUpRequest userSignUpRequest);
-
 	JwtToken signIn(String loginId, String password);
 
-	JwtToken generateNewAccessToken(String refreshToken);
-
 	boolean checkLoginId(String loginId);
-
     boolean checkNickname(String nickname);
 
     UserFindResponse findUser();
     UserResponse updateUser(UserUpdateRequest userUpdateRequest);
     void deleteUser();
+
+    void increaseUserExp();
+    void increaseUserLevel();
 }
