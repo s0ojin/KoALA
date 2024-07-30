@@ -39,7 +39,7 @@ export default function ChatBubble({
           <p>{message}</p>
         </div>
       </div>
-      <p className="self-end text-sm text-gray-500">
+      <p className="whitespace-nowrap self-end text-xs text-gray-500">
         {timeStamp && getFormattedTime(timeStamp)}
       </p>
     </div>
