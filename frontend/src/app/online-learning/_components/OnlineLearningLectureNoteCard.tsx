@@ -1,13 +1,21 @@
 import RemoveBtn from '/public/icons/cancel-btn.svg'
 
-export default function OnlineLearningLectureNoteCard() {
+interface OnlineLearningLectureNoteCardProps {
+  noteTitle: string
+  noteContent: string
+}
+
+export default function OnlineLearningLectureNoteCard({
+  noteTitle,
+  noteContent,
+}: OnlineLearningLectureNoteCardProps) {
   return (
-    <div className="w-full h-32 p-5 rounded-3xl bg-primary-400 text-white">
+    <div className="w-full p-5 rounded-3xl bg-primary-400 text-white">
       <div className="flex justify-between">
-        <h1 className="text-xl font-medium">제목</h1>
+        <h1 className="text-xl font-medium">{noteTitle}</h1>
         <RemoveBtn width="16" height="16" />
       </div>
-      <p>강의 내용의 메모합니다</p>
+      <p>{noteContent}</p>
     </div>
   )
 }
