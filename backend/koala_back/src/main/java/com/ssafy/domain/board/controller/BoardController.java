@@ -45,6 +45,7 @@ public class BoardController {
 		@RequestBody BoardCommentCreateRequest boardCommentCreateRequest) {
 		BoardCommentResponse boardCommentResponse = boardCommentService.createComment(boardId,
 			boardCommentCreateRequest);
+		boardService.increaseCommentNum(boardId);
 		return ResponseEntity.status(HttpStatus.CREATED).body(boardCommentResponse);
 	}
 

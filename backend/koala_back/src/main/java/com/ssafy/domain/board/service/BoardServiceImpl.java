@@ -32,4 +32,10 @@ public class BoardServiceImpl implements BoardService {
 		User user = userInfoProvider.getCurrentUser();
 		return BoardResponse.toDto(boardRepository.save(boardCreateRequest.toEntity(user)));
 	}
+
+	@Override
+	@Transactional
+	public void increaseCommentNum(Long boardId) {
+		boardRepository.increaseCommentNum(boardId);
+	}
 }
