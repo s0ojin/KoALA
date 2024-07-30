@@ -30,7 +30,16 @@ export default function MainEducationCardList() {
   const [startY, setStartY] = useState(0)
   const [endY, setEndY] = useState(0)
 
-  const handleDragEnd = (e: any) => {
+  const handleDragStart = (e: DragEvent) => {
+    setStartY(e.clientY)
+  }
+
+  const handleDrag = (e: DragEvent) => {
+    if (e.clientY === 0) return
+    setEndY(e.clientY)
+  }
+
+  const handleDragEnd = () => {
     const direction = endY > startY ? 'down' : 'up'
 
     const nCardList = [...cardList]
@@ -46,11 +55,6 @@ export default function MainEducationCardList() {
 
     setStartY(0)
     setEndY(0)
-  }
-
-  const handleDrag = (e: any) => {
-    if (e.clientY === 0) return
-    setEndY(e.clientY)
   }
 
   return (
@@ -76,11 +80,9 @@ export default function MainEducationCardList() {
                 top: 0,
                 bottom: 0,
               }}
-              onDragStart={(e: DragEvent) => {
-                setStartY(e.clientY)
-              }}
+              onDragStart={handleDragStart}
               onDrag={handleDrag}
-              onDragEnd={() => handleDragEnd(index)}
+              onDragEnd={() => handleDragEnd()}
               transition={{
                 duration: 0.5,
               }}
