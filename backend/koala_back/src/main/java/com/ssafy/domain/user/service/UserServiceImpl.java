@@ -21,7 +21,6 @@ import com.ssafy.domain.user.repository.UserRepository;
 import com.ssafy.global.auth.jwt.JwtTokenProvider;
 import com.ssafy.global.auth.jwt.dto.JwtToken;
 import com.ssafy.global.common.UserInfoProvider;
-import com.ssafy.global.error.exception.TokenException;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -56,7 +55,6 @@ public class UserServiceImpl implements UserService {
 		// 이때 authentication은 인증 여부를 확인하는 authenticated 값이 false (생성될때는 인증 X)
 		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginId,
 			password);
-		System.out.println("여기");
 		// 실제 검증. authenticate() 메서드를 통해 요청된 User 에 대한 검증 진행
 		// authenticate 메서드가 실행될 때 CustomUserDetailsService 에서 만든 loadUserByUsername 메서드 실행
 		// UsernamePasswordAuthenticationToken의 loginId와 password를 이용해 조회된 사용자 정보가 일치하는지 확인
@@ -65,20 +63,6 @@ public class UserServiceImpl implements UserService {
 		// 인증 정보를 기반으로 JWT 토큰 생성
 		JwtToken jwtToken = jwtTokenProvider.generateToken(authentication);
 		return jwtToken;
-	}
-
-	@Override
-	public JwtToken generateNewAccessToken(String refreshToken) {
-		if (!jwtTokenProvider.validateRefreshToken(refreshToken)) {
-			throw new TokenException("Invalid Refresh Token");
-		}
-		String loginId = jwtTokenProvider.getAuthentication(refreshToken).getName();
-		String newAccessToken = jwtTokenProvider.generateAccessToken(loginId);
-		return JwtToken.builder()
-			.grantType("Bearer")
-			.accessToken(newAccessToken)
-			.refreshToken(refreshToken) // 기존 Refresh Token은 기대로 사용합니다
-			.build();
 	}
 
 	@Override
@@ -120,8 +104,8 @@ public class UserServiceImpl implements UserService {
 		return UserResponse.toDto(userRepository.save(user));
 	}
 
-	@Override
 	@Transactional
+	@Override
 	public void deleteUser() {
 		User user = userInfoProvider.getCurrentUser();
 		userRepository.delete(user);
