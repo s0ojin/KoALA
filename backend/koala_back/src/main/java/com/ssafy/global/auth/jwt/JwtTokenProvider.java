@@ -164,13 +164,6 @@ public class JwtTokenProvider {
     서버는 요청을 처리하는 과정에서 resolveToken 메서드를 호출하여 "Authorization" 헤더에서 JWT 토큰을 추출한다.
      */
 
-    public String resolveToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer")) {
-            return bearerToken.substring(7);
-        }
-        return null;
-    }
 
 
 }
