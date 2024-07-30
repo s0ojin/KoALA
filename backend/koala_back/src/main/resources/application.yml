@@ -27,3 +27,17 @@ jwt:
   secret: ${JWT_SECRET}
   access-token-ms: ${JWT_ACCESS_TOKEN_MS}
   refresh-token-ms: ${JWT_REFRESH_TOKEN_MS}
+
+openvidu:
+  url: ${OPENVIDU_URL}
+  secret: ${OPENVIDU_SECRET}
+
+cloud:
+  aws:
+    credentials:
+      access-key: ${S3_ACCESS_KEY_ID}
+      secret-key: ${S3_SECRET_ACCESS_KEY}
+    region:
+      static: us-east-1
+    stack:
+      auto: false

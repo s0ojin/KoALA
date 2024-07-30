@@ -20,9 +20,11 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Getter
 @Builder
 @Table(name = "board")
 @NoArgsConstructor(access = PROTECTED)
@@ -64,4 +66,16 @@ public class Board {
 
 	@OneToMany(mappedBy = "board", cascade = ALL, orphanRemoval = true, fetch = LAZY)
 	private List<BoardImage> boardImages = new ArrayList<>();
+
+	public void increaseHit() {
+		this.hit++;
+	}
+
+	public void increaseCommentNum() {
+		this.commentNum++;
+	}
+
+	public void decreaseCommentNum() {
+		this.commentNum--;
+	}
 }

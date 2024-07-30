@@ -1,5 +1,6 @@
 package com.ssafy.domain.review.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,7 +26,7 @@ public class ReviewController {
 	@PostMapping
 	public ResponseEntity<?> createReviewSentence(@RequestBody ReviewSaveRequest reviewSaveRequest) {
 		reviewService.createReviewSentence(reviewSaveRequest);
-		return ResponseEntity.ok().body("복습 문장을 추가했습니다.");
+		return ResponseEntity.status(HttpStatus.CREATED).body("복습 문장을 추가했습니다.");
 	}
 
 	@DeleteMapping("/{review_sentence_id}")
