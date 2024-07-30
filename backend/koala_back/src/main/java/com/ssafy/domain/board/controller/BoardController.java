@@ -41,6 +41,11 @@ public class BoardController {
 		return ResponseEntity.ok().body(boardService.getBoards(pageable));
 	}
 
+	@GetMapping("/sorted-by-hit")
+	public ResponseEntity<?> getBoardsSortedByHit(Pageable pageable) {
+		return ResponseEntity.ok().body(boardService.getBoardsSortedByHit(pageable));
+	}
+
 
 	@GetMapping("/{board_id}/comments")
 	public ResponseEntity<?> getBoard(@PathVariable("board_id") Long boardId, Pageable pageable) {
