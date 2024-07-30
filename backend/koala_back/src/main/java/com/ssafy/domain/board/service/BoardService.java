@@ -17,6 +17,8 @@ public interface BoardService {
 
 	Page<BoardResponse> getBoardsSortedByHit(Pageable pageable);
 
+	void deleteBoard(Long boardId);
+
 	void increaseCommentNum(Long boardId);
 
 	void increaseHit(Long boardId);
