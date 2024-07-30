@@ -7,7 +7,7 @@ interface MainLayoutProps {
 
 export default function MainLayout({ children }: MainLayoutProps) {
   return (
-    <div className="w-full h-auto min-h-custom-height overflow-hidden">
+    <div className="w-full h-auto min-h-main-height overflow-hidden">
       {children}
       <Image
         src="/images/cloud.svg"
