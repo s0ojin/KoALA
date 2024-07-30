@@ -36,6 +36,11 @@ public class BoardController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(boardCreateResponse);
 	}
 
+	@GetMapping
+	public ResponseEntity<?> getBoards(Pageable pageable) {
+		return ResponseEntity.ok().body(boardService.getBoards(pageable));
+	}
+
 
 	@GetMapping("/{board_id}/comments")
 	public ResponseEntity<?> getBoard(@PathVariable("board_id") Long boardId, Pageable pageable) {
