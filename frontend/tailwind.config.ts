@@ -8,6 +8,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      minHeight: {
+        'main-height': 'calc(100vh - 5rem)',
+      },
       backgroundColor: {
         'primary-50': '#EEEDFF',
         'primary-100': '#C7C4FF',
