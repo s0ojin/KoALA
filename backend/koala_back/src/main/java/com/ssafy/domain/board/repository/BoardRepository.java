@@ -13,6 +13,8 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
 
 	Page<Board> findAllByOrderByHitDesc(Pageable pageable);
 
+	Page<Board> findAllByTitleContaining(String keyword, Pageable pageable);
+
 	@Query("select b from Board b where b.user = :user")
 	Page<Board> findAllByUser(@Param("user") User user, Pageable pageable);
 }
