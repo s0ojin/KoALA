@@ -43,17 +43,21 @@ public class BoardController {
 		return ResponseEntity.ok().body(boardService.getBoards(pageable));
 	}
 
-	@GetMapping("/sorted-by-hit")
-	public ResponseEntity<?> getBoardsSortedByHit(Pageable pageable) {
-		return ResponseEntity.ok().body(boardService.getBoardsSortedByHit(pageable));
-	}
-
-
 	@GetMapping("/{board_id}/comments")
 	public ResponseEntity<?> getBoard(@PathVariable("board_id") Long boardId, Pageable pageable) {
 		BoardDetailResponse boardDetailResponse = boardService.getBoard(boardId, pageable);
 		boardService.increaseHit(boardId);
 		return ResponseEntity.ok().body(boardDetailResponse);
+	}
+
+	@GetMapping("/sorted-by-hit")
+	public ResponseEntity<?> getBoardsSortedByHit(Pageable pageable) {
+		return ResponseEntity.ok().body(boardService.getBoardsSortedByHit(pageable));
+	}
+
+	@GetMapping("/my-content")
+	public ResponseEntity<?> getBoardsByUser(Pageable pageable) {
+		return ResponseEntity.ok().body(boardService.getBoardsByUser(pageable));
 	}
 
 	@DeleteMapping("/{board_id}")
