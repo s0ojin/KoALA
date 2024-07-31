@@ -53,6 +53,13 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
+	public Page<BoardResponse> getBoardsByKeyword(String keyword, Pageable pageable) {
+		Page<Board> boards = boardRepository.findAllByTitleContaining(keyword, pageable);
+		return boards.map(BoardResponse::toDto);
+	}
+
+
+	@Override
 	public Page<BoardResponse> getBoardsByUser(Pageable pageable) {
 		User user = userInfoProvider.getCurrentUser();
 		Page<Board> boards = boardRepository.findAllByUser(user, pageable);
