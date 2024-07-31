@@ -7,4 +7,5 @@ import java.util.List;
 public interface CacheService {
     public List<Message> getChatHistory(String loginId);
     public List<Message> updateChatHistory(String loginId, Message message);
+    public void clearChatHistory(String loginId);
 }
