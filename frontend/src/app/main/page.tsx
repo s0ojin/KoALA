@@ -9,7 +9,6 @@ export default function Main() {
   return (
     <MainLayout>
       <div className="w-full h-auto min-h-main-height overflow-hidden relative select-none z-10 flex flex-col items-center">
-        <Header />
         <div className="relative w-screen h-full min-h-main-height flex max-w-[94rem]">
           <div className=" w-2/5 h-1/2 min-h-[32rem] self-end ml-12 mb-8 relative flex items-end justify-center">
             <div className="absolute top-0 left-0">
