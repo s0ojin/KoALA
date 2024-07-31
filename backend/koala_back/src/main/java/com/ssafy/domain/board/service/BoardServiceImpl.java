@@ -57,7 +57,7 @@ public class BoardServiceImpl implements BoardService {
 		User user = userInfoProvider.getCurrentUser();
 		Page<Board> boards = boardRepository.findAllByUser(user, pageable);
 		return boards.map(BoardResponse::toDto);
- 	}
+	}
 
 	@Override
 	@Transactional
