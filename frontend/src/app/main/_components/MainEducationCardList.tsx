@@ -88,7 +88,7 @@ export default function MainEducationCardList() {
               }}
             >
               <div
-                className={`py-11 pl-12 pr-28 flex items-center justify-between border-[0.19rem] border-white w-full h-full rounded-3xl ${index === 0 ? 'bg-primary-400' : 'bg-white'}`}
+                className={`py-11 pl-12 pr-28 flex items-center justify-between border-[0.2rem] border-white w-full h-full rounded-3xl ${index === 0 ? 'bg-primary-400' : 'bg-white'}`}
               >
                 <div
                   className={`flex flex-col ${index === 0 ? 'text-white' : 'text-primary-400'} gap-3`}
