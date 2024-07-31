@@ -7,5 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.ssafy.domain.board.model.entity.Board;
 
 public interface BoardRepository extends JpaRepository<Board, Long> {
+
 	Page<Board> findAllByOrderByHitDesc(Pageable pageable);
+
+	Page<Board> findAllByUserNickname(String nickname, Pageable pageable);
 }
