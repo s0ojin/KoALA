@@ -55,7 +55,7 @@ public class BoardController {
 		return ResponseEntity.ok().body(boardService.getBoardsSortedByHit(pageable));
 	}
 
-	@GetMapping
+	@GetMapping("/search")
 	public ResponseEntity<?> getBoardsByKeyword(String keyword, Pageable pageable) {
 		return ResponseEntity.ok().body(boardService.getBoardsByKeyword(keyword, pageable));
 	}
