@@ -13,21 +13,21 @@ export default function ReviewLayout ({children}: ReviewLayoutProps) {
         alt=''
         width={200}
         height={200}
-        className='absolute left-2/3'
+        className='absolute left-2/3 -z-20'
       />
       <Image
         src='/images/cloud.svg'
         alt=''
         width={400}
         height={400}
-        className='absolute top-1/2 right-0 translate-x-20'
+        className='absolute top-1/2 right-0 translate-x-20 -z-20'
       />
       <Image
         src='/images/koala-sleep.png'
         alt=''
         width={150}
         height={150}
-        className='absolute top-1/2 right-0 -translate-x-10'
+        className='absolute top-1/2 right-0 -translate-x-10 -z-10'
       />
     </div>
   )
