@@ -33,6 +33,8 @@ public class SecurityConfig {
                 // HTTP 요청에 대한 권한을 설정
                 .authorizeHttpRequests(authorizeRequests ->
                                 authorizeRequests
+                                        // Swagger UI 관련 경로에 대한 모든 요청을 허용
+                                        .requestMatchers("/api/swagger-ui.html", "/swagger-ui/**", "/api/v3/api-docs/**", "/swagger-resources/**", "/webjars/**", "/swagger-ui/index.html").permitAll()
                                         // "/users/register" 경로에 대한 모든 요청을 허용
                                         .requestMatchers("/api/users/login").permitAll()
                                         .requestMatchers("/api/users/refresh").permitAll()
