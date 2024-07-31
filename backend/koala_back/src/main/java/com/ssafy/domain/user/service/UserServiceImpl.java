@@ -1,5 +1,6 @@
 package com.ssafy.domain.user.service;
 
+import com.ssafy.domain.chat.service.CacheService;
 import com.ssafy.domain.user.model.dto.request.UserSignUpRequest;
 import com.ssafy.domain.user.model.dto.request.UserUpdateRequest;
 import com.ssafy.domain.user.model.dto.response.UserFindResponse;
@@ -19,6 +20,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -41,6 +43,7 @@ public class UserServiceImpl implements UserService {
 	private final JwtTokenProvider jwtTokenProvider;
 	private final PasswordEncoder passwordEncoder;
 	private final UserInfoProvider userInfoProvider;
+    private final CacheService cacheService;
 
     @Transactional
     public UserResponse signUp(UserSignUpRequest userSignUpRequest) {
@@ -65,6 +68,11 @@ public class UserServiceImpl implements UserService {
         // UsernamePasswordAuthenticationToken의 loginId와 password를 이용해 조회된 사용자 정보가 일치하는지 확인
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         System.out.println(authentication);
+        /*
+        authenticate 메서드는 UsernamePasswordAuthenticationToken의 loginId와 password가 UserDetails 객체의 정보와 일치하는지 확인
+        AuthenticationProvider는 Authentication 객체의 사용자명 (loginId)을 사용하여 사용자 정보를 로드합니다.
+        이를 위해 UserDetailsService를 호출하며, 이때 CustomUserDetailsService의 loadUserByUsername 메서드가 실행됩니다.
+         */
 
         // 인증 정보를 기반으로 JWT 토큰 생성
         JwtToken jwtToken = jwtTokenProvider.generateToken(authentication);
@@ -149,14 +157,23 @@ public class UserServiceImpl implements UserService {
             if (!userOptional.isPresent()) {
                 throw new UsernameNotFoundException("User not found with loginId: " + loginId);
             }
+            // 이미 사용자 정보를 가지고 있고, 이를 통해 직접 인증 객체를 생성
+
             String encodedPassword = userOptional.get().getPassword();
             List<GrantedAuthority> authorities = new ArrayList<>();
             authorities.add(new SimpleGrantedAuthority("ROLE_user"));
             UserDetails userDetails = new org.springframework.security.core.userdetails.User(loginId, encodedPassword, authorities);
             Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, encodedPassword, authorities);
+            System.out.println("refresh : " + authentication);
             return jwtTokenProvider.generateNewToken(authentication, refreshToken);
         }
         return null;
+    }
+
+    @Override
+    public void logout() {
+        cacheService.clearChatHistory(userInfoProvider.getCurrentLoginId());
+        SecurityContextHolder.clearContext();
     }
 
 }
