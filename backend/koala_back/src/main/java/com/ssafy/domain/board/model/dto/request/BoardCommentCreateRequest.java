@@ -7,6 +7,7 @@ import com.ssafy.domain.board.model.entity.Board;
 import com.ssafy.domain.board.model.entity.BoardComment;
 import com.ssafy.domain.user.model.entity.User;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,6 +19,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = PROTECTED)
 public class BoardCommentCreateRequest {
 
+	@NotBlank(message = "댓글 내용은 필수 입력 값입니다.")
 	@JsonProperty("comment_content")
 	private String commentContent;
 

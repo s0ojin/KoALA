@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.domain.koala.model.dto.request.KoalaNameRequest;
 import com.ssafy.domain.koala.service.KoalaService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,7 +30,7 @@ public class KoalaController {
 
 	@PatchMapping("/{koala_id}")
 	public ResponseEntity<?> updateKoalaName(@PathVariable("koala_id") Long koalaId,
-		@RequestBody KoalaNameRequest koalaNameRequest) {
+		@Valid @RequestBody KoalaNameRequest koalaNameRequest) {
 		return ResponseEntity.ok().body(koalaService.updateKoalaName(koalaNameRequest, koalaId));
 	}
 

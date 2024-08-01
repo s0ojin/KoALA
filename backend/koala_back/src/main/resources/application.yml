@@ -45,3 +45,7 @@ cloud:
 openai:
   api:
     key: ${OPENAI_API_KEY}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
