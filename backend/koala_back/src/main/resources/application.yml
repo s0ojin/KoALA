@@ -41,3 +41,11 @@ cloud:
       static: us-east-1
     stack:
       auto: false
+
+openai:
+  api:
+    key: ${OPENAI_API_KEY}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html

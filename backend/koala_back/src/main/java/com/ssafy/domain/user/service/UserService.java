@@ -7,23 +7,19 @@ import com.ssafy.domain.user.model.dto.response.UserResponse;
 import com.ssafy.global.auth.jwt.dto.JwtToken;
 
 public interface UserService {
-	UserResponse signUp(UserSignUpRequest userSignUpRequest);
-
+    UserResponse signUp(UserSignUpRequest userSignUpRequest);
 	JwtToken signIn(String loginId, String password);
 
-	JwtToken generateNewAccessToken(String refreshToken);
-
 	boolean checkLoginId(String loginId);
+    boolean checkNickname(String nickname);
 
-	boolean checkNickname(String nickname);
+    UserFindResponse findUser();
+    UserResponse updateUser(UserUpdateRequest userUpdateRequest);
+    void deleteUser();
 
-	UserFindResponse findUser();
+    void increaseUserExp();
+    void increaseUserLevel();
 
-	UserResponse updateUser(UserUpdateRequest userUpdateRequest);
-
-	void deleteUser();
-
-	void increaseUserExp();
-
-	void increaseUserLevel();
+    JwtToken createNewToken(String bearerToken);
+    void logout();
 }

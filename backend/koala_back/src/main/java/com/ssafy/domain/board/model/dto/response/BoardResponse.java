@@ -2,9 +2,6 @@ package com.ssafy.domain.board.model.dto.response;
 
 import static lombok.AccessLevel.*;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import com.ssafy.domain.board.model.entity.Board;
 
 import lombok.AllArgsConstructor;
@@ -24,9 +21,8 @@ public class BoardResponse {
 	private String nickname;
 	private int commentNum;
 	private int likeCount;
-	private int viewCount;
+	private int hit;
 	private String createdAt;
-	private List<BoardCommentResponse> comments;
 
 	public static BoardResponse toDto(Board board) {
 		return BoardResponse.builder()
@@ -35,9 +31,8 @@ public class BoardResponse {
 			.content(board.getContent())
 			.nickname(board.getUser().getNickname())
 			.commentNum(board.getCommentNum())
-			.viewCount(board.getHit())
+			.hit(board.getHit())
 			.createdAt(board.getBoardCreatedAt().toString())
-			.comments(board.getBoardComments().stream().map(BoardCommentResponse::toDto).collect(Collectors.toList()))
 			.build();
 	}
 }

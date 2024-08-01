@@ -2,6 +2,7 @@ package com.ssafy.global.config;
 
 import com.ssafy.global.auth.jwt.JwtAuthenticationFilter;
 import com.ssafy.global.auth.jwt.JwtTokenProvider;
+import com.ssafy.global.error.exception.CustomAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final JwtTokenProvider jwtTokenProvider;
-
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
@@ -32,11 +33,17 @@ public class SecurityConfig {
                 // HTTP 요청에 대한 권한을 설정
                 .authorizeHttpRequests(authorizeRequests ->
                                 authorizeRequests
+                                        // Swagger UI 관련 경로에 대한 모든 요청을 허용
+                                        .requestMatchers("/api/swagger-ui.html", "/swagger-ui/**", "/api/v3/api-docs/**", "/swagger-resources/**", "/webjars/**", "/swagger-ui/index.html").permitAll()
                                         // "/users/register" 경로에 대한 모든 요청을 허용
-                                        .requestMatchers("/users/login").permitAll()
-                                        .requestMatchers("/users").permitAll()
+                                        .requestMatchers("/api/users/login").permitAll()
+                                        .requestMatchers("/api/users/refresh").permitAll()
+                                        .requestMatchers("/api/users").permitAll()
+//                                        .requestMatchers("/chat").permitAll()
                                         // 다른 모든 요청은 인증을 필요로 함
                                         .anyRequest().authenticated()
+                ).exceptionHandling(exceptionHandling ->
+                        exceptionHandling.authenticationEntryPoint(customAuthenticationEntryPoint)
                 )
                 // JwtAuthenticationFilter를 UsernamePasswordAuthenticationFilter 이전에 실행되도록 추가
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)

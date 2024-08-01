@@ -13,5 +13,5 @@ public interface ImageService {
      * 이미지는 한장이므로 그냥 MultipartFile을 직접 파라미터로 받는 방식이 더 간단해서
      * 이미지 dto는 만들지 않았습니다.
      */
-    String saveImage(MultipartFile multipartFile) throws IOException;
+    String imageToText(MultipartFile multipartFile) throws IOException;
 }
