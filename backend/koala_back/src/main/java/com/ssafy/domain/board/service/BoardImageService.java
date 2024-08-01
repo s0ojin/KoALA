@@ -8,6 +8,6 @@ import java.io.IOException;
 import java.util.List;
 
 public interface BoardImageService {
-    List<String> saveBoardImages(BoardImageRequest boardImageRequest) throws IOException;
+    List<String> saveBoardImages(Long boardId, List<MultipartFile> boardImages) throws IOException;
     String saveBoardImage(MultipartFile multipartFile, Board board);
 }

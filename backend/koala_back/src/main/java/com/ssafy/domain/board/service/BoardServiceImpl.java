@@ -1,5 +1,8 @@
 package com.ssafy.domain.board.service;
 
+import java.io.IOException;
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -10,6 +13,9 @@ import com.ssafy.domain.board.model.dto.response.BoardCommentResponse;
 import com.ssafy.domain.board.model.dto.response.BoardDetailResponse;
 import com.ssafy.domain.board.model.dto.response.BoardResponse;
 import com.ssafy.domain.board.model.entity.Board;
+import com.ssafy.domain.board.model.entity.BoardImage;
+import com.ssafy.domain.board.repository.BoardCommentRepository;
+import com.ssafy.domain.board.repository.BoardImageRepository;
 import com.ssafy.domain.board.repository.BoardRepository;
 import com.ssafy.domain.user.model.entity.User;
 import com.ssafy.global.common.UserInfoProvider;
@@ -25,16 +31,23 @@ public class BoardServiceImpl implements BoardService {
 
 	private final UserInfoProvider userInfoProvider;
 	private final BoardRepository boardRepository;
-	private final BoardCommentService boardCommentService;
+	private final BoardCommentRepository boardCommentRepository;
+	private final BoardImageService boardImageService;
+	private final BoardImageRepository boardImageRepository;
 
 	@Override
 	@Transactional
-	public BoardDetailResponse createBoard(BoardCreateRequest boardCreateRequest) {
+	public BoardDetailResponse createBoard(BoardCreateRequest boardCreateRequest) throws IOException {
 		User user = userInfoProvider.getCurrentUser();
 		Board board = boardRepository.save(boardCreateRequest.toEntity(user));
-		//Pageable pageable = new
-		//Page<BoardCommentResponse> comments = boardCommentService.getCommentsByBoardId(boardId, pageable);
-		return BoardDetailResponse.toDto();
+
+		Pageable pageable = Pageable.ofSize(10).withPage(0);
+		Page<BoardCommentResponse> comments = boardCommentRepository.findByBoardId(board.getId(), pageable)
+			.map(BoardCommentResponse::toDto);
+
+		List<String> imgUrlList = boardImageService.saveBoardImages(board.getId(), boardCreateRequest.getBoardImages());
+
+		return BoardDetailResponse.toDto(board, imgUrlList, comments);
 	}
 
 	@Override
@@ -45,8 +58,15 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public BoardDetailResponse getBoard(Long boardId, Pageable pageable) {
-		Page<BoardCommentResponse> comments = boardCommentService.getCommentsByBoardId(boardId, pageable);
-		return BoardDetailResponse.toDto(boardRepository.findById(boardId).orElseThrow(), comments);
+		Page<BoardCommentResponse> comments = boardCommentRepository.findByBoardId(boardId, pageable)
+			.map(BoardCommentResponse::toDto);
+
+		List<BoardImage> boardImages = boardImageRepository.findAllByBoardId(boardId);
+		List<String> imgUrlList = boardImages.stream()
+			.map(BoardImage::getBoardImgUrl)
+			.toList();
+
+		return BoardDetailResponse.toDto(boardRepository.findById(boardId).orElseThrow(), imgUrlList, comments);
 	}
 
 	@Override
