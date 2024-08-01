@@ -17,8 +17,6 @@ const itemVariants: Variants = {
 export default function Filter() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const ItemList = () => <motion.li variants={itemVariants}>{item}</motion.li>
-
   return (
     <motion.nav
       initial={false}
@@ -28,7 +26,7 @@ export default function Filter() {
       <motion.button
         whileTap={{ scale: 0.97 }}
         onClick={() => setIsOpen(!isOpen)}
-        className='w-[11rem] h-full bg-primary-400 rounded-xl flex items-center'
+        className='w-[11rem] h-full bg-primary-400 rounded-[4.5rem] flex items-center'
       >
         <FilterIcon
           width={24}
