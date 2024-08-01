@@ -7,8 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.domain.board.model.dto.request.BoardCreateRequest;
 import com.ssafy.domain.board.model.dto.response.BoardCommentResponse;
-import com.ssafy.domain.board.model.dto.response.BoardResponse;
 import com.ssafy.domain.board.model.dto.response.BoardDetailResponse;
+import com.ssafy.domain.board.model.dto.response.BoardResponse;
 import com.ssafy.domain.board.model.entity.Board;
 import com.ssafy.domain.board.repository.BoardRepository;
 import com.ssafy.domain.user.model.entity.User;
@@ -60,7 +60,6 @@ public class BoardServiceImpl implements BoardService {
 		Page<Board> boards = boardRepository.findAllByTitleContaining(keyword, pageable);
 		return boards.map(BoardResponse::toDto);
 	}
-
 
 	@Override
 	public Page<BoardResponse> getBoardsByUser(Pageable pageable) {
