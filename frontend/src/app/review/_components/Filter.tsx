@@ -2,63 +2,73 @@
 
 import FilterIcon from '/public/icons/filter-square.svg'
 import { useState } from 'react'
+import { motion, Variants } from 'framer-motion'
+
+const itemVariants: Variants = {
+  open: {
+    opacity: 1,
+    y: 0,
+    transition: { type: "spring", stiffness: 300, damping: 24 }
+  },
+  closed: { opacity: 0, y: 20, transition: { duration: 0.2 } }
+};
+
 
 export default function Filter() {
-  const [isClicked, setClicked] = useState<Boolean>(false)
+  const [isOpen, setIsOpen] = useState(false);
 
-  const handleSelect = () => {
-    setClicked((isClicked) => !isClicked)
-  }
+  const ItemList = () => <motion.li variants={itemVariants}>{item}</motion.li>
 
   return (
-    <>
-      <button
-        onClick={handleSelect}
-        className="w-[11rem] h-full bg-primary-400 rounded-[4rem] mr-[1rem] hover:bg-primary-800 inline-flex items-center dark:bg-primary-600 dark:hover:bg-primary-700"
+    <motion.nav
+      initial={false}
+      animate={isOpen ? "open" : "closed"}
+      className="menu mr-5"
+    >
+      <motion.button
+        whileTap={{ scale: 0.97 }}
+        onClick={() => setIsOpen(!isOpen)}
+        className='w-[11rem] h-full bg-primary-400 rounded-xl flex items-center'
       >
-        <div className="flex m-auto px-[1rem]">
-          <FilterIcon width={24} height={24} />
-          <p className="text-white text-lg m-auto">슈퍼 마켓</p>
-        </div>
-      </button>
-      {/* <div
-        className={`absolute w-[11rem] z-50 bg-white divide-y divide-gray-100 rounded-lg shadow-md dark:bg-gray-700 ${isClicked ? '' : 'hidden'}`}
+        <FilterIcon
+          width={24}
+          height={24}
+          className="ml-[1rem]"
+        />
+        <p className='m-auto text-white'>
+          슈퍼마켓
+        </p>
+      </motion.button>
+      <motion.ul
+        className='bg-white mt-1'
+        variants={{
+          open: {
+            clipPath: "inset(0% 0% 0% 0% round 10px)",
+            transition: {
+              type: "spring",
+              bounce: 0,
+              duration: 0.7,
+              delayChildren: 0.3,
+              staggerChildren: 0.05
+            }
+          },
+          closed: {
+            clipPath: "inset(10% 50% 90% 50% round 10px)",
+            transition: {
+              type: "spring",
+              bounce: 0,
+              duration: 0.3
+            }
+          }
+        }}
+        style={{ pointerEvents: isOpen ? "auto" : "none" }}
       >
-        <ul className="py-2 text-sm text-gray-700 dark:text-gray-200 text-center">
-          <li>
-            <a
-              href="#"
-              className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-            >
-              교육
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-            >
-              행정
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-            >
-              일상
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-            >
-              사용자
-            </a>
-          </li>
-        </ul>
-      </div> */}
-    </>
+        <motion.li variants={itemVariants} className="text-center hover:text-white py-[0.5rem] hover:bg-gray-400">Item 1 </motion.li>
+        <motion.li variants={itemVariants} className="text-center hover:text-white py-[0.5rem] hover:bg-gray-400">Item 2 </motion.li>
+        <motion.li variants={itemVariants} className="text-center hover:text-white py-[0.5rem] hover:bg-gray-400">Item 3 </motion.li>
+        <motion.li variants={itemVariants} className="text-center hover:text-white py-[0.5rem] hover:bg-gray-400">Item 4 </motion.li>
+        <motion.li variants={itemVariants} className="text-center hover:text-white py-[0.5rem] hover:bg-gray-400">Item 5 </motion.li>
+      </motion.ul>
+    </motion.nav>
   )
 }
