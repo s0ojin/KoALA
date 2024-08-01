@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ReviewSaveRequest {
 
-	@NotBlank(message = "문장 아이디는 필수 입력 값입니다.")
+	@NotBlank(message = "리뷰 내용은 필수 입력 값입니다.")
 	@JsonProperty("sentence_id")
 	private Long sentenceId;
 
