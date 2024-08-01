@@ -20,7 +20,7 @@ public class ImageServiceImpl implements ImageService {
     private final AmazonS3 amazonS3;
 
     @Override
-    public String saveImage(MultipartFile multipartFile) throws IOException {
+    public String imageToText(MultipartFile multipartFile) throws IOException {
         String originalName = multipartFile.getOriginalFilename();
         String filename = System.currentTimeMillis() + "_" + originalName; // 파일 이름 중복 방지
 
