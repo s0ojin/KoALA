@@ -10,6 +10,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Builder
@@ -19,8 +23,12 @@ public class BoardCreateRequest {
 
 	@JsonProperty("board_title")
 	private String title;
+
 	@JsonProperty("board_content")
 	private String content;
+
+	@JsonProperty("board_img_url")
+	private List<MultipartFile> boardImages = new ArrayList<>();
 
 	public Board toEntity(User user) {
 		return Board.builder()

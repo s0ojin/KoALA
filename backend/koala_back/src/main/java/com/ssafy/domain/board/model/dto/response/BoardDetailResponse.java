@@ -10,6 +10,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Builder
@@ -26,8 +30,9 @@ public class BoardDetailResponse {
 	private int viewCount;
 	private String createdAt;
 	private Page<BoardCommentResponse> comments;
+	private List<String> boardImages;
 
-	public static BoardDetailResponse toDto(Board board, Page<BoardCommentResponse> comments) {
+	public static BoardDetailResponse toDto(Board board, List<String> boardImages, Page<BoardCommentResponse> comments) {
 		return BoardDetailResponse.builder()
 			.boardId(board.getId())
 			.title(board.getTitle())
@@ -37,6 +42,20 @@ public class BoardDetailResponse {
 			.viewCount(board.getHit())
 			.createdAt(board.getBoardCreatedAt().toString())
 			.comments(comments)
+			.boardImages(boardImages)
 			.build();
+	}
+
+	public static BoardDetailResponse toDto(Board board, Page<BoardCommentResponse> comments) {
+		return BoardDetailResponse.builder()
+				.boardId(board.getId())
+				.title(board.getTitle())
+				.content(board.getContent())
+				.nickname(board.getUser().getNickname())
+				.commentNum(board.getCommentNum())
+				.viewCount(board.getHit())
+				.createdAt(board.getBoardCreatedAt().toString())
+				.comments(comments)
+				.build();
 	}
 }

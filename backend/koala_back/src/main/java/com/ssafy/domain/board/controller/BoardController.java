@@ -1,5 +1,7 @@
 package com.ssafy.domain.board.controller;
 
+import com.ssafy.domain.board.model.dto.request.BoardImageRequest;
+import com.ssafy.domain.board.service.BoardImageService;
 import org.json.JSONObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -23,6 +25,8 @@ import com.ssafy.domain.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -31,10 +35,20 @@ public class BoardController {
 
 	private final BoardService boardService;
 	private final BoardCommentService boardCommentService;
+	private final BoardImageService boardImageService;
 
 	@PostMapping
-	public ResponseEntity<?> createBoard(@RequestBody BoardCreateRequest boardCreateRequest) {
-		BoardResponse boardCreateResponse = boardService.createBoard(boardCreateRequest);
+	public ResponseEntity<?> createBoard(@RequestBody BoardCreateRequest boardCreateRequest) throws IOException {
+		BoardDetailResponse boardCreateResponse = boardService.createBoard(boardCreateRequest);
+
+		BoardImageRequest boardImageRequest =
+				BoardImageRequest.builder()
+						.boardId(boardCreateResponse.getBoardId())
+						.boardImages(boardCreateRequest.getBoardImages())
+						.build();
+
+		boardImageService.saveBoardImages(boardImageRequest);
+
 		return ResponseEntity.status(HttpStatus.CREATED).body(boardCreateResponse);
 	}
 
