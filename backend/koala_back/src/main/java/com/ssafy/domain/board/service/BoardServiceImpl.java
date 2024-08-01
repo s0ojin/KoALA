@@ -10,6 +10,7 @@ import com.ssafy.domain.board.model.dto.response.BoardCommentResponse;
 import com.ssafy.domain.board.model.dto.response.BoardResponse;
 import com.ssafy.domain.board.model.dto.response.BoardDetailResponse;
 import com.ssafy.domain.board.model.entity.Board;
+import com.ssafy.domain.board.model.validation.BoardValidation;
 import com.ssafy.domain.board.repository.BoardRepository;
 import com.ssafy.domain.user.model.entity.User;
 import com.ssafy.global.common.UserInfoProvider;
@@ -30,6 +31,10 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	@Transactional
 	public BoardResponse createBoard(BoardCreateRequest boardCreateRequest) {
+
+		BoardValidation.validateKoreanAndNumeric(boardCreateRequest.getTitle());
+		BoardValidation.validateKoreanAndNumeric(boardCreateRequest.getContent());
+
 		User user = userInfoProvider.getCurrentUser();
 		return BoardResponse.toDto(boardRepository.save(boardCreateRequest.toEntity(user)));
 	}
