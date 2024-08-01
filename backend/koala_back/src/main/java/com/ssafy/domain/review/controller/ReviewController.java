@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.domain.review.model.dto.request.ReviewSaveRequest;
 import com.ssafy.domain.review.service.ReviewService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,7 +25,7 @@ public class ReviewController {
 	private final ReviewService reviewService;
 
 	@PostMapping
-	public ResponseEntity<?> createReviewSentence(@RequestBody ReviewSaveRequest reviewSaveRequest) {
+	public ResponseEntity<?> createReviewSentence(@Valid @RequestBody ReviewSaveRequest reviewSaveRequest) {
 		reviewService.createReviewSentence(reviewSaveRequest);
 		return ResponseEntity.status(HttpStatus.CREATED).body("복습 문장을 추가했습니다.");
 	}
