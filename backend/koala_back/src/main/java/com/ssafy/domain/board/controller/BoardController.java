@@ -15,11 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.domain.board.model.dto.request.BoardCommentCreateRequest;
 import com.ssafy.domain.board.model.dto.request.BoardCreateRequest;
 import com.ssafy.domain.board.model.dto.response.BoardCommentResponse;
-import com.ssafy.domain.board.model.dto.response.BoardResponse;
 import com.ssafy.domain.board.model.dto.response.BoardDetailResponse;
+import com.ssafy.domain.board.model.dto.response.BoardResponse;
+import com.ssafy.domain.board.model.validation.BoardValidation;
 import com.ssafy.domain.board.service.BoardCommentService;
 import com.ssafy.domain.board.service.BoardService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -33,7 +35,15 @@ public class BoardController {
 	private final BoardCommentService boardCommentService;
 
 	@PostMapping
-	public ResponseEntity<?> createBoard(@RequestBody BoardCreateRequest boardCreateRequest) {
+	public ResponseEntity<?> createBoard(@Valid @RequestBody BoardCreateRequest boardCreateRequest) {
+		if (BoardValidation.validateKoreanAndNumeric(boardCreateRequest.getTitle())) {
+			return ResponseEntity.badRequest()
+				.body(new JSONObject().put("message", "게시글 제목은 한글과 숫자, 특수문자만 입력 가능합니다.").toString());
+		}
+		if (BoardValidation.validateKoreanAndNumeric(boardCreateRequest.getContent())) {
+			return ResponseEntity.badRequest()
+				.body(new JSONObject().put("message", "게시글 내용은 한글과 숫자, 특수문자만 입력 가능합니다.").toString());
+		}
 		BoardResponse boardCreateResponse = boardService.createBoard(boardCreateRequest);
 		return ResponseEntity.status(HttpStatus.CREATED).body(boardCreateResponse);
 	}
@@ -60,7 +70,6 @@ public class BoardController {
 		return ResponseEntity.ok().body(boardService.getBoardsByKeyword(keyword, pageable));
 	}
 
-
 	@GetMapping("/my-content")
 	public ResponseEntity<?> getBoardsByUser(Pageable pageable) {
 		return ResponseEntity.ok().body(boardService.getBoardsByUser(pageable));
@@ -74,7 +83,11 @@ public class BoardController {
 
 	@PostMapping("/{board_id}/comments")
 	public ResponseEntity<?> createComment(@PathVariable("board_id") Long boardId,
-		@RequestBody BoardCommentCreateRequest boardCommentCreateRequest) {
+		@Valid @RequestBody BoardCommentCreateRequest boardCommentCreateRequest) {
+		if (BoardValidation.validateKoreanAndNumeric(boardCommentCreateRequest.getCommentContent())) {
+			return ResponseEntity.badRequest()
+				.body(new JSONObject().put("message", "댓글 내용은 한글과 숫자, 특수문자만 입력 가능합니다.").toString());
+		}
 		BoardCommentResponse boardCommentResponse = boardCommentService.createComment(boardId,
 			boardCommentCreateRequest);
 		boardService.increaseCommentNum(boardId);
