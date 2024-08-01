@@ -20,6 +20,7 @@ import com.ssafy.domain.board.model.dto.response.BoardDetailResponse;
 import com.ssafy.domain.board.service.BoardCommentService;
 import com.ssafy.domain.board.service.BoardService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -33,7 +34,7 @@ public class BoardController {
 	private final BoardCommentService boardCommentService;
 
 	@PostMapping
-	public ResponseEntity<?> createBoard(@RequestBody BoardCreateRequest boardCreateRequest) {
+	public ResponseEntity<?> createBoard(@Valid @RequestBody BoardCreateRequest boardCreateRequest) {
 		BoardResponse boardCreateResponse = boardService.createBoard(boardCreateRequest);
 		return ResponseEntity.status(HttpStatus.CREATED).body(boardCreateResponse);
 	}
@@ -74,7 +75,7 @@ public class BoardController {
 
 	@PostMapping("/{board_id}/comments")
 	public ResponseEntity<?> createComment(@PathVariable("board_id") Long boardId,
-		@RequestBody BoardCommentCreateRequest boardCommentCreateRequest) {
+		@Valid @RequestBody BoardCommentCreateRequest boardCommentCreateRequest) {
 		BoardCommentResponse boardCommentResponse = boardCommentService.createComment(boardId,
 			boardCommentCreateRequest);
 		boardService.increaseCommentNum(boardId);
