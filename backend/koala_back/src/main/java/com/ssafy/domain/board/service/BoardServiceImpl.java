@@ -29,7 +29,7 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	@Transactional
-	public BoardResponse createBoard(BoardCreateRequest boardCreateRequest) throws IllegalArgumentException {
+	public BoardResponse createBoard(BoardCreateRequest boardCreateRequest) {
 		User user = userInfoProvider.getCurrentUser();
 		return BoardResponse.toDto(boardRepository.save(boardCreateRequest.toEntity(user)));
 	}
