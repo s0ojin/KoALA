@@ -1,5 +1,7 @@
 package com.ssafy.domain.board.controller;
 
+import com.ssafy.domain.board.model.dto.request.BoardImageRequest;
+import com.ssafy.domain.board.service.BoardImageService;
 import org.json.JSONObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -25,6 +27,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -33,6 +37,7 @@ public class BoardController {
 
 	private final BoardService boardService;
 	private final BoardCommentService boardCommentService;
+	private final BoardImageService boardImageService;
 
 	@PostMapping
 	public ResponseEntity<?> createBoard(@Valid @RequestBody BoardCreateRequest boardCreateRequest) {
@@ -44,7 +49,7 @@ public class BoardController {
 			return ResponseEntity.badRequest()
 				.body(new JSONObject().put("message", "게시글 내용은 한글과 숫자, 특수문자만 입력 가능합니다.").toString());
 		}
-		BoardResponse boardCreateResponse = boardService.createBoard(boardCreateRequest);
+		BoardDetailResponse boardCreateResponse = boardService.createBoard(boardCreateRequest);
 		return ResponseEntity.status(HttpStatus.CREATED).body(boardCreateResponse);
 	}
 

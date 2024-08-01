@@ -22,8 +22,8 @@ public class ImageController {
     private final ImageService imageService;
 
     @PostMapping
-    public ResponseEntity<?> saveImage(@RequestParam("file") MultipartFile file) throws IOException {
-        String imageUrl = imageService.saveImage(file);
+    public ResponseEntity<?> imageToText(@RequestParam("file") MultipartFile file) throws IOException {
+        String imageUrl = imageService.imageToText(file);
         return ResponseEntity.status(HttpStatus.CREATED).body(imageUrl);
     }
 }

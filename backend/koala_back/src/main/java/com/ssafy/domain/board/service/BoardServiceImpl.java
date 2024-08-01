@@ -29,9 +29,12 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	@Transactional
-	public BoardResponse createBoard(BoardCreateRequest boardCreateRequest) {
+	public BoardDetailResponse createBoard(BoardCreateRequest boardCreateRequest) {
 		User user = userInfoProvider.getCurrentUser();
-		return BoardResponse.toDto(boardRepository.save(boardCreateRequest.toEntity(user)));
+		Board board = boardRepository.save(boardCreateRequest.toEntity(user));
+		//Pageable pageable = new
+		//Page<BoardCommentResponse> comments = boardCommentService.getCommentsByBoardId(boardId, pageable);
+		return BoardDetailResponse.toDto();
 	}
 
 	@Override

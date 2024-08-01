@@ -9,7 +9,7 @@ import com.ssafy.domain.board.model.dto.response.BoardResponse;
 
 public interface BoardService {
 
-	BoardResponse createBoard(BoardCreateRequest boardCreateRequest);
+	BoardDetailResponse createBoard(BoardCreateRequest boardCreateRequest);
 
 	Page<BoardResponse> getBoards(Pageable pageable);
 
