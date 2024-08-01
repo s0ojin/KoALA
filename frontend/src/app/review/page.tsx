@@ -13,7 +13,7 @@ export default function Review() {
         CourseTitle={'복습하기'}
         CourseDescription={'반복학습으로 실력 Up!'}
       />
-      <div className="flex mt-[1.25rem]">
+      <div className="flex mt-5">
         <ReviewArea />
         <ReviewMenuButtons />
       </div>

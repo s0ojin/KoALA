@@ -23,10 +23,10 @@ export default function Sentence() {
     >
       <p
         onClick={handleChangeSelected}
-        className={`h-full grow pr-[1rem] py-[1.25rem] ${isSelected ? 'text-white' : ''}`}
+        className={`h-full grow pl-[2rem] pr-[1rem] py-[1.25rem] ${isSelected ? 'text-white' : ''}`}
       >
         안녕? 나는 이주형이라고 해 안녕? 나는 이주형이라고 해 안녕? 나는
-        이주형이라고 해rrrrrrrrrrrrrrrrrrrrrrrrrfasdfasdfasdfsdafasdf
+        이주형이라고 해
       </p>
       <button onClick={handlePlaying}>
         {isPlaying ? (
