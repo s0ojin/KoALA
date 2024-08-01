@@ -36,16 +36,15 @@ public class BoardController {
 
 	@PostMapping
 	public ResponseEntity<?> createBoard(@Valid @RequestBody BoardCreateRequest boardCreateRequest) {
-
 		if (BoardValidation.validateKoreanAndNumeric(boardCreateRequest.getTitle())) {
-			return ResponseEntity.badRequest().body(new JSONObject().put("message", "게시글 제목은 한글과 숫자, 특수문자만 입력 가능합니다.").toString());
+			return ResponseEntity.badRequest()
+				.body(new JSONObject().put("message", "게시글 제목은 한글과 숫자, 특수문자만 입력 가능합니다.").toString());
 		}
 		if (BoardValidation.validateKoreanAndNumeric(boardCreateRequest.getContent())) {
-			return ResponseEntity.badRequest().body(new JSONObject().put("message", "게시글 내용은 한글과 숫자, 특수문자만 입력 가능합니다.").toString());
+			return ResponseEntity.badRequest()
+				.body(new JSONObject().put("message", "게시글 내용은 한글과 숫자, 특수문자만 입력 가능합니다.").toString());
 		}
-
 		BoardResponse boardCreateResponse = boardService.createBoard(boardCreateRequest);
-
 		return ResponseEntity.status(HttpStatus.CREATED).body(boardCreateResponse);
 	}
 
@@ -85,6 +84,10 @@ public class BoardController {
 	@PostMapping("/{board_id}/comments")
 	public ResponseEntity<?> createComment(@PathVariable("board_id") Long boardId,
 		@Valid @RequestBody BoardCommentCreateRequest boardCommentCreateRequest) {
+		if (BoardValidation.validateKoreanAndNumeric(boardCommentCreateRequest.getCommentContent())) {
+			return ResponseEntity.badRequest()
+				.body(new JSONObject().put("message", "댓글 내용은 한글과 숫자, 특수문자만 입력 가능합니다.").toString());
+		}
 		BoardCommentResponse boardCommentResponse = boardCommentService.createComment(boardId,
 			boardCommentCreateRequest);
 		boardService.increaseCommentNum(boardId);
