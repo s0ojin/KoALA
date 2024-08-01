@@ -1,7 +1,6 @@
 package com.ssafy.domain.board.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
