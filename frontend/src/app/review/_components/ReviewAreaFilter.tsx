@@ -14,7 +14,7 @@ const itemVariants: Variants = {
 };
 
 
-export default function Filter() {
+export default function ReviewMenuFilter() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
