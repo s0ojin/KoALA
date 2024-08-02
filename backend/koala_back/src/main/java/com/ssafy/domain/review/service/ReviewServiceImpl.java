@@ -1,7 +1,7 @@
 package com.ssafy.domain.review.service;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,10 +26,34 @@ public class ReviewServiceImpl implements ReviewService {
 	final UserInfoProvider userInfoProvider;
 
 	@Override
-	public Page<ReviewSentenceResponse> getReviewSentencesByUserAndKeyword(String keyword, Pageable pageable) {
+	public List<ReviewSentenceResponse> getReviewSentencesByUserAndKeyword(String keyword, String topic) {
 		User currentUser = userInfoProvider.getCurrentUser();
-		return reviewRepository.findAllByUserAndSentenceContentContaining(currentUser, keyword, pageable)
-			.map(ReviewSentenceResponse::toDto);
+
+		if (keyword == null && topic == null) {
+			return reviewRepository.findAllByUser(currentUser)
+				.stream()
+				.map(ReviewSentenceResponse::toDto)
+				.toList();
+		}
+
+		if (keyword == null) {
+			return reviewRepository.findAllByTopicAndUser(currentUser, topic)
+				.stream()
+				.map(ReviewSentenceResponse::toDto)
+				.toList();
+		}
+
+		if (topic == null) {
+			return reviewRepository.findAllByKeywordAndUser(currentUser, keyword)
+				.stream()
+				.map(ReviewSentenceResponse::toDto)
+				.toList();
+		}
+
+		return reviewRepository.findAllByKeywordAndTopicAndUser(currentUser, keyword, topic)
+			.stream()
+			.map(ReviewSentenceResponse::toDto)
+			.toList();
 	}
 
 	@Override
