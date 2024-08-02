@@ -7,7 +7,6 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssafy.domain.lecture.chat.LectureChatMessage;
 import com.ssafy.domain.lecture.chat.LectureChatRoom;
 import com.ssafy.domain.lecture.chat.LectureChatRoomManager;
 import com.ssafy.domain.lecture.model.dto.request.LectureChatRequest;
@@ -39,7 +38,7 @@ public class LectureChatSocketHandler extends TextWebSocketHandler {
 		LectureChatRoom chatRoom = lectureChatRoomManager.getRoomSessions().get(chatMessage.getLectureId());
 
 		if (chatMessage.getMessageType().equals("ENTER")) {
-			if(chatRoom == null) {
+			if (chatRoom == null) {
 				log.debug("강의 채팅방이 존재하지 않아, 해당 강의장의 채팅방을 생성합니다.");
 				chatRoom = new LectureChatRoom(chatMessage.getLectureId());
 				lectureChatRoomManager.getRoomSessions().put(chatMessage.getLectureId(), chatRoom);
