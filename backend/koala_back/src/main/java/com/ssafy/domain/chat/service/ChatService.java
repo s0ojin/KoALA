@@ -4,5 +4,5 @@ import com.ssafy.domain.chat.dto.request.ChatRequest;
 import com.ssafy.domain.chat.dto.response.ChatResponse;
 
 public interface ChatService {
-    ChatResponse getAIResponse(ChatRequest chatRequest);
+	ChatResponse getAIResponse(ChatRequest chatRequest);
 }
