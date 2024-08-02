@@ -21,7 +21,7 @@ export default function Login() {
     <AuthLayout>
       <div className="relative bg-white max-w-[600px] mx-auto mt-24 py-10 px-24 flex flex-col items-center rounded-[60px]">
         <h1 className="py-10 flex flex-col items-center text-center">
-          <Logo />
+          <Logo width="210" height="56" />
           <p className="text-primary-400 font-medium">
             한글을 한글답게
             <br /> 더 쉽게 한국어를 배워보세요^^

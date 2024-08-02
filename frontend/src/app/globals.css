@@ -6,6 +6,28 @@ body {
   background-color: #eaf5ff;
 }
 
+/* width */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #d8d8d8;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #afafaf;
+}
+
 @layer components {
   .input {
     @apply h-14 px-5 pt-1 w-full rounded-full border border-slate-300 focus:outline-primary-400;
