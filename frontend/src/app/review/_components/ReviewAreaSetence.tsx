@@ -1,6 +1,5 @@
 'use client'
 
-import Image from 'next/image'
 import Play from '/public/icons/play.svg'
 import Pause from '/public/icons/pause.svg'
 import { useState } from 'react'
