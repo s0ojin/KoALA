@@ -3,9 +3,8 @@ import Title from '@/app/_components/Title'
 import ReviewArea from '@/app/review/_components/ReviewArea'
 import ReviewLayout from '@/app/review/_components/ReviewLayout'
 import ReviewMenuButtons from '@/app/review/_components/ReviewMenuButtons'
-import Image from 'next/image'
 
-export default function Review() {
+export default function ReviewMain() {
   return (
     <ReviewLayout>
       <Header />
