@@ -1,11 +1,10 @@
 import Image from 'next/image'
-import { ReactNode } from 'react'
 
-interface MainLayoutProps {
-  children: ReactNode
-}
-
-export default function MainLayout({ children }: MainLayoutProps) {
+export default function MainLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   return (
     <div className="w-full h-auto min-h-main-height overflow-hidden">
       {children}
