@@ -4,7 +4,6 @@ import Image from 'next/image'
 import { useState } from 'react'
 import Notification from '/public/icons/notification.svg'
 import Repeat from '/public/icons/rotate.svg'
-import Rocket from '/public/images/rocket.svg'
 import SoundWave from '@/app/dictation/_components/DictationSoundWave'
 
 export default function DictationQuestion() {
@@ -55,7 +54,14 @@ export default function DictationQuestion() {
       </label>
       <div className="relative">
         <p className="absolute bottom-[80px] right-[50px]">
-          <Rocket />
+          <Image
+            width={0}
+            height={0}
+            sizes="100%"
+            className="w-[30rem] h-[30rem]"
+            alt="로켓"
+            src="/images/rocket.svg"
+          />
         </p>
         <div className="h-full min-h-[160px] w-full inline-flex gap-5 items-center border-primary-400 border-[4px] rounded-full bg-white pl-[64px] pr-[51px]">
           <p>
