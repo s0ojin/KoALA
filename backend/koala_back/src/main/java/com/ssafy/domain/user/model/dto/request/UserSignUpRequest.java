@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class UserSignUpRequest {
 
-	// null, "", "   " 데이터 전부 걸러낸다.
 	@NotBlank(message = "유저 아이디는 필수 입력 값입니다.")
 	@JsonProperty("login_id")
 	private String loginId;

@@ -8,12 +8,16 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class SentenceTestResponse {
+
 	@JsonProperty("origin_text")
 	private String originText;
+
 	@JsonProperty("user_text")
 	private String userText;
+
 	@JsonProperty("result_tag")
 	private String resultTag;
 
 	private boolean correct;
+
 }

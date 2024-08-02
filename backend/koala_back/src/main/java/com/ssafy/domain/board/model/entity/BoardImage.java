@@ -10,9 +10,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.*;
-
-import java.util.UUID;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
@@ -31,13 +32,13 @@ public class BoardImage {
 	@JoinColumn(name = "board_id")
 	private Board board;
 
-    @Column(name = "board_img_url")
+	@Column(name = "board_img_url")
 	private String boardImgUrl; // S3 내부 이미지에 접근할 수 있는 URL
 
-	@Column(name="img_origin_name")
-	private String imgOriginName; // 이미지 파일의 본래 이름
+	@Column(name = "img_origin_name")
+	private String imgOriginName; // 이미지 파일의 원본 이름
 
-	@Column(name="img_stored_name")
+	@Column(name = "img_stored_name")
 	private String imgStoredName; // 이미지 파일이 S3에 저장될 때 사용되는 이름
 
 }
