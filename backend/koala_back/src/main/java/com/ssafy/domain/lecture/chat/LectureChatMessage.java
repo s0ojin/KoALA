@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LectureChatMessage {
-    private String messageType; // ENTER (들어왔을 경우), NOTICE (공지글), TALK (일반 채팅)
-    private Long lectureId;
-    private String sender;
-//    private String receiver;
-    private String message;
+	private String messageType; // ENTER (들어왔을 경우), NOTICE (공지글), TALK (일반 채팅)
+	private Long lectureId;
+	private String sender;
+	//    private String receiver;
+	private String message;
 }

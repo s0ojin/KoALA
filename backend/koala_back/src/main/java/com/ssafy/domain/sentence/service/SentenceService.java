@@ -16,3 +16,4 @@ public interface SentenceService {
 	// 채점 태그 변환 알고리즘
 	String makeResultTag(String correct, String answer);
 }
+

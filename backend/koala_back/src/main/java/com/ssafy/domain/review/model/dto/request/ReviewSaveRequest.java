@@ -18,10 +18,7 @@ public class ReviewSaveRequest {
 	private Long sentenceId;
 
 	public ReviewSentence toReviewSentenceEntity(Sentence sentence, User user) {
-		return ReviewSentence.builder()
-			.sentence(sentence)
-			.user(user)
-			.build();
+		return ReviewSentence.builder().sentence(sentence).user(user).build();
 	}
 
 }
