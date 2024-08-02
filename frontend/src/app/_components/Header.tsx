@@ -24,7 +24,7 @@ export default function Header() {
               height={0}
               sizes="100%"
               className="w-10 h-10 rounded-full border border-gray-100 cursor-pointer"
-              alt="프로필"
+              alt="profile"
             />
           </>
         ) : (

@@ -10,7 +10,7 @@ export default function ReviewLayout({ children }: ReviewLayoutProps) {
       {children}
       <Image
         src="/images/cloud.svg"
-        alt=""
+        alt="cloud"
         width={0}
         height={0}
         sizes="100%"
@@ -19,7 +19,7 @@ export default function ReviewLayout({ children }: ReviewLayoutProps) {
       />
       <Image
         src="/images/cloud.svg"
-        alt=""
+        alt="cloud"
         width={0}
         height={0}
         sizes="100%"
@@ -28,7 +28,7 @@ export default function ReviewLayout({ children }: ReviewLayoutProps) {
       />
       <Image
         src="/images/koala-sleep.png"
-        alt=""
+        alt="cloud"
         width={0}
         height={0}
         sizes="100%"

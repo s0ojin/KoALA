@@ -102,7 +102,7 @@ export default function MainEducationCardList() {
                   height={0}
                   sizes="100%"
                   className="w-36 h-20"
-                  alt="카드 아이콘"
+                  alt="card-icon"
                   draggable="false"
                 />
               </div>

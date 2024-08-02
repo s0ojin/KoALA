@@ -21,7 +21,7 @@ export default function Main() {
                 height={0}
                 sizes="100%"
                 className="w-[22rem] h-[22rem]"
-                alt="코알라"
+                alt="koala"
                 draggable="false"
               />
               <MainKoalaLevel percent={50} />
@@ -39,7 +39,7 @@ export default function Main() {
             height={0}
             sizes="100%"
             className="scale-[2] w-full"
-            alt="바탕바닥"
+            alt="ground"
             draggable="false"
           />
         </div>
