@@ -31,16 +31,6 @@ public class LectureChatRoom {
 				log.error("채팅 전송 실패: " + e.getMessage());
 			}
 		});
-
-        /*
-        sessions.values().forEach(s -> {
-            try {
-                s.sendMessage(new TextMessage(jsonMessage));
-            } catch (IOException e) {
-                log.error("채팅 전송 실패: " + e.getMessage());
-            }
-        });
-         */
 	}
 
 	public void sendWelcomeMessage(WebSocketSession s, String jsonMessage) {
