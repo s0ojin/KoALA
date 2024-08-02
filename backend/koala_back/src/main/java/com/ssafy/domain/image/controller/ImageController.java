@@ -1,8 +1,7 @@
 package com.ssafy.domain.image.controller;
 
-import com.ssafy.domain.image.service.ImageService;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.io.IOException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,7 +10,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import com.ssafy.domain.image.service.ImageService;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
@@ -19,11 +21,11 @@ import java.io.IOException;
 @RequestMapping("/images")
 public class ImageController {
 
-    private final ImageService imageService;
+	private final ImageService imageService;
 
-    @PostMapping
-    public ResponseEntity<?> imageToText(@RequestParam("file") MultipartFile file) throws IOException {
-        String imageUrl = imageService.imageToText(file);
-        return ResponseEntity.status(HttpStatus.CREATED).body(imageUrl);
-    }
+	@PostMapping
+	public ResponseEntity<?> imageToText(@RequestParam("file") MultipartFile file) throws IOException {
+		String imageUrl = imageService.imageToText(file);
+		return ResponseEntity.status(HttpStatus.CREATED).body(imageUrl);
+	}
 }
