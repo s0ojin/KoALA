@@ -5,10 +5,10 @@ export default function DictationField() {
   const [grid, setGrid] = useState(Array(42).fill(''))
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col gap-3">
       <div className="overflow-hidden w-[1040px] py-[10px] bg-white border-t-[1px] border-b-[1px] border-primary-400">
         <div className="grid grid-cols-14 transform translate-x-[-40px]">
-          {grid.map((value, index) => (
+          {grid.map((_, index) => (
             <input
               key={index}
               className={`w-20 h-20  outline outline-1 outline-primary-400 text-4xl text-center ${index === 0 ? 'border-l-0' : ''} ${index === 0 || index === grid.length - 1 ? 'border-r-0' : ''}`}
