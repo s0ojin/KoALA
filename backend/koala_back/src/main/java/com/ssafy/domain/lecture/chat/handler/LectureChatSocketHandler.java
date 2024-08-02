@@ -65,19 +65,4 @@ public class LectureChatSocketHandler extends TextWebSocketHandler {
 	public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception {
 		log.error("웹소켓 오류: " + session + " 오류: " + exception.getMessage());
 	}
-
-    /*
-    https://brunch.co.kr/@springboot/695
-    https://velog.io/@kevin_/Spring-%EC%B1%84%ED%8C%85-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0-1.-WebSocket
-    https://wans1027.tistory.com/19
-    https://velog.io/@sunkyuj/Spring-%EC%9B%B9%EC%86%8C%EC%BC%93%EC%9C%BC%EB%A1%9C-%EC%8B%A4%EC%8B%9C%EA%B0%84-%EC%B1%84%ED%8C%85-%EA%B5%AC%ED%98%84
-    https://velog.io/@joonoo3/Spring-WebSocket%EC%9D%84-%EC%9D%B4%EC%9A%A9%ED%95%9C-%EC%8B%A4%EC%8B%9C%EA%B0%84-%EC%B1%84%ED%8C%85
-    https://velog.io/@mw310/Stomp-WebSocket-%EA%B0%9C%EB%85%90-%EC%A0%95%EB%A6%ACver-Spring
-    https://velog.io/@guswns3371/WebSocket-Spring
-    https://dev-gorany.tistory.com/212
-    https://dev-gorany.tistory.com/3
-
-
-     */
-
 }
