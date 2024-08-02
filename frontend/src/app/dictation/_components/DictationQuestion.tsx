@@ -1,34 +1,44 @@
 'use client'
 
+import Image from 'next/image'
 import { useState } from 'react'
 import Notification from '/public/icons/notification.svg'
-import Repeat from '/public/icons/re-button.svg'
+import Repeat from '/public/icons/rotate.svg'
 import Rocket from '/public/images/rocket.svg'
-import Cloud from '/public/images/cloud.svg'
-import SoundWave from '@/app/dictation/_components/SoundWave'
+import SoundWave from '@/app/dictation/_components/DictationSoundWave'
 
 export default function DictationQuestion() {
   const [isToggled, setIsToggled] = useState(false)
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeToggle = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsToggled(event.target.checked)
   }
 
   return (
-    <div className="w-full max-w-[800px] inline-flex flex-col gap-3 relative ">
-      <p className="absolute left-0 top-2 transform -translate-x-28">
-        <Cloud />
-      </p>
-      <p className="absolute right-0 bottom-0 z-10 transform translate-x-20 translate-y-14">
-        <Cloud />
-      </p>
+    <div className="w-full max-w-[800px] inline-flex flex-col gap-3 relative">
+      <Image
+        width={0}
+        height={0}
+        sizes="100%"
+        className="w-40 absolute left-0 top-2 transform -translate-x-28"
+        alt="구름"
+        src="/images/cloud.svg"
+      />
+
+      <Image
+        width={0}
+        height={0}
+        sizes="100%"
+        className="w-48 absolute right-0 bottom-0 z-10 transform translate-x-20 translate-y-14"
+        alt="구름"
+        src="/images/cloud.svg"
+      />
       <label className="flex cursor-pointer w-auto self-end mr-16 rounded-full z-10">
         <input
           type="checkbox"
-          value=""
           className="sr-only peer"
           checked={isToggled}
-          onChange={handleChange}
+          onChange={handleChangeToggle}
         />
         <div
           className="inline-block self-end w-[90px] h-[42px] border-[2px] border-gray-300 relative bg-white peer-focus:outline-none 
@@ -47,7 +57,7 @@ export default function DictationQuestion() {
         <p className="absolute bottom-[80px] right-[50px]">
           <Rocket />
         </p>
-        <div className="h-full min-h-[160px] w-full inline-flex gap-5 items-center border-primary-400 border-[4px] rounded-full  bg-white pl-[64px] pr-[51px]">
+        <div className="h-full min-h-[160px] w-full inline-flex gap-5 items-center border-primary-400 border-[4px] rounded-full bg-white pl-[64px] pr-[51px]">
           <p>
             <Notification width="60" height="60" />
           </p>
