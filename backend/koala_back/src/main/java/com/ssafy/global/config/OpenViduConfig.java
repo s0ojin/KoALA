@@ -9,14 +9,14 @@ import io.openvidu.java.client.OpenVidu;
 @Configuration
 public class OpenViduConfig {
 
-    @Value("${openvidu.url}")
-    private String openViduUrl;
+	@Value("${openvidu.url}")
+	private String openViduUrl;
 
-    @Value("${openvidu.secret}")
-    private String openViduSecret;
+	@Value("${openvidu.secret}")
+	private String openViduSecret;
 
-    @Bean
-    public OpenVidu openVidu() {
-        return new OpenVidu(openViduUrl, openViduSecret);
-    }
+	@Bean
+	public OpenVidu openVidu() {
+		return new OpenVidu(openViduUrl, openViduSecret);
+	}
 }
