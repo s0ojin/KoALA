@@ -7,6 +7,12 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class LectureChatMessage {
-
+	// ENTER (들어왔을 경우), NOTICE (공지글), TALK (일반 채팅)
+	private String messageType;
+	private Long lectureId;
+	private String sender;
+	private String message;
 }
