@@ -1,22 +1,52 @@
 package com.ssafy.domain.user.model.entity;
 
-import jakarta.persistence.*;
+import static jakarta.persistence.FetchType.*;
+import static lombok.AccessLevel.*;
+
+import java.io.Serializable;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
-@Getter
-@Setter
 @Entity
-public class StudyTime {
-    @EmbeddedId
-    private StudyTimeId studyTimeId;
+@Getter
+@Builder
+@Table(name = "study_time")
+@IdClass(StudyTimeId.class)
+@NoArgsConstructor(access = PROTECTED)
+@AllArgsConstructor(access = PROTECTED)
+public class StudyTime implements Serializable {
 
-    @Column(name = "talk_time")
-    private Integer talkTime;
+	@Id
+	@Column(name = "time_cal_type")
+	private Integer timeCalType;
 
-    @Column(name = "sentence_num")
-    private Integer sentenceNum;
+	@Id
+	@Column(name = "user_id")
+	private Long userId;
 
-    @Column(name = "lecture_num")
-    private Integer lectureNum;
+	@ManyToOne(fetch = LAZY)
+	@JoinColumn(name = "user_id", insertable = false, updatable = false)
+	private User user;
+
+	@Builder.Default
+	@Column(name = "talk_time")
+	private Integer talkTime = 0;
+
+	@Builder.Default
+	@Column(name = "sentence_num")
+	private Integer sentenceNum = 0;
+
+	@Builder.Default
+	@Column(name = "lecture_num")
+	private Integer lectureNum = 0;
 }
