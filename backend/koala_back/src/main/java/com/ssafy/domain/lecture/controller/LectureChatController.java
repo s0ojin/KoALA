@@ -17,5 +17,22 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/lectures/chat")
 public class LectureChatController {
 
+	private final LectureChatService lectureChatService;
+
+	@PostMapping
+	public ResponseEntity<?> createRoom(@RequestParam(name = "lecture") Long lectureId) {
+		LectureChatRoom chatRoom = lectureChatService.makeLectureChatRoom(lectureId);
+		if (chatRoom == null) {
+			return ResponseEntity.ok().body(chatRoom);
+		} else {
+			return ResponseEntity.badRequest().body("채팅방 생성 오류 발생");
+		}
+	}
+
+	@DeleteMapping
+	public ResponseEntity<?> deleteRoom(@RequestParam(name = "lecture") Long lectureId) {
+		lectureChatService.deleteLectureChatRoom(lectureId);
+		return ResponseEntity.ok().body("채팅방 삭제 완료");
+	}
 
 }

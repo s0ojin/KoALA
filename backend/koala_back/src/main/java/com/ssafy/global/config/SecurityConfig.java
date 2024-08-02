@@ -45,6 +45,8 @@ public class SecurityConfig {
 				.permitAll()
 				.requestMatchers("/api/users")
 				.permitAll()
+				.requestMatchers("/chat")
+				.permitAll()
 				// 다른 모든 요청은 인증을 필요로 함
 				.anyRequest()
 				.authenticated())
