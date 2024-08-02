@@ -1,7 +1,7 @@
 package com.ssafy.domain.review.model.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.ssafy.domain.sentence.model.entity.ReviewSentence;
+import com.ssafy.domain.review.model.entity.ReviewSentence;
 import com.ssafy.domain.sentence.model.entity.Sentence;
 import com.ssafy.domain.user.model.entity.User;
 

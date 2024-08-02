@@ -13,7 +13,7 @@ import com.ssafy.domain.review.repository.ReviewRepository;
 import com.ssafy.domain.sentence.model.dto.request.SentenceTestRequest;
 import com.ssafy.domain.sentence.model.dto.response.SentenceDictationResponse;
 import com.ssafy.domain.sentence.model.dto.response.SentenceTestResponse;
-import com.ssafy.domain.sentence.model.entity.ReviewSentence;
+import com.ssafy.domain.review.model.entity.ReviewSentence;
 import com.ssafy.domain.sentence.model.entity.Sentence;
 import com.ssafy.domain.sentence.repository.SentenceRepository;
 import com.ssafy.domain.user.model.entity.User;
