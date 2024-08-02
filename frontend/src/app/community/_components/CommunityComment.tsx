@@ -36,7 +36,7 @@ export default function CommnunityComment({
         {commentList.map((comment, index) => {
           return (
             <div
-              key={index}
+              key={comment.commentId}
               className=" max-w-[56rem] w-full flex py-6 px-6 items-start gap-3 border-b border-gray-300"
             >
               <Image
