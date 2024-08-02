@@ -1,10 +1,11 @@
-package com.ssafy.domain.sentence.model.entity;
+package com.ssafy.domain.review.model.entity;
 
 import static jakarta.persistence.FetchType.*;
 import static lombok.AccessLevel.*;
 
 import java.time.LocalDateTime;
 
+import com.ssafy.domain.sentence.model.entity.Sentence;
 import com.ssafy.domain.user.model.entity.User;
 
 import jakarta.persistence.Column;
