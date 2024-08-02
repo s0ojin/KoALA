@@ -1,5 +1,22 @@
 package com.ssafy.domain.user.service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.ssafy.domain.chat.service.CacheService;
 import com.ssafy.domain.user.model.dto.request.UserSignUpRequest;
 import com.ssafy.domain.user.model.dto.request.UserUpdateRequest;
@@ -16,23 +33,6 @@ import com.ssafy.global.common.UserInfoProvider;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -71,12 +71,6 @@ public class UserServiceImpl implements UserService {
 		// UsernamePasswordAuthenticationToken의 loginId와 password를 이용해 조회된 사용자 정보가 일치하는지 확인
 		Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 		System.out.println(authentication);
-        /*
-        authenticate 메서드는 UsernamePasswordAuthenticationToken의 loginId와 password가 UserDetails 객체의 정보와 일치하는지 확인
-        AuthenticationProvider는 Authentication 객체의 사용자명 (loginId)을 사용하여 사용자 정보를 로드합니다.
-        이를 위해 UserDetailsService를 호출하며, 이때 CustomUserDetailsService의 loadUserByUsername 메서드가 실행됩니다.
-         */
-
 		// 인증 정보를 기반으로 JWT 토큰 생성
 		JwtToken jwtToken = jwtTokenProvider.generateToken(authentication);
 		return jwtToken;
@@ -162,7 +156,6 @@ public class UserServiceImpl implements UserService {
 				throw new UsernameNotFoundException("User not found with loginId: " + loginId);
 			}
 			// 이미 사용자 정보를 가지고 있고, 이를 통해 직접 인증 객체를 생성
-
 			String encodedPassword = userOptional.get().getPassword();
 			List<GrantedAuthority> authorities = new ArrayList<>();
 			authorities.add(new SimpleGrantedAuthority("ROLE_user"));
@@ -183,22 +176,3 @@ public class UserServiceImpl implements UserService {
 	}
 
 }
-
-/*
-[사용자 입력]
-    ↓
-[UsernamePasswordAuthenticationToken 생성]
-    ↓
-[AuthenticationManager.authenticate() 호출]
-    ↓
-[CustomUserDetailsService.loadUserByUsername() 호출]
-    ↓
-[사용자 정보 검증]
-    ↓
-[인증 성공 - Authentication 객체 반환]
-    ↓
-[JwtTokenProvider.generateToken() 호출]
-    ↓
-[JWT 토큰 생성 및 반환]
-
- */

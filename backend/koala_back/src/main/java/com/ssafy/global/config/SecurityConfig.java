@@ -33,21 +33,23 @@ public class SecurityConfig {
 			// JWT를 사용하여 상태를 유지하기 때문에 서버 측 세션이 필요 X
 			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			// HTTP 요청에 대한 권한을 설정
-			.authorizeHttpRequests(authorizeRequests ->
-				authorizeRequests
-					// Swagger UI 관련 경로에 대한 모든 요청을 허용
-					.requestMatchers("/api/swagger-ui.html", "/swagger-ui/**", "/api/v3/api-docs/**",
-						"/swagger-resources/**", "/webjars/**", "/swagger-ui/index.html").permitAll()
-					// "/users/register" 경로에 대한 모든 요청을 허용
-					.requestMatchers("/api/users/login").permitAll()
-					.requestMatchers("/api/users/refresh").permitAll()
-					.requestMatchers("/api/users").permitAll()
-					//                                        .requestMatchers("/chat").permitAll()
-					// 다른 모든 요청은 인증을 필요로 함
-					.anyRequest().authenticated()
-			).exceptionHandling(exceptionHandling ->
-				exceptionHandling.authenticationEntryPoint(customAuthenticationEntryPoint)
-			)
+			.authorizeHttpRequests(authorizeRequests -> authorizeRequests
+				// Swagger UI 관련 경로에 대한 모든 요청을 허용
+				.requestMatchers("/api/swagger-ui.html", "/swagger-ui/**", "/api/v3/api-docs/**",
+					"/swagger-resources/**", "/webjars/**", "/swagger-ui/index.html")
+				.permitAll()
+				// "/users/register" 경로에 대한 모든 요청을 허용
+				.requestMatchers("/api/users/login")
+				.permitAll()
+				.requestMatchers("/api/users/refresh")
+				.permitAll()
+				.requestMatchers("/api/users")
+				.permitAll()
+				// 다른 모든 요청은 인증을 필요로 함
+				.anyRequest()
+				.authenticated())
+			.exceptionHandling(
+				exceptionHandling -> exceptionHandling.authenticationEntryPoint(customAuthenticationEntryPoint))
 			// JwtAuthenticationFilter를 UsernamePasswordAuthenticationFilter 이전에 실행되도록 추가
 			.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
 			.build();

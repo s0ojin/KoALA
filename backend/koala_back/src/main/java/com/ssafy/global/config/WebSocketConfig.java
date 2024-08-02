@@ -10,7 +10,7 @@ import com.ssafy.domain.lecture.chat.handler.LectureChatSocketHandler;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
-@EnableWebSocket // WebSocket을 활성화
+@EnableWebSocket
 @RequiredArgsConstructor
 public class WebSocketConfig implements WebSocketConfigurer {
 

@@ -27,7 +27,6 @@ public class UserInfoProvider {
 	public User getCurrentUser() {
 		Authentication authentication = getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated()) {
-			log.warn("Authentication is null or not authenticated");
 			throw new BadCredentialsException("User is not authenticated");
 		}
 		Object principal = authentication.getPrincipal();
@@ -40,7 +39,6 @@ public class UserInfoProvider {
 	public Long getCurrentUserId() {
 		Authentication authentication = getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated()) {
-			log.warn("Authentication is null or not authenticated");
 			return null;
 		}
 		Object principal = authentication.getPrincipal();
@@ -55,7 +53,6 @@ public class UserInfoProvider {
 	public String getCurrentLoginId() {
 		Authentication authentication = getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated()) {
-			log.warn("Authentication is null or not authenticated");
 			throw new BadCredentialsException("User is not authenticated");
 		}
 		Object principal = authentication.getPrincipal();
@@ -65,7 +62,6 @@ public class UserInfoProvider {
 	public String getCurrentNickname() {
 		Authentication authentication = getAuthentication();
 		if (authentication == null || !authentication.isAuthenticated()) {
-			log.warn("Authentication is null or not authenticated");
 			throw new BadCredentialsException("User is not authenticated");
 		}
 		Object principal = authentication.getPrincipal();

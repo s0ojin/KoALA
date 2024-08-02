@@ -12,16 +12,6 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @RequiredArgsConstructor
 public class LectureChatService {
-	private final LectureChatRoomManager lectureChatRoomManager;
 
-	public LectureChatRoom makeLectureChatRoom(Long lectureId) {
-		LectureChatRoom chatRoom = LectureChatRoom.builder().lectureId(lectureId).build();
-		lectureChatRoomManager.getRoomSessions().put(lectureId, chatRoom);
-		return chatRoom;
-	}
-
-	public void deleteLectureChatRoom(Long lectureId) {
-		lectureChatRoomManager.getRoomSessions().remove(lectureId);
-	}
-
+	
 }
