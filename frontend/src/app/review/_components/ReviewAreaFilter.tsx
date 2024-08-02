@@ -13,6 +13,27 @@ const itemVariants: Variants = {
   closed: { opacity: 0, y: 20, transition: { duration: 0.2 } },
 }
 
+const ulVariants: Variants = {
+  open: {
+    clipPath: 'inset(0% 0% 0% 0% round 10px)',
+    transition: {
+      type: 'spring',
+      bounce: 0,
+      duration: 0.7,
+      delayChildren: 0.3,
+      staggerChildren: 0.05,
+    },
+  },
+  closed: {
+    clipPath: 'inset(10% 50% 90% 50% round 10px)',
+    transition: {
+      type: 'spring',
+      bounce: 0,
+      duration: 0.3,
+    },
+  },
+}
+
 export default function ReviewMenuFilter() {
   const [isOpen, setIsOpen] = useState(false)
 
@@ -32,26 +53,7 @@ export default function ReviewMenuFilter() {
       </motion.button>
       <motion.ul
         className="bg-white mt-1"
-        variants={{
-          open: {
-            clipPath: 'inset(0% 0% 0% 0% round 10px)',
-            transition: {
-              type: 'spring',
-              bounce: 0,
-              duration: 0.7,
-              delayChildren: 0.3,
-              staggerChildren: 0.05,
-            },
-          },
-          closed: {
-            clipPath: 'inset(10% 50% 90% 50% round 10px)',
-            transition: {
-              type: 'spring',
-              bounce: 0,
-              duration: 0.3,
-            },
-          },
-        }}
+        variants={ulVariants}
         style={{ pointerEvents: isOpen ? 'auto' : 'none' }}
       >
         <motion.li
