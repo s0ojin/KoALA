@@ -1,5 +1,7 @@
 package com.ssafy.domain.board.service;
 
+import java.io.IOException;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -9,7 +11,7 @@ import com.ssafy.domain.board.model.dto.response.BoardResponse;
 
 public interface BoardService {
 
-	BoardResponse createBoard(BoardCreateRequest boardCreateRequest);
+	BoardDetailResponse createBoard(BoardCreateRequest boardCreateRequest) throws IOException;
 
 	Page<BoardResponse> getBoards(Pageable pageable);
 
@@ -26,4 +28,5 @@ public interface BoardService {
 	void increaseCommentNum(Long boardId);
 
 	void increaseHit(Long boardId);
+
 }

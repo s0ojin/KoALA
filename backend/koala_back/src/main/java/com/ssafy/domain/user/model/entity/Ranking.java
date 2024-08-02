@@ -30,7 +30,7 @@ public class Ranking {
 	@JoinColumn(name = "user_id")
 	private User user;
 
-    @Builder.Default
+	@Builder.Default
 	@Column(name = "ranking")
 	private Integer ranking = 0;
 

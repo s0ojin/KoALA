@@ -13,8 +13,10 @@ public class SentenceTestRequest {
 
 	@JsonProperty("sentence_id")
 	private Long sentenceId;
+
 	@JsonProperty("user_sentence")
 	String userSentence;
+
 	@JsonProperty("is_toggled")
 	boolean isToggled;
 

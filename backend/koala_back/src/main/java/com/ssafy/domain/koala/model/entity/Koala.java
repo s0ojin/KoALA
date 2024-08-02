@@ -76,13 +76,11 @@ public class Koala {
 		this.koalaName = koalaName;
 	}
 
-	// exp 100이면 level 2로 변경하고 exp 0으로 초기화
 	public void increaseKoalaLevel() {
 		this.user.increaseUserExp(10);
 		this.koalaLevel++;
 	}
 
-	// increase 호출되면 1증가
 	public void increaseKoalaExp() {
 		this.koalaExp++;
 		this.user.increaseUserExp();

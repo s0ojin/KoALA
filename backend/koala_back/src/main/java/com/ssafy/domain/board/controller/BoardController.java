@@ -1,5 +1,7 @@
 package com.ssafy.domain.board.controller;
 
+import java.io.IOException;
+
 import org.json.JSONObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -16,9 +18,9 @@ import com.ssafy.domain.board.model.dto.request.BoardCommentCreateRequest;
 import com.ssafy.domain.board.model.dto.request.BoardCreateRequest;
 import com.ssafy.domain.board.model.dto.response.BoardCommentResponse;
 import com.ssafy.domain.board.model.dto.response.BoardDetailResponse;
-import com.ssafy.domain.board.model.dto.response.BoardResponse;
 import com.ssafy.domain.board.model.validation.BoardValidation;
 import com.ssafy.domain.board.service.BoardCommentService;
+import com.ssafy.domain.board.service.BoardImageService;
 import com.ssafy.domain.board.service.BoardService;
 
 import jakarta.validation.Valid;
@@ -33,9 +35,10 @@ public class BoardController {
 
 	private final BoardService boardService;
 	private final BoardCommentService boardCommentService;
+	private final BoardImageService boardImageService;
 
 	@PostMapping
-	public ResponseEntity<?> createBoard(@Valid @RequestBody BoardCreateRequest boardCreateRequest) {
+	public ResponseEntity<?> createBoard(@Valid @RequestBody BoardCreateRequest boardCreateRequest) throws IOException {
 		if (BoardValidation.validateKoreanAndNumeric(boardCreateRequest.getTitle())) {
 			return ResponseEntity.badRequest()
 				.body(new JSONObject().put("message", "게시글 제목은 한글과 숫자, 특수문자만 입력 가능합니다.").toString());
@@ -44,7 +47,7 @@ public class BoardController {
 			return ResponseEntity.badRequest()
 				.body(new JSONObject().put("message", "게시글 내용은 한글과 숫자, 특수문자만 입력 가능합니다.").toString());
 		}
-		BoardResponse boardCreateResponse = boardService.createBoard(boardCreateRequest);
+		BoardDetailResponse boardCreateResponse = boardService.createBoard(boardCreateRequest);
 		return ResponseEntity.status(HttpStatus.CREATED).body(boardCreateResponse);
 	}
 
