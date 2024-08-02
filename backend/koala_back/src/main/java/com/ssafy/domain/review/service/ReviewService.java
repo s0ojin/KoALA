@@ -1,16 +1,15 @@
 package com.ssafy.domain.review.service;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import java.util.List;
 
 import com.ssafy.domain.review.model.dto.request.ReviewSaveRequest;
-import com.ssafy.domain.review.model.entity.ReviewSentence;
+import com.ssafy.domain.review.model.dto.response.ReviewSentenceResponse;
 
 public interface ReviewService {
 
-	Page<ReviewSentence> getReviewSentencesByUserAndKeyword(String keyword, Pageable pageable);
+	List<ReviewSentenceResponse> getReviewSentencesByUserAndKeyword(String keyword, String topic);
 
-	void createReviewSentence(ReviewSaveRequest reviewSaveRequest);
+	ReviewSentenceResponse createReviewSentence(ReviewSaveRequest reviewSaveRequest);
 
 	void deleteReviewSentence(Long reviewSentenceId);
 
