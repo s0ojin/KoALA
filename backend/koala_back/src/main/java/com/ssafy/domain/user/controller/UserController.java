@@ -38,7 +38,7 @@ public class UserController {
 	@PostMapping
 	public ResponseEntity<?> signUp(@Valid @RequestBody UserSignUpRequest userSignUpRequest) {
 		UserResponse savedUserResponse = userService.signUp(userSignUpRequest);
-		System.out.println(savedUserResponse.getNickname());
+		log.info(savedUserResponse.toString());
 		return ResponseEntity.ok().body(new JSONObject().put("message", "Signup successful").toString());
 	}
 
