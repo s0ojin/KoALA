@@ -23,6 +23,7 @@ public class BoardResponse {
 	private int likeCount;
 	private int hit;
 	private String createdAt;
+	private String thumbnail;
 
 	public static BoardResponse toDto(Board board) {
 		return BoardResponse.builder()
@@ -33,6 +34,7 @@ public class BoardResponse {
 			.commentNum(board.getCommentNum())
 			.hit(board.getHit())
 			.createdAt(board.getBoardCreatedAt().toString())
+			.thumbnail(board.getBoardImages().isEmpty() ? null : board.getBoardImages().get(0).getBoardImgUrl())
 			.build();
 	}
 }
