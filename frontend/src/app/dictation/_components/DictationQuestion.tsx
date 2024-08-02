@@ -20,7 +20,7 @@ export default function DictationQuestion() {
         height={0}
         sizes="100%"
         className="w-40 absolute left-0 top-2 transform -translate-x-28"
-        alt="구름"
+        alt="cloud"
         src="/images/cloud.svg"
       />
 
@@ -29,7 +29,7 @@ export default function DictationQuestion() {
         height={0}
         sizes="100%"
         className="w-48 absolute right-0 bottom-0 z-10 transform translate-x-20 translate-y-14"
-        alt="구름"
+        alt="cloud"
         src="/images/cloud.svg"
       />
       <label className="flex cursor-pointer w-auto self-end mr-16 rounded-full z-10">
@@ -59,7 +59,7 @@ export default function DictationQuestion() {
             height={0}
             sizes="100%"
             className="w-[30rem] h-[30rem]"
-            alt="로켓"
+            alt="rocket"
             src="/images/rocket.svg"
           />
         </p>

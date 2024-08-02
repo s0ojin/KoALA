@@ -42,7 +42,7 @@ export default function CommunityCarousel() {
                 height={0}
                 sizes="100%"
                 className={`w-[460px] h-[460px] aspect-square border border-gray-200 rounded-2xl ${index === currentSlide ? '' : 'opacity-30'}`}
-                alt="프로필"
+                alt="profile"
                 key={index}
               />
             )

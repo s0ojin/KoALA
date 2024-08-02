@@ -24,7 +24,7 @@ export default function DictationGradingResult({
       </div>
       <Image
         src="/images/dictation.png"
-        alt="받아쓰기 답안"
+        alt="dictation-result"
         width={0}
         height={0}
         sizes="100%"

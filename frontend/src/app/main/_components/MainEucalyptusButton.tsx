@@ -51,7 +51,7 @@ export default function MainEucalyptusButton({
                 height={0}
                 sizes="100%"
                 className="w-[3rem] h-[3rem]"
-                alt="유칼립투스"
+                alt="eucalyptus"
                 draggable="false"
               />
             </motion.p>
@@ -74,7 +74,7 @@ export default function MainEucalyptusButton({
           height={0}
           sizes="100%"
           className="w-full h-full rounded-full"
-          alt="유칼립투스"
+          alt="eucalyptus"
           draggable="false"
         />
       </button>

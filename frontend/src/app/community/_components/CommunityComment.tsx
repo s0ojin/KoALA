@@ -45,7 +45,7 @@ export default function CommnunityComment({
                 height={0}
                 sizes="100%"
                 className="w-[3rem] h-[3rem] aspect-square border rounded-full"
-                alt="프로필"
+                alt="profile"
               />
               <div className="w-full flex flex-col gap-3">
                 <div className="flex justify-between items-center">
