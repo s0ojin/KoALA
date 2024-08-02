@@ -1,10 +1,12 @@
 package com.ssafy.domain.board.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.json.JSONObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +14,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.domain.board.model.dto.request.BoardCommentCreateRequest;
 import com.ssafy.domain.board.model.dto.request.BoardCreateRequest;
@@ -20,7 +24,6 @@ import com.ssafy.domain.board.model.dto.response.BoardCommentResponse;
 import com.ssafy.domain.board.model.dto.response.BoardDetailResponse;
 import com.ssafy.domain.board.model.validation.BoardValidation;
 import com.ssafy.domain.board.service.BoardCommentService;
-import com.ssafy.domain.board.service.BoardImageService;
 import com.ssafy.domain.board.service.BoardService;
 
 import jakarta.validation.Valid;
@@ -35,10 +38,12 @@ public class BoardController {
 
 	private final BoardService boardService;
 	private final BoardCommentService boardCommentService;
-	private final BoardImageService boardImageService;
 
-	@PostMapping
-	public ResponseEntity<?> createBoard(@Valid @RequestBody BoardCreateRequest boardCreateRequest) throws IOException {
+	@PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+	public ResponseEntity<?> createBoard(
+		@Valid @RequestPart(value = "board_detail") BoardCreateRequest boardCreateRequest,
+		@RequestPart(value = "board_images") List<MultipartFile> images) throws IOException {
+
 		if (BoardValidation.validateKoreanAndNumeric(boardCreateRequest.getTitle())) {
 			return ResponseEntity.badRequest()
 				.body(new JSONObject().put("message", "게시글 제목은 한글과 숫자, 특수문자만 입력 가능합니다.").toString());
@@ -47,6 +52,10 @@ public class BoardController {
 			return ResponseEntity.badRequest()
 				.body(new JSONObject().put("message", "게시글 내용은 한글과 숫자, 특수문자만 입력 가능합니다.").toString());
 		}
+
+		// 추가: files 리스트를 boardCreateRequest에 설정
+		boardCreateRequest.setBoardImages(images);
+
 		BoardDetailResponse boardCreateResponse = boardService.createBoard(boardCreateRequest);
 		return ResponseEntity.status(HttpStatus.CREATED).body(boardCreateResponse);
 	}
