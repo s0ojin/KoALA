@@ -1,8 +1,10 @@
 package com.ssafy.domain.review.controller;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,6 +25,11 @@ import lombok.extern.slf4j.Slf4j;
 public class ReviewController {
 
 	private final ReviewService reviewService;
+
+	@GetMapping
+	public ResponseEntity<?> getReviewSentencesByUserAndKeyword(String keyword, Pageable pageable) {
+		return ResponseEntity.ok().body(reviewService.getReviewSentencesByUserAndKeyword(keyword, pageable));
+	}
 
 	@PostMapping
 	public ResponseEntity<?> createReviewSentence(@Valid @RequestBody ReviewSaveRequest reviewSaveRequest) {

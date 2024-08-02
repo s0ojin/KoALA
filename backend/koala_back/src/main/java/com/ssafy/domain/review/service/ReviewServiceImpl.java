@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.domain.review.model.dto.request.ReviewSaveRequest;
-import com.ssafy.domain.review.repository.ReviewRepository;
 import com.ssafy.domain.review.model.entity.ReviewSentence;
+import com.ssafy.domain.review.repository.ReviewRepository;
 import com.ssafy.domain.sentence.model.entity.Sentence;
 import com.ssafy.domain.sentence.repository.SentenceRepository;
 import com.ssafy.domain.user.model.entity.User;
@@ -31,7 +31,6 @@ public class ReviewServiceImpl implements ReviewService {
 		User currentUser = userInfoProvider.getCurrentUser();
 		return reviewRepository.findAllByUserAndSentenceContentContaining(currentUser, keyword, pageable);
 	}
-
 
 	@Override
 	@Transactional
