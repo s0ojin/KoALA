@@ -46,9 +46,7 @@ public class SentenceServiceImpl implements SentenceService {
 			sentences = sentenceRepository.findRandomSentencesByTopic(topic);
 		}
 
-		return sentences.stream()
-			.map(SentenceDictationResponse::toDto)
-			.collect(Collectors.toList());
+		return sentences.stream().map(SentenceDictationResponse::toDto).collect(Collectors.toList());
 	}
 
 	@Override
@@ -91,15 +89,13 @@ public class SentenceServiceImpl implements SentenceService {
 
 		// 1. 복습페이지에 틀린 문장 저장
 		reviewRepository.saveAll(reviewSentences);
-		//        System.out.println(leaves);
 		// 2. 유칼립투스 증가
 		// 문제 별로 토글을 키고 했다면 -> 1개
 		// 문제 별로 토글을 끄고 했다면 -> 2개
 		user.setLeaves(user.getLeaves() + leaves);
-		System.out.println(user.getLeaves());
 		userRepository.save(user);
 
-		return sentenceTestResponses; // 3. 틀린g거 보여주기
+		return sentenceTestResponses; // 3. 틀린거 보여주기
 	}
 
 	@Override

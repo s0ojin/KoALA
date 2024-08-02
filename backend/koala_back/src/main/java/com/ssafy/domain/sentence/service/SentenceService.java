@@ -15,3 +15,4 @@ public interface SentenceService {
 	String makeResultTag(String correct, String answer);
 
 }
+

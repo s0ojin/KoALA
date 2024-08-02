@@ -170,7 +170,7 @@ public class User implements UserDetails {
 		this.userExp++;
 		if (this.userExp >= 100) {
 			increaseUserLevel();
-			this.userExp = -100L;
+			this.userExp -= 100L;
 		}
 	}
 

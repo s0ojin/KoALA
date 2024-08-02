@@ -13,7 +13,4 @@ public class SecurityUtil {
 		return authentication.getName();
 	}
 
-	public static String getJWTInfo() {
-		return null;
-	}
 }
