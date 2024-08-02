@@ -27,8 +27,8 @@ public class GPTRequest {
     }
 
     private String getRole(String situation) {
-        // 상황에 따라 역할을 반환하는 로직을 구현할 수 있습니다.
-        // 현재는 임시로 "선생님" 역할을 반환합니다.
+        // 상황에 따라 역할을 반환하는 로직을 구현
+        // "선생님" 역할을 반환
         return "선생님";
     }
 }

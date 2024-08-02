@@ -41,5 +41,4 @@ public class SentenceController {
 		List<SentenceTestResponse> sentenceTestResult = sentenceService.testWritingPaper(sentenceTestAnswers);
 		return ResponseEntity.ok().body(sentenceTestResult);
 	}
-
 }

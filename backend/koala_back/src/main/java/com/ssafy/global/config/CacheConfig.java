@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@EnableCaching // Spring에서 캐시 기능을 활성화
+@EnableCaching
 public class CacheConfig {
 
 	@Bean

@@ -46,9 +46,7 @@ public class SentenceServiceImpl implements SentenceService {
 			sentences = sentenceRepository.findRandomSentencesByTopic(topic);
 		}
 
-		return sentences.stream()
-			.map(SentenceDictationResponse::toDto)
-			.collect(Collectors.toList());
+		return sentences.stream().map(SentenceDictationResponse::toDto).collect(Collectors.toList());
 	}
 
 	@Override
