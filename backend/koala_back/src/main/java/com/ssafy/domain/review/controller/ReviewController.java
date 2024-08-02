@@ -33,8 +33,7 @@ public class ReviewController {
 
 	@PostMapping
 	public ResponseEntity<?> createReviewSentence(@Valid @RequestBody ReviewSaveRequest reviewSaveRequest) {
-		reviewService.createReviewSentence(reviewSaveRequest);
-		return ResponseEntity.status(HttpStatus.CREATED).body("복습 문장을 추가했습니다.");
+		return ResponseEntity.status(HttpStatus.CREATED).body(reviewService.createReviewSentence(reviewSaveRequest));
 	}
 
 	@DeleteMapping("/{review_sentence_id}")
