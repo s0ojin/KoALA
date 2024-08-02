@@ -28,6 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class SentenceServiceImpl implements SentenceService {
+
 	private final SentenceRepository sentenceRepository;
 	private final UserRepository userRepository;
 	private final ReviewRepository reviewRepository;
@@ -73,9 +74,9 @@ public class SentenceServiceImpl implements SentenceService {
 			if (originText.equals(userText)) {
 				resultTag = userText;
 				correct = true;
-				if (request.isToggled()) { // 토클을 켜고 함
+				if (request.isToggled()) {
 					leaves += 1;
-				} else { // 토글을 끄고 함
+				} else {
 					leaves += 2;
 				}
 			} else {

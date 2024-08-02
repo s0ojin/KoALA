@@ -16,6 +16,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserResponse {
+
 	private Long userId;
 	private String loginId;
 	private String password;
@@ -31,7 +32,7 @@ public class UserResponse {
 		return UserResponse.builder()
 			.userId(user.getUserId())
 			.loginId(user.getLoginId())
-			.password(user.getPassword()) // 이미 인코딩된 비밀번호를 사용
+			.password(user.getPassword())
 			.name(user.getName())
 			.nickname(user.getNickname())
 			.leaves(user.getLeaves())

@@ -22,7 +22,6 @@ import com.ssafy.domain.lecture.model.entity.LectureNote;
 import com.ssafy.domain.lecture.model.entity.RegisteredLecture;
 import com.ssafy.domain.sentence.model.entity.ReviewSentence;
 import com.ssafy.domain.sentence.model.entity.Sentence;
-import com.ssafy.domain.user.model.validation.UserValidation;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -33,7 +32,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -172,7 +170,7 @@ public class User implements UserDetails {
 		this.userExp++;
 		if (this.userExp >= 100) {
 			increaseUserLevel();
-			this.userExp =- 100L;
+			this.userExp = -100L;
 		}
 	}
 

@@ -33,12 +33,12 @@ public class BoardImage {
 	private Board board;
 
 	@Column(name = "board_img_url")
-	private String boardImgUrl;
+	private String boardImgUrl; // S3 내부 이미지에 접근할 수 있는 URL
 
 	@Column(name = "img_origin_name")
-	private String imgOriginName;
+	private String imgOriginName; // 이미지 파일의 원본 이름
 
 	@Column(name = "img_stored_name")
-	private String imgStoredName;
+	private String imgStoredName; // 이미지 파일이 S3에 저장될 때 사용되는 이름
 
 }

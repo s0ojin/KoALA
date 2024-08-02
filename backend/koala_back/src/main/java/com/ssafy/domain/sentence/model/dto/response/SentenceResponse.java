@@ -18,16 +18,22 @@ import lombok.ToString;
 @NoArgsConstructor
 @Builder
 public class SentenceResponse {
+
 	@JsonProperty("sentence_id")
 	private Long sentenceId;
+
 	@JsonProperty("user_id")
 	private Long userId;
+
 	@JsonProperty("sentence_text")
 	private String sentenceText;
+
 	@JsonProperty("topic_category")
 	private String topicCategory;
+
 	@JsonProperty("sentence_length")
 	private Integer sentenceLength;
+
 	@JsonProperty("sentence_created_at")
 	private LocalDateTime sentenceCreatedAt;
 

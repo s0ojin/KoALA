@@ -14,6 +14,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserFindResponse {
+
 	private Long userId;
 	private String longinId;
 	private String nickname;

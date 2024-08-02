@@ -37,9 +37,8 @@ public class UserController {
 
 	@PostMapping
 	public ResponseEntity<?> signUp(@Valid @RequestBody UserSignUpRequest userSignUpRequest) {
-		UserResponse savedUserResponse = userService.signUp(userSignUpRequest); // 이걸 반환해도 됨
+		UserResponse savedUserResponse = userService.signUp(userSignUpRequest);
 		System.out.println(savedUserResponse.getNickname());
-		//        return ResponseEntity.ok().body(savedUserResponse);
 		return ResponseEntity.ok().body(new JSONObject().put("message", "Signup successful").toString());
 	}
 
@@ -100,7 +99,6 @@ public class UserController {
 	@PatchMapping
 	public ResponseEntity<?> updateUser(@Valid @RequestBody UserUpdateRequest userUpdateRequest) {
 		UserResponse userResponse = userService.updateUser(userUpdateRequest);
-		//        return ResponseEntity.ok().body(userResponse);
 		return ResponseEntity.ok().body(new JSONObject().put("message", "Update successful").toString());
 	}
 
