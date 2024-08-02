@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.domain.review.model.dto.request.ReviewSentenceRequest;
+import com.ssafy.domain.review.model.entity.ReviewSentence;
 import com.ssafy.domain.review.repository.ReviewRepository;
 import com.ssafy.domain.sentence.model.dto.request.SentenceTestRequest;
 import com.ssafy.domain.sentence.model.dto.response.SentenceDictationResponse;
 import com.ssafy.domain.sentence.model.dto.response.SentenceTestResponse;
-import com.ssafy.domain.review.model.entity.ReviewSentence;
 import com.ssafy.domain.sentence.model.entity.Sentence;
 import com.ssafy.domain.sentence.repository.SentenceRepository;
 import com.ssafy.domain.user.model.entity.User;
@@ -80,7 +80,10 @@ public class SentenceServiceImpl implements SentenceService {
 			} else {
 				resultTag = makeResultTag(originText, userText);
 				reviewSentences.add(
-					new ReviewSentenceRequest(request.getSentenceId()).toEntity(originSentence.get(), user));
+					ReviewSentenceRequest.builder()
+						.sentenceId(request.getSentenceId())
+						.build()
+						.toEntity(originSentence.get(), user));
 				correct = false;
 			}
 
