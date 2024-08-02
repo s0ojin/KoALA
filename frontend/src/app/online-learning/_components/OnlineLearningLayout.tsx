@@ -1,12 +1,10 @@
 import Image from 'next/image'
 
-interface OnlineLearningLayoutProps {
-  children: React.ReactNode
-}
-
 export default function OnlineLearningLayout({
   children,
-}: OnlineLearningLayoutProps) {
+}: {
+  children: React.ReactNode
+}) {
   return (
     <div className="w-full h-full">
       {children}

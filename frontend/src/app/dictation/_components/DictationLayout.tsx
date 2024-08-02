@@ -1,10 +1,10 @@
 import Image from 'next/image'
 
-interface DictationProps {
+export default function DictationLayout({
+  children,
+}: {
   children: React.ReactNode
-}
-
-export default function DictationLayout({ children }: DictationProps) {
+}) {
   return (
     <div className="relative w-full h-full min-h-screen flex items-center justify-center">
       {children}

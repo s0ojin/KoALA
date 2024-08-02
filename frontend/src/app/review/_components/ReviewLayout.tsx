@@ -1,10 +1,10 @@
 import Image from 'next/image'
 
-interface ReviewLayoutProps {
+export default function ReviewLayout({
+  children,
+}: {
   children: React.ReactNode
-}
-
-export default function ReviewLayout({ children }: ReviewLayoutProps) {
+}) {
   return (
     <div className="w-full h-auto min-h-main-height overflow-hidden">
       {children}

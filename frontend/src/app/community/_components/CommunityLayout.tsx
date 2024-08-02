@@ -1,10 +1,10 @@
 import Image from 'next/image'
 
-interface CommunityLayoutProps {
+export default function CommunityLayout({
+  children,
+}: {
   children: React.ReactNode
-}
-
-export default function CommunityLayout({ children }: CommunityLayoutProps) {
+}) {
   return (
     <div className="flex justify-center relative overflow-hidden">
       <div>{children}</div>

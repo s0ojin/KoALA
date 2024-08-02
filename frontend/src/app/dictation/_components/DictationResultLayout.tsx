@@ -1,12 +1,10 @@
 import Image from 'next/image'
 
-interface DictationResultLayoutProps {
-  children: React.ReactNode
-}
-
 export default function DictationResultLayout({
   children,
-}: DictationResultLayoutProps) {
+}: {
+  children: React.ReactNode
+}) {
   return (
     <div className="h-auto overflow-hidden w-full relative">
       {children}
