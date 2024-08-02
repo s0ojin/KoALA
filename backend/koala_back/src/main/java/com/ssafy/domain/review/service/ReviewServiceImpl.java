@@ -1,5 +1,7 @@
 package com.ssafy.domain.review.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +25,13 @@ public class ReviewServiceImpl implements ReviewService {
 	final ReviewRepository reviewRepository;
 	final SentenceRepository sentenceRepository;
 	final UserInfoProvider userInfoProvider;
+
+	@Override
+	public Page<ReviewSentence> getReviewSentencesByUserAndKeyword(String keyword, Pageable pageable) {
+		User currentUser = userInfoProvider.getCurrentUser();
+		return reviewRepository.findAllByUserAndSentenceContentContaining(currentUser, keyword, pageable);
+	}
+
 
 	@Override
 	@Transactional

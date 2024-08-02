@@ -12,7 +12,7 @@ import com.ssafy.domain.user.model.entity.User;
 public interface ReviewRepository extends JpaRepository<ReviewSentence, Long> {
 
 	@Query("select rs from ReviewSentence rs where rs.user = :user and rs.sentence.sentenceText like %:keyword%")
-	Page<ReviewSentence> findAllByUserAndSentenceContaining(@Param("user") User user, String keyword,
-		Pageable pageable);
+	Page<ReviewSentence> findAllByUserAndSentenceContentContaining(@Param("user") User user,
+		@Param("keyword") String keyword, Pageable pageable);
 
 }
