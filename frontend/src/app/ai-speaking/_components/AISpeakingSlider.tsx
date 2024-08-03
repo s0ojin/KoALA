@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, PanInfo } from 'framer-motion'
 import AISpeakingConversationCard from './AISpeakingConversationCard'
 import NextBtn from '/public/icons/arrow-right.svg'
 
@@ -63,7 +63,20 @@ export default function AISpeakingSlider() {
   const positions = ['farLeft', 'left', 'center', 'right', 'farRight']
 
   const handleClick = (direction: number) => {
-    setActiveIndex((prevIndex) => prevIndex + direction)
+    setActiveIndex(
+      (prevIndex) => (prevIndex + direction + cardList.length) % cardList.length
+    )
+  }
+
+  const handleDragEnd = (
+    _: MouseEvent | TouchEvent | PointerEvent,
+    info: PanInfo
+  ) => {
+    if (info.offset.x < -100) {
+      handleClick(1)
+    } else if (info.offset.x > 100) {
+      handleClick(-1)
+    }
   }
 
   const getVisibleCards = () => {
@@ -123,21 +136,27 @@ export default function AISpeakingSlider() {
           className="left-[30%] w-10 cursor-pointer"
         />
       </div>
-      {visibleCardList.map((card, idx) => (
-        <motion.div
-          key={card.id}
-          className="absolute"
-          initial="center"
-          animate={positions[idx]}
-          variants={imageVariants}
-          transition={{ duration: 0.5 }}
-        >
-          <AISpeakingConversationCard
-            conversationTitle={card.title}
-            conversationDescription={card.description}
-          />
-        </motion.div>
-      ))}
+      {visibleCardList.map((card, idx) => {
+        const canDrag = positions[idx] === 'center'
+        return (
+          <motion.div
+            key={card.id}
+            className={`absolute ${canDrag ? 'cursor-pointer' : 'cursor-auto'}`}
+            initial="center"
+            animate={positions[idx]}
+            variants={imageVariants}
+            transition={{ duration: 0.5 }}
+            drag={canDrag ? 'x' : false}
+            onDragEnd={handleDragEnd}
+            dragConstraints={{ left: 0, right: 0 }}
+          >
+            <AISpeakingConversationCard
+              conversationTitle={card.title}
+              conversationDescription={card.description}
+            />
+          </motion.div>
+        )
+      })}
     </div>
   )
 }
