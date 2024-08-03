@@ -1,10 +1,10 @@
 import Image from 'next/image'
 
-interface AuthLayoutProps {
+export default function AuthLayout({
+  children,
+}: {
   children: React.ReactNode
-}
-
-export default function AuthLayout({ children }: AuthLayoutProps) {
+}) {
   return (
     <div>
       {children}

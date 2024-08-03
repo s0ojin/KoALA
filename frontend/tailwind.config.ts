@@ -8,6 +8,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      minHeight: {
+        'main-height': 'calc(100vh - 5rem)',
+      },
       backgroundColor: {
         'primary-50': '#EEEDFF',
         'primary-100': '#C7C4FF',
@@ -36,6 +39,9 @@ const config: Config = {
         'primary-700': '#1A148C',
         'primary-800': '#0F0A6A',
         'primary-900': '#070348',
+      },
+      gridTemplateColumns: {
+        '14': 'repeat(14, minmax(80px, 80px))',
       },
     },
   },
