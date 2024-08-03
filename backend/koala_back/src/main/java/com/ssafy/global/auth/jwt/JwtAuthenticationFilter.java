@@ -1,48 +1,47 @@
 package com.ssafy.global.auth.jwt;
 
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.util.StringUtils;
-import org.springframework.web.filter.GenericFilterBean;
-
 import java.io.IOException;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import com.ssafy.global.error.exception.TokenException;
+
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+
 @RequiredArgsConstructor
-public class JwtAuthenticationFilter extends GenericFilterBean {
-    private final JwtTokenProvider jwtTokenProvider;
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    /*
-    Request Header에서 토큰 정보 추출
-    클라이언트가 서버에 요청을 보낼 때 "Authorization" 헤더에 JWT 토큰을 포함한다.
-    예를 들어, 헤더 값이 "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."과 같이 설정된다.
-    서버는 요청을 처리하는 과정에서 resolveToken 메서드를 호출하여 "Authorization" 헤더에서 JWT 토큰을 추출한다.
-     */
-    private String resolveToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer")) {
-            return bearerToken.substring(7);
-        }
-        return null;
-    }
+	private final JwtTokenProvider jwtTokenProvider;
 
+	@Override
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+		throws ServletException, IOException {
+		try {
+			String token = resolveToken(request);
+			if (token != null) {
+				jwtTokenProvider.validateToken(token);
+				Authentication authentication = jwtTokenProvider.getAuthentication(token);
+				SecurityContextHolder.getContext().setAuthentication(authentication);
+			}
+			filterChain.doFilter(request, response);
+		} catch (TokenException e) {
+			response.setStatus(e.getHttpStatus().value());
+			response.setContentType("application/json");
+			response.getWriter().write("{\"message\": \"" + e.getMessage() + "\"}");
+		}
+	}
 
-    @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        // Request Header에서 JWT 토큰 추출
-        String token = resolveToken((HttpServletRequest) request);
-
-        // validateToken으로 유효성 검사
-        if (token != null && jwtTokenProvider.validateToken(token)) {
-            // 토큰이 유효하면 토큰에서 Authentication 객체 가져와서 SecurityContext에 저장
-            Authentication authentication = jwtTokenProvider.getAuthentication(token);
-            SecurityContextHolder.getContext().setAuthentication(authentication); // 전역 접근 가능
-        }
-        chain.doFilter(request, response); // 다음 필터로 요청과 응답을 전달
-    }
+	private String resolveToken(HttpServletRequest request) {
+		String bearerToken = request.getHeader("Authorization");
+		if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+			return bearerToken.substring(7);
+		}
+		return null;
+	}
 }
