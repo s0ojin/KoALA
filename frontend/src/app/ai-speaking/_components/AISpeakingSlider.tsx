@@ -13,113 +13,128 @@ const dummy = [
       '관공서에서 민원을 넣는 상황을 가정합니다. AI와 함께 연습해 봅시다!',
   },
   {
-    id: 1,
+    id: 2,
     title: '1',
     description:
       '관공서에서 민원을 넣는 상황을 가정합니다. AI와 함께 연습해 봅시다! 관공서에서 민원을 넣는 상황을 가정합니다. AI와 함께 연습해 봅시다!',
   },
   {
-    id: 1,
+    id: 3,
     title: '2',
     description:
       '관공서에서 민원을 넣는 상황을 가정합니다. AI와 함께 연습해 봅시다! 관공서에서 민원을 넣는 상황을 가정합니다. AI와 함께 연습해 봅시다!',
   },
   {
-    id: 1,
+    id: 4,
     title: '3',
     description:
       '관공서에서 민원을 넣는 상황을 가정합니다. AI와 함께 연습해 봅시다! 관공서에서 민원을 넣는 상황을 가정합니다. AI와 함께 연습해 봅시다!',
   },
   {
-    id: 1,
+    id: 5,
     title: '4',
+    description:
+      '관공서에서 민원을 넣는 상황을 가정합니다. AI와 함께 연습해 봅시다! 관공서에서 민원을 넣는 상황을 가정합니다. AI와 함께 연습해 봅시다!',
+  },
+  {
+    id: 6,
+    title: '5',
+    description:
+      '관공서에서 민원을 넣는 상황을 가정합니다. AI와 함께 연습해 봅시다! 관공서에서 민원을 넣는 상황을 가정합니다. AI와 함께 연습해 봅시다!',
+  },
+  {
+    id: 7,
+    title: '6',
+    description:
+      '관공서에서 민원을 넣는 상황을 가정합니다. AI와 함께 연습해 봅시다! 관공서에서 민원을 넣는 상황을 가정합니다. AI와 함께 연습해 봅시다!',
+  },
+  {
+    id: 8,
+    title: '7',
     description:
       '관공서에서 민원을 넣는 상황을 가정합니다. AI와 함께 연습해 봅시다! 관공서에서 민원을 넣는 상황을 가정합니다. AI와 함께 연습해 봅시다!',
   },
 ]
 
 export default function AISpeakingSlider() {
-  const [positionIndexes, setPositionIndexes] = useState([0, 1, 2, 3, 4])
+  const [cardList, setCardList] = useState(dummy)
+  const [activeIndex, setActiveIndex] = useState(0)
+
+  const positions = ['farLeft', 'left', 'center', 'right', 'farRight']
+
+  const handleClick = (direction: number) => {
+    setActiveIndex((prevIndex) => prevIndex + direction)
+  }
+
+  const getVisibleCards = () => {
+    const totalCards = cardList.length
+    const visibleCards = []
+    for (let i = -2; i <= 2; i++) {
+      visibleCards.push(cardList[(activeIndex + i + totalCards) % totalCards])
+    }
+    return visibleCards
+  }
 
   const imageVariants = {
     center: { x: '0%', scale: 1, zIndex: 5, rotate: '0deg' },
-    left1: {
+    left: {
       x: '-70%',
       scale: 0.85,
       zIndex: 2,
       rotate: '1deg',
-      filter: 'blur(3px)',
+      filter: 'blur(2px)',
     },
-    left: {
+    farLeft: {
       x: '-130%',
       y: '10%',
       scale: 0.8,
       zIndex: 1,
       rotate: '-10deg',
-      filter: 'blur(3px)',
+      filter: 'blur(2px)',
     },
-    right1: {
+    farRight: {
       x: '130%',
       y: '10%',
       scale: 0.8,
       zIndex: 1,
       rotate: '10deg',
-      filter: 'blur(3px)',
+      filter: 'blur(2px)',
     },
     right: {
       x: '70%',
       scale: 0.85,
       zIndex: 2,
       rotate: '-1deg',
-      filter: 'blur(3px)',
+      filter: 'blur(2px)',
     },
   }
 
-  const positions = ['center', 'left1', 'left', 'right1', 'right']
+  const visibleCardList = getVisibleCards()
 
-  const handleNext = () => {
-    setPositionIndexes((prevIndexes) => {
-      return prevIndexes.map((prevIndex) => (prevIndex + 1) % 5)
-    })
-  }
-  const handlePrev = () => {
-    setPositionIndexes((prevIndexes) => {
-      return prevIndexes.map((prevIndex) => (prevIndex - 1 + 5) % 5)
-    })
-  }
   return (
     <div className="h-screen flex flex-col items-center justify-center w-full">
       <div className="z-10 w-[28rem] absolute flex justify-between text-gray-900">
         <NextBtn
-          onClick={handlePrev}
+          onClick={() => handleClick(-1)}
           className="right-[30%] w-10 rotate-180 cursor-pointer"
         />
         <NextBtn
-          onClick={handleNext}
+          onClick={() => handleClick(1)}
           className="left-[30%] w-10 cursor-pointer"
         />
       </div>
-      {dummy.map((conversation, idx) => (
+      {visibleCardList.map((card, idx) => (
         <motion.div
-          key={conversation.id}
+          key={card.id}
+          className="absolute"
           initial="center"
-          animate={positions[positionIndexes[idx]]}
+          animate={positions[idx]}
           variants={imageVariants}
-          //   drag={canDrag ? 'y' : false}
-          //   dragConstraints={{
-          //     top: 0,
-          //     bottom: 0,
-          //   }}
-          //   onDragStart={handleDragStart}
-          //   onDrag={handleDrag}
-          //   onDragEnd={() => handleDragEnd()}
-
           transition={{ duration: 0.5 }}
-          style={{ position: 'absolute' }}
         >
           <AISpeakingConversationCard
-            conversationTitle={conversation.title}
-            conversationDescription={conversation.description}
+            conversationTitle={card.title}
+            conversationDescription={card.description}
           />
         </motion.div>
       ))}
