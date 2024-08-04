@@ -83,7 +83,7 @@ public class UserController {
 
 	@Operation(summary = "아이디 중복확인")
 	@GetMapping("/check/check-id/{loginId}")
-	public ResponseEntity<?> checkLoginId(@PathVariable String loginId) {
+	public ResponseEntity<?> checkLoginId(@PathVariable("loginId") String loginId) {
 		boolean isExist = userService.checkLoginId(loginId);
 		String message = isExist ? "이미 사용 중인 아이디입니다." : "사용 가능한 아이디입니다.";
 		return ResponseEntity.ok().body(new JSONObject().put("available", !isExist).put("message", message).toString());
@@ -91,7 +91,7 @@ public class UserController {
 
 	@Operation(summary = "닉네임 중복확인")
 	@GetMapping("/check/check-name/{nickname}")
-	public ResponseEntity<?> checkNickname(@PathVariable String nickname) {
+	public ResponseEntity<?> checkNickname(@PathVariable("nickname") String nickname) {
 		boolean isExist = userService.checkNickname(nickname);
 		String message = isExist ? "Not Available Nickname" : "Available Nickname";
 		return ResponseEntity.ok().body(new JSONObject().put("available", !isExist).put("message", message).toString());
