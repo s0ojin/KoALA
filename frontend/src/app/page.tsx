@@ -10,6 +10,18 @@ export default function Home() {
       >
         누르면 메인페이지로 이동합니다
       </Link>
+      <Link
+        href="/modals/basic"
+        className="w-96 bg-primary-400 text-white p-4 rounded-full"
+      >
+        basic모달테스트
+      </Link>
+      <Link
+        href="/modals/special"
+        className="w-96 bg-primary-400 text-white p-4 rounded-full"
+      >
+        special모달테스트
+      </Link>
     </h1>
   )
 }
