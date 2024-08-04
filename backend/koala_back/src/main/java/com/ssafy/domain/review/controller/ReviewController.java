@@ -16,9 +16,7 @@ import com.ssafy.domain.review.service.ReviewService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/reviews")
@@ -27,9 +25,9 @@ public class ReviewController {
 	private final ReviewService reviewService;
 
 	@GetMapping
-	public ResponseEntity<?> getReviewSentencesByUserAndKeyword(@RequestParam(required = false) String keyword,
-		@RequestParam(required = false) String topic) {
-		log.debug("keyword: {}, topic: {}", keyword, topic);
+	public ResponseEntity<?> getReviewSentencesByUserAndKeyword(
+		@RequestParam(name = "keyword", required = false) String keyword,
+		@RequestParam(name = "topic", required = false) String topic) {
 		return ResponseEntity.ok().body(reviewService.getReviewSentencesByUserAndKeyword(keyword, topic));
 	}
 
