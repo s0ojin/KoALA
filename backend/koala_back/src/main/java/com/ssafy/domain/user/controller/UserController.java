@@ -23,6 +23,7 @@ import com.ssafy.domain.user.model.dto.response.UserResponse;
 import com.ssafy.domain.user.service.UserService;
 import com.ssafy.global.auth.jwt.dto.JwtToken;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,13 +36,15 @@ public class UserController {
 
 	private final UserService userService;
 
+	@Operation(summary = "회원가입")
 	@PostMapping
 	public ResponseEntity<?> signUp(@Valid @RequestBody UserSignUpRequest userSignUpRequest) {
 		UserResponse savedUserResponse = userService.signUp(userSignUpRequest);
-		System.out.println(savedUserResponse.getNickname());
+		// System.out.println(savedUserResponse.getNickname());
 		return ResponseEntity.ok().body(new JSONObject().put("message", "Signup successful").toString());
 	}
 
+	@Operation(summary = "로그인")
 	@PostMapping("/login")
 	public ResponseEntity<JwtToken> signIn(@Valid @RequestBody UserSignInRequest userSignInRequest) {
 		String loginId = userSignInRequest.getLoginId();
@@ -52,12 +55,14 @@ public class UserController {
 		return ResponseEntity.ok().body(jwtToken);
 	}
 
+	@Operation(summary = "로그아웃")
 	@PostMapping("/logout")
 	public ResponseEntity<?> logout(@RequestBody String accessToken) {
 		userService.logout();
 		return ResponseEntity.ok().body("logout successful");
 	}
 
+	@Operation(summary = "accessToken 재발급")
 	@GetMapping("/refresh")
 	public ResponseEntity<?> refreshToken(@RequestHeader("Authorization") String bearerToken) {
 		try {
@@ -76,6 +81,7 @@ public class UserController {
 		}
 	}
 
+	@Operation(summary = "아이디 중복확인")
 	@GetMapping("/check/check-id/{loginId}")
 	public ResponseEntity<?> checkLoginId(@PathVariable String loginId) {
 		boolean isExist = userService.checkLoginId(loginId);
@@ -83,6 +89,7 @@ public class UserController {
 		return ResponseEntity.ok().body(new JSONObject().put("available", !isExist).put("message", message).toString());
 	}
 
+	@Operation(summary = "닉네임 중복확인")
 	@GetMapping("/check/check-name/{nickname}")
 	public ResponseEntity<?> checkNickname(@PathVariable String nickname) {
 		boolean isExist = userService.checkNickname(nickname);
@@ -90,18 +97,21 @@ public class UserController {
 		return ResponseEntity.ok().body(new JSONObject().put("available", !isExist).put("message", message).toString());
 	}
 
+	@Operation(summary = "특정 유저 정보 조회")
 	@GetMapping
 	public ResponseEntity<?> getUser() {
 		UserFindResponse userFindResponse = userService.findUser();
 		return ResponseEntity.ok().body(userFindResponse);
 	}
 
+	@Operation(summary = "유저 정보 수정")
 	@PatchMapping
 	public ResponseEntity<?> updateUser(@Valid @RequestBody UserUpdateRequest userUpdateRequest) {
 		UserResponse userResponse = userService.updateUser(userUpdateRequest);
 		return ResponseEntity.ok().body(new JSONObject().put("message", "Update successful").toString());
 	}
 
+	@Operation(summary = "회원 탈퇴")
 	@DeleteMapping
 	public ResponseEntity<?> deleteUser() {
 		userService.deleteUser();
