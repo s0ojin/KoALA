@@ -16,6 +16,7 @@ import com.ssafy.domain.sentence.model.dto.response.SentenceTestResponse;
 import com.ssafy.domain.sentence.service.SentenceService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -38,7 +39,7 @@ public class SentenceController {
 
 	@Operation(summary = "받아쓰기 채점")
 	@PostMapping("writing-test")
-	public ResponseEntity<?> testWritingPapers(@RequestBody List<SentenceTestRequest> sentenceTestAnswers) {
+	public ResponseEntity<?> testWritingPapers(@Valid @RequestBody List<SentenceTestRequest> sentenceTestAnswers) {
 		List<SentenceTestResponse> sentenceTestResult = sentenceService.testWritingPaper(sentenceTestAnswers);
 		return ResponseEntity.ok().body(sentenceTestResult);
 	}
