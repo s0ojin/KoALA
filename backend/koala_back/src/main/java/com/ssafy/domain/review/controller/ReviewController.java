@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.domain.review.model.dto.request.ReviewSaveRequest;
 import com.ssafy.domain.review.service.ReviewService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -24,6 +25,7 @@ public class ReviewController {
 
 	private final ReviewService reviewService;
 
+	@Operation(summary = "복습문장 주제 및 키워드 조회")
 	@GetMapping
 	public ResponseEntity<?> getReviewSentencesByUserAndKeyword(
 		@RequestParam(name = "keyword", required = false) String keyword,
@@ -31,11 +33,13 @@ public class ReviewController {
 		return ResponseEntity.ok().body(reviewService.getReviewSentencesByUserAndKeyword(keyword, topic));
 	}
 
+	@Operation(summary = "복습문장 저장")
 	@PostMapping
 	public ResponseEntity<?> createReviewSentence(@Valid @RequestBody ReviewSaveRequest reviewSaveRequest) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(reviewService.createReviewSentence(reviewSaveRequest));
 	}
 
+	@Operation(summary = "복습에 저장된 특정 문장 삭제")
 	@DeleteMapping("/{review_sentence_id}")
 	public ResponseEntity<?> deleteReviewSentence(@PathVariable("review_sentence_id") Long reviewSentenceId) {
 		reviewService.deleteReviewSentence(reviewSentenceId);
