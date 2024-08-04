@@ -25,7 +25,7 @@ public class ImageController {
 
 	@PostMapping
 	public ResponseEntity<?> imageToText(@RequestParam("file") MultipartFile file) throws IOException {
-		String imageUrl = imageService.imageToText(file);
-		return ResponseEntity.status(HttpStatus.CREATED).body(imageUrl);
+		String extractedText = imageService.imageToText(file);
+		return ResponseEntity.status(HttpStatus.CREATED).body(extractedText);
 	}
 }
