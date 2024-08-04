@@ -83,22 +83,26 @@ public class BoardController {
 		return ResponseEntity.ok().body(boardService.getBoardsSortedByHit(pageable));
 	}
 
+	@Operation(summary = "게시글 키워드 조회", description = "query parameter로 keyword 검색 및 page, size 페이징 처리")
 	@GetMapping("/search")
 	public ResponseEntity<?> getBoardsByKeyword(@RequestParam("keyword") String keyword, Pageable pageable) {
 		return ResponseEntity.ok().body(boardService.getBoardsByKeyword(keyword, pageable));
 	}
 
+	@Operation(summary = "내가 작성한 게시글 목록 조회", description = "query parameter로 page, size 페이징 처리")
 	@GetMapping("/my-content")
 	public ResponseEntity<?> getBoardsByUser(Pageable pageable) {
 		return ResponseEntity.ok().body(boardService.getBoardsByUser(pageable));
 	}
 
+	@Operation(summary = "게시글 삭제")
 	@DeleteMapping("/{board_id}")
 	public ResponseEntity<?> deleteBoard(@PathVariable("board_id") Long boardId) {
 		boardService.deleteBoard(boardId);
 		return ResponseEntity.ok(new JSONObject().put("message", "게시글 삭제 성공!").toString());
 	}
 
+	@Operation(summary = "게시글 댓글 작성")
 	@PostMapping("/{board_id}/comments")
 	public ResponseEntity<?> createComment(@PathVariable("board_id") Long boardId,
 		@Valid @RequestBody BoardCommentCreateRequest boardCommentCreateRequest) {
@@ -112,6 +116,7 @@ public class BoardController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(boardCommentResponse);
 	}
 
+	@Operation(summary = "게시글 댓글 삭제")
 	@DeleteMapping("/comments/{comment_id}")
 	public ResponseEntity<?> deleteComment(@PathVariable("comment_id") Long commentId) {
 		boardCommentService.deleteComment(commentId);
