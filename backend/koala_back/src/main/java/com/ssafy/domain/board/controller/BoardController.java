@@ -84,7 +84,7 @@ public class BoardController {
 	}
 
 	@GetMapping("/search")
-	public ResponseEntity<?> getBoardsByKeyword(@RequestParam(required = false) String keyword, Pageable pageable) {
+	public ResponseEntity<?> getBoardsByKeyword(@RequestParam("keyword") String keyword, Pageable pageable) {
 		return ResponseEntity.ok().body(boardService.getBoardsByKeyword(keyword, pageable));
 	}
 
