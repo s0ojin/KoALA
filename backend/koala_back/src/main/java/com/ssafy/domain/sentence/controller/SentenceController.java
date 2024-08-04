@@ -15,10 +15,9 @@ import com.ssafy.domain.sentence.model.dto.response.SentenceDictationResponse;
 import com.ssafy.domain.sentence.model.dto.response.SentenceTestResponse;
 import com.ssafy.domain.sentence.service.SentenceService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/sentences")
@@ -26,6 +25,7 @@ public class SentenceController {
 
 	private final SentenceService sentenceService;
 
+	@Operation(summary = "받아쓰기 문장 조회")
 	@GetMapping
 	public ResponseEntity<?> getDictationSentence(@RequestParam("topic") String topic) {
 		List<SentenceDictationResponse> sentenceList = sentenceService.randomSentence(topic);
@@ -36,6 +36,7 @@ public class SentenceController {
 		}
 	}
 
+	@Operation(summary = "받아쓰기 채점")
 	@PostMapping("writing-test")
 	public ResponseEntity<?> testWritingPapers(@RequestBody List<SentenceTestRequest> sentenceTestAnswers) {
 		List<SentenceTestResponse> sentenceTestResult = sentenceService.testWritingPaper(sentenceTestAnswers);
