@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,6 +27,7 @@ import com.ssafy.domain.board.model.validation.BoardValidation;
 import com.ssafy.domain.board.service.BoardCommentService;
 import com.ssafy.domain.board.service.BoardService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +41,7 @@ public class BoardController {
 	private final BoardService boardService;
 	private final BoardCommentService boardCommentService;
 
+	@Operation(summary = "게시글 작성")
 	@PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
 	public ResponseEntity<?> createBoard(
 		@Valid @RequestPart(value = "board_detail") BoardCreateRequest boardCreateRequest,
@@ -60,11 +63,13 @@ public class BoardController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(boardCreateResponse);
 	}
 
+	@Operation(summary = "게시글 목록 조회", description = "query parameter로 page, size 페이징 처리")
 	@GetMapping
 	public ResponseEntity<?> getBoards(Pageable pageable) {
 		return ResponseEntity.ok().body(boardService.getBoards(pageable));
 	}
 
+	@Operation(summary = "게시글 상세 조회", description = "게시글 조회 시 조회수 증가")
 	@GetMapping("/{board_id}/comments")
 	public ResponseEntity<?> getBoard(@PathVariable("board_id") Long boardId, Pageable pageable) {
 		BoardDetailResponse boardDetailResponse = boardService.getBoard(boardId, pageable);
@@ -72,13 +77,14 @@ public class BoardController {
 		return ResponseEntity.ok().body(boardDetailResponse);
 	}
 
+	@Operation(summary = "게시글 조회수 순 정렬 목록 조회", description = "query parameter로 page, size 페이징 처리")
 	@GetMapping("/sorted-by-hit")
 	public ResponseEntity<?> getBoardsSortedByHit(Pageable pageable) {
 		return ResponseEntity.ok().body(boardService.getBoardsSortedByHit(pageable));
 	}
 
 	@GetMapping("/search")
-	public ResponseEntity<?> getBoardsByKeyword(String keyword, Pageable pageable) {
+	public ResponseEntity<?> getBoardsByKeyword(@RequestParam(required = false) String keyword, Pageable pageable) {
 		return ResponseEntity.ok().body(boardService.getBoardsByKeyword(keyword, pageable));
 	}
 
