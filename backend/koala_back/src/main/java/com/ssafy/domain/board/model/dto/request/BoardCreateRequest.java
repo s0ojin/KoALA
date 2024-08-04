@@ -32,7 +32,6 @@ public class BoardCreateRequest {
 	@JsonProperty("board_content")
 	private String content;
 
-	@NotNull(message = "게시글 이미지는 필수 입력 값입니다.")
 	@Setter
 	@JsonProperty("board_img_url")
 	private List<MultipartFile> boardImages;
