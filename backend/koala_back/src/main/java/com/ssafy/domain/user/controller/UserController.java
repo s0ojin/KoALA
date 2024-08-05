@@ -2,7 +2,6 @@ package com.ssafy.domain.user.controller;
 
 import java.util.Map;
 
-import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -78,11 +77,9 @@ public class UserController {
 					.body(Map.of("message", "Invalid or expired refresh token"));
 			}
 		} catch (UsernameNotFoundException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND)
-				.body(Map.of("error", "User not found"));
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "User not found"));
 		} catch (InvalidCsrfTokenException e) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-				.body(Map.of("error", "Invalid refresh token"));
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid refresh token"));
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 				.body(Map.of("error", "An unexpected error occurred"));
