@@ -24,7 +24,7 @@ export default function RootLayout({
         <SWRProvider>
           {modal}
           <Header />
-          <main>{children}</main>
+          <main className="pt-20">{children}</main>
         </SWRProvider>
       </body>
     </html>
