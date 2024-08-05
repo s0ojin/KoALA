@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Logo from '/public/images/logo.svg'
 import Image from 'next/image'
+import Link from 'next/link'
 
 export default function Header() {
   const [isLogin, setIsLogin] = useState(true)
@@ -15,9 +16,12 @@ export default function Header() {
       <div className="flex gap-6 items-center">
         {isLogin ? (
           <>
-            <button className="text-base font-bold bg-primary-400 text-white py-2 px-11 rounded-full">
+            <Link
+              href="/modals/add-sentence"
+              className="text-base font-bold bg-primary-400 text-white py-2 px-11 rounded-full"
+            >
               나만의 문장 추가
-            </button>
+            </Link>
             <Image
               src="/images/dictation.png"
               width={0}
