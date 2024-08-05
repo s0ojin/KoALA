@@ -20,7 +20,7 @@ import com.ssafy.domain.koala.model.entity.Koala;
 import com.ssafy.domain.lecture.model.entity.Lecture;
 import com.ssafy.domain.lecture.model.entity.LectureNote;
 import com.ssafy.domain.lecture.model.entity.RegisteredLecture;
-import com.ssafy.domain.sentence.model.entity.ReviewSentence;
+import com.ssafy.domain.review.model.entity.ReviewSentence;
 import com.ssafy.domain.sentence.model.entity.Sentence;
 
 import jakarta.persistence.Column;

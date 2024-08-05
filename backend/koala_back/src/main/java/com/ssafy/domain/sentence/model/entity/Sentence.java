@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ssafy.domain.review.model.entity.ReviewSentence;
 import com.ssafy.domain.user.model.entity.User;
 
 import jakarta.persistence.Column;
