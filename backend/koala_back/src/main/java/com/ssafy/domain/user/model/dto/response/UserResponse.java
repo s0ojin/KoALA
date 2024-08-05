@@ -19,7 +19,6 @@ public class UserResponse {
 
 	private Long userId;
 	private String loginId;
-	private String password;
 	private String name;
 	private String nickname;
 	private Integer leaves;
@@ -32,7 +31,6 @@ public class UserResponse {
 		return UserResponse.builder()
 			.userId(user.getUserId())
 			.loginId(user.getLoginId())
-			.password(user.getPassword())
 			.name(user.getName())
 			.nickname(user.getNickname())
 			.leaves(user.getLeaves())

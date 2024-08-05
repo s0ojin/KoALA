@@ -105,7 +105,7 @@ public class UserController {
 	@Operation(summary = "특정 유저 정보 조회")
 	@GetMapping
 	public ResponseEntity<?> getUser() {
-		UserFindResponse userFindResponse = userService.findUser();
+		UserResponse userFindResponse = userService.findUser();
 		return ResponseEntity.ok().body(userFindResponse);
 	}
 
