@@ -14,6 +14,7 @@ import {
 } from 'chart.js'
 import { Bar } from 'react-chartjs-2'
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { Context } from 'chartjs-plugin-datalabels';
 
 ChartJS.register(
   CategoryScale,
@@ -28,7 +29,14 @@ ChartJS.register(
 const options: ChartOptions<'bar'> = {
   responsive: true,
   plugins: {
+    legend:{
+      display:false
+    },
     datalabels: {
+      color: 'white',
+      display: (context:Context) => {
+        return context.dataset.data[context.dataIndex] > 1;
+      },
       listeners : {
         enter: function(context, event) {
           // console.log(context.dataset.data[context.dataIndex])
@@ -80,18 +88,27 @@ const data: ChartData<'bar', number[]> = {
 export default function ReportFieldBarChart() {
   
   return (
-    <div className="contentWrap">
-      <div className="flex">
-        <div className="inline-flex items-center mr-8">
-          <div className="w-[3rem] h-[1rem] mr-1.5 bg-pink-400 rounded-2xl my-auto" />
-          <p className="text-primary-400 text-pink-400">7/8 ~ 7/14</p>
-        </div>
-        <div className="inline-flex items-center">
-          <div className="w-[3rem] h-[1rem] mr-1.5 bg-primary-400 rounded-2xl my-auto" />
-          <p className="text-primary-400">7/15 ~ 7/21</p>
+    <div className="px-11 py-6">
+      <div className="flex justify-between mb-8">
+        <p className='text-primary-400 ml-8'>
+          7/15 ~ 7/21
+        </p>
+        <div>
+          <div className="inline-flex items-center mr-8">
+            <div className="w-[3rem] h-[1rem] mr-1.5 bg-primary-400 rounded-2xl my-auto" />
+            <p className="text-primary-400 text-pink-400">받아쓰기</p>
+          </div>
+          <div className="inline-flex items-center mr-8">
+            <div className="w-[3rem] h-[1rem] mr-1.5 bg-primary-300 rounded-2xl my-auto" />
+            <p className="text-primary-300">AI회화</p>
+          </div>
+          <div className="inline-flex items-center">
+            <div className="w-[3rem] h-[1rem] mr-1.5 bg-primary-100 rounded-2xl my-auto" />
+            <p className="text-primary-100">강의</p>
+          </div>
         </div>
       </div>
-      <div className="w-full">
+      <div>
         <Bar options={options} data={data} plugins={[ChartDataLabels]}/>
       </div>
     </div>

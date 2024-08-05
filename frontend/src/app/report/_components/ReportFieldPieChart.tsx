@@ -11,6 +11,8 @@ import {
   Legend,
 } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { Context } from 'chartjs-plugin-datalabels';
 
 ChartJS.register(
   PieController,
@@ -27,42 +29,42 @@ const options:ChartOptions<'pie'> = {
       display:false,
       position: 'top' as const,
       align: 'start' as const,
-      labels: {
-        padding:20,
-        boxWidth: 1,
-        boxHeight:10,
-        color: '#000',
-        font: {
-          family: 'Noto Sans KR',
-          lineHeight: 2,
+    },
+    datalabels:{
+      display: (context:Context) => {
+        return context.dataset.data[context.dataIndex] > 0;
+      },
+      listeners : {
+        enter: function(context, event) {
+          // console.log(context.dataset.data[context.dataIndex])
+          console.log(context)
+          context.active = true
+          return true
         },
-        usePointStyle: true,
-        pointStyle: 'rectRounded',
-        pointStyleWidth: 30,
-        useBorderRadius: true,
-        borderRadius:0
+        leave: function(context, event) {
+          // console.log(context.dataset.data[context.dataIndex])
+          console.log(context)
+          context.active = false
+          return false
+        }
       }
     },
-    tooltip:{
+  }
+}
 
-    },
-    title: {
-      display: false,
-      text: 'Chart.js Line Chart',
-    },
-  },
-};
-
-const labels = ['월', '화', '수']; //x축 기준
+const labels = ['받아쓰기', 'AI회화', '강의']; //x축 기준
 
 const data:ChartData <'pie', number[]> = {
   labels,
   datasets: [
     {
-      label: '지난 주', //그래프 분류되는 항목
+      label: '총합', //그래프 분류되는 항목
       data: [4, 3, 3], //실제 그려지는 데이터(Y축 숫자)
-      borderColor: '#F6C4E8', //그래프 선 color
-      // backgroundColor: 'rgba(255, 99, 132, 0.5)', //마우스 호버시 나타나는 분류네모 표시 bg
+      backgroundColor: [
+        'rgb(255, 99, 132)',
+        'rgb(54, 162, 235)',
+        'rgb(255, 205, 86)'
+      ],
     }
   ],
 };
@@ -70,21 +72,7 @@ const data:ChartData <'pie', number[]> = {
 export default function ReportFieldPieChart() {
   return (
     <div className='contentWrap'>
-      <div className='flex'>
-        <div className='inline-flex items-center mr-8'>
-          <div className='w-[3rem] h-[1rem] mr-1.5 bg-pink-400 rounded-2xl my-auto'/>
-          <p className='text-primary-400 text-pink-400'>
-            7/8 ~ 7/14
-          </p>
-        </div>
-        <div className='inline-flex items-center'>
-          <div className='w-[3rem] h-[1rem] mr-1.5 bg-primary-400 rounded-2xl my-auto'/>
-          <p className='text-primary-400'>
-            7/15 ~ 7/21
-          </p>
-        </div>
-      </div>
-      <div className='w-full'>
+      <div className='w-[12rem]'>
         <Pie options={options} data={data} />
       </div>
     </div>
