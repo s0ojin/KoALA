@@ -71,7 +71,7 @@ public class LectureController {
 		}
 	}
 
-	@Operation(summary = "강의노트 {noteId} 삭제")
+	@Operation(summary = "강의노트 {note_id} 삭제")
 	@DeleteMapping("/note/{note_id}")
 	public ResponseEntity<?> deleteLectureNote(@PathVariable("note_id") Long noteId) {
 		if (lectureService.deleteLectureNote(noteId))
@@ -80,7 +80,7 @@ public class LectureController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "Not found with id: " + noteId));
 	}
 
-	@Operation(summary = "강의 {lectureId}에서 제공하는 문장 조회")
+	@Operation(summary = "강의 {lecture_id}에서 제공하는 문장 조회")
 	@GetMapping("/{lecture_id}/sentences")
 	public ResponseEntity<?> getLectureSentences(@PathVariable("lecture_id") Long lectureId) {
 		return ResponseEntity.status(HttpStatus.OK).body(sentenceService.getLectureSentences(lectureId));

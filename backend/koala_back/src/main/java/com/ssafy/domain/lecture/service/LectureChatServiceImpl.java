@@ -16,16 +16,18 @@ import lombok.extern.slf4j.Slf4j;
 public class LectureChatServiceImpl implements LectureChatService {
 	private final LectureChatRoomManager lectureChatRoomManager;
 
-	@Transactional
+
 	@Override
+	@Transactional
 	public LectureChatRoom makeLectureChatRoom(Long lectureId) {
 		LectureChatRoom chatRoom = LectureChatRoom.builder().lectureId(lectureId).build();
 		lectureChatRoomManager.getRoomSessions().put(lectureId, chatRoom);
 		return chatRoom;
 	}
 
-	@Transactional
+
 	@Override
+	@Transactional
 	public void deleteLectureChatRoom(Long lectureId) {
 		lectureChatRoomManager.getRoomSessions().remove(lectureId);
 	}

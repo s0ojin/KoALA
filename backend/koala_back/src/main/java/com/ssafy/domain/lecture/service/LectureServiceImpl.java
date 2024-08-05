@@ -38,8 +38,8 @@ public class LectureServiceImpl implements LectureService {
 		return lectures.stream().map(LectureResponse::toDto).collect(Collectors.toList());
 	}
 
-	@Transactional
 	@Override
+	@Transactional
 	public RegisteredLectureResponse registerLecture(Long lectureId) {
 		Optional<Lecture> lecture = lectureRepository.findById(lectureId);
 		if (lecture.isPresent()) {
@@ -63,8 +63,9 @@ public class LectureServiceImpl implements LectureService {
 			.collect(Collectors.toList());
 	}
 
-	@Transactional
+
 	@Override
+	@Transactional
 	public LectureNoteResponse writeLectureNote(LectureNoteRequest lectureNoteRequest) {
 		Optional<Lecture> lecture = lectureRepository.findById(lectureNoteRequest.getLectureId());
 		return lecture.map(value -> LectureNoteResponse.toDto(
@@ -80,8 +81,9 @@ public class LectureServiceImpl implements LectureService {
 			.collect(Collectors.toList());
 	}
 
-	@Transactional
+
 	@Override
+	@Transactional
 	public boolean deleteLectureNote(Long lectureId) {
 		if (lectureNoteRepository.existsById(lectureId)) {
 			lectureNoteRepository.deleteById(lectureId);
@@ -91,8 +93,9 @@ public class LectureServiceImpl implements LectureService {
 		}
 	}
 
-	@Transactional
+
 	@Override
+	@Transactional
 	public LectureResponse setSessionId(Long lectureId, String sessionId) {
 		Optional<Lecture> lecture = lectureRepository.findById(lectureId);
 		if (lecture.isPresent()) {
@@ -105,10 +108,6 @@ public class LectureServiceImpl implements LectureService {
 	@Override
 	public String getSessionId(Long lectureId) {
 		Optional<Lecture> lecture = lectureRepository.findById(lectureId);
-		if (lecture.isPresent()) {
-			return lecture.get().getSessionId();
-		} else {
-			return null;
-		}
+		return lecture.map(Lecture::getSessionId).orElse(null);
 	}
 }
