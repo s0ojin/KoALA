@@ -39,9 +39,7 @@ public class UserController {
 	@Operation(summary = "회원가입")
 	@PostMapping
 	public ResponseEntity<?> signUp(@Valid @RequestBody UserSignUpRequest userSignUpRequest) {
-		UserResponse savedUserResponse = userService.signUp(userSignUpRequest);
-		// System.out.println(savedUserResponse.getNickname());
-		return ResponseEntity.ok().body(new JSONObject().put("message", "Signup successful").toString());
+		return ResponseEntity.ok().body(userService.signUp(userSignUpRequest));
 	}
 
 	@Operation(summary = "로그인")
