@@ -20,6 +20,7 @@ import com.ssafy.domain.user.model.dto.request.UserSignUpRequest;
 import com.ssafy.domain.user.model.dto.request.UserUpdateRequest;
 import com.ssafy.domain.user.model.dto.response.UserFindResponse;
 import com.ssafy.domain.user.model.dto.response.UserResponse;
+import com.ssafy.domain.user.service.StudyTimeService;
 import com.ssafy.domain.user.service.UserService;
 import com.ssafy.global.auth.jwt.dto.JwtToken;
 
@@ -35,11 +36,14 @@ import lombok.extern.slf4j.Slf4j;
 public class UserController {
 
 	private final UserService userService;
+	private final StudyTimeService studyTimeService;
 
 	@Operation(summary = "회원가입")
 	@PostMapping
 	public ResponseEntity<?> signUp(@Valid @RequestBody UserSignUpRequest userSignUpRequest) {
-		return ResponseEntity.ok().body(userService.signUp(userSignUpRequest));
+		UserFindResponse userFindResponse = userService.signUp(userSignUpRequest);
+		studyTimeService.initStudyTime(userFindResponse.getUserId());
+		return ResponseEntity.status(HttpStatus.CREATED).body(userFindResponse);
 	}
 
 	@Operation(summary = "로그인")
