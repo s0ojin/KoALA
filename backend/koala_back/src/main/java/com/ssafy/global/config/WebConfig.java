@@ -11,4 +11,5 @@ public class WebConfig implements WebMvcConfigurer {
 	public void configurePathMatch(PathMatchConfigurer configurer) {
 		configurer.addPathPrefix("api", c -> true);
 	}
+
 }
