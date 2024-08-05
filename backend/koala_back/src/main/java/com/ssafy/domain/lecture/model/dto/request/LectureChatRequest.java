@@ -1,18 +1,17 @@
-package com.ssafy.domain.lecture.chat;
+package com.ssafy.domain.lecture.model.dto.request;
 
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class LectureChatMessage {
+public class LectureChatRequest {
 	// ENTER (들어왔을 경우), NOTICE (공지글), TALK (일반 채팅)
+	@JsonProperty("message_type")
 	private String messageType;
+	@JsonProperty("lecture_id")
 	private Long lectureId;
-	private String sender;
 	private String message;
 }

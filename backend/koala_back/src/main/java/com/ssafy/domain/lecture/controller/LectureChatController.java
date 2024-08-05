@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.domain.lecture.chat.LectureChatRoom;
 import com.ssafy.domain.lecture.service.LectureChatService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -19,6 +20,7 @@ public class LectureChatController {
 
 	private final LectureChatService lectureChatService;
 
+	@Operation(summary = "강의 채팅방 생성")
 	@PostMapping
 	public ResponseEntity<?> createRoom(@RequestParam(name = "lecture") Long lectureId) {
 		LectureChatRoom chatRoom = lectureChatService.makeLectureChatRoom(lectureId);
@@ -29,6 +31,7 @@ public class LectureChatController {
 		}
 	}
 
+	@Operation(summary = "강의 채팅방 삭제")
 	@DeleteMapping
 	public ResponseEntity<?> deleteRoom(@RequestParam(name = "lecture") Long lectureId) {
 		lectureChatService.deleteLectureChatRoom(lectureId);
