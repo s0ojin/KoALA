@@ -4,7 +4,7 @@ export default function CommunityPostLayout({ children }: any) {
   return (
     <div className="h-auto overflow-hidden w-full relative min-h-main-height">
       {children}
-      <div className="absolute w-[20%] top-[2%] left-[20%] bg-black">
+      <div className="absolute w-[20%] top-[2%] left-[20%]">
         <Image
           src={'/images/cloud.svg'}
           width={0}
