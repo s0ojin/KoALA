@@ -9,7 +9,7 @@ export default function Header() {
   const [isLogin, setIsLogin] = useState(true)
 
   return (
-    <header className="h-20 px-9 flex w-full items-center justify-between">
+    <header className="fixed h-20 px-9 flex w-full items-center justify-between">
       <p className="h-7">
         <Logo height="27" />
       </p>
