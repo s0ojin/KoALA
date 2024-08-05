@@ -1,6 +1,6 @@
 import Image from 'next/image'
 
-interface LectureNoteListElement {
+interface LectureNoteListElementProps {
   lectureId: number
   teacherName: string
   lectureTitle: string
@@ -12,7 +12,7 @@ export default function LectureNoteElement({
   teacherName,
   lectureTitle,
   lectureNoteCounts,
-}: LectureNoteListElement) {
+}: LectureNoteListElementProps) {
   return (
     <div className="border-b-[1px] border-gray-200 bg-white w-full flex py-5 px-8 items-center">
       <div className="flex flex-col w-full gap-2">
