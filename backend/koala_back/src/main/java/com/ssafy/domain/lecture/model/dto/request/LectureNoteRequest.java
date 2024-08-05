@@ -2,6 +2,7 @@ package com.ssafy.domain.lecture.model.dto.request;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ssafy.domain.lecture.model.entity.Lecture;
 import com.ssafy.domain.lecture.model.entity.LectureNote;
 import com.ssafy.domain.user.model.entity.Auth;
@@ -15,8 +16,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LectureNoteRequest {
+	@JsonProperty("lecture_id")
 	Long lectureId;
+	@JsonProperty("note_title")
 	String noteTitle;
+	@JsonProperty("note_content")
 	String noteContent;
 
 	public LectureNote toEntity(User user, Lecture lecture) {
