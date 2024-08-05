@@ -56,11 +56,11 @@ const dummy = [
   },
 ]
 
+const POSITIONS = ['farLeft', 'left', 'center', 'right', 'farRight']
+
 export default function AISpeakingSlider() {
   const [cardList, setCardList] = useState(dummy)
   const [activeIndex, setActiveIndex] = useState(0)
-
-  const positions = ['farLeft', 'left', 'center', 'right', 'farRight']
 
   const handleClick = (direction: number) => {
     setActiveIndex(
@@ -137,13 +137,13 @@ export default function AISpeakingSlider() {
         />
       </div>
       {visibleCardList.map((card, idx) => {
-        const canDrag = positions[idx] === 'center'
+        const canDrag = POSITIONS[idx] === 'center'
         return (
           <motion.div
             key={card.id}
             className={`absolute ${canDrag ? 'cursor-pointer' : 'cursor-auto'}`}
             initial="center"
-            animate={positions[idx]}
+            animate={POSITIONS[idx]}
             variants={imageVariants}
             transition={{ duration: 0.5 }}
             drag={canDrag ? 'x' : false}
