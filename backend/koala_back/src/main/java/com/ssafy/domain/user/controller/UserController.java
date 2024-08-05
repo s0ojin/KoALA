@@ -59,7 +59,7 @@ public class UserController {
 	@PostMapping("/logout")
 	public ResponseEntity<?> logout(@RequestBody String accessToken) {
 		userService.logout();
-		return ResponseEntity.ok().body("logout successful");
+		return ResponseEntity.ok().body(new JSONObject().put("message", "logout successful").toString());
 	}
 
 	@Operation(summary = "accessToken 재발급")
@@ -70,14 +70,18 @@ public class UserController {
 			if (jwtToken != null) {
 				return ResponseEntity.ok().body(jwtToken);
 			} else {
-				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or expired refresh token");
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+					.body(new JSONObject().put("error", "Invalid or expired refresh token").toString());
 			}
 		} catch (UsernameNotFoundException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+				.body(new JSONObject().put("error", "User not found").toString());
 		} catch (InvalidCsrfTokenException e) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid refresh token");
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+				.body(new JSONObject().put("error", "Invalid refresh token").toString());
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+				.body(new JSONObject().put("error", "An unexpected error occurred").toString());
 		}
 	}
 
