@@ -14,16 +14,16 @@ import lombok.ToString;
 @NoArgsConstructor(access = PROTECTED)
 public class SentenceTestRequest {
 
+	@NotNull(message = "문장 번호는 필수 입력 값입니다.")
+	@JsonProperty("sentence_id")
+	private Long sentenceId;
+
 	@NotNull(message = "답안은 필수 입력 값입니다.")
 	@JsonProperty("user_sentence")
 	private String userSentence;
 
-	@NotNull(message = "문장 번호는 필수 입력 값입니다.")
+	@NotNull(message = "토글 여부는 필수 입력 값입니다.")
 	@JsonProperty("is_toggled")
 	private boolean isToggled;
-
-	@NotNull(message = "문장 번호는 필수 입력 값입니다.")
-	@JsonProperty("sentence_id")
-	private Long sentenceId;
 
 }
