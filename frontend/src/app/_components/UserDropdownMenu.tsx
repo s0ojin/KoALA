@@ -13,7 +13,7 @@ const USER_DROPDOWN_MENU_LIST = [
 
 export default function UserDropdownMenu() {
   return (
-    <div className="absolute p-6 pb-4 w-60 bg-white top-20 right-10 rounded-3xl text-primary-900 shadow-md">
+    <div className="p-6 pb-4 w-60 bg-white rounded-3xl text-primary-900 shadow-md">
       <header className="flex gap-3 items-center mb-4">
         <Image
           src="/images/koala-sleep.png"
