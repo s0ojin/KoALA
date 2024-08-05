@@ -4,9 +4,11 @@ import { useState } from 'react'
 import Logo from '/public/images/logo.svg'
 import Image from 'next/image'
 import Link from 'next/link'
+import UserDropdownMenu from '@/app/_components/UserDropdownMenu'
 
 export default function Header() {
   const [isLogin, setIsLogin] = useState(true)
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
 
   return (
     <header className="bg-[#eaf5ff] z-50 fixed h-20 px-9 flex w-full items-center justify-between">
@@ -29,7 +31,9 @@ export default function Header() {
               sizes="100%"
               className="w-10 h-10 rounded-full border border-gray-100 cursor-pointer"
               alt="profile"
+              onClick={() => setIsUserMenuOpen(true)}
             />
+            {isUserMenuOpen && <UserDropdownMenu />}
           </>
         ) : (
           <button className="text-base font-bold bg-primary-400 text-white py-2 px-11 rounded-full">
