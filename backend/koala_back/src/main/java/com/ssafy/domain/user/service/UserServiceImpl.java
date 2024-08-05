@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ssafy.domain.chat.service.CacheService;
 import com.ssafy.domain.user.model.dto.request.UserSignUpRequest;
 import com.ssafy.domain.user.model.dto.request.UserUpdateRequest;
+import com.ssafy.domain.user.model.dto.response.RankingResponse;
 import com.ssafy.domain.user.model.dto.response.UserFindResponse;
 import com.ssafy.domain.user.model.dto.response.UserResponse;
 import com.ssafy.domain.user.model.entity.Auth;
@@ -171,5 +172,8 @@ public class UserServiceImpl implements UserService {
 		cacheService.clearChatHistory(userInfoProvider.getCurrentLoginId());
 		SecurityContextHolder.clearContext();
 	}
+
+	@Override
+	public RankingResponse
 
 }
