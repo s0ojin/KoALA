@@ -42,7 +42,7 @@ export default function LectureNoteMain() {
                 teacherName={lectureNote.teacher_name}
                 lectureTitle={lectureNote.lecture_title}
                 lectureNoteCounts={lectureNote.note_counts}
-              ></LectureNoteElement>
+              />
             )
           })}
         </div>
