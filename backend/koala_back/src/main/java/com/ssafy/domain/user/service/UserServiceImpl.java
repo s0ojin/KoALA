@@ -21,11 +21,14 @@ import com.ssafy.domain.chat.service.CacheService;
 import com.ssafy.domain.user.model.dto.request.UserSignUpRequest;
 import com.ssafy.domain.user.model.dto.request.UserUpdateRequest;
 import com.ssafy.domain.user.model.dto.response.RankingResponse;
+import com.ssafy.domain.user.model.dto.response.RankingWithMyRankResponse;
 import com.ssafy.domain.user.model.dto.response.UserFindResponse;
 import com.ssafy.domain.user.model.dto.response.UserResponse;
 import com.ssafy.domain.user.model.entity.Auth;
+import com.ssafy.domain.user.model.entity.Ranking;
 import com.ssafy.domain.user.model.entity.User;
 import com.ssafy.domain.user.repository.AuthRepository;
+import com.ssafy.domain.user.repository.RankingRepository;
 import com.ssafy.domain.user.repository.UserRepository;
 import com.ssafy.global.auth.jwt.JwtTokenProvider;
 import com.ssafy.global.auth.jwt.dto.JwtToken;
@@ -43,6 +46,7 @@ public class UserServiceImpl implements UserService {
 
 	private final UserRepository userRepository;
 	private final AuthRepository authRepository;
+	private final RankingRepository rankingRepository;
 	private final AuthenticationManagerBuilder authenticationManagerBuilder;
 	private final JwtTokenProvider jwtTokenProvider;
 	private final PasswordEncoder passwordEncoder;
@@ -174,6 +178,11 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public RankingResponse
-
+	public RankingWithMyRankResponse getRanking() {
+		Long userId = userInfoProvider.getCurrentUserId();
+		Integer myRank = rankingRepository.findByUserId(userId).getRanking();
+		List<RankingResponse> rankings = new ArrayList<>();
+		rankingRepository.findTop10ByOrderByRanking().forEach(ranking -> rankings.add(RankingResponse.toDto(ranking)));
+		return RankingWithMyRankResponse.toDto(rankings, myRank);
+	}
 }

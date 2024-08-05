@@ -2,7 +2,7 @@ package com.ssafy.domain.user.service;
 
 import com.ssafy.domain.user.model.dto.request.UserSignUpRequest;
 import com.ssafy.domain.user.model.dto.request.UserUpdateRequest;
-import com.ssafy.domain.user.model.dto.response.RankingResponse;
+import com.ssafy.domain.user.model.dto.response.RankingWithMyRankResponse;
 import com.ssafy.domain.user.model.dto.response.UserFindResponse;
 import com.ssafy.domain.user.model.dto.response.UserResponse;
 import com.ssafy.global.auth.jwt.dto.JwtToken;
@@ -31,6 +31,6 @@ public interface UserService {
 
 	void logout();
 
-	RankingResponse getRanking();
+	RankingWithMyRankResponse getRanking();
 
 }
