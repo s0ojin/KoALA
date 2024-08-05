@@ -10,9 +10,9 @@ export default function Header() {
 
   return (
     <header className="fixed h-20 px-9 flex w-full items-center justify-between">
-      <p className="h-7">
+      <Link href="/" className="h-7">
         <Logo height="27" />
-      </p>
+      </Link>
       <div className="flex gap-6 items-center">
         {isLogin ? (
           <>
