@@ -8,7 +8,7 @@ import com.ssafy.global.auth.jwt.dto.JwtToken;
 
 public interface UserService {
 
-	UserResponse signUp(UserSignUpRequest userSignUpRequest);
+	UserFindResponse signUp(UserSignUpRequest userSignUpRequest);
 
 	JwtToken signIn(String loginId, String password);
 

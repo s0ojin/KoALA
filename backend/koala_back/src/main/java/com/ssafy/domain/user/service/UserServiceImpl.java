@@ -49,13 +49,13 @@ public class UserServiceImpl implements UserService {
 	private final CacheService cacheService;
 
 	@Transactional
-	public UserResponse signUp(UserSignUpRequest userSignUpRequest) {
+	public UserFindResponse signUp(UserSignUpRequest userSignUpRequest) {
 		if (userRepository.existsByLoginId(userSignUpRequest.getLoginId())) {
 			throw new IllegalArgumentException("이미 사용 중인 사용자 아이디입니다.");
 		}
 		String encodedPassword = passwordEncoder.encode(userSignUpRequest.getPassword());
 		Auth auth = authRepository.findByAuthName("user");
-		return UserResponse.toDto(userRepository.save(userSignUpRequest.toEntity(encodedPassword, auth)));
+		return UserFindResponse.toDto(userRepository.save(userSignUpRequest.toEntity(encodedPassword, auth)));
 	}
 
 	@Transactional
