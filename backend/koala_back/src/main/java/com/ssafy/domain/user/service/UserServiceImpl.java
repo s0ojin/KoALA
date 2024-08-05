@@ -91,7 +91,7 @@ public class UserServiceImpl implements UserService {
 
 	@Transactional
 	@Override
-	public UserFindResponse findUser() {
+	public UserResponse findUser() {
 		String currentLoginId = userInfoProvider.getCurrentLoginId();
 		if (currentLoginId == null) {
 			throw new IllegalStateException("Current login_ID is null. User might not be authenticated.");
@@ -103,7 +103,7 @@ public class UserServiceImpl implements UserService {
 		}
 
 		User user = optionalUser.get();
-		return UserFindResponse.toDto(user);
+		return UserResponse.toDto(user);
 	}
 
 	@Transactional

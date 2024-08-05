@@ -17,7 +17,7 @@ public interface UserService {
 
 	boolean checkNickname(String nickname);
 
-	UserFindResponse findUser();
+	UserResponse findUser();
 
 	UserResponse updateUser(UserUpdateRequest userUpdateRequest);
 
