@@ -123,4 +123,10 @@ public class UserController {
 		return ResponseEntity.ok().body(Map.of("message", "Delete successful"));
 	}
 
+	@Operation(summary = "랭킹 조회")
+	@GetMapping("/ranking")
+	public ResponseEntity<?> getRanking() {
+		return ResponseEntity.ok().body(userService.getRanking());
+	}
+
 }
