@@ -7,9 +7,11 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssafy.domain.lecture.chat.LectureChatMessage;
 import com.ssafy.domain.lecture.chat.LectureChatRoom;
 import com.ssafy.domain.lecture.chat.LectureChatRoomManager;
+import com.ssafy.domain.lecture.model.dto.request.LectureChatRequest;
+import com.ssafy.domain.lecture.model.dto.response.LectureChatResponse;
+import com.ssafy.global.common.UserInfoProvider;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +23,7 @@ public class LectureChatSocketHandler extends TextWebSocketHandler {
 	// 멀티쓰레드를 지원하는 HashMap - 처음으로 접속되었을 때 생성됨
 	private final ObjectMapper objectMapper;
 	private final LectureChatRoomManager lectureChatRoomManager;
+	private final UserInfoProvider userInfoProvider;
 
 	@Override // 웹 소켓 연결시
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
@@ -31,27 +34,33 @@ public class LectureChatSocketHandler extends TextWebSocketHandler {
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		String payload = message.getPayload();
 		log.info("데이터 전송 payload : " + payload);
-		LectureChatMessage chatMessage = objectMapper.readValue(payload, LectureChatMessage.class);
+		LectureChatRequest chatMessage = objectMapper.readValue(payload, LectureChatRequest.class);
 		LectureChatRoom chatRoom = lectureChatRoomManager.getRoomSessions().get(chatMessage.getLectureId());
 
 		if (chatMessage.getMessageType().equals("ENTER")) {
-			if(chatRoom == null) {
+			if (chatRoom == null) {
 				log.debug("강의 채팅방이 존재하지 않아, 해당 강의장의 채팅방을 생성합니다.");
 				chatRoom = new LectureChatRoom(chatMessage.getLectureId());
 				lectureChatRoomManager.getRoomSessions().put(chatMessage.getLectureId(), chatRoom);
 			}
 			lectureChatRoomManager.getSessionToRoom().put(session.getId(), chatMessage.getLectureId());
-			LectureChatMessage welcomeMessage = LectureChatMessage.builder()
+			LectureChatResponse welcomeMessage = LectureChatResponse.builder()
 				.messageType("NOTICE")
 				.lectureId(chatMessage.getLectureId())
 				.sender("admin")
-				.message(chatMessage.getSender() + "님! 수업 참여를 환영합니다!^^ 웰컴")
+				.message(userInfoProvider.getCurrentNickname() + "님! 수업 참여를 환영합니다!^^ 웰컴")
 				.build();
 			String jsonMessage = objectMapper.writeValueAsString(welcomeMessage);
 			chatRoom.sendWelcomeMessage(session, jsonMessage);
 		} else {
 			// 현재는 사용자가 보낼 수 있는 type이 enter과 talk 뿐이라 else로 처리
-			String jsonMessage = objectMapper.writeValueAsString(chatMessage);
+			LectureChatResponse talkMessage = LectureChatResponse.builder()
+				.messageType("TALK")
+				.lectureId(chatMessage.getLectureId())
+				.sender(userInfoProvider.getCurrentNickname())
+				.message(chatMessage.getMessage())
+				.build();
+			String jsonMessage = objectMapper.writeValueAsString(talkMessage);
 			chatRoom.sendMessage(session.getId(), jsonMessage);
 		}
 	}
