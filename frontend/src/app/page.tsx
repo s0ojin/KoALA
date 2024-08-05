@@ -17,7 +17,7 @@ export default function Home() {
         basic모달테스트
       </Link>
       <Link
-        href="/modals/special"
+        href="/modals/confirm-cancel"
         className="w-96 bg-primary-400 text-white p-4 rounded-full"
       >
         special모달테스트
