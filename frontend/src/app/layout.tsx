@@ -21,9 +21,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Header />
-        <main>{children}</main>
-        <SWRProvider>{modal}</SWRProvider>
+        <SWRProvider>
+          {modal}
+          <Header />
+          <main>{children}</main>
+        </SWRProvider>
       </body>
     </html>
   )

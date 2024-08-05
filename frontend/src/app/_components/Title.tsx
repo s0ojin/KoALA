@@ -9,7 +9,7 @@ export default function Title({ CourseTitle, CourseDescription }: TitleProps) {
       <h1 className="text-center text-3xl text-gray-800 font-bold">
         {CourseTitle}
       </h1>
-      <p className="text-center mt-2 text-xl text-gray-800 font-medium">
+      <p className="text-center mt-2 text-xl text-gray-800">
         {CourseDescription}
       </p>
     </header>
