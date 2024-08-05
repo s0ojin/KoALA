@@ -12,9 +12,11 @@ import com.ssafy.domain.review.model.dto.request.ReviewSentenceRequest;
 import com.ssafy.domain.review.model.entity.ReviewSentence;
 import com.ssafy.domain.review.repository.ReviewRepository;
 import com.ssafy.domain.sentence.model.dto.request.SentenceTestRequest;
+import com.ssafy.domain.sentence.model.dto.response.LectureSentenceResponse;
 import com.ssafy.domain.sentence.model.dto.response.SentenceDictationResponse;
 import com.ssafy.domain.sentence.model.dto.response.SentenceTestResponse;
 import com.ssafy.domain.sentence.model.entity.Sentence;
+import com.ssafy.domain.sentence.repository.LectureSentenceRepository;
 import com.ssafy.domain.sentence.repository.SentenceRepository;
 import com.ssafy.domain.user.model.entity.User;
 import com.ssafy.domain.user.repository.UserRepository;
@@ -33,6 +35,7 @@ public class SentenceServiceImpl implements SentenceService {
 	private final UserRepository userRepository;
 	private final ReviewRepository reviewRepository;
 	private final UserInfoProvider userInfoProvider;
+	private final LectureSentenceRepository lectureSentenceRepository;
 
 	@Override
 	@Transactional
@@ -79,11 +82,10 @@ public class SentenceServiceImpl implements SentenceService {
 				}
 			} else {
 				resultTag = makeResultTag(originText, userText);
-				reviewSentences.add(
-					ReviewSentenceRequest.builder()
-						.sentenceId(request.getSentenceId())
-						.build()
-						.toEntity(originSentence.get(), user));
+				reviewSentences.add(ReviewSentenceRequest.builder()
+					.sentenceId(request.getSentenceId())
+					.build()
+					.toEntity(originSentence.get(), user));
 				correct = false;
 			}
 
@@ -148,5 +150,13 @@ public class SentenceServiceImpl implements SentenceService {
 		}
 
 		return result.toString();
+	}
+
+	@Override
+	public List<LectureSentenceResponse> getLectureSentences(Long lectureId) {
+		return lectureSentenceRepository.findByLectureId(lectureId)
+			.stream()
+			.map(LectureSentenceResponse::toDto)
+			.collect(Collectors.toList());
 	}
 }
