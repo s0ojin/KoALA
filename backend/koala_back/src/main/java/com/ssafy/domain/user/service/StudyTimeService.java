@@ -4,7 +4,7 @@ public interface StudyTimeService {
 
 	void initStudyTime(Long userId);
 
-	void increaseDictationCount(Long userId, Integer DictationCount);
+	void increaseDictationCount(Integer DictationCount);
 
 	void increaseTotalStudyTime(Long userId, Integer timeCalType, Integer studyTime);
 

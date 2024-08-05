@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.domain.user.model.entity.StudyTime;
 import com.ssafy.domain.user.repository.StudyTimeRepository;
+import com.ssafy.global.common.UserInfoProvider;
 
 import lombok.RequiredArgsConstructor;
 
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 public class StudyTimeServiceImpl implements StudyTimeService {
 
 	private final StudyTimeRepository studyTimeRepository;
+	private final UserInfoProvider userInfoProvider;
 
 	@Override
 	@Transactional
@@ -32,10 +34,12 @@ public class StudyTimeServiceImpl implements StudyTimeService {
 
 	@Override
 	@Transactional
-	public void increaseDictationCount(Long userId, Integer dictationCount) {
+	public void increaseDictationCount(Integer dictationCount) {
+		Long userId = userInfoProvider.getCurrentUserId();
 		StudyTime studyTime = studyTimeRepository.findByUserIdAndTimeCalType(userId, 1);
 		studyTime.increaseSentenceNum(dictationCount);
 		studyTimeRepository.save(studyTime);
+
 		increaseTotalStudyTime(userId, 1, dictationCount);
 	}
 
