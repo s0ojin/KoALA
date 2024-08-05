@@ -56,7 +56,7 @@ export default function Header() {
             />
             {isUserMenuOpen && (
               <div ref={userMenuRef} className="absolute top-20 right-10">
-                <UserDropdownMenu />
+                <UserDropdownMenu setIsUserMenuOpen={setIsUserMenuOpen} />
               </div>
             )}
           </>
