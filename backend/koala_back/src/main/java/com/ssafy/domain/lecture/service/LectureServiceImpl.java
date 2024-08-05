@@ -63,7 +63,6 @@ public class LectureServiceImpl implements LectureService {
 			.collect(Collectors.toList());
 	}
 
-
 	@Override
 	@Transactional
 	public LectureNoteResponse writeLectureNote(LectureNoteRequest lectureNoteRequest) {
@@ -81,7 +80,6 @@ public class LectureServiceImpl implements LectureService {
 			.collect(Collectors.toList());
 	}
 
-
 	@Override
 	@Transactional
 	public boolean deleteLectureNote(Long lectureId) {
@@ -92,7 +90,6 @@ public class LectureServiceImpl implements LectureService {
 			return false;
 		}
 	}
-
 
 	@Override
 	@Transactional

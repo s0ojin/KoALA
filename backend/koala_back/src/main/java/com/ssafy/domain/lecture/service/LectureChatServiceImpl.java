@@ -16,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 public class LectureChatServiceImpl implements LectureChatService {
 	private final LectureChatRoomManager lectureChatRoomManager;
 
-
 	@Override
 	@Transactional
 	public LectureChatRoom makeLectureChatRoom(Long lectureId) {
@@ -24,7 +23,6 @@ public class LectureChatServiceImpl implements LectureChatService {
 		lectureChatRoomManager.getRoomSessions().put(lectureId, chatRoom);
 		return chatRoom;
 	}
-
 
 	@Override
 	@Transactional
