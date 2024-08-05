@@ -61,8 +61,8 @@ public class LectureController {
 	}
 
 	@Operation(summary = "강의 {lectureId}에 등록된 모든 강의노트 조회")
-	@GetMapping("/{lectureId}/note")
-	public ResponseEntity<?> getLectureNote(@PathVariable Long lectureId) {
+	@GetMapping("/{lecture_id}/note")
+	public ResponseEntity<?> getLectureNote(@PathVariable("lecture_id") Long lectureId) {
 		List<LectureNoteResponse> lectureNotes = lectureService.readLectureNote(lectureId);
 		if (lectureNotes.isEmpty()) {
 			return ResponseEntity.noContent().build();
@@ -71,9 +71,9 @@ public class LectureController {
 		}
 	}
 
-	@Operation(summary = "강의 {lectureId}에 등록된 강의노트 {noteId} 삭제")
-	@DeleteMapping("/note/{noteId}")
-	public ResponseEntity<?> deleteLectureNote(@PathVariable Long noteId) {
+	@Operation(summary = "강의노트 {noteId} 삭제")
+	@DeleteMapping("/note/{note_id}")
+	public ResponseEntity<?> deleteLectureNote(@PathVariable("note_id") Long noteId) {
 		if (lectureService.deleteLectureNote(noteId))
 			return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Delete successful"));
 		else
@@ -81,8 +81,8 @@ public class LectureController {
 	}
 
 	@Operation(summary = "강의 {lectureId}에서 제공하는 문장 조회")
-	@GetMapping("/{lectureId}/sentences")
-	public ResponseEntity<?> getLectureSentences(@PathVariable Long lectureId) {
+	@GetMapping("/{lecture_id}/sentences")
+	public ResponseEntity<?> getLectureSentences(@PathVariable("lecture_id") Long lectureId) {
 		return ResponseEntity.status(HttpStatus.OK).body(sentenceService.getLectureSentences(lectureId));
 	}
 }

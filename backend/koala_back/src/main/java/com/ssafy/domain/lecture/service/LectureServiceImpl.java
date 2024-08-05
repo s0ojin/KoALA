@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.domain.lecture.model.dto.request.LectureNoteRequest;
 import com.ssafy.domain.lecture.model.dto.response.LectureNoteResponse;
@@ -24,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class LectureServiceImpl implements LectureService {
 	private final LectureRepository lectureRepository;
 	private final UserInfoProvider userInfoProvider;
@@ -36,6 +38,7 @@ public class LectureServiceImpl implements LectureService {
 		return lectures.stream().map(LectureResponse::toDto).collect(Collectors.toList());
 	}
 
+	@Transactional
 	@Override
 	public RegisteredLectureResponse registerLecture(Long lectureId) {
 		Optional<Lecture> lecture = lectureRepository.findById(lectureId);
@@ -60,6 +63,7 @@ public class LectureServiceImpl implements LectureService {
 			.collect(Collectors.toList());
 	}
 
+	@Transactional
 	@Override
 	public LectureNoteResponse writeLectureNote(LectureNoteRequest lectureNoteRequest) {
 		Optional<Lecture> lecture = lectureRepository.findById(lectureNoteRequest.getLectureId());
@@ -76,6 +80,7 @@ public class LectureServiceImpl implements LectureService {
 			.collect(Collectors.toList());
 	}
 
+	@Transactional
 	@Override
 	public boolean deleteLectureNote(Long lectureId) {
 		if (lectureNoteRepository.existsById(lectureId)) {
@@ -86,6 +91,7 @@ public class LectureServiceImpl implements LectureService {
 		}
 	}
 
+	@Transactional
 	@Override
 	public LectureResponse setSessionId(Long lectureId, String sessionId) {
 		Optional<Lecture> lecture = lectureRepository.findById(lectureId);

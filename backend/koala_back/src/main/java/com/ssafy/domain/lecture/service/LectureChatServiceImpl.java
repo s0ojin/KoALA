@@ -1,6 +1,7 @@
 package com.ssafy.domain.lecture.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.domain.lecture.chat.LectureChatRoom;
 import com.ssafy.domain.lecture.chat.LectureChatRoomManager;
@@ -11,9 +12,11 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class LectureChatServiceImpl implements LectureChatService {
 	private final LectureChatRoomManager lectureChatRoomManager;
 
+	@Transactional
 	@Override
 	public LectureChatRoom makeLectureChatRoom(Long lectureId) {
 		LectureChatRoom chatRoom = LectureChatRoom.builder().lectureId(lectureId).build();
@@ -21,6 +24,7 @@ public class LectureChatServiceImpl implements LectureChatService {
 		return chatRoom;
 	}
 
+	@Transactional
 	@Override
 	public void deleteLectureChatRoom(Long lectureId) {
 		lectureChatRoomManager.getRoomSessions().remove(lectureId);

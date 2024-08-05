@@ -25,7 +25,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
-@Setter
 @Entity
 @Builder
 @Table(name = "lectures")
@@ -51,6 +50,7 @@ public class Lecture {
 	@Column(name = "lecture_url")
 	private String lectureUrl;
 
+	@Setter
 	@Column(name = "session_id")
 	private String sessionId;
 

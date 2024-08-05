@@ -34,8 +34,8 @@ public class LectureSessionController {
 	private final OpenVidu openvidu;
 	private final LectureService lectureService;
 
-	@PostMapping("/{lectureId}/make-session")
-	public ResponseEntity<?> initializeSession(@PathVariable("lectureId") Long lectureId,
+	@PostMapping("/{lecture_id}/session")
+	public ResponseEntity<?> initializeSession(@PathVariable("lecture_id") Long lectureId,
 		@RequestBody(required = false) Map<String, Object> params) {
 		try {
 			SessionProperties properties = SessionProperties.fromJson(params).build();
@@ -53,8 +53,8 @@ public class LectureSessionController {
 		}
 	}
 
-	@PostMapping("/{lectureId}/connections")
-	public ResponseEntity<?> createConnection(@PathVariable("lectureId") Long lectureId,
+	@PostMapping("/{lecture_id}/connections")
+	public ResponseEntity<?> createConnection(@PathVariable("lecture_id") Long lectureId,
 		@RequestBody(required = false) Map<String, Object> params) {
 		try {
 			String sessionId = lectureService.getSessionId(lectureId);

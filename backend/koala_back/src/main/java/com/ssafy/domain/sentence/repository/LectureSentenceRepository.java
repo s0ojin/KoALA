@@ -10,4 +10,5 @@ import com.ssafy.domain.sentence.model.entity.LectureSentence;
 public interface LectureSentenceRepository extends JpaRepository<LectureSentence, Long> {
 	@Query(value = "SELECT * FROM lecture_sentences WHERE lecture_id = :lectureId", nativeQuery = true)
 	List<LectureSentence> findByLectureId(Long lectureId);
+
 }

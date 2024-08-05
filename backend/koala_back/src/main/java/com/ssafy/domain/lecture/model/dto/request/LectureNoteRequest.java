@@ -5,13 +5,14 @@ import com.ssafy.domain.lecture.model.entity.Lecture;
 import com.ssafy.domain.lecture.model.entity.LectureNote;
 import com.ssafy.domain.user.model.entity.User;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
+@Builder
 public class LectureNoteRequest {
 	@JsonProperty("lecture_id")
 	Long lectureId;
