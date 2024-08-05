@@ -42,24 +42,19 @@ public class StudyTimeServiceImpl implements StudyTimeService {
 	@Override
 	@Transactional
 	public void increaseTotalStudyTime(Long userId, Integer studyType, Integer studyTime) {
+		StudyTime userStudyTime = studyTimeRepository.findByUserIdAndTimeCalType(userId, 2);
 		switch (studyType) {
 			case 0: // AI 회화
-				StudyTime talkTime = studyTimeRepository.findByUserIdAndTimeCalType(userId, 2);
-				talkTime.increaseTalkTime(studyTime);
-				studyTimeRepository.save(talkTime);
+				userStudyTime.increaseTalkTime(studyTime);
 				break;
 			case 1: // 받아쓰기
-				StudyTime sentenceNum = studyTimeRepository.findByUserIdAndTimeCalType(userId, 2);
-				sentenceNum.increaseSentenceNum(studyTime);
-				studyTimeRepository.save(sentenceNum);
+				userStudyTime.increaseSentenceNum(studyTime);
 				break;
 			case 2: // 강의 수
-				StudyTime lectureNum = studyTimeRepository.findByUserIdAndTimeCalType(userId, 2);
-				lectureNum.increaseLectureNum(studyTime);
-				studyTimeRepository.save(lectureNum);
+				userStudyTime.increaseLectureNum(studyTime);
 				break;
 		}
+		studyTimeRepository.save(userStudyTime);
 	}
-
 
 }
