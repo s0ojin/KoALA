@@ -58,7 +58,7 @@ export default function LectureNoteDetail() {
                   noteTitle={lectureNote.note_title}
                   noteContent={lectureNote.note_content}
                   noteCreatedAt={lectureNote.note_created_at}
-                ></LectureNoteBookmark>
+                />
               )
             })}
           </div>
