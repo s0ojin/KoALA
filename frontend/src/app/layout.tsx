@@ -13,15 +13,18 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  modal,
 }: Readonly<{
   children: React.ReactNode
+  modal: React.ReactNode
 }>) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Header />
         <SWRProvider>
-          <main>{children}</main>
+          {modal}
+          <Header />
+          <main className="pt-20">{children}</main>
         </SWRProvider>
       </body>
     </html>
