@@ -9,10 +9,10 @@ export default function Header() {
   const [isLogin, setIsLogin] = useState(true)
 
   return (
-    <header className="fixed h-20 px-9 flex w-full items-center justify-between">
-      <p className="h-7">
+    <header className="z-50 fixed h-20 px-9 flex w-full items-center justify-between">
+      <Link href="/" className="h-7">
         <Logo height="27" />
-      </p>
+      </Link>
       <div className="flex gap-6 items-center">
         {isLogin ? (
           <>
