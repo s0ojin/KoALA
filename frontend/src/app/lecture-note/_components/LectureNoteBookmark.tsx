@@ -1,6 +1,6 @@
 import Image from 'next/image'
 
-interface LectureNoteList {
+interface LectureNoteBookmarkProps {
   noteId: number
   noteTitle: string
   noteContent: string
@@ -12,7 +12,7 @@ export default function LectureNoteBookmark({
   noteTitle,
   noteContent,
   noteCreatedAt,
-}: LectureNoteList) {
+}: LectureNoteBookmarkProps) {
   return (
     <div className="w-full flex flex-col gap-2 ">
       <div className="flex gap-1 items-center px-5">
@@ -20,7 +20,7 @@ export default function LectureNoteBookmark({
           src="/icons/play.svg"
           width={0}
           height={0}
-          alt="teacher"
+          alt="play"
           sizes="100%"
           className="w-5 h-5"
         />
