@@ -69,7 +69,7 @@ public class UserController {
 		try {
 			JwtToken jwtToken = userService.makeNewToken(bearerToken);
 			if (jwtToken != null) {
-				return ResponseEntity.ok().body(jwtToken);
+				return ResponseEntity.status(HttpStatus.OK).body(jwtToken);
 			} else {
 				return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
 					.body(Map.of("message", "Invalid or expired refresh token"));
