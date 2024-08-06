@@ -47,7 +47,7 @@ export default function Header() {
           <>
             <Link
               href="/modals/add-sentence"
-              className="text-base font-bold bg-primary-400 text-white py-2 px-11 rounded-full"
+              className="text-base font-medium bg-primary-400 text-white py-2 px-11 rounded-full"
             >
               나만의 문장 추가
             </Link>
@@ -67,7 +67,7 @@ export default function Header() {
             )}
           </>
         ) : (
-          <button className="text-base font-bold bg-primary-400 text-white py-2 px-11 rounded-full">
+          <button className="text-base font-medium bg-primary-400 text-white py-2 px-11 rounded-full">
             로그인
           </button>
         )}
