@@ -78,7 +78,7 @@ export default function MainEucalyptusButton({
           draggable="false"
         />
       </button>
-      <span className="select-none cursor-pointer absolute -right-2 top-0 bg-[#FF7A7A] text-white text-sm h-8 aspect-square rounded-full flex justify-center items-center font-semibold z-0">
+      <span className="select-none cursor-pointer absolute -right-2 top-0 bg-[#FF7A7A] text-white text-sm h-8 aspect-square rounded-full flex justify-center items-center font-bold z-0">
         {eucalyptus}
       </span>
     </div>
