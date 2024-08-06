@@ -20,11 +20,15 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ssafy.domain.chat.service.CacheService;
 import com.ssafy.domain.user.model.dto.request.UserSignUpRequest;
 import com.ssafy.domain.user.model.dto.request.UserUpdateRequest;
+import com.ssafy.domain.user.model.dto.response.RankingResponse;
+import com.ssafy.domain.user.model.dto.response.RankingWithMyRankResponse;
 import com.ssafy.domain.user.model.dto.response.UserFindResponse;
 import com.ssafy.domain.user.model.dto.response.UserResponse;
 import com.ssafy.domain.user.model.entity.Auth;
+import com.ssafy.domain.user.model.entity.Ranking;
 import com.ssafy.domain.user.model.entity.User;
 import com.ssafy.domain.user.repository.AuthRepository;
+import com.ssafy.domain.user.repository.RankingRepository;
 import com.ssafy.domain.user.repository.UserRepository;
 import com.ssafy.global.auth.jwt.JwtTokenProvider;
 import com.ssafy.global.auth.jwt.dto.JwtToken;
@@ -42,6 +46,7 @@ public class UserServiceImpl implements UserService {
 
 	private final UserRepository userRepository;
 	private final AuthRepository authRepository;
+	private final RankingRepository rankingRepository;
 	private final AuthenticationManagerBuilder authenticationManagerBuilder;
 	private final JwtTokenProvider jwtTokenProvider;
 	private final PasswordEncoder passwordEncoder;
@@ -49,13 +54,13 @@ public class UserServiceImpl implements UserService {
 	private final CacheService cacheService;
 
 	@Transactional
-	public UserResponse signUp(UserSignUpRequest userSignUpRequest) {
+	public UserFindResponse signUp(UserSignUpRequest userSignUpRequest) {
 		if (userRepository.existsByLoginId(userSignUpRequest.getLoginId())) {
 			throw new IllegalArgumentException("이미 사용 중인 사용자 아이디입니다.");
 		}
 		String encodedPassword = passwordEncoder.encode(userSignUpRequest.getPassword());
 		Auth auth = authRepository.findByAuthName("user");
-		return UserResponse.toDto(userRepository.save(userSignUpRequest.toEntity(encodedPassword, auth)));
+		return UserFindResponse.toDto(userRepository.save(userSignUpRequest.toEntity(encodedPassword, auth)));
 	}
 
 	@Transactional
@@ -86,7 +91,7 @@ public class UserServiceImpl implements UserService {
 
 	@Transactional
 	@Override
-	public UserFindResponse findUser() {
+	public UserResponse findUser() {
 		String currentLoginId = userInfoProvider.getCurrentLoginId();
 		if (currentLoginId == null) {
 			throw new IllegalStateException("Current login_ID is null. User might not be authenticated.");
@@ -98,7 +103,7 @@ public class UserServiceImpl implements UserService {
 		}
 
 		User user = optionalUser.get();
-		return UserFindResponse.toDto(user);
+		return UserResponse.toDto(user);
 	}
 
 	@Transactional
@@ -172,4 +177,12 @@ public class UserServiceImpl implements UserService {
 		SecurityContextHolder.clearContext();
 	}
 
+	@Override
+	public RankingWithMyRankResponse getRanking() {
+		Long userId = userInfoProvider.getCurrentUserId();
+		Integer myRank = rankingRepository.findByUserId(userId).getRanking();
+		List<RankingResponse> rankings = new ArrayList<>();
+		rankingRepository.findTop10ByOrderByRanking().forEach(ranking -> rankings.add(RankingResponse.toDto(ranking)));
+		return RankingWithMyRankResponse.toDto(rankings, myRank);
+	}
 }

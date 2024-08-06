@@ -13,7 +13,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
@@ -27,10 +29,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			if (token != null) {
 				jwtTokenProvider.validateToken(token);
 				Authentication authentication = jwtTokenProvider.getAuthentication(token);
+				log.info("Authentication: " + authentication);
 				SecurityContextHolder.getContext().setAuthentication(authentication);
 			}
 			filterChain.doFilter(request, response);
 		} catch (TokenException e) {
+			log.error("Token Error");
 			response.setStatus(e.getHttpStatus().value());
 			response.setContentType("application/json");
 			response.getWriter().write("{\"message\": \"" + e.getMessage() + "\"}");

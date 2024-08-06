@@ -1,6 +1,7 @@
 package com.ssafy.domain.user.controller;
 
-import org.json.JSONObject;
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,6 +21,7 @@ import com.ssafy.domain.user.model.dto.request.UserSignUpRequest;
 import com.ssafy.domain.user.model.dto.request.UserUpdateRequest;
 import com.ssafy.domain.user.model.dto.response.UserFindResponse;
 import com.ssafy.domain.user.model.dto.response.UserResponse;
+import com.ssafy.domain.user.service.StudyTimeService;
 import com.ssafy.domain.user.service.UserService;
 import com.ssafy.global.auth.jwt.dto.JwtToken;
 
@@ -35,13 +37,14 @@ import lombok.extern.slf4j.Slf4j;
 public class UserController {
 
 	private final UserService userService;
+	private final StudyTimeService studyTimeService;
 
 	@Operation(summary = "회원가입")
 	@PostMapping
 	public ResponseEntity<?> signUp(@Valid @RequestBody UserSignUpRequest userSignUpRequest) {
-		UserResponse savedUserResponse = userService.signUp(userSignUpRequest);
-		// System.out.println(savedUserResponse.getNickname());
-		return ResponseEntity.ok().body(new JSONObject().put("message", "Signup successful").toString());
+		UserFindResponse userFindResponse = userService.signUp(userSignUpRequest);
+		studyTimeService.initStudyTime(userFindResponse.getUserId());
+		return ResponseEntity.status(HttpStatus.CREATED).body(userFindResponse);
 	}
 
 	@Operation(summary = "로그인")
@@ -59,7 +62,7 @@ public class UserController {
 	@PostMapping("/logout")
 	public ResponseEntity<?> logout(@RequestBody String accessToken) {
 		userService.logout();
-		return ResponseEntity.ok().body("logout successful");
+		return ResponseEntity.ok().body(Map.of("message", "logout successful"));
 	}
 
 	@Operation(summary = "accessToken 재발급")
@@ -70,14 +73,16 @@ public class UserController {
 			if (jwtToken != null) {
 				return ResponseEntity.ok().body(jwtToken);
 			} else {
-				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or expired refresh token");
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+					.body(Map.of("message", "Invalid or expired refresh token"));
 			}
 		} catch (UsernameNotFoundException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "User not found"));
 		} catch (InvalidCsrfTokenException e) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid refresh token");
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid refresh token"));
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+				.body(Map.of("error", "An unexpected error occurred"));
 		}
 	}
 
@@ -86,7 +91,7 @@ public class UserController {
 	public ResponseEntity<?> checkLoginId(@PathVariable("loginId") String loginId) {
 		boolean isExist = userService.checkLoginId(loginId);
 		String message = isExist ? "이미 사용 중인 아이디입니다." : "사용 가능한 아이디입니다.";
-		return ResponseEntity.ok().body(new JSONObject().put("available", !isExist).put("message", message).toString());
+		return ResponseEntity.ok(Map.of("available", !isExist, "message", message));
 	}
 
 	@Operation(summary = "닉네임 중복확인")
@@ -94,13 +99,13 @@ public class UserController {
 	public ResponseEntity<?> checkNickname(@PathVariable("nickname") String nickname) {
 		boolean isExist = userService.checkNickname(nickname);
 		String message = isExist ? "Not Available Nickname" : "Available Nickname";
-		return ResponseEntity.ok().body(new JSONObject().put("available", !isExist).put("message", message).toString());
+		return ResponseEntity.ok(Map.of("available", !isExist, "message", message));
 	}
 
 	@Operation(summary = "특정 유저 정보 조회")
 	@GetMapping
 	public ResponseEntity<?> getUser() {
-		UserFindResponse userFindResponse = userService.findUser();
+		UserResponse userFindResponse = userService.findUser();
 		return ResponseEntity.ok().body(userFindResponse);
 	}
 
@@ -108,14 +113,20 @@ public class UserController {
 	@PatchMapping
 	public ResponseEntity<?> updateUser(@Valid @RequestBody UserUpdateRequest userUpdateRequest) {
 		UserResponse userResponse = userService.updateUser(userUpdateRequest);
-		return ResponseEntity.ok().body(new JSONObject().put("message", "Update successful").toString());
+		return ResponseEntity.ok().body(Map.of("message", "Update successful"));
 	}
 
 	@Operation(summary = "회원 탈퇴")
 	@DeleteMapping
 	public ResponseEntity<?> deleteUser() {
 		userService.deleteUser();
-		return ResponseEntity.ok().body(new JSONObject().put("message", "Delete successful").toString());
+		return ResponseEntity.ok().body(Map.of("message", "Delete successful"));
+	}
+
+	@Operation(summary = "랭킹 조회")
+	@GetMapping("/ranking")
+	public ResponseEntity<?> getRanking() {
+		return ResponseEntity.ok().body(userService.getRanking());
 	}
 
 }
