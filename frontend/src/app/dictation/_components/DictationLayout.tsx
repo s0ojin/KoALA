@@ -6,7 +6,7 @@ export default function DictationLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="relative w-full h-full min-h-screen flex items-center justify-center">
+    <div className="relative w-full h-main-screen flex items-center justify-center">
       {children}
       <Image
         width={0}
@@ -33,10 +33,9 @@ export default function DictationLayout({
         src="/images/cloud.svg"
       />
       <Image
-        width={0}
-        height={0}
-        sizes="100%"
-        className="absolute w-[12%] top-[30%] left-[10%] -z-10 scale-x-[-1]"
+        width={300}
+        height={300}
+        className="absolute w-[8%] top-[30%] left-[10%] -z-10 scale-x-[-1]"
         alt="astronaut"
         src="/images/astronaut.png"
       />

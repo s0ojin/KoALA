@@ -7,7 +7,7 @@ import DictationLayout from '@/app/dictation/_components/DictationLayout'
 export default function Dictation() {
   return (
     <DictationLayout>
-      <div className="inline-flex flex-col items-center gap-28 w-auto">
+      <div className="pt-40 overflow-hidden h-main-screen flex justify-center items-center flex-col gap-28">
         <DictationQuestion />
         <DictationField />
       </div>
