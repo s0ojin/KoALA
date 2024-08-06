@@ -17,7 +17,7 @@ export default function SignUp() {
     formState: { errors, isValid },
   } = useForm({ mode: 'onChange' })
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: any) => {
     console.log(
       'api연결 후 삭제될거지만 필요해서 console찍어놨어요 ㅠ이건 지우면 안되어요...',
       data
