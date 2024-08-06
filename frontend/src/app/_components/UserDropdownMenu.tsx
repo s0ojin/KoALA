@@ -45,16 +45,18 @@ export default function UserDropdownMenu({
       </header>
       <ul className="flex flex-col gap-2">
         {USER_DROPDOWN_MENU_LIST.map((item, idx) => (
-          <li key={item.id} className="py-2">
+          <>
             {idx === USER_DROPDOWN_MENU_LIST.length - 1 && <hr />}
-            <button
-              onClick={() => handleMenuClick(`/${item.id}`)}
-              className="text-gray-700 flex gap-3 hover:text-gray-900 w-full text-left"
-            >
-              <div className="w-6">{item.icon}</div>
-              <p>{item.label}</p>
-            </button>
-          </li>
+            <li key={item.id} className="py-2">
+              <button
+                onClick={() => handleMenuClick(`/${item.id}`)}
+                className="text-gray-700 flex gap-3 hover:text-gray-900 w-full text-left"
+              >
+                <div className="w-6">{item.icon}</div>
+                <p>{item.label}</p>
+              </button>
+            </li>
+          </>
         ))}
       </ul>
     </div>
