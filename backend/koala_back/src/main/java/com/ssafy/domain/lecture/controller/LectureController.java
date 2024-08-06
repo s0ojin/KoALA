@@ -17,11 +17,11 @@ import com.ssafy.domain.lecture.model.dto.request.LectureNoteRequest;
 import com.ssafy.domain.lecture.model.dto.response.LectureNoteResponse;
 import com.ssafy.domain.lecture.model.dto.response.LectureResponse;
 import com.ssafy.domain.lecture.model.dto.response.RegisteredLectureResponse;
-import com.ssafy.domain.lecture.repository.RegisteredLectureRepository;
 import com.ssafy.domain.lecture.service.LectureService;
 import com.ssafy.domain.sentence.service.SentenceService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -30,7 +30,6 @@ import lombok.RequiredArgsConstructor;
 public class LectureController {
 	private final LectureService lectureService;
 	private final SentenceService sentenceService;
-	private final RegisteredLectureRepository registeredLectureRepository;
 
 	@Operation(summary = "모든 강의 조회")
 	@GetMapping("/all")
@@ -39,7 +38,7 @@ public class LectureController {
 		if (lectures.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		} else {
-			return ResponseEntity.ok(lectures);
+			return ResponseEntity.status(HttpStatus.OK).body(lectures);
 		}
 	}
 
@@ -50,13 +49,13 @@ public class LectureController {
 		if (lectureResponses.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		} else {
-			return ResponseEntity.ok(lectureResponses);
+			return ResponseEntity.status(HttpStatus.OK).body(lectureResponses);
 		}
 	}
 
 	@Operation(summary = "강의노트 등록")
 	@PostMapping("/note")
-	public ResponseEntity<?> createLectureNote(@RequestBody LectureNoteRequest lectureNoteRequest) {
+	public ResponseEntity<?> createLectureNote(@Valid @RequestBody LectureNoteRequest lectureNoteRequest) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(lectureService.writeLectureNote(lectureNoteRequest));
 	}
 
@@ -75,7 +74,7 @@ public class LectureController {
 	@DeleteMapping("/note/{note_id}")
 	public ResponseEntity<?> deleteLectureNote(@PathVariable("note_id") Long noteId) {
 		if (lectureService.deleteLectureNote(noteId))
-			return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Delete successful"));
+			return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Successfully deleted lecture note!"));
 		else
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "Not found with id: " + noteId));
 	}

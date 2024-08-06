@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.ssafy.domain.image.model.dto.response.TextResponse;
 import com.ssafy.domain.image.service.ImageService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,8 +24,9 @@ public class ImageController {
 
 	private final ImageService imageService;
 
+	@Operation(summary = "image에서 text 추출")
 	@PostMapping
-	public ResponseEntity<?> imageToText(@RequestParam("file") MultipartFile file) throws IOException {
+	public ResponseEntity<?> getTextFromImage(@RequestParam("file") MultipartFile file) throws IOException {
 		String response = imageService.imageToText(file);
 		// to. 윤서영...
 		// 파싱을 못하는 못난 웅니라서 미아내... 흑흑
