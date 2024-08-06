@@ -7,13 +7,12 @@ import com.ssafy.domain.lecture.chat.LectureChatRoom;
 import com.ssafy.domain.lecture.chat.LectureChatRoomManager;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class LectureChatServiceImpl implements LectureChatService {
+
 	private final LectureChatRoomManager lectureChatRoomManager;
 
 	@Override

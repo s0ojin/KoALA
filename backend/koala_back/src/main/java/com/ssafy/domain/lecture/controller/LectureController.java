@@ -64,9 +64,9 @@ public class LectureController {
 	public ResponseEntity<?> getLectureNote(@PathVariable("lecture_id") Long lectureId) {
 		List<LectureNoteResponse> lectureNotes = lectureService.getLectureNote(lectureId);
 		if (lectureNotes.isEmpty()) {
-			return ResponseEntity.noContent().build();
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		} else {
-			return ResponseEntity.ok(lectureNotes);
+			return ResponseEntity.status(HttpStatus.OK).body(lectureNotes);
 		}
 	}
 

@@ -8,6 +8,7 @@ import com.ssafy.domain.lecture.model.dto.response.LectureResponse;
 import com.ssafy.domain.lecture.model.dto.response.RegisteredLectureResponse;
 
 public interface LectureService {
+
 	List<LectureResponse> getAllLecture();
 
 	RegisteredLectureResponse registerLecture(Long lectureId);
