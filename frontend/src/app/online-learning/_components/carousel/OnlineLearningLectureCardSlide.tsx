@@ -71,7 +71,7 @@ export default function OnlineLearningLectureCardSlide() {
   }
 
   return (
-    <div className="flex mt-24 mx-auto max-h-[26rem] min-w-[48rem] m-auto max-w-[75rem]">
+    <div className="flex mx-auto max-h-[26rem] min-w-[48rem] m-auto max-w-[75rem]">
       <div className="md:mx-[1rem] lg:mx-[2.5rem] my-auto">
         <button
           onClick={handlePrev}

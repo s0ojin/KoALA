@@ -7,11 +7,12 @@ import ReviewMenuButtons from '@/app/review/_components/ReviewMenuButtons'
 export default function ReviewMain() {
   return (
     <ReviewLayout>
-      <Header />
-      <Title
-        CourseTitle={'복습하기'}
-        CourseDescription={'반복학습으로 실력 Up!'}
-      />
+      <div className="mt-12">
+        <Title
+          CourseTitle={'복습하기'}
+          CourseDescription={'반복학습으로 실력 Up!'}
+        />
+      </div>
       <div className="flex mt-5">
         <ReviewArea />
         <ReviewMenuButtons />

@@ -127,7 +127,7 @@ export default function AISpeakingSlider() {
   const visibleCardList = getVisibleCards()
 
   return (
-    <div className="h-screen flex flex-col items-center justify-center w-full">
+    <div className="h-main-screen flex flex-col items-center justify-center w-full">
       <div className="z-10 w-[28rem] absolute flex justify-between text-gray-900">
         <NextBtn
           onClick={() => handleClick(-1)}
