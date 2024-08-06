@@ -2,6 +2,7 @@ package com.ssafy.domain.board.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONObject;
 import org.springframework.data.domain.Pageable;
@@ -30,9 +31,7 @@ import com.ssafy.domain.board.service.BoardService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/boards")
@@ -49,11 +48,11 @@ public class BoardController {
 
 		if (BoardValidation.validateKoreanAndNumeric(boardCreateRequest.getTitle())) {
 			return ResponseEntity.badRequest()
-				.body(new JSONObject().put("message", "게시글 제목은 한글과 숫자, 특수문자만 입력 가능합니다.").toString());
+				.body(Map.of("message", "게시글 제목은 한글과 숫자, 특수문자만 입력 가능합니다."));
 		}
 		if (BoardValidation.validateKoreanAndNumeric(boardCreateRequest.getContent())) {
 			return ResponseEntity.badRequest()
-				.body(new JSONObject().put("message", "게시글 내용은 한글과 숫자, 특수문자만 입력 가능합니다.").toString());
+				.body(Map.of("message", "게시글 내용은 한글과 숫자, 특수문자만 입력 가능합니다."));
 		}
 
 		// 추가: files 리스트를 boardCreateRequest에 설정
@@ -99,7 +98,7 @@ public class BoardController {
 	@DeleteMapping("/{board_id}")
 	public ResponseEntity<?> deleteBoard(@PathVariable("board_id") Long boardId) {
 		boardService.deleteBoard(boardId);
-		return ResponseEntity.ok(new JSONObject().put("message", "게시글 삭제 성공!").toString());
+		return ResponseEntity.ok().body(Map.of("message", "게시글 삭제 성공!"));
 	}
 
 	@Operation(summary = "게시글 댓글 작성")
