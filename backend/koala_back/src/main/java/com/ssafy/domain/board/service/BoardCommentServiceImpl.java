@@ -17,9 +17,7 @@ import com.ssafy.domain.board.repository.BoardRepository;
 import com.ssafy.global.common.UserInfoProvider;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -28,6 +26,7 @@ public class BoardCommentServiceImpl implements BoardCommentService {
 	private final UserInfoProvider userInfoProvider;
 	private final BoardRepository boardRepository;
 	private final BoardCommentRepository boardCommentRepository;
+	private final BoardService boardService;
 
 	@Override
 	public Page<BoardCommentResponse> getCommentsByBoardId(Long boardId, Pageable pageable) {
@@ -42,6 +41,7 @@ public class BoardCommentServiceImpl implements BoardCommentService {
 	public BoardCommentResponse createComment(Long boardId, BoardCommentCreateRequest boardCommentCreateRequest) {
 		Board currentBoard = boardRepository.findById(boardId)
 			.orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않습니다."));
+		boardService.increaseCommentNum(boardId);
 		return BoardCommentResponse.toDto(boardCommentRepository.save(
 			boardCommentCreateRequest.toEntity(userInfoProvider.getCurrentUser(), currentBoard)));
 	}

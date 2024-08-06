@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import org.json.JSONObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -107,11 +106,10 @@ public class BoardController {
 		@Valid @RequestBody BoardCommentCreateRequest boardCommentCreateRequest) {
 		if (BoardValidation.validateKoreanAndNumeric(boardCommentCreateRequest.getCommentContent())) {
 			return ResponseEntity.badRequest()
-				.body(new JSONObject().put("message", "댓글 내용은 한글과 숫자, 특수문자만 입력 가능합니다.").toString());
+				.body(Map.of("message", "댓글 내용은 한글과 숫자, 특수문자만 입력 가능합니다."));
 		}
 		BoardCommentResponse boardCommentResponse = boardCommentService.createComment(boardId,
 			boardCommentCreateRequest);
-		boardService.increaseCommentNum(boardId);
 		return ResponseEntity.status(HttpStatus.CREATED).body(boardCommentResponse);
 	}
 
@@ -119,7 +117,7 @@ public class BoardController {
 	@DeleteMapping("/comments/{comment_id}")
 	public ResponseEntity<?> deleteComment(@PathVariable("comment_id") Long commentId) {
 		boardCommentService.deleteComment(commentId);
-		return ResponseEntity.ok(new JSONObject().put("message", "댓글 삭제 성공!").toString());
+		return ResponseEntity.ok().body(Map.of("message", "댓글 삭제 성공!"));
 	}
 
 }
