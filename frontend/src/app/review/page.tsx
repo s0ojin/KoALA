@@ -1,5 +1,3 @@
-import Header from '@/app/_components/Header'
-import Title from '@/app/_components/Title'
 import ReviewArea from '@/app/review/_components/ReviewArea'
 import ReviewLayout from '@/app/review/_components/ReviewLayout'
 import ReviewMenuButtons from '@/app/review/_components/ReviewMenuButtons'
@@ -7,15 +5,11 @@ import ReviewMenuButtons from '@/app/review/_components/ReviewMenuButtons'
 export default function ReviewMain() {
   return (
     <ReviewLayout>
-      <div className="mt-12">
-        <Title
-          CourseTitle={'복습하기'}
-          CourseDescription={'반복학습으로 실력 Up!'}
-        />
-      </div>
-      <div className="flex mt-5">
-        <ReviewArea />
-        <ReviewMenuButtons />
+      <div className="h-main-screen flex flex-col gap-4">
+        <div className="w-[80%] h-full flex max-w-7xl gap-8 mx-auto">
+          <ReviewArea />
+          <ReviewMenuButtons />
+        </div>
       </div>
     </ReviewLayout>
   )
