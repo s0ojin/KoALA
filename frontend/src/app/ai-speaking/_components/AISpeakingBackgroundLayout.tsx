@@ -6,7 +6,7 @@ export default function AISpeakingBackgroundLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="h-screen overflow-hidden relative">
+    <div className="overflow-hidden relative">
       {children}
       <Image
         src="/images/cloud.svg"
