@@ -24,7 +24,7 @@ export default function RootLayout({
         <SWRProvider>
           {modal}
           <Header />
-          <main className="pt-20">{children}</main>
+          <main className="pt-20 min-h-screen">{children}</main>
         </SWRProvider>
       </body>
     </html>
