@@ -9,72 +9,72 @@ import {
   Title,
   Tooltip,
   Legend,
-} from 'chart.js';
-import { Pie } from 'react-chartjs-2';
-import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { Context } from 'chartjs-plugin-datalabels';
+} from 'chart.js'
+import { Pie } from 'react-chartjs-2'
+import ChartDataLabels from 'chartjs-plugin-datalabels'
+import { Context } from 'chartjs-plugin-datalabels'
 
-ChartJS.register(
-  PieController,
-  ArcElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(PieController, ArcElement, Title, Tooltip, Legend)
 
-const options:ChartOptions<'pie'> = {
+const options: ChartOptions<'pie'> = {
+  maintainAspectRatio: false,
   responsive: true,
   plugins: {
     legend: {
-      display:false,
-      position: 'top' as const,
-      align: 'start' as const,
+      display: false,
     },
-    datalabels:{
-      display: (context:Context) => {
-        return context.dataset.data[context.dataIndex] > 0;
+    tooltip: {
+      enabled: false,
+    },
+    datalabels: {
+      font: {
+        family: 'Noto Sans KR',
       },
-      listeners : {
-        enter: function(context, event) {
-          // console.log(context.dataset.data[context.dataIndex])
-          console.log(context)
-          context.active = true
-          return true
-        },
-        leave: function(context, event) {
-          // console.log(context.dataset.data[context.dataIndex])
-          console.log(context)
-          context.active = false
-          return false
+      padding: {
+        left: 20,
+        right: 20,
+        top: 5,
+        bottom: 5,
+      },
+      align: 'end',
+      backgroundColor: '#FAFAFA',
+      borderColor: function (context) {
+        return context.dataset.backgroundColor
+      },
+      color: function (context) {
+        return context.dataset.backgroundColor
+      },
+      borderRadius: 16,
+      borderWidth: 1,
+      formatter: (value, context: Context) => {
+        if (context.chart.data.labels) {
+          const blanklength =
+            4 - context.chart.data.labels[context.dataIndex].length
+          const customblank = ' '.repeat(blanklength)
+          return `${customblank}${context.chart.data.labels[context.dataIndex]}${customblank}`
         }
-      }
+      },
     },
-  }
+  },
 }
 
-const labels = ['받아쓰기', 'AI회화', '강의']; //x축 기준
+const labels = ['받아쓰기', 'AI회화', '강의'] //x축 기준
 
-const data:ChartData <'pie', number[]> = {
+const data: ChartData<'pie', number[]> = {
   labels,
   datasets: [
     {
       label: '총합', //그래프 분류되는 항목
-      data: [4, 3, 3], //실제 그려지는 데이터(Y축 숫자)
-      backgroundColor: [
-        'rgb(255, 99, 132)',
-        'rgb(54, 162, 235)',
-        'rgb(255, 205, 86)'
-      ],
-    }
+      data: [4, 2, 6], //실제 그려지는 데이터(Y축 숫자)
+      backgroundColor: ['#2BAA72', '#F0AF1A', '#664CEC'],
+    },
   ],
-};
+}
 
 export default function ReportFieldPieChart() {
   return (
-    <div className='contentWrap'>
-      <div className='w-[12rem]'>
-        <Pie options={options} data={data} />
-      </div>
+    <div className="w-full">
+      <Pie options={options} data={data} plugins={[ChartDataLabels]} />
     </div>
-  );
+  )
 }
