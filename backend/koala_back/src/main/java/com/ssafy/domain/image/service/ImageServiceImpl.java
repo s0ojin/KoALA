@@ -11,7 +11,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -44,7 +46,7 @@ public class ImageServiceImpl implements ImageService {
 	private static final String REFERER = "https://search.naver.com/";
 
 	@Override
-	public List<String> imageToText(MultipartFile multipartFile) throws IOException {
+	public List<Map<String, String>> imageToText(MultipartFile multipartFile) throws IOException {
 		String originalName = multipartFile.getOriginalFilename();
 		String filename = System.currentTimeMillis() + "_" + originalName;
 
@@ -96,7 +98,9 @@ public class ImageServiceImpl implements ImageService {
 				}
 			}
 		}
-		return resultTexts;
+
+		// [{sentence_text:어쩌구}, ...] 형식으로 보내기
+		return parseJson(resultTexts);
 	}
 
 	// 파싱
@@ -172,6 +176,16 @@ public class ImageServiceImpl implements ImageService {
 			}
 		}
 		return token;
+	}
+
+	public static List<Map<String, String>> parseJson(List<String> sentences){
+		List<Map<String, String>> jsonList = new ArrayList<>();
+		for (String sentence : sentences) {
+			Map<String, String> sentenceMap = new HashMap<>();
+			sentenceMap.put("sentence_text", sentence);
+			jsonList.add(sentenceMap);
+		}
+		return jsonList;
 	}
 
 }
