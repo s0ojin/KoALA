@@ -49,8 +49,8 @@ public class SecurityConfig {
 				// 다른 모든 요청은 인증을 필요로 함
 				.anyRequest()
 				.authenticated())
-			.exceptionHandling(
-				exceptionHandling -> exceptionHandling.authenticationEntryPoint(customAuthenticationEntryPoint))
+			// .exceptionHandling(
+			// 	exceptionHandling -> exceptionHandling.authenticationEntryPoint(customAuthenticationEntryPoint))
 			// JwtAuthenticationFilter를 UsernamePasswordAuthenticationFilter 이전에 실행되도록 추가
 			.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
 			.build();
