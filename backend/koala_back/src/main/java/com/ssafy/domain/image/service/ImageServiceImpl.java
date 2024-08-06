@@ -77,9 +77,9 @@ public class ImageServiceImpl implements ImageService {
 
 		// passportKey 확인
 
-			passportKey = readKey();
-			checkSpelling("테스트 문장", passportKey);
-		if(passportKey == null || passportKey.isEmpty()) {
+		passportKey = readKey();
+		checkSpelling("테스트 문장", passportKey);
+		if (passportKey == null || passportKey.isEmpty()) {
 			try {
 				passportKey = updateKey();
 				log.warn("토큰 값 문제 있어서 다시 받아요");
@@ -178,7 +178,7 @@ public class ImageServiceImpl implements ImageService {
 		return token;
 	}
 
-	public static List<Map<String, String>> parseJson(List<String> sentences){
+	public static List<Map<String, String>> parseJson(List<String> sentences) {
 		List<Map<String, String>> jsonList = new ArrayList<>();
 		for (String sentence : sentences) {
 			Map<String, String> sentenceMap = new HashMap<>();

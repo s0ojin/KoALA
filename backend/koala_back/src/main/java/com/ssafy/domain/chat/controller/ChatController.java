@@ -34,7 +34,7 @@ public class ChatController {
 	}
 
 	@Operation(summary = "AI 회화 끝내기")
-	@GetMapping
+	@GetMapping("/close")
 	public ResponseEntity<?> closeChat() {
 		chatService.finishAIResponse();
 		return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "finish AI chat"));
