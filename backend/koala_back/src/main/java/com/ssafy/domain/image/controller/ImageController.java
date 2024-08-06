@@ -1,6 +1,7 @@
 package com.ssafy.domain.image.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,13 +28,6 @@ public class ImageController {
 	@Operation(summary = "image에서 text 추출")
 	@PostMapping
 	public ResponseEntity<?> getTextFromImage(@RequestParam("file") MultipartFile file) throws IOException {
-		String response = imageService.imageToText(file);
-		// to. 윤서영...
-		// 파싱을 못하는 못난 웅니라서 미아내... 흑흑
-		// imageToText에서 String으로 문장을 주는거야!!
-		// 그럼 맞춤법 검사기 돌려서 json 객체로 바꿔서 보내면 됑.
-		// 일단 response 객체는 TextResponse로 만들어두었습니다.
-		// 쪽....
-		return ResponseEntity.status(HttpStatus.CREATED).body(response);
+		return ResponseEntity.status(HttpStatus.CREATED).body(imageService.imageToText(file));
 	}
 }
