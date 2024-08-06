@@ -102,6 +102,14 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	@Transactional
+	public void decreaseCommentNum(Long boardId) {
+		Board board = boardRepository.findById(boardId).orElseThrow();
+		board.decreaseCommentNum();
+		boardRepository.save(board);
+	}
+
+	@Override
+	@Transactional
 	public void increaseHit(Long boardId) {
 		Board board = boardRepository.findById(boardId).orElseThrow();
 		board.increaseHit();
