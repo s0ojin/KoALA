@@ -16,17 +16,15 @@ import com.ssafy.domain.board.repository.BoardImageRepository;
 import com.ssafy.domain.board.repository.BoardRepository;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class BoardImageServiceImpl implements BoardImageService {
 
 	private static final String bucketName = "koalabucket1";
-	private final AmazonS3 amazonS3;
 
+	private final AmazonS3 amazonS3;
 	private final BoardImageRepository boardImageRepository;
 	private final BoardRepository boardRepository;
 

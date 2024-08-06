@@ -1,18 +1,12 @@
 package com.ssafy.domain.board.model.dto.response;
 
-import static lombok.AccessLevel.*;
-
 import com.ssafy.domain.board.model.entity.Board;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
-@NoArgsConstructor(access = PROTECTED)
-@AllArgsConstructor(access = PROTECTED)
 public class BoardResponse {
 
 	private Long boardId;

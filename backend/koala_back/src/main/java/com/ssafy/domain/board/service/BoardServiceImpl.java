@@ -21,9 +21,7 @@ import com.ssafy.domain.user.model.entity.User;
 import com.ssafy.global.common.UserInfoProvider;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -32,8 +30,8 @@ public class BoardServiceImpl implements BoardService {
 	private final UserInfoProvider userInfoProvider;
 	private final BoardRepository boardRepository;
 	private final BoardCommentRepository boardCommentRepository;
-	private final BoardImageService boardImageService;
 	private final BoardImageRepository boardImageRepository;
+	private final BoardImageService boardImageService;
 
 	@Override
 	@Transactional

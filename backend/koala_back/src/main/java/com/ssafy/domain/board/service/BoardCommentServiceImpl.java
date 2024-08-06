@@ -1,17 +1,11 @@
 package com.ssafy.domain.board.service;
 
-import java.util.List;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.domain.board.model.dto.request.BoardCommentCreateRequest;
 import com.ssafy.domain.board.model.dto.response.BoardCommentResponse;
 import com.ssafy.domain.board.model.entity.Board;
-import com.ssafy.domain.board.model.entity.BoardComment;
 import com.ssafy.domain.board.repository.BoardCommentRepository;
 import com.ssafy.domain.board.repository.BoardRepository;
 import com.ssafy.global.common.UserInfoProvider;
