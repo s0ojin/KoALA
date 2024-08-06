@@ -13,8 +13,8 @@ export default function Community() {
           <SearchBar />
         </div>
         <div>
-          {new Array(8).fill(0).map((_) => {
-            return <ListElement />
+          {new Array(8).fill(0).map((_, idx) => {
+            return <ListElement key={idx} />
           })}
         </div>
         <div>
