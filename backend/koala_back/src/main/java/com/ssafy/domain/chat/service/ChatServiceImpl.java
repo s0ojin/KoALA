@@ -57,4 +57,10 @@ public class ChatServiceImpl implements ChatService {
 
 		return new ChatResponse(aiResponse);
 	}
+
+	@Override
+	public void finishAIResponse() {
+		// 이외에 AI 응답 끝내는 로직 추가
+		cacheService.clearChatHistory(userInfoProvider.getCurrentLoginId());
+	}
 }
