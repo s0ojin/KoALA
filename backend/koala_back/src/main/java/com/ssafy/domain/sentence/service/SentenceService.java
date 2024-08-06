@@ -9,7 +9,7 @@ import com.ssafy.domain.sentence.model.dto.response.SentenceTestResponse;
 
 public interface SentenceService {
 
-	List<SentenceDictationResponse> randomSentence(String topic);
+	List<SentenceDictationResponse> getRandomSentence(String topic);
 
 	List<SentenceTestResponse> testWritingPaper(List<SentenceTestRequest> writingPaper);
 

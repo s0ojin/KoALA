@@ -3,6 +3,8 @@ package com.ssafy.domain.chat.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -16,6 +18,20 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CacheServiceImpl implements CacheService {
 	private static final int MAX_HISTORY_SIZE = 10;
+	private final CacheManager cacheManager;
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public boolean isEmpty(String loginId) {
+		Cache cache = cacheManager.getCache("chatHistory");
+		if (cache != null) {
+			List<Message> chatHistory = cache.get(loginId, List.class);
+			if (chatHistory == null || chatHistory.isEmpty()) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	// loginId에 해당하는 채팅 기록을 가져온다
 	// 캐시에 해당 데이터가 없으면 새로운 빈 리스트를 반환, 캐시 키: #loginId
@@ -27,11 +43,11 @@ public class CacheServiceImpl implements CacheService {
 
 	// 기존 채팅 기록에 추가하고, 갱신된 채팅 기록을 캐시에 저장
 	@Override
+	@SuppressWarnings("unchecked")
 	@CachePut(value = "chatHistory", key = "#loginId")
-	public List<Message> updateChatHistory(String loginId, Message message) {
-		List<Message> chatHistory = getChatHistory(loginId);
+	public List<Message> changeChatHistory(String loginId, Message message) {
+		List<Message> chatHistory = cacheManager.getCache("chatHistory").get(loginId, List.class);
 		chatHistory.add(message);
-
 		// 리스트 크기가 MAX_HISTORY_SIZE를 초과하면 가장 오래된 메시지 삭제
 		if (chatHistory.size() > MAX_HISTORY_SIZE) {
 			chatHistory.remove(0); // 가장 오래된 메시지 삭제

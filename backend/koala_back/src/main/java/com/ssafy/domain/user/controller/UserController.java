@@ -49,27 +49,25 @@ public class UserController {
 
 	@Operation(summary = "로그인")
 	@PostMapping("/login")
-	public ResponseEntity<JwtToken> signIn(@Valid @RequestBody UserSignInRequest userSignInRequest) {
+	public ResponseEntity<?> signIn(@Valid @RequestBody UserSignInRequest userSignInRequest) {
 		String loginId = userSignInRequest.getLoginId();
 		String password = userSignInRequest.getPassword();
 		JwtToken jwtToken = userService.signIn(loginId, password);
-		log.info("request loginId: {}, password: {}", loginId, password);
-		log.info("jwtToken accessToken: {}, refreshToken: {}", jwtToken.getAccessToken(), jwtToken.getRefreshToken());
-		return ResponseEntity.ok().body(jwtToken);
+		return ResponseEntity.status(HttpStatus.OK).body(jwtToken);
 	}
 
 	@Operation(summary = "로그아웃")
 	@PostMapping("/logout")
-	public ResponseEntity<?> logout(@RequestBody String accessToken) {
+	public ResponseEntity<?> logout() {
 		userService.logout();
-		return ResponseEntity.ok().body(Map.of("message", "logout successful"));
+		return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Logout successful!"));
 	}
 
 	@Operation(summary = "accessToken 재발급")
 	@GetMapping("/refresh")
 	public ResponseEntity<?> refreshToken(@RequestHeader("Authorization") String bearerToken) {
 		try {
-			JwtToken jwtToken = userService.createNewToken(bearerToken);
+			JwtToken jwtToken = userService.makeNewToken(bearerToken);
 			if (jwtToken != null) {
 				return ResponseEntity.ok().body(jwtToken);
 			} else {
@@ -77,12 +75,12 @@ public class UserController {
 					.body(Map.of("message", "Invalid or expired refresh token"));
 			}
 		} catch (UsernameNotFoundException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "User not found"));
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "User not found!"));
 		} catch (InvalidCsrfTokenException e) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid refresh token"));
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "Invalid refresh token!"));
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-				.body(Map.of("error", "An unexpected error occurred"));
+				.body(Map.of("message", "An unexpected error occurred"));
 		}
 	}
 
@@ -90,8 +88,8 @@ public class UserController {
 	@GetMapping("/check/check-id/{loginId}")
 	public ResponseEntity<?> checkLoginId(@PathVariable("loginId") String loginId) {
 		boolean isExist = userService.checkLoginId(loginId);
-		String message = isExist ? "이미 사용 중인 아이디입니다." : "사용 가능한 아이디입니다.";
-		return ResponseEntity.ok(Map.of("available", !isExist, "message", message));
+		String message = isExist ? "ID is already in use." : "ID can be used.";
+		return ResponseEntity.status(HttpStatus.OK).body(Map.of("available", !isExist, "message", message));
 	}
 
 	@Operation(summary = "닉네임 중복확인")
@@ -99,34 +97,34 @@ public class UserController {
 	public ResponseEntity<?> checkNickname(@PathVariable("nickname") String nickname) {
 		boolean isExist = userService.checkNickname(nickname);
 		String message = isExist ? "Not Available Nickname" : "Available Nickname";
-		return ResponseEntity.ok(Map.of("available", !isExist, "message", message));
+		return ResponseEntity.status(HttpStatus.OK).body(Map.of("available", !isExist, "message", message));
 	}
 
 	@Operation(summary = "특정 유저 정보 조회")
 	@GetMapping
 	public ResponseEntity<?> getUser() {
-		UserResponse userFindResponse = userService.findUser();
-		return ResponseEntity.ok().body(userFindResponse);
+		UserResponse userFindResponse = userService.getUser();
+		return ResponseEntity.status(HttpStatus.OK).body(userFindResponse);
 	}
 
 	@Operation(summary = "유저 정보 수정")
 	@PatchMapping
 	public ResponseEntity<?> updateUser(@Valid @RequestBody UserUpdateRequest userUpdateRequest) {
 		UserResponse userResponse = userService.updateUser(userUpdateRequest);
-		return ResponseEntity.ok().body(Map.of("message", "Update successful"));
+		return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Successfully updated user info!"));
 	}
 
 	@Operation(summary = "회원 탈퇴")
 	@DeleteMapping
 	public ResponseEntity<?> deleteUser() {
 		userService.deleteUser();
-		return ResponseEntity.ok().body(Map.of("message", "Delete successful"));
+		return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Successfully deleted user!"));
 	}
 
 	@Operation(summary = "랭킹 조회")
 	@GetMapping("/ranking")
 	public ResponseEntity<?> getRanking() {
-		return ResponseEntity.ok().body(userService.getRanking());
+		return ResponseEntity.status(HttpStatus.OK).body(userService.getRanking());
 	}
 
 }

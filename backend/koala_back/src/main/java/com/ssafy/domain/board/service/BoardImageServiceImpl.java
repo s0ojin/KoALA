@@ -61,7 +61,7 @@ public class BoardImageServiceImpl implements BoardImageService {
 			String boardImgUrl = amazonS3.getUrl(bucketName, filename).toString();
 			board_image.setBoardImgUrl(boardImgUrl);
 		} catch (IOException e) {
-			throw new RuntimeException("Failed to upload file to S3", e);
+			throw new RuntimeException("S3에 파일 업로드 실패!", e);
 		}
 
 		boardImageRepository.save(board_image.toEntity(board));

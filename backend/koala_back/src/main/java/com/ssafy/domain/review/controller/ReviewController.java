@@ -1,5 +1,7 @@
 package com.ssafy.domain.review.controller;
 
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,14 +38,14 @@ public class ReviewController {
 	@Operation(summary = "복습문장 저장")
 	@PostMapping
 	public ResponseEntity<?> createReviewSentence(@Valid @RequestBody ReviewSaveRequest reviewSaveRequest) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(reviewService.createReviewSentence(reviewSaveRequest));
+		return ResponseEntity.status(HttpStatus.CREATED).body(reviewService.addReviewSentence(reviewSaveRequest));
 	}
 
 	@Operation(summary = "복습에 저장된 특정 문장 삭제")
 	@DeleteMapping("/{review_sentence_id}")
 	public ResponseEntity<?> deleteReviewSentence(@PathVariable("review_sentence_id") Long reviewSentenceId) {
 		reviewService.deleteReviewSentence(reviewSentenceId);
-		return ResponseEntity.ok().body("복습 문장을 삭제했습니다.");
+		return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Successfully deleted review sentence"));
 	}
 
 }

@@ -32,14 +32,13 @@ public class BoardCommentServiceImpl implements BoardCommentService {
 	@Override
 	public Page<BoardCommentResponse> getCommentsByBoardId(Long boardId, Pageable pageable) {
 		Page<BoardComment> commentsPage = boardCommentRepository.findByBoardId(boardId, pageable);
-		List<BoardCommentResponse> commentResponses = commentsPage.stream().map(BoardCommentResponse::toDto)
-			.toList();
+		List<BoardCommentResponse> commentResponses = commentsPage.stream().map(BoardCommentResponse::toDto).toList();
 		return new PageImpl<>(commentResponses, pageable, commentsPage.getTotalElements());
 	}
 
 	@Override
 	@Transactional
-	public BoardCommentResponse createComment(Long boardId, BoardCommentCreateRequest boardCommentCreateRequest) {
+	public BoardCommentResponse leaveComment(Long boardId, BoardCommentCreateRequest boardCommentCreateRequest) {
 		Board currentBoard = boardRepository.findById(boardId)
 			.orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않습니다."));
 		return BoardCommentResponse.toDto(boardCommentRepository.save(

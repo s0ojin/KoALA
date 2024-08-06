@@ -17,7 +17,7 @@ public interface UserService {
 
 	boolean checkNickname(String nickname);
 
-	UserResponse findUser();
+	UserResponse getUser();
 
 	UserResponse updateUser(UserUpdateRequest userUpdateRequest);
 
@@ -27,7 +27,7 @@ public interface UserService {
 
 	void increaseUserLevel();
 
-	JwtToken createNewToken(String bearerToken);
+	JwtToken makeNewToken(String bearerToken);
 
 	void logout();
 
