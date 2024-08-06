@@ -4,6 +4,7 @@ FROM node:18-alpine AS base
 FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
+ENV PATH /app/node_modules/.bin:$PATH
 
 # Install dependencies based on the preferred package manager
 COPY package*.json ./
