@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { motion, PanInfo } from 'framer-motion'
 import AISpeakingConversationCard from './AISpeakingConversationCard'
 import NextBtn from '/public/icons/arrow-right.svg'
+import { useRouter } from 'next/navigation'
 
 const dummy = [
   {
@@ -56,11 +57,46 @@ const dummy = [
   },
 ]
 
+const POSITIONS = ['farLeft', 'left', 'center', 'right', 'farRight']
+
+const imageVariants = {
+  center: { x: '0%', scale: 1, zIndex: 5, rotate: '0deg' },
+  left: {
+    x: '-70%',
+    scale: 0.85,
+    zIndex: 2,
+    rotate: '1deg',
+    filter: 'blur(2px)',
+  },
+  farLeft: {
+    x: '-130%',
+    y: '10%',
+    scale: 0.8,
+    zIndex: 1,
+    rotate: '-10deg',
+    filter: 'blur(2px)',
+  },
+  farRight: {
+    x: '130%',
+    y: '10%',
+    scale: 0.8,
+    zIndex: 1,
+    rotate: '10deg',
+    filter: 'blur(2px)',
+  },
+  right: {
+    x: '70%',
+    scale: 0.85,
+    zIndex: 2,
+    rotate: '-1deg',
+    filter: 'blur(2px)',
+  },
+}
+
 export default function AISpeakingSlider() {
   const [cardList, setCardList] = useState(dummy)
   const [activeIndex, setActiveIndex] = useState(0)
-
-  const positions = ['farLeft', 'left', 'center', 'right', 'farRight']
+  const router = useRouter()
 
   const handleClick = (direction: number) => {
     setActiveIndex(
@@ -88,40 +124,6 @@ export default function AISpeakingSlider() {
     return visibleCards
   }
 
-  const imageVariants = {
-    center: { x: '0%', scale: 1, zIndex: 5, rotate: '0deg' },
-    left: {
-      x: '-70%',
-      scale: 0.85,
-      zIndex: 2,
-      rotate: '1deg',
-      filter: 'blur(2px)',
-    },
-    farLeft: {
-      x: '-130%',
-      y: '10%',
-      scale: 0.8,
-      zIndex: 1,
-      rotate: '-10deg',
-      filter: 'blur(2px)',
-    },
-    farRight: {
-      x: '130%',
-      y: '10%',
-      scale: 0.8,
-      zIndex: 1,
-      rotate: '10deg',
-      filter: 'blur(2px)',
-    },
-    right: {
-      x: '70%',
-      scale: 0.85,
-      zIndex: 2,
-      rotate: '-1deg',
-      filter: 'blur(2px)',
-    },
-  }
-
   const visibleCardList = getVisibleCards()
 
   return (
@@ -137,23 +139,33 @@ export default function AISpeakingSlider() {
         />
       </div>
       {visibleCardList.map((card, idx) => {
-        const canDrag = positions[idx] === 'center'
+        const canDrag = POSITIONS[idx] === 'center'
         return (
           <motion.div
             key={card.id}
             className={`absolute ${canDrag ? 'cursor-pointer' : 'cursor-auto'}`}
             initial="center"
-            animate={positions[idx]}
+            animate={POSITIONS[idx]}
             variants={imageVariants}
             transition={{ duration: 0.5 }}
             drag={canDrag ? 'x' : false}
             onDragEnd={handleDragEnd}
             dragConstraints={{ left: 0, right: 0 }}
           >
-            <AISpeakingConversationCard
-              conversationTitle={card.title}
-              conversationDescription={card.description}
-            />
+            {
+              <div
+                onClick={() => {
+                  if (canDrag) {
+                    router.push(`ai-speaking/${card.id}`)
+                  }
+                }}
+              >
+                <AISpeakingConversationCard
+                  conversationTitle={card.title}
+                  conversationDescription={card.description}
+                />
+              </div>
+            }
           </motion.div>
         )
       })}
