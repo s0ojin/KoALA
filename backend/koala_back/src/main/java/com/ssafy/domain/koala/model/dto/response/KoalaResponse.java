@@ -2,15 +2,11 @@ package com.ssafy.domain.koala.model.dto.response;
 
 import com.ssafy.domain.koala.model.entity.Koala;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class KoalaResponse {
 
 	private Long koalaId;

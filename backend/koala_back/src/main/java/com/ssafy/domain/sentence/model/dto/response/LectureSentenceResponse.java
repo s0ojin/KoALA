@@ -9,8 +9,10 @@ import lombok.Getter;
 @Getter
 @Builder
 public class LectureSentenceResponse {
+
 	@JsonProperty("sentence_id")
 	Long sentenceId;
+
 	@JsonProperty("sentence_text")
 	String sentenceText;
 

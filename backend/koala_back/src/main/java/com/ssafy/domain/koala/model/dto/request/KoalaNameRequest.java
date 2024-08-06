@@ -4,13 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ssafy.domain.koala.model.entity.Koala;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
 public class KoalaNameRequest {
 
 	@NotBlank(message = "코알라 이름은 필수 입력 값입니다.")

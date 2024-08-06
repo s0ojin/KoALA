@@ -3,7 +3,6 @@ package com.ssafy.domain.user.service;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.domain.user.model.entity.User;
@@ -16,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 public class CustomUserDetailsService implements UserDetailsService {
 
 	private final UserRepository userRepository;
-	private final PasswordEncoder passwordEncoder;
 
 	private UserDetails createUserDetails(User user) {
 		return org.springframework.security.core.userdetails.User.builder()

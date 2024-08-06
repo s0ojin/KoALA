@@ -10,8 +10,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Getter
-@ToString
-@NoArgsConstructor(access = PROTECTED)
 public class SentenceTestRequest {
 
 	@NotNull(message = "문장 번호는 필수 입력 값입니다.")

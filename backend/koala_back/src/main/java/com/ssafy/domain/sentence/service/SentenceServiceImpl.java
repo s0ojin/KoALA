@@ -23,23 +23,21 @@ import com.ssafy.domain.user.repository.UserRepository;
 import com.ssafy.global.common.UserInfoProvider;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class SentenceServiceImpl implements SentenceService {
 
-	private final SentenceRepository sentenceRepository;
+	private final UserInfoProvider userInfoProvider;
 	private final UserRepository userRepository;
 	private final ReviewRepository reviewRepository;
-	private final UserInfoProvider userInfoProvider;
+	private final SentenceRepository sentenceRepository;
 	private final LectureSentenceRepository lectureSentenceRepository;
 
 	@Override
 	@Transactional
-	public List<SentenceDictationResponse> randomSentence(String topic) {
+	public List<SentenceDictationResponse> getRandomSentence(String topic) {
 		List<Sentence> sentences;
 		if (topic.isEmpty()) {
 			sentences = sentenceRepository.findRandomSentences(userInfoProvider.getCurrentUserId());

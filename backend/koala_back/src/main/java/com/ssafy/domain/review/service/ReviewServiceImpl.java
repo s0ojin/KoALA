@@ -21,9 +21,9 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 public class ReviewServiceImpl implements ReviewService {
 
+	final UserInfoProvider userInfoProvider;
 	final ReviewRepository reviewRepository;
 	final SentenceRepository sentenceRepository;
-	final UserInfoProvider userInfoProvider;
 
 	@Override
 	public List<ReviewSentenceResponse> getReviewSentencesByUserAndKeyword(String keyword, String topic) {
@@ -58,7 +58,7 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Override
 	@Transactional
-	public ReviewSentenceResponse createReviewSentence(ReviewSaveRequest reviewSaveRequest) {
+	public ReviewSentenceResponse addReviewSentence(ReviewSaveRequest reviewSaveRequest) {
 		Sentence sentence = sentenceRepository.findById(reviewSaveRequest.getSentenceId())
 			.orElseThrow(() -> new IllegalArgumentException("해당 문장이 존재하지 않습니다."));
 
