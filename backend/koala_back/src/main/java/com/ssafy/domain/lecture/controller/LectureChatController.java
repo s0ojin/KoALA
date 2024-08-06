@@ -1,5 +1,8 @@
 package com.ssafy.domain.lecture.controller;
 
+import java.util.Map;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,9 +28,9 @@ public class LectureChatController {
 	public ResponseEntity<?> createRoom(@RequestParam(name = "lecture") Long lectureId) {
 		LectureChatRoom chatRoom = lectureChatService.makeLectureChatRoom(lectureId);
 		if (chatRoom == null) {
-			return ResponseEntity.ok().body(chatRoom);
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		} else {
-			return ResponseEntity.badRequest().body("채팅방 생성 오류 발생");
+			return ResponseEntity.badRequest().body(Map.of("message", "Chat room creation failed"));
 		}
 	}
 
@@ -35,7 +38,7 @@ public class LectureChatController {
 	@DeleteMapping
 	public ResponseEntity<?> deleteRoom(@RequestParam(name = "lecture") Long lectureId) {
 		lectureChatService.deleteLectureChatRoom(lectureId);
-		return ResponseEntity.ok().body("채팅방 삭제 완료");
+		return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Successfully deleted chat room"));
 	}
 
 }

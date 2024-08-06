@@ -21,19 +21,21 @@ import io.openvidu.java.client.OpenViduHttpException;
 import io.openvidu.java.client.OpenViduJavaClientException;
 import io.openvidu.java.client.Session;
 import io.openvidu.java.client.SessionProperties;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@CrossOrigin(origins = "*")
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 @RequestMapping("/lectures")
 public class LectureSessionController {
 
 	private final OpenVidu openvidu;
 	private final LectureService lectureService;
 
+	@Operation(summary = "강의 session 생성")
 	@PostMapping("/{lecture_id}/session")
 	public ResponseEntity<?> initializeSession(@PathVariable("lecture_id") Long lectureId,
 		@RequestBody(required = false) Map<String, Object> params) {
@@ -53,6 +55,7 @@ public class LectureSessionController {
 		}
 	}
 
+	@Operation(summary = "강의 {lecture_id}에 연결")
 	@PostMapping("/{lecture_id}/connections")
 	public ResponseEntity<?> createConnection(@PathVariable("lecture_id") Long lectureId,
 		@RequestBody(required = false) Map<String, Object> params) {

@@ -39,7 +39,7 @@ public class SentenceServiceImpl implements SentenceService {
 
 	@Override
 	@Transactional
-	public List<SentenceDictationResponse> randomSentence(String topic) {
+	public List<SentenceDictationResponse> getRandomSentence(String topic) {
 		List<Sentence> sentences;
 		if (topic.isEmpty()) {
 			sentences = sentenceRepository.findRandomSentences(userInfoProvider.getCurrentUserId());

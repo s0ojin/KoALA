@@ -54,3 +54,10 @@ openai:
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
+
+gemini:
+  baseurl: ${GEMINI_BASE_URL}
+
+googleai:
+  api:
+    key: ${GEMINI_API_KEY}

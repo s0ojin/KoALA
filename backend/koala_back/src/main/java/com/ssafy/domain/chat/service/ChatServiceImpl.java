@@ -52,9 +52,15 @@ public class ChatServiceImpl implements ChatService {
 
 		String aiResponse = gptResponse.getChoices().get(0).getMessage().getContent();
 
-		cacheService.updateChatHistory(loginId, new Message("user", chatRequest.getMessage()));
-		cacheService.updateChatHistory(loginId, new Message("assistant", aiResponse));
+		cacheService.changeChatHistory(loginId, new Message("user", chatRequest.getMessage()));
+		cacheService.changeChatHistory(loginId, new Message("assistant", aiResponse));
 
 		return new ChatResponse(aiResponse);
+	}
+
+	@Override
+	public void finishAIResponse() {
+		// 이외에 AI 응답 끝내는 로직 추가
+		cacheService.clearChatHistory(userInfoProvider.getCurrentLoginId());
 	}
 }
