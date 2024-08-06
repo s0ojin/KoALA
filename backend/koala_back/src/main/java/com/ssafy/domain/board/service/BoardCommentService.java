@@ -8,9 +8,8 @@ import com.ssafy.domain.board.model.dto.response.BoardCommentResponse;
 
 public interface BoardCommentService {
 
-	Page<BoardCommentResponse> getCommentsByBoardId(Long boardId, Pageable pageable);
-
 	BoardCommentResponse leaveComment(Long boardId, BoardCommentCreateRequest boardCommentCreateRequest);
 
 	void deleteComment(Long commentId);
+
 }

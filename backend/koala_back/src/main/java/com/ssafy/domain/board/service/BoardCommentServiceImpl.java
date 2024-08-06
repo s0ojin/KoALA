@@ -29,13 +29,6 @@ public class BoardCommentServiceImpl implements BoardCommentService {
 	private final BoardService boardService;
 
 	@Override
-	public Page<BoardCommentResponse> getCommentsByBoardId(Long boardId, Pageable pageable) {
-		Page<BoardComment> commentsPage = boardCommentRepository.findByBoardId(boardId, pageable);
-		List<BoardCommentResponse> commentResponses = commentsPage.stream().map(BoardCommentResponse::toDto).toList();
-		return new PageImpl<>(commentResponses, pageable, commentsPage.getTotalElements());
-	}
-
-	@Override
 	@Transactional
 	public BoardCommentResponse leaveComment(Long boardId, BoardCommentCreateRequest boardCommentCreateRequest) {
 		Board currentBoard = boardRepository.findById(boardId)
