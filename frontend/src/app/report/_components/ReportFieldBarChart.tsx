@@ -13,8 +13,8 @@ import {
   Legend,
 } from 'chart.js'
 import { Bar } from 'react-chartjs-2'
-import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { Context } from 'chartjs-plugin-datalabels';
+import ChartDataLabels from 'chartjs-plugin-datalabels'
+import { Context } from 'chartjs-plugin-datalabels'
 
 ChartJS.register(
   CategoryScale,
@@ -29,70 +29,69 @@ ChartJS.register(
 const options: ChartOptions<'bar'> = {
   responsive: true,
   plugins: {
-    legend:{
-      display:false
+    legend: {
+      display: false,
+    },
+    tooltip: {
+      enabled: false,
     },
     datalabels: {
-      color: 'white',
-      display: (context:Context) => {
-        return context.dataset.data[context.dataIndex] > 1;
-      },
-      listeners : {
-        enter: function(context, event) {
-          // console.log(context.dataset.data[context.dataIndex])
-          console.log(context)
-          context.active = true
+      listeners:{
+        enter: function(context) {
+          context.hovered = true
+
           return true
         },
-        leave: function(context, event) {
-          // console.log(context.dataset.data[context.dataIndex])
-          console.log(context)
-          context.active = false
-          return false
+        leave: function(context) {
+          context.hovered = false;
+          return true;
         }
+      },
+      color: function (context) {
+        return context.hovered ? 'white' : context.dataset.backgroundColor
+      },
+      display: function (context) {
+        return context.dataset.data[context.dataIndex] > 1
       }
-    }
+    },
   },
   scales: {
-    x:{
-      stacked: true
+    x: {
+      stacked: true,
     },
     y: {
       beginAtZero: true,
-      stacked: true
+      stacked: true,
     },
   },
 }
 
 const data: ChartData<'bar', number[]> = {
-  labels: ['월', '화', '수', '목', '금', '토', '일'] ,
+  labels: ['월', '화', '수', '목', '금', '토', '일'],
   datasets: [
     {
-      label: '받아쓰기', //그래프 분류되는 항목
-      data: [4, 3, 3, 1, 7, 6, 3], //실제 그려지는 데이터(Y축 숫자)
-      backgroundColor: '#4F46F2', //마우스 호버시 나타나는 분류네모 표시 bg
+      label: '받아쓰기',
+      data: [4, 3, 3, 1, 7, 6, 3],
+      backgroundColor: '#4F46F2',
     },
     {
-      label: 'AI회화', //그래프 분류되는 항목
-      data: [4, 3, 3, 1, 7, 6, 3], //실제 그려지는 데이터(Y축 숫자)
-      backgroundColor: '#7A72FF', //마우스 호버시 나타나는 분류네모 표시 bg
+      label: 'AI회화',
+      data: [4, 3, 3, 1, 7, 6, 3],
+      backgroundColor: '#7A72FF',
     },
     {
-      label: '강의', //그래프 분류되는 항목
-      data: [4, 3, 3, 1, 7, 6, 3], //실제 그려지는 데이터(Y축 숫자)
-      backgroundColor: '#C7C4FF', //마우스 호버시 나타나는 분류네모 표시 bg
+      label: '강의',
+      data: [4, 3, 3, 1, 7, 6, 3],
+      backgroundColor: '#C7C4FF',
     },
   ],
 }
 
 export default function ReportFieldBarChart() {
-  
   return (
-    <div className="px-11 py-6">
+    <div className="px-11 py-6 bg-white rounded-2xl w-full h-full">
       <div className="flex justify-between mb-8">
-        <p className='text-primary-400 ml-8'>
-          7/15 ~ 7/21
-        </p>
+        <p className="text-primary-400 ml-8">7/15 ~ 7/21</p>
         <div>
           <div className="inline-flex items-center mr-8">
             <div className="w-[3rem] h-[1rem] mr-1.5 bg-primary-400 rounded-2xl my-auto" />
@@ -109,7 +108,7 @@ export default function ReportFieldBarChart() {
         </div>
       </div>
       <div>
-        <Bar options={options} data={data} plugins={[ChartDataLabels]}/>
+        <Bar options={options} data={data} plugins={[ChartDataLabels]} />
       </div>
     </div>
   )

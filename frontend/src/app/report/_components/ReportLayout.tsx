@@ -6,7 +6,7 @@ export default function ReportLayout ({
   children: React.ReactNode
 }) {
   return (
-    <div className="relative w-full h-screen overflow-hidden">
+    <div className="relative w-full h-full overflow-x-hidden">
       {children}
       <Image
         src="/images/cloud.svg"
