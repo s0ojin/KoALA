@@ -5,7 +5,7 @@ interface TitleProps {
 
 export default function Title({ CourseTitle, CourseDescription }: TitleProps) {
   return (
-    <header className="mt-28">
+    <header>
       <h1 className="text-center text-3xl text-gray-800 font-bold">
         {CourseTitle}
       </h1>
