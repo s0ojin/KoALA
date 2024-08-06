@@ -14,13 +14,19 @@ export default function Home() {
         href="/modals/basic"
         className="w-96 bg-primary-400 text-white p-4 rounded-full"
       >
-        basic모달테스트
+        basic
       </Link>
       <Link
         href="/modals/confirm-cancel"
         className="w-96 bg-primary-400 text-white p-4 rounded-full"
       >
-        special모달테스트
+        confirm-cancel
+      </Link>
+      <Link
+        href="/modals/dictation-category"
+        className="w-96 bg-primary-400 text-white p-4 rounded-full"
+      >
+        dictation
       </Link>
     </h1>
   )
