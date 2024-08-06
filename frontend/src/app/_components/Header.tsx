@@ -5,11 +5,13 @@ import Logo from '/public/images/logo.svg'
 import Image from 'next/image'
 import Link from 'next/link'
 import UserDropdownMenu from '@/app/_components/UserDropdownMenu'
+import { usePathname } from 'next/navigation'
 
 export default function Header() {
   const [isLogin, setIsLogin] = useState(true)
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
   const userMenuRef = useRef<HTMLDivElement>(null)
+  const pathname = usePathname()
 
   const handleClickUserMenuOutside = (event: MouseEvent) => {
     if (
@@ -30,6 +32,10 @@ export default function Header() {
       document.removeEventListener('click', handleClickUserMenuOutside)
     }
   }, [isUserMenuOpen])
+
+  if (pathname.startsWith('/online-learning')) {
+    return null
+  }
 
   return (
     <header className="bg-[#eaf5ff] z-50 fixed h-20 px-9 flex w-full items-center justify-between">
