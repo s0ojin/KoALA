@@ -1,7 +1,6 @@
 'use client'
 
 import SentenceAddCard from '@/app/_components/SentenceAddCard'
-import CloseBtn from '/public/icons/cancel-btn.svg'
 import UploadIcon from '/public/icons/cloud-upload.svg'
 import { useState } from 'react'
 
@@ -78,8 +77,7 @@ export default function AddSentenceModal() {
 
   return (
     <div className="absolute right-24 top-20">
-      <div className="relative bg-white max-w-[60rem] min-w-80 max-h-[44rem] rounded-3xl p-12 flex flex-col">
-        <CloseBtn className="absolute w-4 right-6 top-6" />
+      <div className="bg-white max-w-[60rem] min-w-80 max-h-[44rem] rounded-3xl p-12 flex flex-col">
         {status === 'initial' ? (
           <div className="bg-primary-400 rounded-full py-4 px-6 text-center text-white mx-auto flex gap-3 items-center shadow-md">
             <UploadIcon className="w-8" />
