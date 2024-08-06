@@ -1,19 +1,13 @@
 package com.ssafy.domain.review.model.dto.response;
 
-import static lombok.AccessLevel.*;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ssafy.domain.review.model.entity.ReviewSentence;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
-@NoArgsConstructor(access = PROTECTED)
-@AllArgsConstructor(access = PROTECTED)
 public class ReviewSentenceResponse {
 
 	@JsonProperty("review_sentence_id")

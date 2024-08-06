@@ -20,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @RequiredArgsConstructor
 public class LectureChatSocketHandler extends TextWebSocketHandler {
-	
+
 	// 멀티쓰레드를 지원하는 HashMap - 처음으로 접속되었을 때 생성됨
 	private final ObjectMapper objectMapper;
 	private final LectureChatRoomManager lectureChatRoomManager;
