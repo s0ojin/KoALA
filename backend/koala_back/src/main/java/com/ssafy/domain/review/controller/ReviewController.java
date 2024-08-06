@@ -38,7 +38,7 @@ public class ReviewController {
 	@Operation(summary = "복습문장 저장")
 	@PostMapping
 	public ResponseEntity<?> createReviewSentence(@Valid @RequestBody ReviewSaveRequest reviewSaveRequest) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(reviewService.createReviewSentence(reviewSaveRequest));
+		return ResponseEntity.status(HttpStatus.CREATED).body(reviewService.addReviewSentence(reviewSaveRequest));
 	}
 
 	@Operation(summary = "복습에 저장된 특정 문장 삭제")

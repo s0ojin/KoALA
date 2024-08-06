@@ -9,7 +9,7 @@ public interface ReviewService {
 
 	List<ReviewSentenceResponse> getReviewSentencesByUserAndKeyword(String keyword, String topic);
 
-	ReviewSentenceResponse createReviewSentence(ReviewSaveRequest reviewSaveRequest);
+	ReviewSentenceResponse addReviewSentence(ReviewSaveRequest reviewSaveRequest);
 
 	void deleteReviewSentence(Long reviewSentenceId);
 

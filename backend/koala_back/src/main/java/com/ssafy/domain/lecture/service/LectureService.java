@@ -16,7 +16,7 @@ public interface LectureService {
 
 	LectureNoteResponse writeLectureNote(LectureNoteRequest lectureNoteRequest);
 
-	List<LectureNoteResponse> readLectureNote(Long lectureId);
+	List<LectureNoteResponse> getLectureNote(Long lectureId);
 
 	boolean deleteLectureNote(Long lectureId);
 

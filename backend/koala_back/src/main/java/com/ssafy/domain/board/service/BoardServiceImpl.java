@@ -37,7 +37,7 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	@Transactional
-	public BoardDetailResponse createBoard(BoardCreateRequest boardCreateRequest) throws IOException {
+	public BoardDetailResponse writeBoard(BoardCreateRequest boardCreateRequest) throws IOException {
 		User user = userInfoProvider.getCurrentUser();
 		Board board = boardRepository.save(boardCreateRequest.toEntity(user));
 

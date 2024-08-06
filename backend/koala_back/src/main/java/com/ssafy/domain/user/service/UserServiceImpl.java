@@ -25,7 +25,6 @@ import com.ssafy.domain.user.model.dto.response.RankingWithMyRankResponse;
 import com.ssafy.domain.user.model.dto.response.UserFindResponse;
 import com.ssafy.domain.user.model.dto.response.UserResponse;
 import com.ssafy.domain.user.model.entity.Auth;
-import com.ssafy.domain.user.model.entity.Ranking;
 import com.ssafy.domain.user.model.entity.User;
 import com.ssafy.domain.user.repository.AuthRepository;
 import com.ssafy.domain.user.repository.RankingRepository;
@@ -89,25 +88,24 @@ public class UserServiceImpl implements UserService {
 		return userRepository.existsByNickname(nickname);
 	}
 
-	@Transactional
 	@Override
-	public UserResponse findUser() {
+	@Transactional
+	public UserResponse getUser() {
 		String currentLoginId = userInfoProvider.getCurrentLoginId();
 		if (currentLoginId == null) {
 			throw new IllegalStateException("Current login_ID is null. User might not be authenticated.");
 		}
 
-		Optional<User> optionalUser = userRepository.findByLoginId(currentLoginId);
-		if (!optionalUser.isPresent()) {
+		Optional<User> user = userRepository.findByLoginId(currentLoginId);
+		if (!user.isPresent()) {
 			throw new NoSuchElementException("User not found with login_ID: " + currentLoginId);
 		}
 
-		User user = optionalUser.get();
-		return UserResponse.toDto(user);
+		return UserResponse.toDto(user.get());
 	}
 
-	@Transactional
 	@Override
+	@Transactional
 	public UserResponse updateUser(UserUpdateRequest userUpdateRequest) {
 
 		User user = userInfoProvider.getCurrentUser();
@@ -118,8 +116,8 @@ public class UserServiceImpl implements UserService {
 		return UserResponse.toDto(userRepository.save(user));
 	}
 
-	@Transactional
 	@Override
+	@Transactional
 	public void deleteUser() {
 		User user = userInfoProvider.getCurrentUser();
 		userRepository.delete(user);
@@ -146,7 +144,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public JwtToken createNewToken(String bearerToken) {
+	public JwtToken makeNewToken(String bearerToken) {
 		if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
 			String refreshToken = bearerToken.substring(7);
 			if (!jwtTokenProvider.validateToken(refreshToken)) {

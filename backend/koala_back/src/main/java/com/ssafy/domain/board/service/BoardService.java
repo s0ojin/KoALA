@@ -11,7 +11,7 @@ import com.ssafy.domain.board.model.dto.response.BoardResponse;
 
 public interface BoardService {
 
-	BoardDetailResponse createBoard(BoardCreateRequest boardCreateRequest) throws IOException;
+	BoardDetailResponse writeBoard(BoardCreateRequest boardCreateRequest) throws IOException;
 
 	Page<BoardResponse> getBoards(Pageable pageable);
 

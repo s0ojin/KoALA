@@ -28,7 +28,7 @@ public class CacheServiceImpl implements CacheService {
 	// 기존 채팅 기록에 추가하고, 갱신된 채팅 기록을 캐시에 저장
 	@Override
 	@CachePut(value = "chatHistory", key = "#loginId")
-	public List<Message> updateChatHistory(String loginId, Message message) {
+	public List<Message> changeChatHistory(String loginId, Message message) {
 		List<Message> chatHistory = getChatHistory(loginId);
 		chatHistory.add(message);
 

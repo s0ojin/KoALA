@@ -52,8 +52,8 @@ public class ChatServiceImpl implements ChatService {
 
 		String aiResponse = gptResponse.getChoices().get(0).getMessage().getContent();
 
-		cacheService.updateChatHistory(loginId, new Message("user", chatRequest.getMessage()));
-		cacheService.updateChatHistory(loginId, new Message("assistant", aiResponse));
+		cacheService.changeChatHistory(loginId, new Message("user", chatRequest.getMessage()));
+		cacheService.changeChatHistory(loginId, new Message("assistant", aiResponse));
 
 		return new ChatResponse(aiResponse);
 	}

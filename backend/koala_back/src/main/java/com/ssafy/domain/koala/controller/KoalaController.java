@@ -26,14 +26,14 @@ public class KoalaController {
 	@Operation(summary = "코알라 정보 조회")
 	@GetMapping
 	public ResponseEntity<?> getKoala() {
-		return ResponseEntity.ok().body(koalaService.findKoala());
+		return ResponseEntity.ok().body(koalaService.getKoala());
 	}
 
 	@Operation(summary = "코알라 이름 변경")
 	@PatchMapping("/{koala_id}")
 	public ResponseEntity<?> updateKoalaName(@PathVariable("koala_id") Long koalaId,
 		@Valid @RequestBody KoalaNameRequest koalaNameRequest) {
-		return ResponseEntity.status(HttpStatus.OK).body(koalaService.updateKoalaName(koalaNameRequest, koalaId));
+		return ResponseEntity.status(HttpStatus.OK).body(koalaService.changeKoalaName(koalaNameRequest, koalaId));
 	}
 
 	@Operation(summary = "코알라 먹이 주기")

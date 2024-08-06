@@ -67,7 +67,7 @@ public class UserController {
 	@GetMapping("/refresh")
 	public ResponseEntity<?> refreshToken(@RequestHeader("Authorization") String bearerToken) {
 		try {
-			JwtToken jwtToken = userService.createNewToken(bearerToken);
+			JwtToken jwtToken = userService.makeNewToken(bearerToken);
 			if (jwtToken != null) {
 				return ResponseEntity.ok().body(jwtToken);
 			} else {
@@ -103,7 +103,7 @@ public class UserController {
 	@Operation(summary = "특정 유저 정보 조회")
 	@GetMapping
 	public ResponseEntity<?> getUser() {
-		UserResponse userFindResponse = userService.findUser();
+		UserResponse userFindResponse = userService.getUser();
 		return ResponseEntity.status(HttpStatus.OK).body(userFindResponse);
 	}
 

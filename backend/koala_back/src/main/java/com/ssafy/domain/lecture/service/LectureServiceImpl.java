@@ -73,7 +73,7 @@ public class LectureServiceImpl implements LectureService {
 	}
 
 	@Override
-	public List<LectureNoteResponse> readLectureNote(Long lectureId) {
+	public List<LectureNoteResponse> getLectureNote(Long lectureId) {
 		return lectureNoteRepository.findById(lectureId)
 			.stream()
 			.map(LectureNoteResponse::toDto)

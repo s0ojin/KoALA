@@ -62,7 +62,7 @@ public class LectureController {
 	@Operation(summary = "강의 {lectureId}에 등록된 모든 강의노트 조회")
 	@GetMapping("/{lecture_id}/note")
 	public ResponseEntity<?> getLectureNote(@PathVariable("lecture_id") Long lectureId) {
-		List<LectureNoteResponse> lectureNotes = lectureService.readLectureNote(lectureId);
+		List<LectureNoteResponse> lectureNotes = lectureService.getLectureNote(lectureId);
 		if (lectureNotes.isEmpty()) {
 			return ResponseEntity.noContent().build();
 		} else {

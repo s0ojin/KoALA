@@ -58,7 +58,7 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Override
 	@Transactional
-	public ReviewSentenceResponse createReviewSentence(ReviewSaveRequest reviewSaveRequest) {
+	public ReviewSentenceResponse addReviewSentence(ReviewSaveRequest reviewSaveRequest) {
 		Sentence sentence = sentenceRepository.findById(reviewSaveRequest.getSentenceId())
 			.orElseThrow(() -> new IllegalArgumentException("해당 문장이 존재하지 않습니다."));
 

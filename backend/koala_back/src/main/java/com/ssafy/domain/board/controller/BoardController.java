@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import org.json.JSONObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -61,7 +60,7 @@ public class BoardController {
 		// 추가: files 리스트를 boardCreateRequest에 설정
 		boardCreateRequest.setBoardImages(images);
 
-		BoardDetailResponse boardCreateResponse = boardService.createBoard(boardCreateRequest);
+		BoardDetailResponse boardCreateResponse = boardService.writeBoard(boardCreateRequest);
 		return ResponseEntity.status(HttpStatus.CREATED).body(boardCreateResponse);
 	}
 
@@ -112,7 +111,7 @@ public class BoardController {
 			return ResponseEntity.badRequest()
 				.body(Map.of("message", "Comments can only contain Korean letters, numbers, and special characters."));
 		}
-		BoardCommentResponse boardCommentResponse = boardCommentService.createComment(boardId,
+		BoardCommentResponse boardCommentResponse = boardCommentService.leaveComment(boardId,
 			boardCommentCreateRequest);
 		boardService.increaseCommentNum(boardId);
 		return ResponseEntity.status(HttpStatus.CREATED).body(boardCommentResponse);
