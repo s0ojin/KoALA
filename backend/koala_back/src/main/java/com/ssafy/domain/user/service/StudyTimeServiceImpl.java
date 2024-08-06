@@ -14,8 +14,8 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 public class StudyTimeServiceImpl implements StudyTimeService {
 
-	private final StudyTimeRepository studyTimeRepository;
 	private final UserInfoProvider userInfoProvider;
+	private final StudyTimeRepository studyTimeRepository;
 
 	@Override
 	@Transactional

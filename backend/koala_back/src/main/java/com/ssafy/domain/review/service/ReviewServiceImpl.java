@@ -21,9 +21,9 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 public class ReviewServiceImpl implements ReviewService {
 
+	final UserInfoProvider userInfoProvider;
 	final ReviewRepository reviewRepository;
 	final SentenceRepository sentenceRepository;
-	final UserInfoProvider userInfoProvider;
 
 	@Override
 	public List<ReviewSentenceResponse> getReviewSentencesByUserAndKeyword(String keyword, String topic) {

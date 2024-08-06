@@ -1,7 +1,5 @@
 package com.ssafy.domain.review.model.dto.request;
 
-import static lombok.AccessLevel.*;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ssafy.domain.review.model.entity.ReviewSentence;
 import com.ssafy.domain.sentence.model.entity.Sentence;
@@ -9,10 +7,8 @@ import com.ssafy.domain.user.model.entity.User;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor(access = PROTECTED)
 public class ReviewSaveRequest {
 
 	@NotNull(message = "리뷰 내용은 필수 입력 값입니다.")

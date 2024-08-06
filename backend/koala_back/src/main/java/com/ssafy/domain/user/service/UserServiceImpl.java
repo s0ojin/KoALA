@@ -35,21 +35,19 @@ import com.ssafy.global.common.UserInfoProvider;
 
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
 
+	private final UserInfoProvider userInfoProvider;
+	private final JwtTokenProvider jwtTokenProvider;
+	private final AuthenticationManagerBuilder authenticationManagerBuilder;
+	private final PasswordEncoder passwordEncoder;
 	private final UserRepository userRepository;
 	private final AuthRepository authRepository;
 	private final RankingRepository rankingRepository;
-	private final AuthenticationManagerBuilder authenticationManagerBuilder;
-	private final JwtTokenProvider jwtTokenProvider;
-	private final PasswordEncoder passwordEncoder;
-	private final UserInfoProvider userInfoProvider;
 	private final CacheService cacheService;
 
 	@Transactional
@@ -107,7 +105,6 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public UserResponse updateUser(UserUpdateRequest userUpdateRequest) {
-
 		User user = userInfoProvider.getCurrentUser();
 
 		String encodedPassword = passwordEncoder.encode(userUpdateRequest.getPassword());
