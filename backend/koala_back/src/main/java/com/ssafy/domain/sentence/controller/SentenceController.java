@@ -34,7 +34,7 @@ public class SentenceController {
 	public ResponseEntity<?> getDictationSentence(@RequestParam("topic") String topic) {
 		List<SentenceDictationResponse> sentenceList = sentenceService.getRandomSentence(topic);
 		if (sentenceList == null || sentenceList.isEmpty()) {
-			return ResponseEntity.noContent().build();
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		} else {
 			return ResponseEntity.status(HttpStatus.OK).body(sentenceList);
 		}
