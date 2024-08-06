@@ -17,20 +17,21 @@ import com.ssafy.domain.lecture.model.entity.RegisteredLectureId;
 import com.ssafy.domain.lecture.repository.LectureNoteRepository;
 import com.ssafy.domain.lecture.repository.LectureRepository;
 import com.ssafy.domain.lecture.repository.RegisteredLectureRepository;
+import com.ssafy.domain.user.service.StudyTimeService;
 import com.ssafy.global.common.UserInfoProvider;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class LectureServiceImpl implements LectureService {
+
+	private final StudyTimeService studyTimeService;
 	private final LectureRepository lectureRepository;
-	private final UserInfoProvider userInfoProvider;
 	private final LectureNoteRepository lectureNoteRepository;
 	private final RegisteredLectureRepository registeredLectureRepository;
+	private final UserInfoProvider userInfoProvider;
 
 	@Override
 	public List<LectureResponse> getAllLecture() {
@@ -50,6 +51,8 @@ public class LectureServiceImpl implements LectureService {
 			registeredLecture.setId(new RegisteredLectureId(userInfoProvider.getCurrentUserId(), lectureId));
 
 			registeredLectureRepository.save(registeredLecture);
+			studyTimeService.increaseLectureCount();
+
 			return RegisteredLectureResponse.toDto(registeredLecture);
 		}
 		return null;
