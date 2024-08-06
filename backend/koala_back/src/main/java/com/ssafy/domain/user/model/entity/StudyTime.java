@@ -58,7 +58,7 @@ public class StudyTime implements Serializable {
 		this.sentenceNum += sentenceNum;
 	}
 
-	public void increaseLectureNum(Integer lectureNum) {
-		this.lectureNum += lectureNum;
+	public void increaseLectureNum() {
+		this.lectureNum += 1;
 	}
 }

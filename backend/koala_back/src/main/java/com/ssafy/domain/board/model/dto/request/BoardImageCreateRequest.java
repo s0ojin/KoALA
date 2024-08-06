@@ -1,23 +1,15 @@
 package com.ssafy.domain.board.model.dto.request;
 
-import static lombok.AccessLevel.*;
-
 import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ssafy.domain.board.model.entity.Board;
 import com.ssafy.domain.board.model.entity.BoardImage;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
-@Builder
-@NoArgsConstructor(access = PROTECTED)
-@AllArgsConstructor(access = PROTECTED)
 public class BoardImageCreateRequest {
 
 	@JsonProperty("board_img_url")

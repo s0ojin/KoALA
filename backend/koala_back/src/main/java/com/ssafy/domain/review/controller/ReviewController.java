@@ -32,7 +32,8 @@ public class ReviewController {
 	public ResponseEntity<?> getReviewSentencesByUserAndKeyword(
 		@RequestParam(name = "keyword", required = false) String keyword,
 		@RequestParam(name = "topic", required = false) String topic) {
-		return ResponseEntity.ok().body(reviewService.getReviewSentencesByUserAndKeyword(keyword, topic));
+		return ResponseEntity.status(HttpStatus.OK)
+			.body(reviewService.getReviewSentencesByUserAndKeyword(keyword, topic));
 	}
 
 	@Operation(summary = "복습문장 저장")

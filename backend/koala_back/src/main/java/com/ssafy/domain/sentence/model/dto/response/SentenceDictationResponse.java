@@ -9,10 +9,9 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Getter
-@ToString
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class SentenceDictationResponse {
 
 	Long sentenceId;

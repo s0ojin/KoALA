@@ -11,12 +11,16 @@ import lombok.Getter;
 @Getter
 @Builder
 public class LectureNoteResponse {
+
 	@JsonProperty("note_id")
 	private Long noteId;
+
 	@JsonProperty("note_title")
 	private String noteTitle;
+
 	@JsonProperty("note_content")
 	private String noteContent;
+
 	@JsonProperty("note_created_at")
 	private LocalDateTime noteCreatedAt;
 

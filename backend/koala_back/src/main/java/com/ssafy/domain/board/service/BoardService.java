@@ -27,6 +27,8 @@ public interface BoardService {
 
 	void increaseCommentNum(Long boardId);
 
+	void decreaseCommentNum(Long boardId);
+
 	void increaseHit(Long boardId);
 
 }

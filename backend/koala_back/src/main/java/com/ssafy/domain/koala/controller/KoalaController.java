@@ -26,7 +26,7 @@ public class KoalaController {
 	@Operation(summary = "코알라 정보 조회")
 	@GetMapping
 	public ResponseEntity<?> getKoala() {
-		return ResponseEntity.ok().body(koalaService.getKoala());
+		return ResponseEntity.status(HttpStatus.OK).body(koalaService.getKoala());
 	}
 
 	@Operation(summary = "코알라 이름 변경")

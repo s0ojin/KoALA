@@ -9,6 +9,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class RegisteredLectureResponse {
+
 	@JsonProperty("lecture_id")
 	private Long lectureId;
 

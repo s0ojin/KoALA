@@ -9,10 +9,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
 public class LectureResponse {
+
 	@JsonProperty("lecture_id")
 	private Long lectureId;
 

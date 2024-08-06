@@ -14,12 +14,13 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 public class StudyTimeServiceImpl implements StudyTimeService {
 
-	private final StudyTimeRepository studyTimeRepository;
 	private final UserInfoProvider userInfoProvider;
+	private final StudyTimeRepository studyTimeRepository;
 
 	@Override
 	@Transactional
 	public void initStudyTime(Long userId) {
+		// 0: 지난주, 1: 이번 주, 2: 총 시간
 		for (int i = 0; i < 3; i++) {
 			StudyTime studyTime = StudyTime.builder()
 				.timeCalType(i)
@@ -45,6 +46,17 @@ public class StudyTimeServiceImpl implements StudyTimeService {
 
 	@Override
 	@Transactional
+	public void increaseLectureCount() {
+		Long userId = userInfoProvider.getCurrentUserId();
+		StudyTime studyTime = studyTimeRepository.findByUserIdAndTimeCalType(userId, 1);
+		studyTime.increaseLectureNum();
+		studyTimeRepository.save(studyTime);
+
+		increaseTotalStudyTime(userId, 2, 1);
+	}
+
+	@Override
+	@Transactional
 	public void increaseTotalStudyTime(Long userId, Integer studyType, Integer studyTime) {
 		StudyTime userStudyTime = studyTimeRepository.findByUserIdAndTimeCalType(userId, 2);
 		switch (studyType) {
@@ -55,7 +67,7 @@ public class StudyTimeServiceImpl implements StudyTimeService {
 				userStudyTime.increaseSentenceNum(studyTime);
 				break;
 			case 2: // 강의 수
-				userStudyTime.increaseLectureNum(studyTime);
+				userStudyTime.increaseLectureNum();
 				break;
 		}
 		studyTimeRepository.save(userStudyTime);

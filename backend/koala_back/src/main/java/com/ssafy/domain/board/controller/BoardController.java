@@ -30,9 +30,7 @@ import com.ssafy.domain.board.service.BoardService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/boards")
@@ -81,19 +79,19 @@ public class BoardController {
 	@Operation(summary = "게시글 조회수 순 정렬 목록 조회", description = "query parameter로 page, size 페이징 처리")
 	@GetMapping("/sorted-by-hit")
 	public ResponseEntity<?> getBoardsSortedByHit(Pageable pageable) {
-		return ResponseEntity.ok().body(boardService.getBoardsSortedByHit(pageable));
+		return ResponseEntity.status(HttpStatus.OK).body(boardService.getBoardsSortedByHit(pageable));
 	}
 
 	@Operation(summary = "게시글 키워드 조회", description = "query parameter로 keyword 검색 및 page, size 페이징 처리")
 	@GetMapping("/search")
 	public ResponseEntity<?> getBoardsByKeyword(@RequestParam("keyword") String keyword, Pageable pageable) {
-		return ResponseEntity.ok().body(boardService.getBoardsByKeyword(keyword, pageable));
+		return ResponseEntity.status(HttpStatus.OK).body(boardService.getBoardsByKeyword(keyword, pageable));
 	}
 
 	@Operation(summary = "내가 작성한 게시글 목록 조회", description = "query parameter로 page, size 페이징 처리")
 	@GetMapping("/my-content")
 	public ResponseEntity<?> getBoardsByUser(Pageable pageable) {
-		return ResponseEntity.ok().body(boardService.getBoardsByUser(pageable));
+		return ResponseEntity.status(HttpStatus.OK).body(boardService.getBoardsByUser(pageable));
 	}
 
 	@Operation(summary = "게시글 삭제")
@@ -113,7 +111,6 @@ public class BoardController {
 		}
 		BoardCommentResponse boardCommentResponse = boardCommentService.leaveComment(boardId,
 			boardCommentCreateRequest);
-		boardService.increaseCommentNum(boardId);
 		return ResponseEntity.status(HttpStatus.CREATED).body(boardCommentResponse);
 	}
 
