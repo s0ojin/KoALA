@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ssafy.domain.chat.dto.Message;
 
 public class GPTResponse {
+
 	private List<Choice> choices;
 
 	public List<Choice> getChoices() {

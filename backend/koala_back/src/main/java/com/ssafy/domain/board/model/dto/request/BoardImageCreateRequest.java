@@ -12,8 +12,8 @@ import lombok.Setter;
 @Getter
 public class BoardImageCreateRequest {
 
-	@JsonProperty("board_img_url")
 	@Setter
+	@JsonProperty("board_img_url")
 	private String boardImgUrl;
 
 	@JsonProperty("img_origin_name")

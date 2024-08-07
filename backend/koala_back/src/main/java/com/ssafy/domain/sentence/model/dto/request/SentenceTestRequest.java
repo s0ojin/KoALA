@@ -1,13 +1,9 @@
 package com.ssafy.domain.sentence.model.dto.request;
 
-import static lombok.AccessLevel.*;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Getter
 public class SentenceTestRequest {
