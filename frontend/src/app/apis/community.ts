@@ -2,7 +2,7 @@ import { ApiError } from '@/app/utils/customError'
 
 const baseUrl = 'http://localhost:8080/api'
 const token =
-  'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiYXV0aCI6IlJPTEVfdXNlciIsInR5cGUiOiJhY2Nlc3MiLCJleHAiOjE3MjMwNTc0NzV9.ZjVU2vnKzDJbVFhNrnqOf1As6qG3nnPu_kca0qsDMaQ'
+  'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiYXV0aCI6IlJPTEVfdXNlciIsInR5cGUiOiJhY2Nlc3MiLCJleHAiOjE3MjMwNzI2MjZ9.w-LhcXwd5efd42vMbB7ETj7B5kOsopdjJUmTBhTpv_c'
 interface SortOption {
   empty: boolean
   unsorted: boolean
@@ -114,4 +114,17 @@ export const postPostComment = async (
       },
     }
   }
+}
+
+export const postPost = async (url: string, data: FormData) => {
+  console.log(data)
+  const response = await fetch(`${baseUrl}${url}`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: data,
+  })
+
+  console.log(response)
 }
