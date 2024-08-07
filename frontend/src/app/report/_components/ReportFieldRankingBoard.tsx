@@ -8,9 +8,10 @@ interface Ranking {
 
 interface RankingProps {
   rankingData: Ranking[]
+  myRank: number
 }
 
-export default function ReportRankingBoard({ rankingData }: RankingProps) {
+export default function ReportFieldRankingBoard({ rankingData, myRank }: RankingProps) {
   return (
     <div className="flex flex-grow lg:flex-col md:flex-row relative md:w-1/2 lg:w-full h-auto bg-white rounded-2xl shadow-md">
       <div className="relative lg:w-full md:w-1/2 lg:w-full lg:h-1/2 md:h-full bg-primary-50 md:rounded-l-2xl lg:rounded-bl-none lg:rounded-t-2xl p-4">
@@ -26,13 +27,13 @@ export default function ReportRankingBoard({ rankingData }: RankingProps) {
         </div>
         <div className="absolute lg:hidden flex bottom-0 left-1/2  transform -translate-x-1/2 -translate-y-1/2 w-4/5 h-[2rem] bg-gradient-to-b from-yellow-300 to-yellow-500 rounded-full">
           <p className="m-auto text-center text-white text-base">
-            {rankingData[rankingData.length - 1].ranking}위
+            {myRank}위
           </p>
         </div>
       </div>
       <div className="absolute md:hidden lg:flex top-1/2 left-1/2  transform -translate-x-1/2 -translate-y-1/2 w-1/2 aspect-[3.5] bg-gradient-to-b from-yellow-300 to-yellow-500 rounded-full">
         <p className="m-auto text-center text-white text-xl">
-          {rankingData[rankingData.length - 1].ranking}위
+          {myRank}위
         </p>
       </div>
       <div className="flex flex-col flex-grow justify-center lg:px-3 md:h-full lg:h-1/2">
@@ -52,7 +53,7 @@ export default function ReportRankingBoard({ rankingData }: RankingProps) {
           <div className="flex flex-col md:justify-center xl:justify-between">
             <p className="text-sm">{rankingData[0].nickname}</p>
             <p className="text-gray-400 text-xs md:hidden lg:inline">
-              코알라코알라코알라
+              영광의 1위!
             </p>
           </div>
         </div>
@@ -72,7 +73,7 @@ export default function ReportRankingBoard({ rankingData }: RankingProps) {
           <div className="flex flex-col md:justify-center xl:justify-between">
             <p className="text-sm">{rankingData[1].nickname}</p>
             <p className="text-gray-400 text-xs md:hidden lg:inline">
-              코알라코알라코알라
+              멋져요!
             </p>
           </div>
         </div>
@@ -92,7 +93,7 @@ export default function ReportRankingBoard({ rankingData }: RankingProps) {
           <div className="flex flex-col md:justify-center xl:justify-between">
             <p className="text-sm">{rankingData[2].nickname}</p>
             <p className="text-gray-400 text-xs md:hidden lg:inline">
-              코알라코알라코알라
+              지금처럼 열심히 하기!
             </p>
           </div>
         </div>
