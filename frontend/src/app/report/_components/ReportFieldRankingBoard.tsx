@@ -38,7 +38,7 @@ export default function ReportFieldRankingBoard({ rankingData, myRank }: Ranking
       </div>
       <div className="flex flex-col flex-grow justify-center lg:px-3 md:h-full lg:h-1/2">
         <div className="inline-flex p-4 w-full">
-          <div className="flex w-5 h-5 bg-gray-100 rounded-full my-auto border border-solid mr-4">
+          <div className="flex w-6 h-6 bg-gray-100 rounded-full my-auto border border-solid mr-4">
             <p className="m-auto text-sm text-gray-500">1</p>
           </div>
           <div className="w-10 h-10 border border-solid border-gray-100 rounded-full mr-2 md:hidden lg:flex">
@@ -58,7 +58,7 @@ export default function ReportFieldRankingBoard({ rankingData, myRank }: Ranking
           </div>
         </div>
         <div className="inline-flex p-4 w-full">
-          <div className="flex w-5 h-5 bg-gray-100 rounded-full my-auto border border-solid border-gray-200 mr-4">
+          <div className="flex w-6 h-6 bg-gray-100 rounded-full my-auto border border-solid border-gray-200 mr-4">
             <p className="m-auto text-sm text-gray-500">2</p>
           </div>
           <div className="w-10 h-10 border border-solid border-gray-100 rounded-full mr-2 md:hidden lg:flex">
@@ -78,7 +78,7 @@ export default function ReportFieldRankingBoard({ rankingData, myRank }: Ranking
           </div>
         </div>
         <div className="inline-flex p-4 w-full">
-          <div className="flex w-5 h-5 bg-gray-100 rounded-full my-auto border border-solid border-gray-200 mr-4">
+          <div className="flex w-6 h-6 bg-gray-100 rounded-full my-auto border border-solid border-gray-200 mr-4">
             <p className="m-auto text-sm text-gray-500">3</p>
           </div>
           <div className="w-10 h-10 border border-solid border-gray-100 rounded-full mr-2 md:hidden lg:flex">
