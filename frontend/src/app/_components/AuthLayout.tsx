@@ -6,7 +6,7 @@ export default function AuthLayout({
   children: React.ReactNode
 }) {
   return (
-    <div>
+    <div className="relative h-main-screen flex justify-center items-center overflow-hidden">
       {children}
       <Image
         src="/images/cloud.svg"
