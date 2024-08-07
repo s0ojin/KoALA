@@ -63,7 +63,7 @@ export default function ReportFieldStudyInfo({
             />
           </div>
           <div className="text-white w-full text-center">
-            <p className="md:text-xs xl:text-base">학습한 강의 수</p>
+            <p className="md:text-xs xl:text-base break-words">학습한 강의 수</p>
             <p className="font-bold text-2xl mt-2">{lectures}</p>
           </div>
         </div>
