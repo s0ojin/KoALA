@@ -35,9 +35,9 @@ public class CacheServiceImpl implements CacheService {
 		return false;
 	}
 
+	// 해당하는 캐시가 있으면 지우고 생성한다
 	@Override
 	public void initCacheMemory(String loginId, ChatSituationRequest chatSituationRequest) {
-		// 해당하는 캐시가 있으면 지우고 생성한다
 		Cache cache = cacheManager.getCache("chatHistory");
 		if (!isEmpty(loginId))
 			cache.evict(loginId);
@@ -53,7 +53,6 @@ public class CacheServiceImpl implements CacheService {
 	}
 
 	// loginId에 해당하는 채팅 기록을 가져온다
-	// 캐시에 해당 데이터가 없으면 새로운 빈 리스트를 반환, 캐시 키: #loginId
 	@Override
 	public List<Message> getChatHistory(String loginId) {
 		Cache cache = cacheManager.getCache("chatHistory");
@@ -74,7 +73,6 @@ public class CacheServiceImpl implements CacheService {
 
 	}
 
-	// 주어진 loginId에 해당하는 채팅 기록을 캐시에서 삭제
 	@Override
 	public void clearChatHistory(String loginId) {
 		// 캐시에서 대화 기록 삭제
