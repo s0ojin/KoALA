@@ -24,7 +24,7 @@ const renderPanel = (activeTab: TabId): React.ReactNode => {
 export default function OnlineLearningSideBar() {
   const [activeTab, setActiveTab] = useState<TabId>('none')
   return (
-    <div className="max-w-md h-screen overflow-clip">
+    <div className="fixed top-0 z-[60] max-w-md h-screen overflow-clip">
       <OnlineLearningTabList
         activeTab={activeTab}
         setActiveTab={setActiveTab}
