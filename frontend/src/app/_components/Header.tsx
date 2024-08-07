@@ -6,6 +6,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import UserDropdownMenu from '@/app/_components/UserDropdownMenu'
 import { usePathname } from 'next/navigation'
+import OnlineLearningHeader from '../online-learning/_components/OnlineLearningHeader'
+import path from 'path'
 
 export default function Header() {
   const [isLogin, setIsLogin] = useState(true)
@@ -33,8 +35,11 @@ export default function Header() {
     }
   }, [isUserMenuOpen])
 
-  if (pathname.startsWith('/online-learning')) {
-    return null
+  if (
+    pathname.startsWith('/online-learning') &&
+    pathname.split('/').length > 2
+  ) {
+    return <OnlineLearningHeader />
   }
 
   return (
