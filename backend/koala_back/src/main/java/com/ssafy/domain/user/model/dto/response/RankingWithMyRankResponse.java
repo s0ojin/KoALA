@@ -2,6 +2,8 @@ package com.ssafy.domain.user.model.dto.response;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Builder;
 import lombok.Getter;
 
@@ -10,6 +12,8 @@ import lombok.Getter;
 public class RankingWithMyRankResponse {
 
 	List<RankingResponse> rankings;
+
+	@JsonProperty("my_rank")
 	Integer myRank;
 
 	@Builder
