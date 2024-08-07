@@ -125,9 +125,8 @@ public class User implements UserDetails {
 	@OneToMany(mappedBy = "user", cascade = ALL, fetch = LAZY, orphanRemoval = true)
 	private List<Koala> koalas;
 
-	@Builder.Default
 	@OneToOne(mappedBy = "user", cascade = ALL, fetch = LAZY, orphanRemoval = true)
-	private AiTalkLog aiTalkLog = AiTalkLog.builder().user(this).build();
+	private AiTalkLog aiTalkLog;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
