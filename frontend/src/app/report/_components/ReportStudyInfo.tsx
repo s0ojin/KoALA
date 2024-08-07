@@ -1,6 +1,5 @@
-import AiIcon from '/public/icons/report-ai-conversation.svg'
-import OnlineLearningIcon from '/public/icons/report-online-learning.svg'
 import Image from 'next/image'
+
 export default function ReportStudyInfo() {
   return (
     <div className="flex after:xl:flex-grow w-full gap-4">
@@ -16,10 +15,10 @@ export default function ReportStudyInfo() {
             />
           </div>
           <div className="text-white w-full text-center">
-            <p className='md:text-xs xl:text-base break-words'>받아쓰기 문장 수</p>
-            <p className="font-bold text-2xl mt-2">
-              16
+            <p className="md:text-xs xl:text-base break-words">
+              받아쓰기 문장 수
             </p>
+            <p className="font-bold text-2xl mt-2">16</p>
           </div>
         </div>
       </div>
@@ -35,10 +34,10 @@ export default function ReportStudyInfo() {
             />
           </div>
           <div className="text-white w-full text-center">
-            <p className='md:text-xs xl:text-base break-words'>AI회화 진행 시간</p>
-            <p className="font-bold text-2xl mt-2">
-              16
+            <p className="md:text-xs xl:text-base break-words">
+              AI회화 진행 시간
             </p>
+            <p className="font-bold text-2xl mt-2">16</p>
           </div>
         </div>
       </div>
@@ -54,13 +53,11 @@ export default function ReportStudyInfo() {
             />
           </div>
           <div className="text-white w-full text-center">
-            <p className='md:text-xs xl:text-base'>학습한 강의 수</p>
-            <p className="font-bold text-2xl mt-2">
-              16
-            </p>
+            <p className="md:text-xs xl:text-base">학습한 강의 수</p>
+            <p className="font-bold text-2xl mt-2">16</p>
           </div>
         </div>
-      </div>    
+      </div>
     </div>
   )
 }

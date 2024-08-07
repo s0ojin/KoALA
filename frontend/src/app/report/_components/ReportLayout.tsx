@@ -1,6 +1,6 @@
-import Image from "next/image"
+import Image from 'next/image'
 
-export default function ReportLayout ({
+export default function ReportLayout({
   children,
 }: {
   children: React.ReactNode

@@ -43,7 +43,7 @@ const options: ChartOptions<'line'> = {
   },
 }
 
-const labels = ['월', '화', '수', '목', '금', '토', '일'] //x축 기준
+const labels = ['월', '화', '수', '목', '금', '토', '일']
 
 const data: ChartData<'line', number[]> = {
   labels,
