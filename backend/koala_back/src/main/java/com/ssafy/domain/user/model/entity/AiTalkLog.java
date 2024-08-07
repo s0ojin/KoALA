@@ -16,6 +16,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
@@ -34,9 +35,11 @@ public class AiTalkLog {
 	@JoinColumn(name = "user_id")
 	private User user;
 
+	@Setter
 	@Column(name = "start_time")
 	private LocalDateTime startTime;
 
+	@Setter
 	@Column(name = "end_time")
 	private LocalDateTime endTime;
 
