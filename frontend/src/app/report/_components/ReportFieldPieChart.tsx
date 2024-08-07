@@ -38,10 +38,10 @@ const options: ChartOptions<'pie'> = {
       },
       align: 'end',
       backgroundColor: '#FAFAFA',
-      borderColor: function (context) {
+      borderColor: function (context:Context) {
         return context.dataset.backgroundColor
       },
-      color: function (context) {
+      color: function (context:Context) {
         return context.dataset.backgroundColor
       },
       borderRadius: 16,
@@ -58,14 +58,14 @@ const options: ChartOptions<'pie'> = {
   },
 }
 
-const labels = ['받아쓰기', 'AI회화', '강의'] //x축 기준
+const labels = ['받아쓰기', 'AI회화', '강의']
 
 const data: ChartData<'pie', number[]> = {
   labels,
   datasets: [
     {
-      label: '총합', //그래프 분류되는 항목
-      data: [4, 2, 6], //실제 그려지는 데이터(Y축 숫자)
+      label: '총합',
+      data: [4, 2, 6],
       backgroundColor: ['#2BAA72', '#F0AF1A', '#664CEC'],
     },
   ],
