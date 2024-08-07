@@ -1,6 +1,7 @@
 package com.ssafy.domain.user.model.entity;
 
 import static jakarta.persistence.FetchType.*;
+import static lombok.AccessLevel.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = PROTECTED)
 @Table(name = "auth")
 public class Auth {
 
@@ -30,9 +31,5 @@ public class Auth {
 
 	@OneToMany(mappedBy = "auth", fetch = LAZY)
 	private final List<User> users = new ArrayList<>();
-
-	public Auth(String authName) {
-		this.authName = authName;
-	}
 
 }

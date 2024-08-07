@@ -20,6 +20,6 @@ public class WebSocketConfig implements WebSocketConfigurer {
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
 		// WebSocketHandlerRegistry: WebSocket 핸들러를 등록하는 데 사용되는 클래스
 		//  WebSocket 연결이 수립되었을 때 어떤 핸들러가 해당 연결을 처리할지를 설정
-		registry.addHandler(lectureChatSocketHandler, "/chat").setAllowedOrigins("*");
+		registry.addHandler(lectureChatSocketHandler, "/lectures/chat").setAllowedOrigins("*");
 	}
 }
