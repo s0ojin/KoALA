@@ -14,7 +14,7 @@ public class TotalStudyTimeResponse {
 
 	@JsonProperty("this_week")
 	StudyTimeResponse thisWeek;
-	
+
 	@JsonProperty("total")
 	StudyTimeResponse total;
 }
