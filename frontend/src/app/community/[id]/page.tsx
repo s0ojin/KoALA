@@ -18,7 +18,7 @@ export default async function CommunityDetail({
   params,
 }: CommunityDetailProps) {
   const { id } = params
-  const { data: post, error } = await getPost({ id })
+  const post = await getPost(`/boards/${id}/comments?page=0&size=10`)
 
   return (
     <CommunityLayout>
@@ -66,7 +66,10 @@ export default async function CommunityDetail({
               <p>{post.content} </p>
             </div>
 
-            <CommnunityComment commentList={post.comments} />
+            <CommnunityComment
+              commentList={post.comments}
+              postId={post.boardId}
+            />
           </div>
 
           <div className="flex justify-between px-8">

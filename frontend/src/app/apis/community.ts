@@ -2,15 +2,14 @@ import { ApiError } from '@/app/utils/customError'
 
 const baseUrl = 'http://localhost:8080/api'
 const token =
-  'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiYXV0aCI6IlJPTEVfdXNlciIsInR5cGUiOiJhY2Nlc3MiLCJleHAiOjE3MjMwMzU5OTJ9.obCLvipxBGdvh00mp-TKIN9RwXo-6Bea3bBk3jVEWso'
-
+  'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiYXV0aCI6IlJPTEVfdXNlciIsInR5cGUiOiJhY2Nlc3MiLCJleHAiOjE3MjMwNTc0NzV9.ZjVU2vnKzDJbVFhNrnqOf1As6qG3nnPu_kca0qsDMaQ'
 interface SortOption {
   empty: boolean
   unsorted: boolean
   sorted: boolean
 }
 
-interface CommentContent {
+export interface CommentContent {
   commentId: number
   content: string
   createdAt: string
@@ -38,28 +37,69 @@ export interface CommunityComment {
   totalPages: number
 }
 
-interface GetPost {
-  id: string
+interface Post {
+  boardId: number
+  title: string
+  content: string
+  nickname: string
+  commentNum: number
+  likeCount: number
+  viewCount: number
+  createdAt: string
+  comments: CommunityComment
+  boardImages: string[]
 }
 
-export const getPost = async (payload: GetPost) => {
+export const getPost = async (url: string): Promise<any> => {
   try {
-    const response = await fetch(
-      `${baseUrl}/boards/${payload.id}/comments?page=0&size=10`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-      }
-    )
+    const response = await fetch(`${baseUrl}${url}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    })
 
     if (!response.ok) {
       throw new ApiError(
         response.status,
         `Network response was not ok: ${response.status} ${response.statusText}`
       )
+    }
+
+    const data = await response.json()
+    return data
+  } catch (error: any) {
+    console.error(error)
+    throw error
+  }
+}
+
+interface PostPostComment {
+  comment_content: string
+}
+
+export const postPostComment = async (
+  boardId: string,
+  payload: PostPostComment
+) => {
+  try {
+    const response = await fetch(`${baseUrl}/boards/${boardId}/comments`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(payload),
+    })
+
+    if (!response.ok) {
+      if (response.status === 400) {
+        throw new ApiError(
+          response.status,
+          `Network response was not ok: ${response.status} ${response.statusText}`
+        )
+      }
     }
 
     const data = await response.json()
