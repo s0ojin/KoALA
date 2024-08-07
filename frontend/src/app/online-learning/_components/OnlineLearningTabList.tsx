@@ -37,21 +37,25 @@ export const tabList: Tab[] = [
 interface OnlineLearningTabListProps {
   activeTab: TabId
   setActiveTab: React.Dispatch<React.SetStateAction<TabId>>
+  setIsOpenSideBar: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export default function OnlineLearningTabList({
   activeTab,
   setActiveTab,
+  setIsOpenSideBar,
 }: OnlineLearningTabListProps) {
   return (
-    <div className="z-10 fixed py-6 right-0 w-20 h-screen bg-white flex flex-col items-center gap-2">
+    <div className="py-6 z-10 fixed right-0 w-20 h-screen bg-white flex flex-col items-center gap-2">
       {tabList.map((tab) => (
         <button
           onClick={() => {
             if (tab.id === activeTab) {
               setActiveTab('none')
+              setIsOpenSideBar(false)
             } else {
               setActiveTab(tab.id)
+              setIsOpenSideBar(true)
             }
           }}
           key={tab.id}
