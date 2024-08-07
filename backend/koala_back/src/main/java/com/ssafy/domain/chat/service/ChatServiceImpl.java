@@ -28,6 +28,7 @@ public class ChatServiceImpl implements ChatService {
 
 	private final UserInfoProvider userInfoProvider;
 	private final CacheService cacheService;
+
 	@Value("${openai.api.key}")
 	private String apiKey;
 
