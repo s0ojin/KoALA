@@ -127,4 +127,10 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.OK).body(userService.getRanking());
 	}
 
+	@Operation(summary = "유저 공부 시간 조회")
+	@GetMapping("/study-time")
+	public ResponseEntity<?> getStudyTime() {
+		return ResponseEntity.status(HttpStatus.OK).body(studyTimeService.getStudyTime());
+	}
+
 }
