@@ -11,13 +11,17 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import com.ssafy.domain.chat.dto.Message;
 import com.ssafy.domain.chat.dto.request.ChatRequest;
+import com.ssafy.domain.chat.dto.request.ChatSituationRequest;
 import com.ssafy.domain.chat.dto.request.GPTRequest;
+import com.ssafy.domain.chat.dto.request.GPTSituationRequest;
 import com.ssafy.domain.chat.dto.response.ChatResponse;
 import com.ssafy.domain.chat.dto.response.GPTResponse;
 import com.ssafy.global.common.UserInfoProvider;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ChatServiceImpl implements ChatService {
@@ -33,13 +37,30 @@ public class ChatServiceImpl implements ChatService {
 		.build();
 
 	@Override
+	public ChatResponse setSituation(ChatSituationRequest chatSituationRequest) {
+		String loginId = userInfoProvider.getCurrentLoginId();
+		cacheService.initCacheMemory(loginId, chatSituationRequest);
+		GPTSituationRequest gptSituationRequest = new GPTSituationRequest(chatSituationRequest);
+		GPTResponse gptResponse = webClient.method(HttpMethod.POST)
+			.uri("chat/completions")
+			.header(HttpHeaders.AUTHORIZATION, "Bearer " + apiKey)
+			.bodyValue(gptSituationRequest)
+			.retrieve()
+			.bodyToMono(GPTResponse.class)
+			.block();
+
+		String aiResponse = gptResponse.getChoices().get(0).getMessage().getContent();
+		cacheService.addChatHistory(loginId, new Message("assistant", aiResponse));
+		return new ChatResponse(aiResponse);
+	}
+
+	@Override
 	public ChatResponse getAIResponse(ChatRequest chatRequest) {
 		String loginId = userInfoProvider.getCurrentLoginId();
-
 		// 이전 대화 가져오기
 		List<Message> chatHistory = cacheService.getChatHistory(loginId);
-
-		GPTRequest gptRequest = new GPTRequest(chatRequest.getSituation(), chatHistory);
+		log.info(chatHistory.toString());
+		GPTRequest gptRequest = new GPTRequest(chatHistory);
 		gptRequest.addMessage(chatRequest.getMessage());
 
 		GPTResponse gptResponse = webClient.method(HttpMethod.POST)
@@ -52,8 +73,8 @@ public class ChatServiceImpl implements ChatService {
 
 		String aiResponse = gptResponse.getChoices().get(0).getMessage().getContent();
 
-		cacheService.changeChatHistory(loginId, new Message("user", chatRequest.getMessage()));
-		cacheService.changeChatHistory(loginId, new Message("assistant", aiResponse));
+		cacheService.addChatHistory(loginId, new Message("user", chatRequest.getMessage()));
+		cacheService.addChatHistory(loginId, new Message("assistant", aiResponse));
 
 		return new ChatResponse(aiResponse);
 	}

@@ -5,9 +5,11 @@ import com.ssafy.domain.user.model.entity.Auth;
 import com.ssafy.domain.user.model.entity.User;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@Builder
 public class UserSignUpRequest {
 
 	@NotBlank(message = "유저 아이디는 필수 입력 값입니다.")
