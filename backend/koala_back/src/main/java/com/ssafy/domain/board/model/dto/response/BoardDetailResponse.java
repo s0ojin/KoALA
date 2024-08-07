@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ssafy.domain.board.model.entity.Board;
 
 import lombok.Builder;
@@ -13,15 +14,25 @@ import lombok.Getter;
 @Builder
 public class BoardDetailResponse {
 
+	@JsonProperty("board_id")
 	private Long boardId;
+
 	private String title;
 	private String content;
 	private String nickname;
+
+	@JsonProperty("comment_num")
 	private int commentNum;
-	private int likeCount;
+
+	@JsonProperty("view_count")
 	private int viewCount;
+
+	@JsonProperty("created_at")
 	private String createdAt;
+
 	private Page<BoardCommentResponse> comments;
+
+	@JsonProperty("board_images")
 	private List<String> boardImages;
 
 	public static BoardDetailResponse toDto(Board board, List<String> boardImages,

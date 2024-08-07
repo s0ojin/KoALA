@@ -1,5 +1,6 @@
 package com.ssafy.domain.board.model.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ssafy.domain.board.model.entity.Board;
 
 import lombok.Builder;
@@ -9,14 +10,21 @@ import lombok.Getter;
 @Builder
 public class BoardResponse {
 
+	@JsonProperty("board_id")
 	private Long boardId;
+
 	private String title;
 	private String content;
 	private String nickname;
+
+	@JsonProperty("comment_num")
 	private int commentNum;
-	private int likeCount;
+
 	private int hit;
+
+	@JsonProperty("created_at")
 	private String createdAt;
+
 	private String thumbnail;
 
 	public static BoardResponse toDto(Board board) {
