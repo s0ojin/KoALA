@@ -12,6 +12,7 @@ public class RankingResponse {
 
 	@JsonProperty("user_id")
 	private Long userId;
+
 	private String nickname;
 	private Integer ranking;
 

@@ -12,6 +12,7 @@ public class BoardCommentResponse {
 
 	@JsonProperty("comment_id")
 	private Long commentId;
+
 	private String content;
 	private String nickname;
 

@@ -12,16 +12,19 @@ public class BoardResponse {
 
 	@JsonProperty("board_id")
 	private Long boardId;
+
 	private String title;
 	private String content;
 	private String nickname;
 
 	@JsonProperty("comment_num")
 	private int commentNum;
+
 	private int hit;
 
 	@JsonProperty("created_at")
 	private String createdAt;
+
 	private String thumbnail;
 
 	public static BoardResponse toDto(Board board) {

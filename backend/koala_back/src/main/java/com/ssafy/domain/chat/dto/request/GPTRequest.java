@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 @Setter
 @Slf4j
 public class GPTRequest {
+
 	private final String model = "gpt-4o-mini";
 	private List<Message> messages;
 

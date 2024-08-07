@@ -16,6 +16,7 @@ public class BoardDetailResponse {
 
 	@JsonProperty("board_id")
 	private Long boardId;
+
 	private String title;
 	private String content;
 	private String nickname;
@@ -28,6 +29,7 @@ public class BoardDetailResponse {
 
 	@JsonProperty("created_at")
 	private String createdAt;
+
 	private Page<BoardCommentResponse> comments;
 
 	@JsonProperty("board_images")
