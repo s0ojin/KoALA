@@ -24,6 +24,7 @@ import com.ssafy.domain.user.model.dto.response.RankingResponse;
 import com.ssafy.domain.user.model.dto.response.RankingWithMyRankResponse;
 import com.ssafy.domain.user.model.dto.response.UserFindResponse;
 import com.ssafy.domain.user.model.dto.response.UserResponse;
+import com.ssafy.domain.user.model.entity.AiTalkLog;
 import com.ssafy.domain.user.model.entity.Auth;
 import com.ssafy.domain.user.model.entity.User;
 import com.ssafy.domain.user.repository.AuthRepository;
@@ -49,6 +50,7 @@ public class UserServiceImpl implements UserService {
 	private final AuthRepository authRepository;
 	private final RankingRepository rankingRepository;
 	private final CacheService cacheService;
+	private final AiTalkLogService aiTalkLogService;
 
 	@Transactional
 	public UserFindResponse signUp(UserSignUpRequest userSignUpRequest) {
@@ -57,7 +59,10 @@ public class UserServiceImpl implements UserService {
 		}
 		String encodedPassword = passwordEncoder.encode(userSignUpRequest.getPassword());
 		Auth auth = authRepository.findByAuthName("user");
-		return UserFindResponse.toDto(userRepository.save(userSignUpRequest.toEntity(encodedPassword, auth)));
+		User user = userRepository.save(userSignUpRequest.toEntity(encodedPassword, auth));
+		aiTalkLogService.initAiTalkLog(user.getUserId());
+
+		return UserFindResponse.toDto(user);
 	}
 
 	@Transactional
