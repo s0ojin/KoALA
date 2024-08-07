@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @Builder
-@Table(name = "ai_talk_logs")
+@Table(name = "ai_talk_log")
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PROTECTED)
 public class AiTalkLog {
