@@ -6,7 +6,7 @@ export interface StudyInfoProps {
   lectures: number
 }
 
-export default function ReportStudyInfo({
+export default function ReportFieldStudyInfo({
   writing,
   speaking,
   lectures,

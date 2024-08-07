@@ -14,7 +14,7 @@ import {
   Legend,
 } from 'chart.js'
 import { Line } from 'react-chartjs-2'
-import { StudyInfoProps } from '@/app/report/_components/ReportStudyInfo'
+import { StudyInfoProps } from '@/app/report/_components/ReportFieldStudyInfo'
 
 ChartJS.register(
   CategoryScale,
@@ -42,7 +42,7 @@ interface WeekDataProps {
   thisWeekData: WeekData
 }
 
-export default function ReportWeekLineChart({
+export default function ReportFieldWeekLineChart({
   lastWeekData,
   thisWeekData,
 }: WeekDataProps) {

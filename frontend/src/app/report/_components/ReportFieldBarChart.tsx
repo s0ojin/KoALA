@@ -15,7 +15,7 @@ import {
 import { Bar } from 'react-chartjs-2'
 import ChartDataLabels from 'chartjs-plugin-datalabels'
 import { Context } from 'chartjs-plugin-datalabels'
-import { WeekData } from '@/app/report/_components/ReportWeekLineChart'
+import { WeekData } from '@/app/report/_components/ReportFieldWeekLineChart'
 
 ChartJS.register(
   CategoryScale,
