@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.domain.chat.dto.request.ChatRequest;
+import com.ssafy.domain.chat.dto.request.ChatSituationRequest;
 import com.ssafy.domain.chat.dto.response.ChatResponse;
 import com.ssafy.domain.chat.service.ChatService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,6 +27,11 @@ import lombok.extern.slf4j.Slf4j;
 public class ChatController {
 	private final ChatService chatService;
 
+	@PostMapping("/start")
+	public ResponseEntity<ChatResponse> createChat(@RequestBody @Valid ChatSituationRequest chatSituationRequest) {
+		return ResponseEntity.status(HttpStatus.OK).body(chatService.setSituation(chatSituationRequest));
+	}
+
 	@Operation(summary = "AI 회화 메세지 전송")
 	@PostMapping
 	public ResponseEntity<?> sendMessage(@Valid @RequestBody ChatRequest chatRequest) {
@@ -34,7 +39,7 @@ public class ChatController {
 	}
 
 	@Operation(summary = "AI 회화 끝내기")
-	@GetMapping
+	@GetMapping("/finish")
 	public ResponseEntity<?> closeChat() {
 		chatService.finishAIResponse();
 		return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "finish AI chat"));

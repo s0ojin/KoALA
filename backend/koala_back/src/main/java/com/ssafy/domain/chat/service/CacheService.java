@@ -3,13 +3,16 @@ package com.ssafy.domain.chat.service;
 import java.util.List;
 
 import com.ssafy.domain.chat.dto.Message;
+import com.ssafy.domain.chat.dto.request.ChatSituationRequest;
 
 public interface CacheService {
-	public boolean isEmpty(String loginId);
+	boolean isEmpty(String loginId);
 
-	public List<Message> getChatHistory(String loginId);
+	void initCacheMemory(String loginId, ChatSituationRequest chatSituationRequest);
 
-	public List<Message> changeChatHistory(String loginId, Message message);
+	List<Message> getChatHistory(String loginId);
 
-	public void clearChatHistory(String loginId);
+	void addChatHistory(String loginId, Message message);
+
+	void clearChatHistory(String loginId);
 }
