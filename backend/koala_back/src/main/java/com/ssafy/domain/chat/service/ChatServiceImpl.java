@@ -16,6 +16,8 @@ import com.ssafy.domain.chat.dto.request.GPTRequest;
 import com.ssafy.domain.chat.dto.request.GPTSituationRequest;
 import com.ssafy.domain.chat.dto.response.ChatResponse;
 import com.ssafy.domain.chat.dto.response.GPTResponse;
+import com.ssafy.domain.user.service.AiTalkLogService;
+import com.ssafy.domain.user.service.StudyTimeService;
 import com.ssafy.global.common.UserInfoProvider;
 
 import lombok.RequiredArgsConstructor;
@@ -28,6 +30,9 @@ public class ChatServiceImpl implements ChatService {
 
 	private final UserInfoProvider userInfoProvider;
 	private final CacheService cacheService;
+	private final StudyTimeService studyTimeService;
+	private final AiTalkLogService aiTalkLogService;
+
 	@Value("${openai.api.key}")
 	private String apiKey;
 
@@ -38,6 +43,9 @@ public class ChatServiceImpl implements ChatService {
 
 	@Override
 	public ChatResponse setSituation(ChatSituationRequest chatSituationRequest) {
+		Long userId = userInfoProvider.getCurrentUserId();
+		aiTalkLogService.createStartTimeLog(userId);
+
 		String loginId = userInfoProvider.getCurrentLoginId();
 		cacheService.initCacheMemory(loginId, chatSituationRequest);
 		GPTSituationRequest gptSituationRequest = new GPTSituationRequest(chatSituationRequest);
@@ -82,6 +90,10 @@ public class ChatServiceImpl implements ChatService {
 	@Override
 	public void finishAIResponse() {
 		// 이외에 AI 응답 끝내는 로직 추가
+		Long userId = userInfoProvider.getCurrentUserId();
+		aiTalkLogService.createEndTimeLog(userId);
+		studyTimeService.increaseAiTalkMinutes();
+
 		cacheService.clearChatHistory(userInfoProvider.getCurrentLoginId());
 	}
 }
