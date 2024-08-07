@@ -3,6 +3,8 @@ package com.ssafy.domain.user.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssafy.domain.user.model.dto.response.StudyTimeResponse;
+import com.ssafy.domain.user.model.dto.response.TotalStudyTimeResponse;
 import com.ssafy.domain.user.model.entity.StudyTime;
 import com.ssafy.domain.user.repository.StudyTimeRepository;
 import com.ssafy.global.common.UserInfoProvider;
@@ -16,6 +18,21 @@ public class StudyTimeServiceImpl implements StudyTimeService {
 
 	private final UserInfoProvider userInfoProvider;
 	private final StudyTimeRepository studyTimeRepository;
+	private final AiTalkLogService aiTalkLogService;
+
+	@Override
+	public TotalStudyTimeResponse getStudyTime() {
+		Long userId = userInfoProvider.getCurrentUserId();
+		StudyTime lastWeek = studyTimeRepository.findByUserIdAndTimeCalType(userId, 0);
+		StudyTime thisWeek = studyTimeRepository.findByUserIdAndTimeCalType(userId, 1);
+		StudyTime total = studyTimeRepository.findByUserIdAndTimeCalType(userId, 2);
+		return TotalStudyTimeResponse.builder()
+			.lastWeek(StudyTimeResponse.toDto(lastWeek))
+			.thisWeek(StudyTimeResponse.toDto(thisWeek))
+			.total(StudyTimeResponse.toDto(total))
+			.build();
+	}
+
 
 	@Override
 	@Transactional
@@ -54,6 +71,19 @@ public class StudyTimeServiceImpl implements StudyTimeService {
 
 		increaseTotalStudyTime(userId, 2, 1);
 	}
+
+	@Override
+	@Transactional
+	public void increaseAiTalkMinutes() {
+		Long userId = userInfoProvider.getCurrentUserId();
+		StudyTime studyTime = studyTimeRepository.findByUserIdAndTimeCalType(userId, 1);
+		Integer talkMinutes = aiTalkLogService.calculateTalkTime(userId);
+		studyTime.increaseTalkTime(talkMinutes);
+		studyTimeRepository.save(studyTime);
+
+		increaseTotalStudyTime(userId, 0, talkMinutes);
+	}
+
 
 	@Override
 	@Transactional

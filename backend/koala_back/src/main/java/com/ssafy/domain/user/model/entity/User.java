@@ -125,6 +125,9 @@ public class User implements UserDetails {
 	@OneToMany(mappedBy = "user", cascade = ALL, fetch = LAZY, orphanRemoval = true)
 	private List<Koala> koalas;
 
+	@OneToOne(mappedBy = "user", cascade = ALL, fetch = LAZY, orphanRemoval = true)
+	private AiTalkLog aiTalkLog;
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		// 알아보기 쉽게 일반적으로 이름 반환한다고 함

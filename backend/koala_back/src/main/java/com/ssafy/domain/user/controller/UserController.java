@@ -43,7 +43,6 @@ public class UserController {
 	@PostMapping
 	public ResponseEntity<?> signUp(@Valid @RequestBody UserSignUpRequest userSignUpRequest) {
 		UserFindResponse userFindResponse = userService.signUp(userSignUpRequest);
-		studyTimeService.initStudyTime(userFindResponse.getUserId());
 		return ResponseEntity.status(HttpStatus.CREATED).body(userFindResponse);
 	}
 
@@ -125,6 +124,12 @@ public class UserController {
 	@GetMapping("/ranking")
 	public ResponseEntity<?> getRanking() {
 		return ResponseEntity.status(HttpStatus.OK).body(userService.getRanking());
+	}
+
+	@Operation(summary = "유저 공부 시간 조회")
+	@GetMapping("/study-time")
+	public ResponseEntity<?> getStudyTime() {
+		return ResponseEntity.status(HttpStatus.OK).body(studyTimeService.getStudyTime());
 	}
 
 }
