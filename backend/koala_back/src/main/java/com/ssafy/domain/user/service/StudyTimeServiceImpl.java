@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.domain.user.model.entity.StudyTime;
+import com.ssafy.domain.user.repository.AiTalkLogRepository;
 import com.ssafy.domain.user.repository.StudyTimeRepository;
 import com.ssafy.global.common.UserInfoProvider;
 
@@ -16,6 +17,7 @@ public class StudyTimeServiceImpl implements StudyTimeService {
 
 	private final UserInfoProvider userInfoProvider;
 	private final StudyTimeRepository studyTimeRepository;
+	private final AiTalkLogRepository aiTalkLogRepository;
 
 	@Override
 	@Transactional
