@@ -141,7 +141,6 @@ public class ImageServiceImpl implements ImageService {
 		return html;
 	}
 
-	//
 	public static String readKey() {
 		Path path = Paths.get("passportKey.txt");
 		if (Files.exists(path)) {
