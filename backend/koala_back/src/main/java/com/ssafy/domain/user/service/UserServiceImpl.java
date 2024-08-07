@@ -49,6 +49,8 @@ public class UserServiceImpl implements UserService {
 	private final AuthRepository authRepository;
 	private final RankingRepository rankingRepository;
 	private final CacheService cacheService;
+	private final StudyTimeService studyTimeService;
+	private final AiTalkLogService aiTalkLogService;
 
 	@Transactional
 	public UserFindResponse signUp(UserSignUpRequest userSignUpRequest) {
@@ -57,7 +59,11 @@ public class UserServiceImpl implements UserService {
 		}
 		String encodedPassword = passwordEncoder.encode(userSignUpRequest.getPassword());
 		Auth auth = authRepository.findByAuthName("user");
-		return UserFindResponse.toDto(userRepository.save(userSignUpRequest.toEntity(encodedPassword, auth)));
+		User user = userRepository.save(userSignUpRequest.toEntity(encodedPassword, auth));
+		studyTimeService.initStudyTime(user.getUserId());
+		aiTalkLogService.initAiTalkLog(user);
+
+		return UserFindResponse.toDto(user);
 	}
 
 	@Transactional
