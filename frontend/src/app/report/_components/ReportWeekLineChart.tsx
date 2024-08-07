@@ -71,14 +71,14 @@ const data: ChartData<'line', number[]> = {
 
 export default function ReportWeekLineChart() {
   return (
-    <div className="px-11 py-6 bg-white rounded-2xl w-full h-full">
+    <div className="md:p-3 lg:xl-11 lg:xl-6 bg-white rounded-2xl w-full h-full">
       <div className="flex mb-8">
         <div className="inline-flex items-center mr-8">
-          <div className="w-[3rem] h-[1rem] mr-1.5 bg-pink-400 rounded-2xl my-auto" />
+          <div className="xl:w-[3rem] md:w-[1rem] h-[1rem] mr-1.5 bg-pink-400 rounded-2xl my-auto" />
           <p className="text-pink-400">7/8 ~ 7/14</p>
         </div>
         <div className="inline-flex items-center">
-          <div className="w-[3rem] h-[1rem] mr-1.5 bg-primary-400 rounded-2xl my-auto" />
+          <div className="xl:w-[3rem] md:w-[1rem] h-[1rem] mr-1.5 bg-primary-400 rounded-2xl my-auto" />
           <p className="text-primary-400">7/15 ~ 7/21</p>
         </div>
       </div>
