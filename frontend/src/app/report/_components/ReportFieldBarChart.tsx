@@ -89,21 +89,21 @@ const data: ChartData<'bar', number[]> = {
 
 export default function ReportFieldBarChart() {
   return (
-    <div className="px-11 py-6 bg-white rounded-2xl w-full h-full">
+    <div className="md:p-3 xl:px-11 xl:py-6 bg-white rounded-2xl w-full h-full">
       <div className="flex justify-between mb-8">
-        <p className="text-primary-400 ml-8">7/15 ~ 7/21</p>
-        <div>
-          <div className="inline-flex items-center mr-8">
-            <div className="w-[3rem] h-[1rem] mr-1.5 bg-primary-400 rounded-2xl my-auto" />
-            <p className="text-primary-400 text-pink-400">받아쓰기</p>
-          </div>
-          <div className="inline-flex items-center mr-8">
-            <div className="w-[3rem] h-[1rem] mr-1.5 bg-primary-300 rounded-2xl my-auto" />
-            <p className="text-primary-300">AI회화</p>
+        <p className="text-primary-400 mr-2 flex items-center xl:ml-8 whitespace-nowrap md:text-sm lg:text-base">7/15 ~ 7/21</p>
+        <div className='flex md:gap-1 lg:gap-4 xl:gap-8 lg:flex-grow justify-end'>
+          <div className="inline-flex items-center">
+            <div className="xl:w-[3rem] w-[1rem] h-[1rem] mr-1.5 bg-primary-400 rounded-2xl my-auto" />
+            <p className="text-primary-400 whitespace-nowrap md:text-xs lg:text-base">받아쓰기</p>
           </div>
           <div className="inline-flex items-center">
-            <div className="w-[3rem] h-[1rem] mr-1.5 bg-primary-100 rounded-2xl my-auto" />
-            <p className="text-primary-100">강의</p>
+            <div className="xl:w-[3rem] w-[1rem] h-[1rem] mr-1.5 bg-primary-300 rounded-2xl my-auto" />
+            <p className="text-primary-300 whitespace-nowrap md:text-xs lg:text-base">AI회화</p>
+          </div>
+          <div className="inline-flex items-center">
+            <div className="xl:w-[3rem] w-[1rem] h-[1rem] mr-1.5 bg-primary-100 rounded-2xl my-auto" />
+            <p className="text-primary-100 whitespace-nowrap md:text-xs lg:text-base">강의</p>
           </div>
         </div>
       </div>
