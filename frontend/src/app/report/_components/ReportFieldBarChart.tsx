@@ -15,6 +15,7 @@ import {
 import { Bar } from 'react-chartjs-2'
 import ChartDataLabels from 'chartjs-plugin-datalabels'
 import { Context } from 'chartjs-plugin-datalabels'
+import { WeekData } from '@/app/report/_components/ReportWeekLineChart'
 
 ChartJS.register(
   CategoryScale,
@@ -26,68 +27,103 @@ ChartJS.register(
   Legend
 )
 
-const options: ChartOptions<'bar'> = {
-  responsive: true,
-  plugins: {
-    legend: {
-      display: false,
-    },
-    tooltip: {
-      enabled: false,
-    },
-    datalabels: {
-      listeners: {
-        enter: function (context:Context) {
-          context.hovered = true
-
-          return true
-        },
-        leave: function (context:Context) {
-          context.hovered = false
-          return true
-        },
-      },
-      color: function (context:Context) {
-        return context.hovered ? 'white' : context.dataset.backgroundColor
-      },
-      display: function (context:Context) {
-        return context.dataset.data[context.dataIndex] > 1
-      },
-    },
-  },
-  scales: {
-    x: {
-      stacked: true,
-    },
-    y: {
-      beginAtZero: true,
-      stacked: true,
-    },
-  },
+interface thisWeekDataProps {
+  thisWeekData: WeekData
 }
 
-const data: ChartData<'bar', number[]> = {
-  labels: ['월', '화', '수', '목', '금', '토', '일'],
-  datasets: [
-    {
-      label: '받아쓰기',
-      data: [4, 3, 3, 1, 7, 6, 3],
-      backgroundColor: '#4F46F2',
-    },
-    {
-      label: 'AI회화',
-      data: [4, 3, 3, 1, 7, 6, 3],
-      backgroundColor: '#7A72FF',
-    },
-    {
-      label: '강의',
-      data: [4, 3, 3, 1, 7, 6, 3],
-      backgroundColor: '#C7C4FF',
-    },
-  ],
-}
+export default function ReportFieldBarChart({
+  thisWeekData,
+}: thisWeekDataProps) {
+  const dictationData: number[] = [
+    thisWeekData.Mon.writing,
+    thisWeekData.Tue.writing,
+    thisWeekData.Wed.writing,
+    thisWeekData.Thu.writing,
+    thisWeekData.Fri.writing,
+    thisWeekData.Sat.writing,
+    thisWeekData.Sun.writing,
+  ]
 
-export default function ReportFieldBarChart() {
+  const speakingData: number[] = [
+    thisWeekData.Mon.speaking,
+    thisWeekData.Tue.speaking,
+    thisWeekData.Wed.speaking,
+    thisWeekData.Thu.speaking,
+    thisWeekData.Fri.speaking,
+    thisWeekData.Sat.speaking,
+    thisWeekData.Sun.speaking,
+  ]
+
+  const lectureData: number[] = [
+    thisWeekData.Mon.lectures,
+    thisWeekData.Tue.lectures,
+    thisWeekData.Wed.lectures,
+    thisWeekData.Thu.lectures,
+    thisWeekData.Fri.lectures,
+    thisWeekData.Sat.lectures,
+    thisWeekData.Sun.lectures,
+  ]
+
+  const options: ChartOptions<'bar'> = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: false,
+      },
+      tooltip: {
+        enabled: false,
+      },
+      datalabels: {
+        listeners: {
+          enter: function (context: Context) {
+            context.hovered = true
+
+            return true
+          },
+          leave: function (context: Context) {
+            context.hovered = false
+            return true
+          },
+        },
+        color: function (context: Context) {
+          return context.hovered ? 'white' : context.dataset.backgroundColor
+        },
+        display: function (context: Context) {
+          return context.dataset.data[context.dataIndex] > 1
+        },
+      },
+    },
+    scales: {
+      x: {
+        stacked: true,
+      },
+      y: {
+        beginAtZero: true,
+        stacked: true,
+      },
+    },
+  }
+
+  const data: ChartData<'bar', number[]> = {
+    labels: ['월', '화', '수', '목', '금', '토', '일'],
+    datasets: [
+      {
+        label: '받아쓰기',
+        data: dictationData,
+        backgroundColor: '#4F46F2',
+      },
+      {
+        label: 'AI회화',
+        data: speakingData,
+        backgroundColor: '#7A72FF',
+      },
+      {
+        label: '강의',
+        data: lectureData,
+        backgroundColor: '#C7C4FF',
+      },
+    ],
+  }
   return (
     <div className="md:p-3 xl:px-11 xl:py-6 bg-white rounded-2xl w-full h-full">
       <div className="flex justify-between mb-8">
