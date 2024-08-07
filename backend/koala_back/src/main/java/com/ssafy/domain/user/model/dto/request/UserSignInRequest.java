@@ -4,12 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Getter
-@ToString
-@NoArgsConstructor
 public class UserSignInRequest {
 
 	@NotBlank(message = "로그인 ID는 필수 입력 값입니다.")

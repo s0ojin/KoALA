@@ -2,22 +2,22 @@ package com.ssafy.domain.sentence.model.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Getter
-@ToString
-@NoArgsConstructor
 public class SentenceTestRequest {
 
+	@NotNull(message = "문장 번호는 필수 입력 값입니다.")
 	@JsonProperty("sentence_id")
 	private Long sentenceId;
 
+	@NotNull(message = "답안은 필수 입력 값입니다.")
 	@JsonProperty("user_sentence")
-	String userSentence;
+	private String userSentence;
 
+	@NotNull(message = "토글 여부는 필수 입력 값입니다.")
 	@JsonProperty("is_toggled")
-	boolean isToggled;
+	private boolean isToggled;
 
 }

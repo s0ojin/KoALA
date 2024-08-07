@@ -20,11 +20,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ssafy.domain.chat.service.CacheService;
 import com.ssafy.domain.user.model.dto.request.UserSignUpRequest;
 import com.ssafy.domain.user.model.dto.request.UserUpdateRequest;
+import com.ssafy.domain.user.model.dto.response.RankingResponse;
+import com.ssafy.domain.user.model.dto.response.RankingWithMyRankResponse;
 import com.ssafy.domain.user.model.dto.response.UserFindResponse;
 import com.ssafy.domain.user.model.dto.response.UserResponse;
 import com.ssafy.domain.user.model.entity.Auth;
 import com.ssafy.domain.user.model.entity.User;
 import com.ssafy.domain.user.repository.AuthRepository;
+import com.ssafy.domain.user.repository.RankingRepository;
 import com.ssafy.domain.user.repository.UserRepository;
 import com.ssafy.global.auth.jwt.JwtTokenProvider;
 import com.ssafy.global.auth.jwt.dto.JwtToken;
@@ -32,30 +35,29 @@ import com.ssafy.global.common.UserInfoProvider;
 
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
 
+	private final UserInfoProvider userInfoProvider;
+	private final JwtTokenProvider jwtTokenProvider;
+	private final AuthenticationManagerBuilder authenticationManagerBuilder;
+	private final PasswordEncoder passwordEncoder;
 	private final UserRepository userRepository;
 	private final AuthRepository authRepository;
-	private final AuthenticationManagerBuilder authenticationManagerBuilder;
-	private final JwtTokenProvider jwtTokenProvider;
-	private final PasswordEncoder passwordEncoder;
-	private final UserInfoProvider userInfoProvider;
+	private final RankingRepository rankingRepository;
 	private final CacheService cacheService;
 
 	@Transactional
-	public UserResponse signUp(UserSignUpRequest userSignUpRequest) {
+	public UserFindResponse signUp(UserSignUpRequest userSignUpRequest) {
 		if (userRepository.existsByLoginId(userSignUpRequest.getLoginId())) {
 			throw new IllegalArgumentException("이미 사용 중인 사용자 아이디입니다.");
 		}
 		String encodedPassword = passwordEncoder.encode(userSignUpRequest.getPassword());
 		Auth auth = authRepository.findByAuthName("user");
-		return UserResponse.toDto(userRepository.save(userSignUpRequest.toEntity(encodedPassword, auth)));
+		return UserFindResponse.toDto(userRepository.save(userSignUpRequest.toEntity(encodedPassword, auth)));
 	}
 
 	@Transactional
@@ -84,27 +86,25 @@ public class UserServiceImpl implements UserService {
 		return userRepository.existsByNickname(nickname);
 	}
 
-	@Transactional
 	@Override
-	public UserFindResponse findUser() {
+	@Transactional
+	public UserResponse getUser() {
 		String currentLoginId = userInfoProvider.getCurrentLoginId();
 		if (currentLoginId == null) {
 			throw new IllegalStateException("Current login_ID is null. User might not be authenticated.");
 		}
 
-		Optional<User> optionalUser = userRepository.findByLoginId(currentLoginId);
-		if (!optionalUser.isPresent()) {
+		Optional<User> user = userRepository.findByLoginId(currentLoginId);
+		if (!user.isPresent()) {
 			throw new NoSuchElementException("User not found with login_ID: " + currentLoginId);
 		}
 
-		User user = optionalUser.get();
-		return UserFindResponse.toDto(user);
+		return UserResponse.toDto(user.get());
 	}
 
-	@Transactional
 	@Override
+	@Transactional
 	public UserResponse updateUser(UserUpdateRequest userUpdateRequest) {
-
 		User user = userInfoProvider.getCurrentUser();
 
 		String encodedPassword = passwordEncoder.encode(userUpdateRequest.getPassword());
@@ -113,8 +113,8 @@ public class UserServiceImpl implements UserService {
 		return UserResponse.toDto(userRepository.save(user));
 	}
 
-	@Transactional
 	@Override
+	@Transactional
 	public void deleteUser() {
 		User user = userInfoProvider.getCurrentUser();
 		userRepository.delete(user);
@@ -141,7 +141,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public JwtToken createNewToken(String bearerToken) {
+	public JwtToken makeNewToken(String bearerToken) {
 		if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
 			String refreshToken = bearerToken.substring(7);
 			if (!jwtTokenProvider.validateToken(refreshToken)) {
@@ -172,4 +172,12 @@ public class UserServiceImpl implements UserService {
 		SecurityContextHolder.clearContext();
 	}
 
+	@Override
+	public RankingWithMyRankResponse getRanking() {
+		Long userId = userInfoProvider.getCurrentUserId();
+		Integer myRank = rankingRepository.findByUserId(userId).getRanking();
+		List<RankingResponse> rankings = new ArrayList<>();
+		rankingRepository.findTop10ByOrderByRanking().forEach(ranking -> rankings.add(RankingResponse.toDto(ranking)));
+		return RankingWithMyRankResponse.toDto(rankings, myRank);
+	}
 }

@@ -9,34 +9,35 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.domain.review.model.dto.request.ReviewSentenceRequest;
+import com.ssafy.domain.review.model.entity.ReviewSentence;
 import com.ssafy.domain.review.repository.ReviewRepository;
 import com.ssafy.domain.sentence.model.dto.request.SentenceTestRequest;
+import com.ssafy.domain.sentence.model.dto.response.LectureSentenceResponse;
 import com.ssafy.domain.sentence.model.dto.response.SentenceDictationResponse;
 import com.ssafy.domain.sentence.model.dto.response.SentenceTestResponse;
-import com.ssafy.domain.sentence.model.entity.ReviewSentence;
 import com.ssafy.domain.sentence.model.entity.Sentence;
+import com.ssafy.domain.sentence.repository.LectureSentenceRepository;
 import com.ssafy.domain.sentence.repository.SentenceRepository;
 import com.ssafy.domain.user.model.entity.User;
 import com.ssafy.domain.user.repository.UserRepository;
 import com.ssafy.global.common.UserInfoProvider;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class SentenceServiceImpl implements SentenceService {
 
-	private final SentenceRepository sentenceRepository;
+	private final UserInfoProvider userInfoProvider;
 	private final UserRepository userRepository;
 	private final ReviewRepository reviewRepository;
-	private final UserInfoProvider userInfoProvider;
+	private final SentenceRepository sentenceRepository;
+	private final LectureSentenceRepository lectureSentenceRepository;
 
 	@Override
 	@Transactional
-	public List<SentenceDictationResponse> randomSentence(String topic) {
+	public List<SentenceDictationResponse> getRandomSentence(String topic) {
 		List<Sentence> sentences;
 		if (topic.isEmpty()) {
 			sentences = sentenceRepository.findRandomSentences(userInfoProvider.getCurrentUserId());
@@ -79,8 +80,10 @@ public class SentenceServiceImpl implements SentenceService {
 				}
 			} else {
 				resultTag = makeResultTag(originText, userText);
-				reviewSentences.add(
-					new ReviewSentenceRequest(request.getSentenceId()).toEntity(originSentence.get(), user));
+				reviewSentences.add(ReviewSentenceRequest.builder()
+					.sentenceId(request.getSentenceId())
+					.build()
+					.toEntity(originSentence.get(), user));
 				correct = false;
 			}
 
@@ -145,5 +148,13 @@ public class SentenceServiceImpl implements SentenceService {
 		}
 
 		return result.toString();
+	}
+
+	@Override
+	public List<LectureSentenceResponse> getLectureSentences(Long lectureId) {
+		return lectureSentenceRepository.findByLectureId(lectureId)
+			.stream()
+			.map(LectureSentenceResponse::toDto)
+			.collect(Collectors.toList());
 	}
 }

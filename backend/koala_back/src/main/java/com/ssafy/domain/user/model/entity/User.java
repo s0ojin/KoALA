@@ -20,7 +20,7 @@ import com.ssafy.domain.koala.model.entity.Koala;
 import com.ssafy.domain.lecture.model.entity.Lecture;
 import com.ssafy.domain.lecture.model.entity.LectureNote;
 import com.ssafy.domain.lecture.model.entity.RegisteredLecture;
-import com.ssafy.domain.sentence.model.entity.ReviewSentence;
+import com.ssafy.domain.review.model.entity.ReviewSentence;
 import com.ssafy.domain.sentence.model.entity.Sentence;
 
 import jakarta.persistence.Column;
@@ -168,14 +168,19 @@ public class User implements UserDetails {
 
 	public void increaseUserExp() {
 		this.userExp++;
-		if (this.userExp >= 100) {
-			increaseUserLevel();
-			this.userExp -= 100L;
-		}
+		checkUserExp();
 	}
 
 	public void increaseUserExp(Integer value) {
 		this.userExp += value;
+		checkUserExp();
+	}
+
+	public void checkUserExp() {
+		if (this.userExp >= 100) {
+			increaseUserLevel();
+			this.userExp -= 100L;
+		}
 	}
 
 	public void decreaseLeaves() {
