@@ -44,10 +44,8 @@ public class LectureSessionController {
 			Session session = openvidu.createSession(properties);
 			// 해당 강의에 세션 아이디 추가
 			lectureService.setSessionId(lectureId, session.getSessionId());
-			// 수강하는 강의에 추가: 강의 노트 추가할 때 추가하고 싶으면 lecture controller 이동
-			RegisteredLectureResponse registeredLecture = lectureService.registerLecture(lectureId);
 			return ResponseEntity.status(HttpStatus.CREATED)
-				.body(Map.of("session_id", session.getSessionId(), "lecture_id", registeredLecture.getLectureId()));
+				.body(Map.of("session_id", session.getSessionId()));
 		} catch (OpenViduJavaClientException | OpenViduHttpException e) {
 			log.error("Error creating session", e);
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -64,6 +62,7 @@ public class LectureSessionController {
 			if (sessionId == null) {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Lecture not found"));
 			}
+			System.out.println("세션 아이디" + sessionId);
 			Session session = openvidu.getActiveSession(sessionId);
 			if (session == null) {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Session not found"));
