@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ssafy.domain.user.model.entity.AiTalkLog;
 import com.ssafy.domain.user.model.entity.User;
 import com.ssafy.domain.user.repository.AiTalkLogRepository;
-import com.ssafy.global.common.UserInfoProvider;
+import com.ssafy.domain.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,23 +19,19 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 public class AiTalkLogServiceImpl implements AiTalkLogService {
 
-	private final UserInfoProvider userInfoProvider;
+	private final UserRepository userRepository;
 	private final AiTalkLogRepository aiTalkLogRepository;
 
 	@Override
 	@Transactional
-	public void initAiTalkLog(Long userId) {
-		User user = userInfoProvider.getCurrentUser();
-		Optional<AiTalkLog> aiTalkLog = aiTalkLogRepository.findByUserId(userId);
+	public void initAiTalkLog(User user) {
+		Optional<AiTalkLog> aiTalkLog = aiTalkLogRepository.findByUserId(user.getUserId());
 		if (aiTalkLog.isPresent()) {
 			aiTalkLog.get().setStartTime(null);
 			aiTalkLog.get().setEndTime(null);
 			aiTalkLogRepository.save(aiTalkLog.get());
 		} else {
-			aiTalkLogRepository.save(AiTalkLog.builder()
-				.userId(userId)
-				.user(user)
-				.build());
+			aiTalkLogRepository.save(AiTalkLog.builder().user(user).build());
 		}
 	}
 
@@ -47,7 +43,7 @@ public class AiTalkLogServiceImpl implements AiTalkLogService {
 			aiTalkLog.get().setStartTime(LocalDateTime.now());
 			aiTalkLogRepository.save(aiTalkLog.get());
 		} else {
-			initAiTalkLog(userId);
+			initAiTalkLog(userRepository.findById(userId).get());
 			createStartTimeLog(userId);
 		}
 	}
@@ -70,10 +66,10 @@ public class AiTalkLogServiceImpl implements AiTalkLogService {
 		if (aiTalkLog.isPresent()) {
 			if (aiTalkLog.get().getStartTime() != null && aiTalkLog.get().getEndTime() != null) {
 				Duration duration = Duration.between(aiTalkLog.get().getStartTime(), aiTalkLog.get().getEndTime());
-				initAiTalkLog(userId);
-				return (int) duration.toMinutes();
+				initAiTalkLog(userRepository.findById(userId).get());
+				return (int)duration.toMinutes();
 			}
-			initAiTalkLog(userId);
+			initAiTalkLog(userRepository.findById(userId).get());
 		}
 		return 0;
 	}

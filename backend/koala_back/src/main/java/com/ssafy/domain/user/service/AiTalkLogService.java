@@ -1,8 +1,10 @@
 package com.ssafy.domain.user.service;
 
+import com.ssafy.domain.user.model.entity.User;
+
 public interface AiTalkLogService {
 
-	void initAiTalkLog(Long userId);
+	void initAiTalkLog(User user);
 
 	void createStartTimeLog(Long userId);
 

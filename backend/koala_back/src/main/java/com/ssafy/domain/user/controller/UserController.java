@@ -43,7 +43,6 @@ public class UserController {
 	@PostMapping
 	public ResponseEntity<?> signUp(@Valid @RequestBody UserSignUpRequest userSignUpRequest) {
 		UserFindResponse userFindResponse = userService.signUp(userSignUpRequest);
-		studyTimeService.initStudyTime(userFindResponse.getUserId());
 		return ResponseEntity.status(HttpStatus.CREATED).body(userFindResponse);
 	}
 
