@@ -60,7 +60,7 @@ public class GlobalExceptionHandler {
 			.build();
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
-	
+
 	@ExceptionHandler(ConstraintViolationException.class)
 	public ResponseEntity<ExceptionResponse> handleConstraintViolationException(ConstraintViolationException ex) {
 		ExceptionResponse response = ExceptionResponse.builder()

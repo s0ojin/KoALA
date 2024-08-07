@@ -18,7 +18,6 @@ public class BoardDetailResponse {
 	private String content;
 	private String nickname;
 	private int commentNum;
-	private int likeCount;
 	private int viewCount;
 	private String createdAt;
 	private Page<BoardCommentResponse> comments;

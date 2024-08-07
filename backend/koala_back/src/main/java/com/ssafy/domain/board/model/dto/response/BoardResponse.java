@@ -14,7 +14,6 @@ public class BoardResponse {
 	private String content;
 	private String nickname;
 	private int commentNum;
-	private int likeCount;
 	private int hit;
 	private String createdAt;
 	private String thumbnail;
