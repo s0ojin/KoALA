@@ -13,7 +13,7 @@ import {
 import { Pie } from 'react-chartjs-2'
 import ChartDataLabels from 'chartjs-plugin-datalabels'
 import { Context } from 'chartjs-plugin-datalabels'
-import { StudyInfoProps } from '@/app/report/_components/ReportStudyInfo'
+import { StudyInfoProps } from '@/app/report/_components/ReportFieldStudyInfo'
 
 ChartJS.register(PieController, ArcElement, Title, Tooltip, Legend)
 

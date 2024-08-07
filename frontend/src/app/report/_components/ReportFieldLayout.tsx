@@ -167,7 +167,7 @@ return (
           </div>
         </div>
       </div>
-      <div className="lg:-translate-y-20 md:translate-y-0 flex gap-4 lg:flex-col md:flex-row justify-between md:w-full lg:w-[40%] xl:w-[30%] md:h-auto lg:h-[47rem] bg-gray-50 md:rounded-t-2xl lg:rounded-2xl p-4">
+      <div className="lg:-translate-y-20 md:translate-y-0 flex gap-4 lg:flex-col md:flex-row justify-between md:w-full lg:w-[40%] xl:w-[30%] md:h-auto lg:h-[52rem] bg-gray-50 md:rounded-t-2xl lg:rounded-2xl p-4">
         <div className="md:w-[18rem] lg:w-full md:h-full lg:h-auto bg-white rounded-2xl shadow-md p-4">
           <p className="text-xl text-primary-400 mb-4">전체 총합</p>
           <ReportFieldPieChart
