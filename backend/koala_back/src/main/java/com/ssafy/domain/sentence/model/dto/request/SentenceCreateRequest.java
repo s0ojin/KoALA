@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 
 @Getter
-public class CreateSentenceRequest {
+public class SentenceCreateRequest {
 
 	@JsonProperty("sentence_text")
 	@NotBlank(message = "문장은 필수 입력 값입니다.")

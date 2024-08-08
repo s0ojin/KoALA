@@ -2,9 +2,11 @@ package com.ssafy.domain.sentence.service;
 
 import java.util.List;
 
+import com.ssafy.domain.sentence.model.dto.request.SentenceCreateRequest;
 import com.ssafy.domain.sentence.model.dto.request.SentenceTestRequest;
 import com.ssafy.domain.sentence.model.dto.response.LectureSentenceResponse;
 import com.ssafy.domain.sentence.model.dto.response.SentenceDictationResponse;
+import com.ssafy.domain.sentence.model.dto.response.SentenceResponse;
 import com.ssafy.domain.sentence.model.dto.response.SentenceTestResponse;
 
 public interface SentenceService {
@@ -12,6 +14,8 @@ public interface SentenceService {
 	List<SentenceDictationResponse> getRandomSentence(String topic);
 
 	List<SentenceTestResponse> testWritingPaper(List<SentenceTestRequest> writingPaper);
+
+	SentenceResponse createSentence(SentenceCreateRequest sentenceCreateRequest);
 
 	String makeResultTag(String correct, String answer);
 
