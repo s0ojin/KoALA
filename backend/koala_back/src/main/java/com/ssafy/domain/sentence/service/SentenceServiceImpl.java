@@ -8,7 +8,9 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssafy.domain.review.model.dto.request.ReviewSaveRequest;
 import com.ssafy.domain.review.model.dto.request.ReviewSentenceRequest;
+import com.ssafy.domain.review.model.dto.response.ReviewSentenceResponse;
 import com.ssafy.domain.review.model.entity.ReviewSentence;
 import com.ssafy.domain.review.repository.ReviewRepository;
 import com.ssafy.domain.sentence.model.dto.request.SentenceCreateRequest;
@@ -106,8 +108,16 @@ public class SentenceServiceImpl implements SentenceService {
 	@Override
 	@Transactional
 	public SentenceResponse createSentence(SentenceCreateRequest sentenceCreateRequest) {
-		return SentenceResponse.toDto(
-			sentenceRepository.save(sentenceCreateRequest.toEntity(userInfoProvider.getCurrentUser())));
+		User user = userInfoProvider.getCurrentUser();
+		Sentence sentence = sentenceCreateRequest.toEntity(user);
+		sentenceRepository.save(sentence);
+
+		ReviewSaveRequest reviewSaveRequest = ReviewSaveRequest.builder()
+			.sentenceId(sentence.getSentenceId())
+			.build();
+		reviewRepository.save(reviewSaveRequest.toReviewSentenceEntity(sentence, user));
+
+		return SentenceResponse.toDto(sentence);
 	}
 
 	@Override
