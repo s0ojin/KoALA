@@ -80,19 +80,18 @@ public class ImageServiceImpl implements ImageService {
 		String passportKey = null;
 
 		// passportKey 확인
-
 		passportKey = readKey();
 		try {
-			System.out.println(passportKey);
+			// passportKey 유효한지 확인
 			checkSpelling("테스트 문장", passportKey);
+			log.info(passportKey + "는 유효합니다.");
 		} catch (Exception e) {
 			try {
-				System.out.println(passportKey);
 				passportKey = updateKey();
-				log.info("토큰 값 문제 있어서 다시 받아요");
+				log.info(passportKey+"를 업데이트 하였습니다.");
 			} catch (IOException updateError) {
 				resultTexts = texts;
-				log.info("또 문제 생겼어요");
+				log.warn("passportKey 오류로 맞춤법 검사를 건너뜁니다.");
 			}
 		}
 
@@ -119,11 +118,9 @@ public class ImageServiceImpl implements ImageService {
 		for (String line : lines) {
 			if (line.startsWith("\"") && line.endsWith("\"")) {
 				String sentence = line.substring(1, line.length() - 1);
-				System.out.println(sentence+"를 추출하였습니다.");
 				int length = sentence.length();
 				if (length >= 5 && length <= 36) {
 					sentences.add(sentence);
-					System.out.println(sentence+"를 추가합니다.");
 				}
 			}
 		}
@@ -140,7 +137,7 @@ public class ImageServiceImpl implements ImageService {
 		connection.setRequestProperty("User-Agent", USER_AGENT);
 		connection.setRequestProperty("Referer", REFERER);
 		int responseCode = connection.getResponseCode();
-		// System.out.println("Response Code : " + responseCode);
+		log.info("Response Code : " + responseCode);
 
 		if (responseCode == HttpURLConnection.HTTP_OK) { // 200이면 정상
 			BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
