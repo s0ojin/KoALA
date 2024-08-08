@@ -12,9 +12,6 @@ import com.ssafy.domain.translation.model.dto.request.TranslationRequest;
 import com.ssafy.domain.translation.model.dto.response.GPTResponse;
 import com.ssafy.domain.translation.model.dto.response.TranslationResponse;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @Service
 public class TranslationServiceImpl implements TranslationService {
 	@Value("${openai.api.key}")
