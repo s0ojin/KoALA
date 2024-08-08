@@ -16,9 +16,8 @@ public class CorsConfig {
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration config = new CorsConfiguration();
 		config.setAllowCredentials(true);
-		// config.setAllowedOrigins(List.of("http://localhost:3000"));
-		// TODO: 나중에 프론트 url이 정확히 정해지면 제한 두는게 좋을 것 같습니다 ^^
-		config.setAllowedOriginPatterns(List.of("*"));
+		config.setAllowedOrigins(List.of("http://localhost:3000", "https://ko-ala.site"));
+		// config.setAllowedOriginPatterns(List.of("*"));
 		config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
 		config.setAllowedHeaders(List.of("*"));
 		config.setExposedHeaders(List.of("*"));
