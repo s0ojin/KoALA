@@ -1,8 +1,13 @@
 package com.ssafy.domain.user.service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssafy.domain.user.model.dto.response.StudyTimeByDayResponse;
 import com.ssafy.domain.user.model.dto.response.StudyTimeResponse;
 import com.ssafy.domain.user.model.dto.response.TotalStudyTimeResponse;
 import com.ssafy.domain.user.model.entity.StudyTime;
@@ -23,22 +28,32 @@ public class StudyTimeServiceImpl implements StudyTimeService {
 	@Override
 	public TotalStudyTimeResponse getStudyTime() {
 		Long userId = userInfoProvider.getCurrentUserId();
-		StudyTime lastWeek = studyTimeRepository.findByUserIdAndTimeCalType(userId, 0);
-		StudyTime thisWeek = studyTimeRepository.findByUserIdAndTimeCalType(userId, 1);
-		StudyTime total = studyTimeRepository.findByUserIdAndTimeCalType(userId, 2);
-		return TotalStudyTimeResponse.builder()
-			.lastWeek(StudyTimeResponse.toDto(lastWeek))
-			.thisWeek(StudyTimeResponse.toDto(thisWeek))
-			.total(StudyTimeResponse.toDto(total))
-			.build();
-	}
 
+		List<StudyTimeResponse> thisStudyTimes = new ArrayList<>();
+		for (int i = 1; i < 8; i++) {
+			thisStudyTimes.add(StudyTimeResponse.toDto(studyTimeRepository.findByUserIdAndTimeCalType(userId, i)));
+		}
+		StudyTimeByDayResponse thisWeek = StudyTimeByDayResponse.toDto(thisStudyTimes);
+
+		List<StudyTimeResponse> lastStudyTimes = new ArrayList<>();
+		for (int i = 8; i < 15; i++) {
+			lastStudyTimes.add(StudyTimeResponse.toDto(studyTimeRepository.findByUserIdAndTimeCalType(userId, i)));
+		}
+		StudyTimeByDayResponse lastWeek = StudyTimeByDayResponse.toDto(lastStudyTimes);
+
+		StudyTimeResponse total = StudyTimeResponse.toDto(studyTimeRepository.findByUserIdAndTimeCalType(userId, 0));
+
+		return TotalStudyTimeResponse.toDto(lastWeek, thisWeek, total, LocalDateTime.now().getDayOfWeek());
+	}
 
 	@Override
 	@Transactional
 	public void initStudyTime(Long userId) {
-		// 0: 지난주, 1: 이번 주, 2: 총 시간
-		for (int i = 0; i < 3; i++) {
+		/*총 시간(0)
+		이번 주: 월(1)/화(2)/수(3)/목(4)/금(5)/토(6)/일(7)
+		지난주: 월(8)/화(9)/수(10)/목(11)/금(12)/토(13)/일(14)*/
+
+		for (int i = 0; i < 15; i++) {
 			StudyTime studyTime = StudyTime.builder()
 				.timeCalType(i)
 				.userId(userId)
@@ -84,23 +99,28 @@ public class StudyTimeServiceImpl implements StudyTimeService {
 		increaseTotalStudyTime(userId, 0, talkMinutes);
 	}
 
-
 	@Override
 	@Transactional
 	public void increaseTotalStudyTime(Long userId, Integer studyType, Integer studyTime) {
+		Integer day = LocalDateTime.now().getDayOfWeek().getValue();
 		StudyTime userStudyTime = studyTimeRepository.findByUserIdAndTimeCalType(userId, 2);
+		StudyTime userStudyTimeByDay = studyTimeRepository.findByUserIdAndTimeCalType(userId, day);
 		switch (studyType) {
 			case 0: // AI 회화
 				userStudyTime.increaseTalkTime(studyTime);
+				userStudyTimeByDay.increaseTalkTime(studyTime);
 				break;
 			case 1: // 받아쓰기
 				userStudyTime.increaseSentenceNum(studyTime);
+				userStudyTimeByDay.increaseSentenceNum(studyTime);
 				break;
 			case 2: // 강의 수
 				userStudyTime.increaseLectureNum();
+				userStudyTimeByDay.increaseLectureNum();
 				break;
 		}
 		studyTimeRepository.save(userStudyTime);
+		studyTimeRepository.save(userStudyTimeByDay);
 	}
 
 }
