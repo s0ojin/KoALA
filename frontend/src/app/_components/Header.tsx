@@ -11,7 +11,6 @@ import { getUserInfo } from '@/app/apis/auth'
 import useSWR from 'swr'
 
 export default function Header() {
-  const [isLogin, setIsLogin] = useState(true)
   const { data: userInfo } = useSWR('/users', getUserInfo)
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
   const userMenuRef = useRef<HTMLDivElement>(null)
