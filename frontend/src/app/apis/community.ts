@@ -2,7 +2,7 @@ import { ApiError } from '@/app/utils/customError'
 
 const baseUrl = 'http://localhost:8080/api'
 const token =
-  'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiYXV0aCI6IlJPTEVfdXNlciIsInR5cGUiOiJhY2Nlc3MiLCJleHAiOjE3MjMwNzI2MjZ9.w-LhcXwd5efd42vMbB7ETj7B5kOsopdjJUmTBhTpv_c'
+  'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiYXV0aCI6IlJPTEVfdXNlciIsInR5cGUiOiJhY2Nlc3MiLCJleHAiOjE3MjMwODQ3MjN9.0faUQzpTKcjceIP2R9LNOyFx1vO4N1PQUHar6keX07U'
 interface SortOption {
   empty: boolean
   unsorted: boolean
@@ -117,7 +117,6 @@ export const postPostComment = async (
 }
 
 export const postPost = async (url: string, data: FormData) => {
-  console.log(data)
   const response = await fetch(`${baseUrl}${url}`, {
     method: 'POST',
     headers: {
@@ -127,4 +126,29 @@ export const postPost = async (url: string, data: FormData) => {
   })
 
   console.log(response)
+}
+
+export const getPostList = async (url: string) => {
+  try {
+    const response = await fetch(`${baseUrl}${url}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    })
+
+    if (!response.ok) {
+      throw new ApiError(
+        response.status,
+        `Network response was not ok: ${response.status} ${response.statusText}`
+      )
+    }
+
+    const data = await response.json()
+    return data
+  } catch (error: any) {
+    console.error(error)
+    throw error
+  }
 }
