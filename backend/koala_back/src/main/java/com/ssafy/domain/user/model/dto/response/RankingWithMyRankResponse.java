@@ -11,10 +11,10 @@ import lombok.Getter;
 @Builder
 public class RankingWithMyRankResponse {
 
-	List<RankingResponse> rankings;
+	private List<RankingResponse> rankings;
 
 	@JsonProperty("my_rank")
-	Integer myRank;
+	private Integer myRank;
 
 	@Builder
 	public static RankingWithMyRankResponse toDto(List<RankingResponse> rankings, Integer myRank) {

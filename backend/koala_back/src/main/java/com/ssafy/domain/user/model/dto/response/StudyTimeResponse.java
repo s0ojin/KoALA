@@ -16,13 +16,13 @@ public class StudyTimeResponse {
 	@JsonProperty("user_id")
 	private Long userId;
 
-	@JsonProperty("talk_time")
+	@JsonProperty("speaking")
 	private Integer talkTime;
 
-	@JsonProperty("sentence_num")
+	@JsonProperty("writing")
 	private Integer sentenceNum;
 
-	@JsonProperty("lecture_num")
+	@JsonProperty("lectures")
 	private Integer lectureNum;
 
 	public static StudyTimeResponse toDto(StudyTime studyTime) {
