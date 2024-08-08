@@ -17,7 +17,6 @@ import com.ssafy.domain.sentence.model.dto.request.SentenceCreateRequest;
 import com.ssafy.domain.sentence.model.dto.request.SentenceTestRequest;
 import com.ssafy.domain.sentence.model.dto.response.LectureSentenceResponse;
 import com.ssafy.domain.sentence.model.dto.response.SentenceDictationResponse;
-import com.ssafy.domain.sentence.model.dto.response.SentenceResponse;
 import com.ssafy.domain.sentence.model.dto.response.SentenceTestResponse;
 import com.ssafy.domain.sentence.model.entity.Sentence;
 import com.ssafy.domain.sentence.repository.LectureSentenceRepository;
@@ -107,7 +106,7 @@ public class SentenceServiceImpl implements SentenceService {
 
 	@Override
 	@Transactional
-	public SentenceResponse createSentence(SentenceCreateRequest sentenceCreateRequest) {
+	public ReviewSentenceResponse createSentence(SentenceCreateRequest sentenceCreateRequest) {
 		User user = userInfoProvider.getCurrentUser();
 		Sentence sentence = sentenceCreateRequest.toEntity(user);
 		sentenceRepository.save(sentence);
@@ -115,9 +114,9 @@ public class SentenceServiceImpl implements SentenceService {
 		ReviewSaveRequest reviewSaveRequest = ReviewSaveRequest.builder()
 			.sentenceId(sentence.getSentenceId())
 			.build();
-		reviewRepository.save(reviewSaveRequest.toReviewSentenceEntity(sentence, user));
 
-		return SentenceResponse.toDto(sentence);
+		return ReviewSentenceResponse.toDto(
+			reviewRepository.save(reviewSaveRequest.toReviewSentenceEntity(sentence, user)));
 	}
 
 	@Override

@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.domain.review.model.dto.response.ReviewSentenceResponse;
 import com.ssafy.domain.sentence.model.dto.request.SentenceCreateRequest;
 import com.ssafy.domain.sentence.model.dto.request.SentenceTestRequest;
 import com.ssafy.domain.sentence.model.dto.response.SentenceDictationResponse;
-import com.ssafy.domain.sentence.model.dto.response.SentenceResponse;
 import com.ssafy.domain.sentence.model.dto.response.SentenceTestResponse;
 import com.ssafy.domain.sentence.service.SentenceService;
 import com.ssafy.domain.user.service.StudyTimeService;
@@ -53,8 +53,8 @@ public class SentenceController {
 	@Operation(summary = "사용자 문장 생성")
 	@PostMapping
 	public ResponseEntity<?> createSentence(@Valid @RequestBody SentenceCreateRequest sentenceCreateRequest) {
-		SentenceResponse sentenceResponse = sentenceService.createSentence(sentenceCreateRequest);
-		return ResponseEntity.status(HttpStatus.CREATED).body(sentenceResponse);
+		ReviewSentenceResponse reviewSentenceResponse = sentenceService.createSentence(sentenceCreateRequest);
+		return ResponseEntity.status(HttpStatus.CREATED).body(reviewSentenceResponse);
 	}
 
 }
