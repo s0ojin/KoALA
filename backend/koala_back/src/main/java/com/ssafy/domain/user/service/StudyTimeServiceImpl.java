@@ -1,5 +1,8 @@
 package com.ssafy.domain.user.service;
 
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -89,23 +92,26 @@ public class StudyTimeServiceImpl implements StudyTimeService {
 		increaseTotalStudyTime(userId, 0, talkMinutes);
 	}
 
-
 	@Override
 	@Transactional
 	public void increaseTotalStudyTime(Long userId, Integer studyType, Integer studyTime) {
+		Integer day = LocalDateTime.now().getDayOfWeek().getValue() + 2;
 		StudyTime userStudyTime = studyTimeRepository.findByUserIdAndTimeCalType(userId, 2);
+		StudyTime userStudyTimeByDay = studyTimeRepository.findByUserIdAndTimeCalType(userId, day);
 		switch (studyType) {
 			case 0: // AI 회화
 				userStudyTime.increaseTalkTime(studyTime);
+				userStudyTimeByDay.increaseTalkTime(studyTime);
 				break;
 			case 1: // 받아쓰기
 				userStudyTime.increaseSentenceNum(studyTime);
-				break;
+				userStudyTimeByDay.increaseSentenceNum(studyTime);
 			case 2: // 강의 수
 				userStudyTime.increaseLectureNum();
-				break;
+				userStudyTimeByDay.increaseLectureNum();
 		}
 		studyTimeRepository.save(userStudyTime);
+		studyTimeRepository.save(userStudyTimeByDay);
 	}
 
 }
