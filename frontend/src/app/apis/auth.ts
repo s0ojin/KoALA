@@ -1,11 +1,12 @@
-export const postSignUp = async (): Promise<any> => {
+interface SignUpRequestBody {
+  login_id: string
+  password: string
+  name: string
+  nickname: string
+}
+
+export const postSignUp = async (payload: SignUpRequestBody) => {
   try {
-    const payload = {
-      login_id: 'dddd',
-      password: '비밀번호',
-      name: '이주형',
-      nickname: '주업튀',
-    }
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/users`, {
       method: 'POST',
       headers: {
@@ -15,13 +16,11 @@ export const postSignUp = async (): Promise<any> => {
     })
 
     if (!response.ok) {
-      console.log(response.status)
-      throw new Error('Network response was not ok ' + response.statusText)
+      console.log(response)
     }
     const data = await response.json()
-    return data
+    return { data, status: response.status }
   } catch (error) {
     console.error('There was a problem with the fetch operation:', error)
-    throw error
   }
 }
