@@ -37,8 +37,13 @@ public class StudyTimeServiceImpl implements StudyTimeService {
 	@Override
 	@Transactional
 	public void initStudyTime(Long userId) {
-		// 0: 지난주, 1: 이번 주, 2: 총 시간
-		for (int i = 0; i < 3; i++) {
+		/*지난주(0)/이번 주(1)/총 시간(2)
+		이번 주
+		월(3)/화(4)/수(5)/목(6)/금(7)/토(8)/일(9)
+		지난주
+		월(10)/화(11)/수(12)/목(13)/금(14)/토(15)/일(16)*/
+
+		for (int i = 0; i < 17; i++) {
 			StudyTime studyTime = StudyTime.builder()
 				.timeCalType(i)
 				.userId(userId)
