@@ -1,5 +1,6 @@
 package com.ssafy.global.config;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 import org.springframework.context.annotation.Bean;
@@ -28,7 +29,6 @@ public class SecurityConfig {
 
 	private final JwtTokenProvider jwtTokenProvider;
 	private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
-	private final CorsConfigurationSource corsConfigurationSource;
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -37,25 +37,7 @@ public class SecurityConfig {
 			.httpBasic(HttpBasicConfigurer::disable)
 			// REST API에서는 보통 CSRF 보호가 필요 X
 			.csrf(CsrfConfigurer::disable)
-			.cors((corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource() {
-
-				@Override
-				public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
-
-					CorsConfiguration configuration = new CorsConfiguration();
-
-					configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
-					configuration.setAllowedMethods(Collections.singletonList("*"));
-					configuration.setAllowCredentials(true);
-					configuration.setAllowedHeaders(Collections.singletonList("*"));
-					configuration.setMaxAge(3600L);
-
-					configuration.setExposedHeaders(Collections.singletonList("Authorization"));
-
-					return configuration;
-				}
-			})))
-			// HTTP 요청에 대한 권한을 설정
+		// HTTP 요청에 대한 권한을 설정
 			// JWT를 사용하여 상태를 유지하기 때문에 서버 측 세션이 필요 X
 			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			// HTTP 요청에 대한 권한을 설정
