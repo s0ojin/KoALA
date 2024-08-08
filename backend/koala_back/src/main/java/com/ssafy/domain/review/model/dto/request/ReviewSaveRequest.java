@@ -6,9 +6,11 @@ import com.ssafy.domain.sentence.model.entity.Sentence;
 import com.ssafy.domain.user.model.entity.User;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@Builder
 public class ReviewSaveRequest {
 
 	@NotNull(message = "리뷰 내용은 필수 입력 값입니다.")
