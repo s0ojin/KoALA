@@ -1,5 +1,4 @@
-import ReviewAreaSearchBar from '@/app/review/_components/ReviewAreaSearchBar'
-import ReviewAreaFilter from '@/app/review/_components/ReviewAreaFilter'
+import ReviewAreaSearch from '@/app/review/_components/ReviewAreaSearch'
 import ReviewAreaSentence from '@/app/review/_components/ReviewAreaSetence'
 import { getReviewSentence } from '@/app/apis/review'
 import { SentenceContent } from '@/app/apis/review'
@@ -19,7 +18,7 @@ export interface Category {
 export const categoryList = [
   { id: '1', content: '전체' },
   { id: '2', content: '일상' },
-  { id: '3', content: '헹정' },
+  { id: '3', content: '행정' },
   { id: '4', content: '교육' },
   { id: '5', content: '사용자' },
 ]
@@ -45,8 +44,7 @@ export default async function ReviewArea({ searchParams }: ReviewProps) {
   return (
     <div className="h-full flex flex-col bg-white w-full rounded-t-3xl p-6 gap-4">
       <div className="flex w-full h-12">
-        <ReviewAreaFilter />
-        <ReviewAreaSearchBar />
+        <ReviewAreaSearch />
       </div>
       <hr className="bg-gray-200" />
       <div className="w-full pr-4 overflow-auto flex flex-col gap-2">
