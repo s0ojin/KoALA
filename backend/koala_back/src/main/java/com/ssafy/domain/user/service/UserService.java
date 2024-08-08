@@ -13,10 +13,6 @@ public interface UserService {
 
 	JwtToken signIn(String loginId, String password);
 
-	boolean checkLoginId(String loginId);
-
-	boolean checkNickname(String nickname);
-
 	UserResponse getUser();
 
 	UserResponse updateUser(UserUpdateRequest userUpdateRequest);
