@@ -10,9 +10,9 @@ interface LoginRequestBody {
   password: string
 }
 
-export const postSignUp = async (payload: SignUpRequestBody) => {
+export const postSignUp = async (url: string, payload: SignUpRequestBody) => {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/users`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${url}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -30,18 +30,15 @@ export const postSignUp = async (payload: SignUpRequestBody) => {
   }
 }
 
-export const postLogin = async (payload: LoginRequestBody) => {
+export const postLogin = async (url: string, payload: LoginRequestBody) => {
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/users/login`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      }
-    )
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${url}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    })
 
     if (!response.ok) {
       console.log(response)
