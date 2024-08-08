@@ -27,13 +27,13 @@ ChartJS.register(
   Legend
 )
 
-interface thisWeekDataProps {
+interface ThisWeekDataProps {
   thisWeekData: WeekData
 }
 
 export default function ReportFieldBarChart({
   thisWeekData,
-}: thisWeekDataProps) {
+}: ThisWeekDataProps) {
   const dictationData: number[] = [
     thisWeekData.Mon.writing,
     thisWeekData.Tue.writing,
