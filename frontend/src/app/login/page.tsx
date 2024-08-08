@@ -26,7 +26,7 @@ export default function Login() {
       login_id: data.login_id,
       password: data.password,
     }
-    const res = await postLogin(payload)
+    const res = await postLogin('/users/login', payload)
     if (res?.status === 200) {
       alert('로그인이 완료되었습니다!')
       router.push('/')
