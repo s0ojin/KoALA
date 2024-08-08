@@ -2,7 +2,7 @@ import { ApiError } from '@/app/utils/customError'
 
 const baseUrl = 'https://ko-ala.site/api'
 const token =
-  'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0amRndXMxMjM0IiwiYXV0aCI6IlJPTEVfdXNlciIsInR5cGUiOiJhY2Nlc3MiLCJleHAiOjE3MjMxMTIyODd9.n9gBeviI43W3ISlpUHEkCn1rKlXObmtbaV3_caKmr24'
+  'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0amRndXMxMjM0IiwiYXV0aCI6IlJPTEVfdXNlciIsInR5cGUiOiJhY2Nlc3MiLCJleHAiOjE3MjMxMzQ2MjN9.WiXh1L2xT7zehh_x_NPmUaoXg0Bq2I_cjDoQHQ-0nA4'
 
 export interface SentenceContent {
   review_sentence_id: number
