@@ -9,14 +9,14 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-@Configuration
+// @Configuration
 public class CorsConfig {
 
-	@Bean
+	// @Bean
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration config = new CorsConfiguration();
 		config.setAllowCredentials(true);
-		// config.setAllowedOrigins(List.of("http://localhost:3000", "https://ko-ala.site"));
+		// config.setAllowedOrigins(List.of("http://localhost:3000"));
 		config.setAllowedOriginPatterns(List.of("*"));
 		config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
 		config.setAllowedHeaders(List.of("*"));
@@ -27,7 +27,7 @@ public class CorsConfig {
 		return source;
 	}
 
-	@Bean
+	// @Bean
 	public CorsFilter corsFilter() {
 		return new CorsFilter(corsConfigurationSource());
 	}
