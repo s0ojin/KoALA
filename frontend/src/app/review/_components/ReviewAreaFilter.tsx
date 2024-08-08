@@ -3,6 +3,8 @@
 import FilterIcon from '/public/icons/filter-square.svg'
 import { useState } from 'react'
 import { motion, Variants } from 'framer-motion'
+import { useRouter } from 'next/navigation'
+import { Category, categoryList } from '@/app/review/_components/ReviewArea'
 
 const itemVariants: Variants = {
   open: {
@@ -36,6 +38,23 @@ const ulVariants: Variants = {
 
 export default function ReviewMenuFilter() {
   const [isOpen, setIsOpen] = useState(false)
+  const router = useRouter()
+
+  const handleFilter = (e: React.MouseEvent<HTMLLIElement>) => {
+    e.preventDefault()
+    router.push('/reviews')
+  }
+
+  const LiElement = ({ id, content }: Category) => (
+    <motion.li
+      id={id}
+      variants={itemVariants}
+      className="text-center hover:text-white py-[0.5rem] hover:bg-gray-400"
+      onClick={handleFilter}
+    >
+      <p>{content}</p>
+    </motion.li>
+  )
 
   return (
     <motion.nav
@@ -46,46 +65,25 @@ export default function ReviewMenuFilter() {
       <motion.button
         whileTap={{ scale: 0.97 }}
         onClick={() => setIsOpen(!isOpen)}
-        className="w-[11rem] h-full bg-primary-400 rounded-[4.5rem] flex items-center"
+        className="w-[11rem] h-full bg-primary-400 rounded-[4.5rem] flex items-center pr-5"
       >
         <FilterIcon width={24} height={24} className="ml-[1rem]" />
-        <p className="m-auto text-white">슈퍼마켓</p>
+        <p className="m-auto text-white">필터</p>
       </motion.button>
       <motion.ul
         className="bg-white mt-1"
         variants={ulVariants}
         style={{ pointerEvents: isOpen ? 'auto' : 'none' }}
       >
-        <motion.li
-          variants={itemVariants}
-          className="text-center hover:text-white py-[0.5rem] hover:bg-gray-400"
-        >
-          Item 1{' '}
-        </motion.li>
-        <motion.li
-          variants={itemVariants}
-          className="text-center hover:text-white py-[0.5rem] hover:bg-gray-400"
-        >
-          Item 2{' '}
-        </motion.li>
-        <motion.li
-          variants={itemVariants}
-          className="text-center hover:text-white py-[0.5rem] hover:bg-gray-400"
-        >
-          Item 3{' '}
-        </motion.li>
-        <motion.li
-          variants={itemVariants}
-          className="text-center hover:text-white py-[0.5rem] hover:bg-gray-400"
-        >
-          Item 4{' '}
-        </motion.li>
-        <motion.li
-          variants={itemVariants}
-          className="text-center hover:text-white py-[0.5rem] hover:bg-gray-400"
-        >
-          Item 5{' '}
-        </motion.li>
+        {categoryList.map((category) => {
+          return (
+            <LiElement
+              key={category.id}
+              id={category.id}
+              content={category.content}
+            />
+          )
+        })}
       </motion.ul>
     </motion.nav>
   )
