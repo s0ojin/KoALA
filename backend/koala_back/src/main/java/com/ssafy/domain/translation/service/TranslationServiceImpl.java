@@ -35,6 +35,8 @@ public class TranslationServiceImpl implements TranslationService {
 			.bodyToMono(GPTResponse.class)
 			.block();
 
-		return new TranslationResponse(translationResult.getChoices().get(0).getMessage().getContent());
+		return TranslationResponse.builder()
+			.translationSentence(translationResult.getChoices().get(0).getMessage().getContent())
+			.build();
 	}
 }
