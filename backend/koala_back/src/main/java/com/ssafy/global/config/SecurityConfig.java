@@ -1,5 +1,8 @@
 package com.ssafy.global.config;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -10,11 +13,14 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 import com.ssafy.global.auth.jwt.JwtAuthenticationFilter;
 import com.ssafy.global.auth.jwt.JwtTokenProvider;
 import com.ssafy.global.error.exception.CustomAuthenticationEntryPoint;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -31,6 +37,7 @@ public class SecurityConfig {
 			.httpBasic(HttpBasicConfigurer::disable)
 			// REST API에서는 보통 CSRF 보호가 필요 X
 			.csrf(CsrfConfigurer::disable)
+		// HTTP 요청에 대한 권한을 설정
 			// JWT를 사용하여 상태를 유지하기 때문에 서버 측 세션이 필요 X
 			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			// HTTP 요청에 대한 권한을 설정
