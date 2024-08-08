@@ -83,22 +83,6 @@ public class UserController {
 		}
 	}
 
-	@Operation(summary = "아이디 중복확인")
-	@GetMapping("/check/check-id/{loginId}")
-	public ResponseEntity<?> checkLoginId(@PathVariable("loginId") String loginId) {
-		boolean isExist = userService.checkLoginId(loginId);
-		String message = isExist ? "ID is already in use." : "ID can be used.";
-		return ResponseEntity.status(HttpStatus.OK).body(Map.of("available", !isExist, "message", message));
-	}
-
-	@Operation(summary = "닉네임 중복확인")
-	@GetMapping("/check/check-name/{nickname}")
-	public ResponseEntity<?> checkNickname(@PathVariable("nickname") String nickname) {
-		boolean isExist = userService.checkNickname(nickname);
-		String message = isExist ? "Not Available Nickname" : "Available Nickname";
-		return ResponseEntity.status(HttpStatus.OK).body(Map.of("available", !isExist, "message", message));
-	}
-
 	@Operation(summary = "특정 유저 정보 조회")
 	@GetMapping
 	public ResponseEntity<?> getUser() {
