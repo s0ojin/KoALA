@@ -10,12 +10,6 @@ import lombok.Getter;
 @Builder
 public class StudyTimeResponse {
 
-	@JsonProperty("time_cal_type")
-	private Integer timeCalType;
-
-	@JsonProperty("user_id")
-	private Long userId;
-
 	@JsonProperty("speaking")
 	private Integer talkTime;
 
@@ -27,8 +21,6 @@ public class StudyTimeResponse {
 
 	public static StudyTimeResponse toDto(StudyTime studyTime) {
 		return StudyTimeResponse.builder()
-			.timeCalType(studyTime.getTimeCalType())
-			.userId(studyTime.getUserId())
 			.talkTime(studyTime.getTalkTime())
 			.sentenceNum(studyTime.getSentenceNum())
 			.lectureNum(studyTime.getLectureNum())

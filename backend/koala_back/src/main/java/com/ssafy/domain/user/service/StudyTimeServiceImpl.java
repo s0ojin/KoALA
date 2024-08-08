@@ -113,9 +113,11 @@ public class StudyTimeServiceImpl implements StudyTimeService {
 			case 1: // 받아쓰기
 				userStudyTime.increaseSentenceNum(studyTime);
 				userStudyTimeByDay.increaseSentenceNum(studyTime);
+				break;
 			case 2: // 강의 수
 				userStudyTime.increaseLectureNum();
 				userStudyTimeByDay.increaseLectureNum();
+				break;
 		}
 		studyTimeRepository.save(userStudyTime);
 		studyTimeRepository.save(userStudyTimeByDay);
