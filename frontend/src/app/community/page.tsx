@@ -8,12 +8,14 @@ interface CommunityProps {
   searchParams: {
     page?: string
     tab?: string
+    search?: string
   }
 }
 
 export default async function Community({ searchParams }: CommunityProps) {
   const currnetPage = searchParams.page || '0'
   const tab = searchParams.tab || 'total-post'
+  const search = searchParams.search
   let postList = null
 
   if (tab === 'total-post') {
@@ -28,7 +30,11 @@ export default async function Community({ searchParams }: CommunityProps) {
     )
   }
 
-  console.log(postList)
+  if (search) {
+    postList = await getPostList(
+      `/boards/search?keyword=${search}&page=${currnetPage}&size=10`
+    )
+  }
 
   return (
     <div className="flex flex-col items-center gap-5">
@@ -48,7 +54,10 @@ export default async function Community({ searchParams }: CommunityProps) {
           )}
         </div>
         <div>
-          <Pagination totalPages={postList?.totalPages} />
+          <Pagination
+            totalPages={postList?.totalPages}
+            type={search ? 'search' : 'tab'}
+          />
         </div>
       </div>
     </div>

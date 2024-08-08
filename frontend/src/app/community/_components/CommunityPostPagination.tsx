@@ -6,28 +6,43 @@ import MoveRightButton from '/public/icons/arrow-right-no-line.svg'
 
 interface CommunityPaginationProps {
   totalPages: number
+  type: string
 }
 
 export default function CommunityPostPagination({
   totalPages = 0,
+  type,
 }: CommunityPaginationProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
   const selectedPage = Number(searchParams.get('page')) | 0
   const tabId = searchParams.get('tab') || 'total-post'
+  const search = searchParams.get('search') || ''
 
   const handleClickPrevBtn = () => {
     if (selectedPage <= 0) return
-    router.replace(`/community?page=${selectedPage - 1}&tab=${tabId}`)
+    if (type === 'search') {
+      router.replace(`/community?search=${search}&page=${selectedPage - 1}`)
+    } else {
+      router.replace(`/community?page=${selectedPage - 1}&tab=${tabId}`)
+    }
   }
 
   const handleClickNumBtn = (index: number) => {
-    router.replace(`/community?page=${index}&tab=${tabId}`)
+    if (type === 'search') {
+      router.replace(`/community?search=${search}&page=${index}`)
+    } else {
+      router.replace(`/community?page=${index}&tab=${tabId}`)
+    }
   }
 
   const handleClickNextBtn = () => {
     if (selectedPage + 1 >= totalPages) return
-    router.replace(`/community?page=${selectedPage + 1}&tab=${tabId}`)
+    if (type === 'search') {
+      router.replace(`/community?search=${search}&page=${selectedPage + 1}`)
+    } else {
+      router.replace(`/community?page=${selectedPage + 1}&tab=${tabId}`)
+    }
   }
 
   return (
