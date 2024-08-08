@@ -4,11 +4,12 @@ import LectureNoteIcon from '/public/icons/notebook.svg'
 import ReportIcon from '/public/icons/graph.svg'
 import LogoutIcon from '/public/icons/logout.svg'
 import EditIcon from '/public/icons/edit-pencil.svg'
+import { postLogout } from '@/app/apis/auth'
+import { deleteCookie } from 'cookies-next'
 
 const USER_DROPDOWN_MENU_LIST = [
   { id: 'lecture-note', label: '강의노트', icon: <LectureNoteIcon /> },
   { id: 'report', label: '학습 리포트', icon: <ReportIcon /> },
-  { id: 'logout', label: '로그아웃', icon: <LogoutIcon /> },
 ]
 
 interface UserDropdownMenuProps {
@@ -23,6 +24,17 @@ export default function UserDropdownMenu({
   const handleMenuClick = (path: string) => {
     router.push(path)
     setIsUserMenuOpen(false)
+  }
+
+  const handleLogout = async () => {
+    const res = await postLogout('/users/logout')
+    if (res?.status === 200) {
+      alert('로그아웃이 완료되었습니다!')
+      deleteCookie('accessToken')
+      deleteCookie('refreshToken')
+      router.push('/')
+      setIsUserMenuOpen(false)
+    }
   }
 
   return (
@@ -44,20 +56,27 @@ export default function UserDropdownMenu({
         </div>
       </header>
       <ul className="flex flex-col gap-2">
-        {USER_DROPDOWN_MENU_LIST.map((item, idx) => (
-          <>
-            {idx === USER_DROPDOWN_MENU_LIST.length - 1 && <hr />}
-            <li key={item.id} className="py-2">
-              <button
-                onClick={() => handleMenuClick(`/${item.id}`)}
-                className="text-gray-700 flex gap-3 hover:text-gray-900 w-full text-left"
-              >
-                <div className="w-6">{item.icon}</div>
-                <p>{item.label}</p>
-              </button>
-            </li>
-          </>
+        {USER_DROPDOWN_MENU_LIST.map((item) => (
+          <li key={item.id} className="py-2">
+            <button
+              onClick={() => handleMenuClick(`/${item.id}`)}
+              className="text-gray-700 flex gap-3 hover:text-gray-900 w-full text-left"
+            >
+              <div className="w-6">{item.icon}</div>
+              <p>{item.label}</p>
+            </button>
+          </li>
         ))}
+        <hr />
+        <li className="py-2">
+          <button
+            onClick={handleLogout}
+            className="text-gray-700 flex gap-3 hover:text-gray-900 w-full text-left"
+          >
+            <LogoutIcon className="w-6" />
+            <p>로그아웃</p>
+          </button>
+        </li>
       </ul>
     </div>
   )
