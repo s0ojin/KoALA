@@ -55,7 +55,10 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public UserFindResponse signUp(UserSignUpRequest userSignUpRequest) {
 		if (userRepository.existsByLoginId(userSignUpRequest.getLoginId())) {
-			throw new IllegalArgumentException("이미 사용 중인 사용자 아이디입니다.");
+			throw new IllegalArgumentException("아이디 중복");
+		}
+		if (userRepository.existsByNickname(userSignUpRequest.getNickname())) {
+			throw new IllegalArgumentException("닉네임 중복");
 		}
 		String encodedPassword = passwordEncoder.encode(userSignUpRequest.getPassword());
 		Auth auth = authRepository.findByAuthName("user");
@@ -80,16 +83,6 @@ public class UserServiceImpl implements UserService {
 		// 인증 정보를 기반으로 JWT 토큰 생성
 		JwtToken jwtToken = jwtTokenProvider.generateToken(authentication);
 		return jwtToken;
-	}
-
-	@Override
-	public boolean checkLoginId(String loginId) {
-		return userRepository.existsByLoginId(loginId);
-	}
-
-	@Override
-	public boolean checkNickname(String nickname) {
-		return userRepository.existsByNickname(nickname);
 	}
 
 	@Override
