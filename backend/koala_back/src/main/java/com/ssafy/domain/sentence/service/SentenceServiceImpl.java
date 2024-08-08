@@ -8,9 +8,12 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssafy.domain.review.model.dto.request.ReviewSaveRequest;
 import com.ssafy.domain.review.model.dto.request.ReviewSentenceRequest;
+import com.ssafy.domain.review.model.dto.response.ReviewSentenceResponse;
 import com.ssafy.domain.review.model.entity.ReviewSentence;
 import com.ssafy.domain.review.repository.ReviewRepository;
+import com.ssafy.domain.sentence.model.dto.request.SentenceCreateRequest;
 import com.ssafy.domain.sentence.model.dto.request.SentenceTestRequest;
 import com.ssafy.domain.sentence.model.dto.response.LectureSentenceResponse;
 import com.ssafy.domain.sentence.model.dto.response.SentenceDictationResponse;
@@ -99,6 +102,21 @@ public class SentenceServiceImpl implements SentenceService {
 		userRepository.save(user);
 
 		return sentenceTestResponses; // 3. 틀린거 보여주기
+	}
+
+	@Override
+	@Transactional
+	public ReviewSentenceResponse createSentence(SentenceCreateRequest sentenceCreateRequest) {
+		User user = userInfoProvider.getCurrentUser();
+		Sentence sentence = sentenceCreateRequest.toEntity(user);
+		sentenceRepository.save(sentence);
+
+		ReviewSaveRequest reviewSaveRequest = ReviewSaveRequest.builder()
+			.sentenceId(sentence.getSentenceId())
+			.build();
+
+		return ReviewSentenceResponse.toDto(
+			reviewRepository.save(reviewSaveRequest.toReviewSentenceEntity(sentence, user)));
 	}
 
 	@Override

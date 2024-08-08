@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.domain.review.model.dto.response.ReviewSentenceResponse;
+import com.ssafy.domain.sentence.model.dto.request.SentenceCreateRequest;
 import com.ssafy.domain.sentence.model.dto.request.SentenceTestRequest;
 import com.ssafy.domain.sentence.model.dto.response.SentenceDictationResponse;
 import com.ssafy.domain.sentence.model.dto.response.SentenceTestResponse;
@@ -47,4 +49,12 @@ public class SentenceController {
 		studyTimeService.increaseDictationCount(sentenceTestAnswers.size());
 		return ResponseEntity.status(HttpStatus.OK).body(sentenceTestResult);
 	}
+
+	@Operation(summary = "사용자 문장 생성")
+	@PostMapping
+	public ResponseEntity<?> createSentence(@Valid @RequestBody SentenceCreateRequest sentenceCreateRequest) {
+		ReviewSentenceResponse reviewSentenceResponse = sentenceService.createSentence(sentenceCreateRequest);
+		return ResponseEntity.status(HttpStatus.CREATED).body(reviewSentenceResponse);
+	}
+
 }
