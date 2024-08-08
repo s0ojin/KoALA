@@ -1,17 +1,19 @@
+'use client'
+
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import LectureNoteIcon from '/public/icons/notebook.svg'
 import ReportIcon from '/public/icons/graph.svg'
 import LogoutIcon from '/public/icons/logout.svg'
 import EditIcon from '/public/icons/edit-pencil.svg'
-import { postLogout } from '@/app/apis/auth'
+import { getUserInfo, postLogout } from '@/app/apis/auth'
 import { deleteCookie } from 'cookies-next'
+import useSWR from 'swr'
 
 const USER_DROPDOWN_MENU_LIST = [
   { id: 'lecture-note', label: '강의노트', icon: <LectureNoteIcon /> },
   { id: 'report', label: '학습 리포트', icon: <ReportIcon /> },
 ]
-
 interface UserDropdownMenuProps {
   setIsUserMenuOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
@@ -19,6 +21,7 @@ interface UserDropdownMenuProps {
 export default function UserDropdownMenu({
   setIsUserMenuOpen,
 }: UserDropdownMenuProps) {
+  const { data: userInfo } = useSWR('/users', getUserInfo)
   const router = useRouter()
 
   const handleMenuClick = (path: string) => {
@@ -39,7 +42,7 @@ export default function UserDropdownMenu({
 
   return (
     <div className="p-6 pb-4 w-60 bg-white rounded-3xl text-primary-900 shadow-md">
-      <header className="flex gap-3 items-center mb-4">
+      <header className="flex gap-3 items-center mb-4 w-full">
         <Image
           src="/images/koala-sleep.png"
           width={100}
@@ -49,10 +52,14 @@ export default function UserDropdownMenu({
         />
         <div>
           <div className="flex items-center gap-2">
-            <p>한국어마스터</p>
-            <EditIcon className="w-4" />
+            <p>{userInfo?.data.nickname}</p>
+            <button onClick={() => router.push('/modals/edit-nickname')}>
+              <EditIcon className="w-4" />
+            </button>
           </div>
-          <p className="text-primary-400 text-sm">Lv.4</p>
+          <p className="text-primary-400 text-sm">
+            Lv. {userInfo?.data.user_level}
+          </p>
         </div>
       </header>
       <ul className="flex flex-col gap-2">
