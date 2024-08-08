@@ -4,9 +4,9 @@ import MoveLeftButton from '/public/icons/arrow-left-no-line.svg'
 import MoveRightButton from '/public/icons/arrow-right-no-line.svg'
 
 interface CommunityPaginationProps {
-  totalPages?: number
-  onPageChange?: any
-  selectedCommentPage?: number
+  totalPages: number
+  onPageChange: any
+  selectedCommentPage: number
 }
 
 export default function CommunityPagination({
@@ -20,7 +20,6 @@ export default function CommunityPagination({
   }
 
   const handleClickNextBtn = () => {
-    console.log(selectedCommentPage, totalPages)
     if (selectedCommentPage + 1 >= totalPages) return
     onPageChange((pre: number) => pre + 1)
   }
