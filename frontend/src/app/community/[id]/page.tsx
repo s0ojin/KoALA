@@ -45,7 +45,7 @@ export default function CommunityDetail() {
 
         <div className="pt-16 pb-14 bg-white max-w-[65rem] w-full px-11 rounded-[3.75rem] mb-5 relative">
           <button className="absolute top-7 left-7 scale-x-[-1]">
-            <BackBtn fill={'#77a3ef'} />
+            <BackBtn fill={'#77a3ef'} className="w-10" />
           </button>
           <div className=" flex flex-col px-12 border-b-2 border-gray-300">
             <h3 className="text-2xl font-normal py-3 whitespace-nowrap">

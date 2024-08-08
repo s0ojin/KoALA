@@ -132,7 +132,7 @@ export default function SignUp() {
                 disabled={!isValid}
                 className={`${isValid ? 'text-primary-400' : 'text-gray-400'} transition-colors duration-300 self-end`}
               >
-                <NextBtn />
+                <NextBtn className="w-10" />
               </button>
             </>
           )}
