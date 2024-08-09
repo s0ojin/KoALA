@@ -9,7 +9,7 @@ import lombok.Getter;
 public class UserUpdateRequest {
 
 	@NotBlank(message = "닉네임은 필수 입력 값입니다.")
-	String nickname;
+	private String nickname;
 
 	public User toEntity(String nickname) {
 		return User.builder().nickname(nickname).build();

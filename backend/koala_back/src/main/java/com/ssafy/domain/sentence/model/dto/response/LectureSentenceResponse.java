@@ -11,10 +11,10 @@ import lombok.Getter;
 public class LectureSentenceResponse {
 
 	@JsonProperty("sentence_id")
-	Long sentenceId;
+	private Long sentenceId;
 
 	@JsonProperty("sentence_text")
-	String sentenceText;
+	private String sentenceText;
 
 	public static LectureSentenceResponse toDto(LectureSentence lectureSentence) {
 		return LectureSentenceResponse.builder()
