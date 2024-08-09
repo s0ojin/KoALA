@@ -63,8 +63,8 @@ public class ReviewServiceImpl implements ReviewService {
 			.orElseThrow(() -> new IllegalArgumentException("해당 문장이 존재하지 않습니다."));
 		User currentUser = userInfoProvider.getCurrentUser();
 
-		if (reviewRepository.findByUserIdAndSentenceId(currentUser.getUserId(), sentence.getSentenceId()) != null) {
-			throw new IllegalArgumentException("이미 리뷰한 문장입니다.");
+		if (reviewRepository.existsByUserAndSentence(currentUser, sentence)) {
+			return null;
 		}
 
 		return ReviewSentenceResponse.toDto(
