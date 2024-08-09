@@ -97,7 +97,6 @@ public class SentenceServiceImpl implements SentenceService {
 		}
 
 		// 1. 복습페이지에 틀린 문장 저장
-		// reviewRepository.saveAll(reviewSentences);
 		for (ReviewSentence reviewSentence : reviewSentences) {
 			reviewService.addReviewSentence(ReviewSaveRequest.builder()
 				.sentenceId(reviewSentence.getSentence().getSentenceId())
