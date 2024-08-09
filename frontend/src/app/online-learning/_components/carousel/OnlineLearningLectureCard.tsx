@@ -34,11 +34,11 @@ export default function OnlineLearningLectureCard({ ...cardData }: CardProps) {
           /> */}
         </div>
         <div className="relative bg-white rounded-tl-3xl h-full mt-5 mx-5 px-6 md:pt-2 lg:pt-6">
-          <p className="text-gray-700 font-bold break-words text-center md:truncate md:text-lg md:mb-[0.5rem] lg:text-xl lg:mb-[1rem]">
+          <p className="text-primary-900 font-medium break-words text-center md:truncate md:text-lg md:mb-[0.5rem] lg:text-xl lg:mb-[1rem]">
             {cardLectureTitle}
           </p>
           <div className="w-full aspect-square overflow-hidden mb-[0.5rem]">
-            <p className="text-gray-700 overflow-hidden break-words md:text-sm lg:text-base">
+            <p className="text-primary-900 overflow-hidden break-words md:text-sm lg:text-base">
               {cardLectureDescription}
             </p>
           </div>
@@ -50,7 +50,7 @@ export default function OnlineLearningLectureCard({ ...cardData }: CardProps) {
             href={`online-learning/lecture/${cardLectureSessionID}`}
             className="max-w-[14rem] min-w-[10rem]"
           >
-            <button className="bg-primary-400 w-full aspect-[5/1] rounded-3xl text-white font-bold md:text-sm lg:text-base">
+            <button className="bg-primary-400 w-full aspect-[5/1] rounded-3xl text-white font-medium md:text-sm lg:text-base">
               강의 입장하기
             </button>
           </Link>
