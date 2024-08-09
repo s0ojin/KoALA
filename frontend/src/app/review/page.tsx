@@ -2,6 +2,7 @@ import ReviewArea from '@/app/review/_components/ReviewArea'
 import ReviewLayout from '@/app/review/_components/ReviewLayout'
 import ReviewMenuButtons from '@/app/review/_components/ReviewMenuButtons'
 import { getReviewSentence } from '@/app/apis/review'
+import { getToken } from '@/app/utils/cookie/getToken'
 
 interface ReviewProps {
   searchParams: {
@@ -11,23 +12,22 @@ interface ReviewProps {
 }
 
 export default async function ReviewMain({ searchParams }: ReviewProps) {
-  
-  console.log(searchParams)
   const topic = searchParams?.topic || null
   const keyword = searchParams?.keyword || null
+  const token = await getToken()
 
   let sentenceList = null
 
   if (topic && keyword) {
     sentenceList = await getReviewSentence(
-      `/reviews?keyword=${keyword}&topic=${topic}`
+      `/reviews?keyword=${keyword}&topic=${topic}`, token
     )
   } else if (topic) {
-    sentenceList = await getReviewSentence(`/reviews?topic=${topic}`)
+    sentenceList = await getReviewSentence(`/reviews?topic=${topic}`, token)
   } else if (keyword) {
-    sentenceList = await getReviewSentence(`/reviews?keyword=${keyword}`)
+    sentenceList = await getReviewSentence(`/reviews?keyword=${keyword}`, token)
   } else {
-    sentenceList = await getReviewSentence('/reviews')
+    sentenceList = await getReviewSentence('/reviews', token)
   }
   
   return (
