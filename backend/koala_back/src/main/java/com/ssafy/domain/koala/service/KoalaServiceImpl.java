@@ -8,6 +8,7 @@ import com.ssafy.domain.koala.model.dto.response.KoalaResponse;
 import com.ssafy.domain.koala.model.entity.Koala;
 import com.ssafy.domain.koala.repository.KoalaRepository;
 import com.ssafy.domain.user.model.entity.User;
+import com.ssafy.domain.user.repository.UserRepository;
 import com.ssafy.global.common.UserInfoProvider;
 
 import lombok.RequiredArgsConstructor;
@@ -17,8 +18,9 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 public class KoalaServiceImpl implements KoalaService {
 
-	private final KoalaRepository koalaRepository;
 	private final UserInfoProvider userInfoProvider;
+	private final UserRepository userRepository;
+	private final KoalaRepository koalaRepository;
 
 	@Override
 	public KoalaResponse getKoala() {
@@ -53,5 +55,12 @@ public class KoalaServiceImpl implements KoalaService {
 		koala.increaseKoalaExp();
 
 		return KoalaResponse.toDto(koalaRepository.save(koala));
+	}
+
+	@Override
+	@Transactional
+	public void addKoala(Long userId) {
+		koalaRepository.save(Koala.builder().user(userRepository.findById(userId)
+			.orElseThrow(() -> new IllegalArgumentException("해당 id의 유저 정보가 존재하지 않습니다."))).build());
 	}
 }
