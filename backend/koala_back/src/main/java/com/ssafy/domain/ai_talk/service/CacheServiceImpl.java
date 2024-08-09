@@ -1,4 +1,4 @@
-package com.ssafy.domain.chat.service;
+package com.ssafy.domain.ai_talk.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,8 +7,8 @@ import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
 
-import com.ssafy.domain.chat.dto.Message;
-import com.ssafy.domain.chat.dto.request.ChatSituationRequest;
+import com.ssafy.domain.ai_talk.dto.Message;
+import com.ssafy.domain.ai_talk.dto.request.AITalkSituationRequest;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,13 +37,13 @@ public class CacheServiceImpl implements CacheService {
 
 	// 해당하는 캐시가 있으면 지우고 생성한다
 	@Override
-	public void initCacheMemory(String loginId, ChatSituationRequest chatSituationRequest) {
+	public void initCacheMemory(String loginId, AITalkSituationRequest AITalkSituationRequest) {
 		Cache cache = cacheManager.getCache("chatHistory");
 		if (!isEmpty(loginId))
 			cache.evict(loginId);
 		String defaultPrompt =
-			"당신은 한국어 회화 초보를 돕는 AI 회화 도우미입니다. " + "당신은 " + chatSituationRequest.getPlace() + " 에서 대화 중입니다. " + "상대방은 "
-				+ chatSituationRequest.getUserRole() + "역할입니다. " + "당신은 " + chatSituationRequest.getAiRole() + "역할입니다. "
+			"당신은 한국어 회화 초보를 돕는 AI 회화 도우미입니다. " + "당신은 " + AITalkSituationRequest.getPlace() + " 에서 대화 중입니다. " + "상대방은 "
+				+ AITalkSituationRequest.getUserRole() + "역할입니다. " + "당신은 " + AITalkSituationRequest.getAiRole() + "역할입니다. "
 				+ "이어서 대답을 해주세요.";
 		log.info("캐시 생성");
 
