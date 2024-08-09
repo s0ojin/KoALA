@@ -17,6 +17,8 @@ import com.ssafy.domain.chat.dto.request.GPTSituationRequest;
 import com.ssafy.domain.chat.dto.response.ChatFinishResponse;
 import com.ssafy.domain.chat.dto.response.ChatResponse;
 import com.ssafy.domain.chat.dto.response.GPTResponse;
+import com.ssafy.domain.user.model.entity.User;
+import com.ssafy.domain.user.repository.UserRepository;
 import com.ssafy.domain.user.service.AiTalkLogService;
 import com.ssafy.domain.user.service.StudyTimeService;
 import com.ssafy.global.common.UserInfoProvider;
@@ -30,6 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ChatServiceImpl implements ChatService {
 
 	private final UserInfoProvider userInfoProvider;
+	private final UserRepository userRepository;
 	private final CacheService cacheService;
 	private final StudyTimeService studyTimeService;
 	private final AiTalkLogService aiTalkLogService;
@@ -91,11 +94,14 @@ public class ChatServiceImpl implements ChatService {
 	@Override
 	public ChatFinishResponse finishAIResponse() {
 		// 이외에 AI 응답 끝내는 로직 추가
-		Long userId = userInfoProvider.getCurrentUserId();
-		cacheService.clearChatHistory(userInfoProvider.getCurrentLoginId());
+		User user = userInfoProvider.getCurrentUser();
+		cacheService.clearChatHistory(user.getLoginId());
 
-		aiTalkLogService.createEndTimeLog(userId);
+		aiTalkLogService.createEndTimeLog(user.getUserId());
 		Integer leaves = calculateLeaves(studyTimeService.increaseAiTalkMinutes());
+
+		user.increaseUserLeaves(leaves);
+		userRepository.save(user);
 
 		return ChatFinishResponse.toDto(leaves);
 
