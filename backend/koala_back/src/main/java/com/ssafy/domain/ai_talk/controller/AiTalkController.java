@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.domain.ai_talk.dto.request.AITalkRequest;
-import com.ssafy.domain.ai_talk.dto.request.AITalkSituationRequest;
-import com.ssafy.domain.ai_talk.dto.response.AITalkResponse;
-import com.ssafy.domain.ai_talk.service.AITalkService;
+import com.ssafy.domain.ai_talk.dto.request.AiTalkRequest;
+import com.ssafy.domain.ai_talk.dto.request.AiTalkSituationRequest;
+import com.ssafy.domain.ai_talk.dto.response.AiTalkResponse;
+import com.ssafy.domain.ai_talk.service.AiTalkService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -22,18 +22,18 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/chat")
-public class AITalkController {
-	private final AITalkService talkService;
+public class AiTalkController {
+	private final AiTalkService talkService;
 
 	@PostMapping("/start")
-	public ResponseEntity<AITalkResponse> createChat(
-		@RequestBody @Valid AITalkSituationRequest aiTalkSituationRequest) {
+	public ResponseEntity<AiTalkResponse> createChat(
+		@RequestBody @Valid AiTalkSituationRequest aiTalkSituationRequest) {
 		return ResponseEntity.status(HttpStatus.OK).body(talkService.setSituation(aiTalkSituationRequest));
 	}
 
 	@Operation(summary = "AI 회화 메세지 전송")
 	@PostMapping
-	public ResponseEntity<?> sendMessage(@Valid @RequestBody AITalkRequest aiTalkRequest) {
+	public ResponseEntity<?> sendMessage(@Valid @RequestBody AiTalkRequest aiTalkRequest) {
 		return ResponseEntity.status(HttpStatus.OK).body(talkService.getAIResponse(aiTalkRequest));
 	}
 

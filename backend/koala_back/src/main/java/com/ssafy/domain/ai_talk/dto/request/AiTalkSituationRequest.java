@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
 @Getter
-public class AITalkSituationRequest {
+public class AiTalkSituationRequest {
 	private String place;
 	@JsonProperty("ai_role")
 	private String aiRole;

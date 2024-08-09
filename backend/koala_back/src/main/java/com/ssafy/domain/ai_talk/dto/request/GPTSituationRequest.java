@@ -16,7 +16,7 @@ public class GPTSituationRequest {
 	private final String model = "gpt-4o-mini";
 	private List<Message> messages;
 
-	public GPTSituationRequest(AITalkSituationRequest AITalkSituationRequest) {
+	public GPTSituationRequest(AiTalkSituationRequest AITalkSituationRequest) {
 		messages = new ArrayList<>();
 		this.messages.add(new Message("system", "너는 한국어를 연습하고 있는 사람을 돕는 회화 도우미야. 쉬운 한국어로 한국어 초보자를 상황극을 통해 도울 필요가 있어."));
 		this.messages.add(new Message("system",

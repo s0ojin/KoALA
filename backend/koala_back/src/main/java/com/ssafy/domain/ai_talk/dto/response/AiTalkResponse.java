@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class AITalkResponse {
+public class AiTalkResponse {
 
 	private String message;
 
