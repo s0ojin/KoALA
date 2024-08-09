@@ -26,6 +26,7 @@ import com.ssafy.domain.sentence.model.entity.Sentence;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -47,7 +48,7 @@ import lombok.Setter;
 public class User implements UserDetails {
 	// Spring Security는 인증 및 권한 부여 과정에서 UserDetails 객체를 사용
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "user_id")
 	private Long userId;
 
