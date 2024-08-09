@@ -16,7 +16,7 @@ public class LectureSentenceResponse {
 	@JsonProperty("sentence_text")
 	String sentenceText;
 
-	public static LectureSentenceResponse toDto(LectureSentence lectureSentence){
+	public static LectureSentenceResponse toDto(LectureSentence lectureSentence) {
 		return LectureSentenceResponse.builder()
 			.sentenceId(lectureSentence.getSentence().getSentenceId())
 			.sentenceText(lectureSentence.getSentence().getSentenceText())

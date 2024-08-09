@@ -1,22 +1,17 @@
-package com.ssafy.domain.chat.dto.response;
+package com.ssafy.domain.translation.model.dto.response;
 
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.ssafy.domain.chat.dto.Message;
+import com.ssafy.domain.ai_talk.dto.Message;
 
+import lombok.Getter;
+
+@Getter
 public class GPTResponse {
 
 	private List<Choice> choices;
-
-	public List<Choice> getChoices() {
-		return choices;
-	}
-
-	public void setChoices(List<Choice> choices) {
-		this.choices = choices;
-	}
 
 	public static class Choice {
 		private Message message;

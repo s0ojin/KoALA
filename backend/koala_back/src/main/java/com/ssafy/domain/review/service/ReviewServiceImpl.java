@@ -21,9 +21,9 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 public class ReviewServiceImpl implements ReviewService {
 
-	final UserInfoProvider userInfoProvider;
-	final ReviewRepository reviewRepository;
-	final SentenceRepository sentenceRepository;
+	private final UserInfoProvider userInfoProvider;
+	private final ReviewRepository reviewRepository;
+	private final SentenceRepository sentenceRepository;
 
 	@Override
 	public List<ReviewSentenceResponse> getReviewSentencesByUserAndKeyword(String keyword, String topic) {
@@ -73,12 +73,20 @@ public class ReviewServiceImpl implements ReviewService {
 		ReviewSentence reviewSentence = reviewRepository.findById(reviewSentenceId)
 			.orElseThrow(() -> new IllegalArgumentException("해당 리뷰가 존재하지 않습니다."));
 
+		Sentence sentence = sentenceRepository.findById(reviewSentence.getSentence().getSentenceId())
+			.orElseThrow(() -> new IllegalArgumentException("해당 문장이 존재하지 않습니다."));
+
 		User currentUser = userInfoProvider.getCurrentUser();
 		if (!reviewSentence.getUser().equals(currentUser)) {
 			throw new IllegalArgumentException("해당 리뷰를 삭제할 권한이 없습니다.");
 		}
 
 		reviewRepository.delete(reviewSentence);
+
+		if ((sentence.getTopicCategory()).equals("사용자")) {
+			sentenceRepository.delete(sentence);
+		}
+
 	}
 
 }
