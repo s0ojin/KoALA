@@ -1,6 +1,8 @@
 package com.ssafy.domain.ai_talk.service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -9,14 +11,17 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.ssafy.domain.ai_talk.dto.Message;
-import com.ssafy.domain.ai_talk.dto.request.AITalkRequest;
-import com.ssafy.domain.ai_talk.dto.request.AITalkSituationRequest;
-import com.ssafy.domain.ai_talk.dto.request.GPTRequest;
-import com.ssafy.domain.ai_talk.dto.request.GPTSituationRequest;
-import com.ssafy.domain.ai_talk.dto.response.AITalkFinishResponse;
-import com.ssafy.domain.ai_talk.dto.response.AITalkResponse;
-import com.ssafy.domain.ai_talk.dto.response.GPTResponse;
+import com.ssafy.domain.ai_talk.model.dto.Message;
+import com.ssafy.domain.ai_talk.model.dto.request.AiTalkRequest;
+import com.ssafy.domain.ai_talk.model.dto.request.AiTalkSituationRequest;
+import com.ssafy.domain.ai_talk.model.dto.request.GPTRequest;
+import com.ssafy.domain.ai_talk.model.dto.request.GPTSituationRequest;
+import com.ssafy.domain.ai_talk.model.dto.response.AiTalkFinishResponse;
+import com.ssafy.domain.ai_talk.model.dto.response.AiTalkResponse;
+import com.ssafy.domain.ai_talk.model.dto.response.AiTalkSituationResponse;
+import com.ssafy.domain.ai_talk.model.dto.response.GPTResponse;
+import com.ssafy.domain.ai_talk.model.entity.AiTalkSituation;
+import com.ssafy.domain.ai_talk.repository.AiTalkRepository;
 import com.ssafy.domain.user.model.entity.User;
 import com.ssafy.domain.user.repository.UserRepository;
 import com.ssafy.domain.user.service.AiTalkLogService;
@@ -29,10 +34,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class AITalkServiceImpl implements AITalkService {
+public class AiTalkServiceImpl implements AiTalkService {
 
 	private final UserInfoProvider userInfoProvider;
 	private final UserRepository userRepository;
+	private final AiTalkRepository aiTalkRepository;
 	private final CacheService cacheService;
 	private final StudyTimeService studyTimeService;
 	private final AiTalkLogService aiTalkLogService;
@@ -46,13 +52,37 @@ public class AITalkServiceImpl implements AITalkService {
 		.build();
 
 	@Override
-	public AITalkResponse setSituation(AITalkSituationRequest AITalkSituationRequest) {
+	public List<AiTalkSituationResponse> getAllAiTalkSituations() {
+		List<AiTalkSituation> aiTalkSituations = aiTalkRepository.findAll();
+		if (aiTalkSituations.isEmpty())
+			return null;
+		return aiTalkSituations.stream().map(AiTalkSituationResponse::toDto).collect(Collectors.toList());
+	}
+
+	@Override
+	public List<AiTalkSituationResponse> getAiTalkSituationByTopic(String topic) {
+		List<AiTalkSituation> aiTalkSituations = aiTalkRepository.findByTopic(topic);
+		if (aiTalkSituations.isEmpty())
+			return null;
+		return aiTalkSituations.stream().map(AiTalkSituationResponse::toDto).collect(Collectors.toList());
+	}
+
+	@Override
+	public AiTalkResponse setSituation(Long situationId) {
 		Long userId = userInfoProvider.getCurrentUserId();
 		aiTalkLogService.createStartTimeLog(userId);
 
 		String loginId = userInfoProvider.getCurrentLoginId();
-		cacheService.initCacheMemory(loginId, AITalkSituationRequest);
-		GPTSituationRequest gptSituationRequest = new GPTSituationRequest(AITalkSituationRequest);
+		AiTalkSituationRequest aiTalkSituation = aiTalkRepository.findById(situationId)
+			.map(AiTalkSituationRequest::toDto)
+			.orElse(null);
+
+		if (aiTalkSituation == null) {
+			throw new NoSuchElementException("Situation with id " + situationId + " not found.");
+		}
+
+		cacheService.initCacheMemory(loginId, aiTalkSituation);
+		GPTSituationRequest gptSituationRequest = new GPTSituationRequest(aiTalkSituation);
 		GPTResponse gptResponse = webClient.method(HttpMethod.POST)
 			.uri("chat/completions")
 			.header(HttpHeaders.AUTHORIZATION, "Bearer " + apiKey)
@@ -63,17 +93,17 @@ public class AITalkServiceImpl implements AITalkService {
 
 		String aiResponse = gptResponse.getChoices().get(0).getMessage().getContent();
 		cacheService.addChatHistory(loginId, new Message("assistant", aiResponse));
-		return new AITalkResponse(aiResponse);
+		return new AiTalkResponse(aiResponse);
 	}
 
 	@Override
-	public AITalkResponse getAIResponse(AITalkRequest AITalkRequest) {
+	public AiTalkResponse getAiResponse(AiTalkRequest aiTalkRequest) {
 		String loginId = userInfoProvider.getCurrentLoginId();
 		// 이전 대화 가져오기
 		List<Message> chatHistory = cacheService.getChatHistory(loginId);
 		log.info(chatHistory.toString());
 		GPTRequest gptRequest = new GPTRequest(chatHistory);
-		gptRequest.addMessage(AITalkRequest.getMessage());
+		gptRequest.addMessage(aiTalkRequest.getMessage());
 
 		GPTResponse gptResponse = webClient.method(HttpMethod.POST)
 			.uri("chat/completions")
@@ -85,14 +115,14 @@ public class AITalkServiceImpl implements AITalkService {
 
 		String aiResponse = gptResponse.getChoices().get(0).getMessage().getContent();
 
-		cacheService.addChatHistory(loginId, new Message("user", AITalkRequest.getMessage()));
+		cacheService.addChatHistory(loginId, new Message("user", aiTalkRequest.getMessage()));
 		cacheService.addChatHistory(loginId, new Message("assistant", aiResponse));
 
-		return new AITalkResponse(aiResponse);
+		return new AiTalkResponse(aiResponse);
 	}
 
 	@Override
-	public AITalkFinishResponse finishAIResponse() {
+	public AiTalkFinishResponse finishAiResponse() {
 		// 이외에 AI 응답 끝내는 로직 추가
 		User user = userInfoProvider.getCurrentUser();
 		cacheService.clearChatHistory(user.getLoginId());
@@ -103,7 +133,7 @@ public class AITalkServiceImpl implements AITalkService {
 		user.increaseUserLeaves(leaves);
 		userRepository.save(user);
 
-		return AITalkFinishResponse.toDto(leaves);
+		return AiTalkFinishResponse.toDto(leaves);
 
 	}
 
