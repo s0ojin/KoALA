@@ -23,7 +23,9 @@ export default function MainKoalaLevel({
       </div>
       <div className="text-white w-full flex justify-between">
         <p className="transform -translate-x-9 text-base">애기코알라</p>
-        <p className="transform translate-x-9 font-black text-xl">졸업코알라</p>
+        <p className="transform translate-x-9 font-medium text-xl">
+          졸업코알라
+        </p>
       </div>
     </div>
   )

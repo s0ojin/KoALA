@@ -4,14 +4,12 @@ import AddSentenceModal from '@/app/modals/_components/AddSentenceModal'
 import BasicModal from '@/app/modals/_components/BasicModal'
 import ConfirmCancelModal from '@/app/modals/_components/ConfirmCancelModal'
 import DictationCategoryModal from '@/app/modals/_components/DictationCategoryModal'
+import EditNicknameModal from '@/app/modals/_components/EditNicknameModal'
 import { ModalLayout } from '@/app/modals/_components/ModalLayout'
-import { useParams } from 'next/navigation'
 
-export default function ModalPage() {
-  const { type } = useParams()
-
+export default function ModalPage({ params }: { params: { type: string } }) {
   const renderModal = () => {
-    switch (type) {
+    switch (params.type) {
       case 'basic':
         return <BasicModal />
       case 'confirm-cancel':
@@ -25,6 +23,8 @@ export default function ModalPage() {
         return <DictationCategoryModal />
       case 'add-sentence':
         return <AddSentenceModal />
+      case 'edit-nickname':
+        return <EditNicknameModal />
     }
   }
 
