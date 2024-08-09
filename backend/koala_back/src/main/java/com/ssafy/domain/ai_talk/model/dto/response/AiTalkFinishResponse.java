@@ -1,4 +1,4 @@
-package com.ssafy.domain.ai_talk.dto.response;
+package com.ssafy.domain.ai_talk.model.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;

@@ -1,12 +1,18 @@
 package com.ssafy.domain.ai_talk.service;
 
-import com.ssafy.domain.ai_talk.dto.request.AiTalkRequest;
-import com.ssafy.domain.ai_talk.dto.request.AiTalkSituationRequest;
-import com.ssafy.domain.ai_talk.dto.response.AiTalkFinishResponse;
-import com.ssafy.domain.ai_talk.dto.response.AiTalkResponse;
+import java.util.List;
+
+import com.ssafy.domain.ai_talk.model.dto.request.AiTalkRequest;
+import com.ssafy.domain.ai_talk.model.dto.response.AiTalkFinishResponse;
+import com.ssafy.domain.ai_talk.model.dto.response.AiTalkResponse;
+import com.ssafy.domain.ai_talk.model.dto.response.AiTalkSituationResponse;
 
 public interface AiTalkService {
-	AiTalkResponse setSituation(AiTalkSituationRequest aiTalkSituationRequest);
+	List<AiTalkSituationResponse> getAllAiTalkSituations();
+
+	List<AiTalkSituationResponse> getAiTalkSituationByTopic(String topic);
+
+	AiTalkResponse setSituation(Long situationId);
 
 	AiTalkResponse getAIResponse(AiTalkRequest aiTalkRequest);
 
