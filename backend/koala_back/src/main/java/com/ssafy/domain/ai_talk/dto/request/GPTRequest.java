@@ -1,9 +1,9 @@
-package com.ssafy.domain.chat.dto.request;
+package com.ssafy.domain.ai_talk.dto.request;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ssafy.domain.chat.dto.Message;
+import com.ssafy.domain.ai_talk.dto.Message;
 
 import lombok.Getter;
 import lombok.Setter;

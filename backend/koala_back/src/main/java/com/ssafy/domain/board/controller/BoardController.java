@@ -1,6 +1,7 @@
 package com.ssafy.domain.board.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -43,20 +44,19 @@ public class BoardController {
 	@PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
 	public ResponseEntity<?> createBoard(
 		@Valid @RequestPart(value = "board_detail") BoardCreateRequest boardCreateRequest,
-		@RequestPart(value = "board_images") List<MultipartFile> images) throws IOException {
+		@RequestPart(value = "board_images", required = false) List<MultipartFile> images) throws IOException {
 
 		if (BoardValidation.validateKoreanAndNumeric(boardCreateRequest.getTitle())) {
-			return ResponseEntity.badRequest()
-				.body(Map.of("message",
-					"The post title can only contain Korean letters, numbers, and special characters."));
+			throw new IllegalArgumentException(
+				"The post title can only contain Korean letters, numbers, and special characters.");
 		}
 		if (BoardValidation.validateKoreanAndNumeric(boardCreateRequest.getContent())) {
-			return ResponseEntity.badRequest()
-				.body(Map.of("message", "Post content can only contain Korean characters, numbers, and letters."));
+			throw new IllegalArgumentException(
+				"Post content can only contain Korean letters, numbers, and special characters.");
 		}
 
 		// 추가: files 리스트를 boardCreateRequest에 설정
-		boardCreateRequest.setBoardImages(images);
+		boardCreateRequest.setBoardImages(images != null ? images : new ArrayList<>());
 
 		BoardDetailResponse boardCreateResponse = boardService.writeBoard(boardCreateRequest);
 		return ResponseEntity.status(HttpStatus.CREATED).body(boardCreateResponse);
@@ -106,8 +106,8 @@ public class BoardController {
 	public ResponseEntity<?> createComment(@PathVariable("board_id") Long boardId,
 		@Valid @RequestBody BoardCommentCreateRequest boardCommentCreateRequest) {
 		if (BoardValidation.validateKoreanAndNumeric(boardCommentCreateRequest.getCommentContent())) {
-			return ResponseEntity.badRequest()
-				.body(Map.of("message", "Comments can only contain Korean letters, numbers, and special characters."));
+			throw new IllegalArgumentException(
+				"Comments can only contain Korean letters, numbers, and special characters.");
 		}
 		BoardCommentResponse boardCommentResponse = boardCommentService.leaveComment(boardId,
 			boardCommentCreateRequest);

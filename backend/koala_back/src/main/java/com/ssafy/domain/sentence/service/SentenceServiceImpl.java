@@ -8,12 +8,16 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssafy.domain.review.model.dto.request.ReviewSaveRequest;
 import com.ssafy.domain.review.model.dto.request.ReviewSentenceRequest;
+import com.ssafy.domain.review.model.dto.response.ReviewSentenceResponse;
 import com.ssafy.domain.review.model.entity.ReviewSentence;
 import com.ssafy.domain.review.repository.ReviewRepository;
+import com.ssafy.domain.sentence.model.dto.request.SentenceCreateRequest;
 import com.ssafy.domain.sentence.model.dto.request.SentenceTestRequest;
 import com.ssafy.domain.sentence.model.dto.response.LectureSentenceResponse;
 import com.ssafy.domain.sentence.model.dto.response.SentenceDictationResponse;
+import com.ssafy.domain.sentence.model.dto.response.SentenceTestLeavesResponse;
 import com.ssafy.domain.sentence.model.dto.response.SentenceTestResponse;
 import com.ssafy.domain.sentence.model.entity.Sentence;
 import com.ssafy.domain.sentence.repository.LectureSentenceRepository;
@@ -52,7 +56,7 @@ public class SentenceServiceImpl implements SentenceService {
 
 	@Override
 	@Transactional
-	public List<SentenceTestResponse> testWritingPaper(List<SentenceTestRequest> writingPaper) {
+	public SentenceTestLeavesResponse testWritingPaper(List<SentenceTestRequest> writingPaper) {
 		List<SentenceTestResponse> sentenceTestResponses = new ArrayList<>();
 		List<ReviewSentence> reviewSentences = new ArrayList<>();
 		User user = userInfoProvider.getCurrentUser();
@@ -87,7 +91,7 @@ public class SentenceServiceImpl implements SentenceService {
 				correct = false;
 			}
 
-			sentenceTestResponses.add(new SentenceTestResponse(originText, userText, resultTag, correct));
+			sentenceTestResponses.add(SentenceTestResponse.toDto(originText, userText, resultTag, correct));
 		}
 
 		// 1. 복습페이지에 틀린 문장 저장
@@ -95,10 +99,25 @@ public class SentenceServiceImpl implements SentenceService {
 		// 2. 유칼립투스 증가
 		// 문제 별로 토글을 키고 했다면 -> 1개
 		// 문제 별로 토글을 끄고 했다면 -> 2개
-		user.setLeaves(user.getLeaves() + leaves);
+		user.increaseUserLeaves(leaves);
 		userRepository.save(user);
 
-		return sentenceTestResponses; // 3. 틀린거 보여주기
+		return SentenceTestLeavesResponse.toDto(sentenceTestResponses, leaves);
+	}
+
+	@Override
+	@Transactional
+	public ReviewSentenceResponse createSentence(SentenceCreateRequest sentenceCreateRequest) {
+		User user = userInfoProvider.getCurrentUser();
+		Sentence sentence = sentenceCreateRequest.toEntity(user);
+		sentenceRepository.save(sentence);
+
+		ReviewSaveRequest reviewSaveRequest = ReviewSaveRequest.builder()
+			.sentenceId(sentence.getSentenceId())
+			.build();
+
+		return ReviewSentenceResponse.toDto(
+			reviewRepository.save(reviewSaveRequest.toReviewSentenceEntity(sentence, user)));
 	}
 
 	@Override
