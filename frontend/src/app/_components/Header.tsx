@@ -49,7 +49,7 @@ export default function Header() {
         <Logo height="27" />
       </Link>
       <div className="flex gap-6 items-center">
-        {userInfo ? (
+        {userInfo?.data ? (
           <>
             <Link
               href="/modals/add-sentence"

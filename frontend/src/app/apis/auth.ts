@@ -100,8 +100,7 @@ export const getUserInfo = async (url: string) => {
     if (!response.ok) {
       console.log(response)
     }
-    const data = await response.json()
-
+    const data = response.status === 200 ? await response.json() : null
     return { data, status: response.status }
   } catch (error) {
     console.error('There was a problem with the fetch operation:', error)
