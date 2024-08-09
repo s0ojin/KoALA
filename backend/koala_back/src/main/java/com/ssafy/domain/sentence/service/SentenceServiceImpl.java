@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.domain.review.model.dto.request.ReviewSaveRequest;
-import com.ssafy.domain.review.model.dto.request.ReviewSentenceRequest;
 import com.ssafy.domain.review.model.dto.response.ReviewSentenceResponse;
 import com.ssafy.domain.review.model.entity.ReviewSentence;
 import com.ssafy.domain.review.repository.ReviewRepository;
@@ -86,10 +85,10 @@ public class SentenceServiceImpl implements SentenceService {
 				}
 			} else {
 				resultTag = makeResultTag(originText, userText);
-				reviewSentences.add(ReviewSentenceRequest.builder()
+				reviewSentences.add(ReviewSaveRequest.builder()
 					.sentenceId(request.getSentenceId())
 					.build()
-					.toEntity(originSentence.get(), user));
+					.toReviewSentenceEntity(originSentence.get(), user));
 				correct = false;
 			}
 
