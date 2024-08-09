@@ -14,7 +14,7 @@ export default function AuthLayout({
         width={240}
         height={240}
         priority
-        className="absolute bottom-10 left-10"
+        className="absolute bottom-10 left-10 -z-20"
       />
       <Image
         src="/images/cloud.svg"
@@ -43,10 +43,10 @@ export default function AuthLayout({
       <Image
         src="/images/koala-tree.png"
         alt="koala-tree"
-        width={460}
-        height={460}
+        width={380}
+        height={380}
         priority
-        className="absolute bottom-0 translate-y-2 left-28"
+        className="absolute bottom-0 translate-y-2 left-40 -z-10"
       />
     </div>
   )
