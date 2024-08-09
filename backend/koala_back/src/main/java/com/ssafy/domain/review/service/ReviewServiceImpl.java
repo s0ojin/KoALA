@@ -61,10 +61,14 @@ public class ReviewServiceImpl implements ReviewService {
 	public ReviewSentenceResponse addReviewSentence(ReviewSaveRequest reviewSaveRequest) {
 		Sentence sentence = sentenceRepository.findById(reviewSaveRequest.getSentenceId())
 			.orElseThrow(() -> new IllegalArgumentException("해당 문장이 존재하지 않습니다."));
-
 		User currentUser = userInfoProvider.getCurrentUser();
-		ReviewSentence reviewSentence = reviewSaveRequest.toReviewSentenceEntity(sentence, currentUser);
-		return ReviewSentenceResponse.toDto(reviewRepository.save(reviewSentence));
+
+		if (reviewRepository.existsByUserAndSentence(currentUser, sentence)) {
+			return null;
+		}
+
+		return ReviewSentenceResponse.toDto(
+			reviewRepository.save(reviewSaveRequest.toReviewSentenceEntity(sentence, currentUser)));
 	}
 
 	@Override
