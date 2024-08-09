@@ -5,10 +5,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.stereotype.Component;
 
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 
-@Component
 @Getter
+@Component
 public class LectureChatRoomManager {
 
 	private ConcurrentHashMap<Long, LectureChatRoom> roomSessions = new ConcurrentHashMap<>();
