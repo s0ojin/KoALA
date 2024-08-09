@@ -8,7 +8,7 @@ import LogoutIcon from '/public/icons/logout.svg'
 import EditIcon from '/public/icons/edit-pencil.svg'
 import { getUserInfo, postLogout } from '@/app/apis/auth'
 import { deleteCookie } from 'cookies-next'
-import useSWR from 'swr'
+import useSWR, { useSWRConfig } from 'swr'
 
 const USER_DROPDOWN_MENU_LIST = [
   { id: 'lecture-note', label: '강의노트', icon: <LectureNoteIcon /> },
@@ -23,6 +23,7 @@ export default function UserDropdownMenu({
 }: UserDropdownMenuProps) {
   const { data: userInfo } = useSWR('/users', getUserInfo)
   const router = useRouter()
+  const { mutate } = useSWRConfig()
 
   const handleMenuClick = (path: string) => {
     router.push(path)
@@ -35,6 +36,7 @@ export default function UserDropdownMenu({
       alert('로그아웃이 완료되었습니다!')
       deleteCookie('accessToken')
       deleteCookie('refreshToken')
+      mutate('/users')
       router.push('/')
       setIsUserMenuOpen(false)
     }
