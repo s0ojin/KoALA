@@ -28,7 +28,7 @@ export default function Login() {
     const res = await postLogin('/users/login', payload)
     if (res?.status === 200) {
       alert('로그인이 완료되었습니다!')
-      router.push('/')
+      router.push('/main')
     } else if (res?.status === 500) {
       alert('아이디나 비밀번호를 잘못 입력 하셨습니다.')
     }
