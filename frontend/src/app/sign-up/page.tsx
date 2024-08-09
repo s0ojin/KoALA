@@ -1,12 +1,22 @@
 'use client'
 
-import { useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import Logo from '/public/images/logo.svg'
 import NextBtn from '/public/icons/next-btn.svg'
 import BackBtn from '/public/icons/arrow-left.svg'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import AuthLayout from '@/app/_components/AuthLayout'
+import { postSignUp } from '../apis/auth'
+import { useRouter } from 'next/navigation'
+
+interface SignUpFormValues {
+  login_id: string
+  password: string
+  passwordConfirm: string
+  name: string
+  nickname: string
+}
 
 export default function SignUp() {
   const [page, setPage] = useState(1)
@@ -14,19 +24,41 @@ export default function SignUp() {
     register,
     handleSubmit,
     watch,
+    setFocus,
     formState: { errors, isValid },
-  } = useForm({ mode: 'onChange' })
+  } = useForm<SignUpFormValues>({ mode: 'onChange' })
+  const router = useRouter()
 
-  const onSubmit = (data) => {
-    console.log(
-      'api연결 후 삭제될거지만 필요해서 console찍어놨어요 ㅠ이건 지우면 안되어요...',
-      data
-    )
+  const onSubmit: SubmitHandler<SignUpFormValues> = async (data) => {
+    const payload = {
+      login_id: data.login_id,
+      password: data.password,
+      name: data.name,
+      nickname: data.nickname,
+    }
+    const res = await postSignUp('/users', payload)
+    if (res?.status === 201) {
+      alert('회원가입이 완료되었습니다!')
+      router.push('/login')
+    } else if (res?.status === 500) {
+      if (res?.data.message === '아이디 중복') {
+        alert('중복된 아이디입니다!')
+        setPage(1)
+      }
+      if (res.data.message === '닉네임 중복') {
+        alert('중복된 닉네임입니다!')
+        setFocus('nickname')
+      }
+    }
   }
+
+  useEffect(() => {
+    setFocus('login_id')
+  }, [page, setFocus])
 
   return (
     <AuthLayout>
-      <div className="relative bg-white max-w-[600px] mx-auto mt-24 py-10 px-24 flex flex-col items-center rounded-[60px]">
+      <div className="relative bg-white max-w-[600px] w-full mx-auto py-10 px-24 flex flex-col items-center rounded-[60px]">
         <h1 className="text-center py-10">
           <Logo width="210" height="56" />
           <p className="text-primary-400 text-2xl font-medium">회원가입</p>
@@ -40,19 +72,19 @@ export default function SignUp() {
             <>
               <div className="relative">
                 <input
-                  id="id"
+                  id="login_id"
                   type="text"
                   placeholder=" "
-                  {...register('id', {
+                  {...register('login_id', {
                     required: '아이디는 필수입력 필드입니다.',
                   })}
                   className="input peer"
                 />
-                <label htmlFor="id" className="input-label">
+                <label htmlFor="login_id" className="input-label">
                   아이디
                 </label>
                 <p className="error-message">
-                  {errors.id && String(errors.id.message)}
+                  {errors.login_id && String(errors.login_id.message)}
                 </p>
               </div>
 
@@ -100,7 +132,7 @@ export default function SignUp() {
                 disabled={!isValid}
                 className={`${isValid ? 'text-primary-400' : 'text-gray-400'} transition-colors duration-300 self-end`}
               >
-                <NextBtn />
+                <NextBtn className="w-10" />
               </button>
             </>
           )}
@@ -115,19 +147,19 @@ export default function SignUp() {
               </button>
               <div className="relative">
                 <input
-                  id="username"
-                  type="username"
+                  id="name"
+                  type="name"
                   placeholder=" "
-                  {...register('username', {
+                  {...register('name', {
                     required: '이름은 필수입력 필드입니다.',
                   })}
                   className="input peer"
                 />
-                <label htmlFor="username" className="input-label">
+                <label htmlFor="name" className="input-label">
                   이름
                 </label>
                 <p className="error-message">
-                  {errors.username && String(errors.username.message)}
+                  {errors.name && String(errors.name.message)}
                 </p>
               </div>
               <div className="relative">

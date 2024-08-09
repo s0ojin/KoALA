@@ -6,7 +6,7 @@ export default function ReviewLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="w-full h-auto min-h-main-height overflow-hidden">
+    <div className="overflow-x-hidden relative">
       {children}
       <Image
         src="/images/cloud.svg"
@@ -24,16 +24,15 @@ export default function ReviewLayout({
         height={0}
         sizes="100%"
         priority
-        className="w-[20%] h-auto absolute top-[68%] right-[0%] translate-x-20 -z-20"
+        className="w-[12%] h-auto absolute top-[20%] right-[0%] translate-x-10 -z-20"
       />
       <Image
         src="/images/koala-sleep.png"
         alt="cloud"
-        width={0}
-        height={0}
-        sizes="100%"
+        width={200}
+        height={200}
         priority
-        className="w-[11%] absolute top-[65%] right-[0%] -z-10"
+        className="w-[6%] absolute top-[15%] right-[2%] -z-10"
       />
     </div>
   )

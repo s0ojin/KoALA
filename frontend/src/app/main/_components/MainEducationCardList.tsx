@@ -102,7 +102,7 @@ export default function MainEducationCardList() {
                 <div
                   className={`flex flex-col ${index === 0 ? 'text-white' : 'text-primary-400'} gap-3`}
                 >
-                  <h3 className="text-3xl font-bold">{card.title}</h3>
+                  <h3 className="text-3xl font-medium">{card.title}</h3>
                   <p className="text-xl font-normal">{card.content}</p>
                 </div>
                 {/* <Image
