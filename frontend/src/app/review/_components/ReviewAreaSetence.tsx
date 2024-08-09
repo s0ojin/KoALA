@@ -4,12 +4,18 @@ import Play from '/public/icons/play.svg'
 import Pause from '/public/icons/pause.svg'
 import { useState } from 'react'
 
-export default function ReviewAreaSentence({ sentence }: any) {
-  const [isSelected, setSelected] = useState<Boolean>(false)
+interface SentenceProps {
+  sentence: any
+  isSelected: boolean
+  OnSentenceSelect: (sentence_id:number) => void
+}
+
+export default function ReviewAreaSentence({ sentence, isSelected, OnSentenceSelect }: SentenceProps) {
+  
   const [isPlaying, setPlaying] = useState<Boolean>(false)
 
   const handleChangeSelected = () => {
-    setSelected((isSelected) => !isSelected)
+    OnSentenceSelect(sentence.review_sentence_id)
   }
 
   const handlePlaying = () => {

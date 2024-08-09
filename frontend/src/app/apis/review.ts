@@ -40,6 +40,7 @@ export const postReviewSentenceSave = async (
   token: string | null
 ): Promise<any> => {
   try {
+    console.log(`${sentenceId} 추가하는 중입니다.`)
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${url}`, {
       method: 'POST',
       headers: {
@@ -56,6 +57,36 @@ export const postReviewSentenceSave = async (
         `Network response was not ok: ${response.status} ${response.statusText}`
       )
     }
+  } catch (error: any) {
+    console.error(error)
+    throw error
+  }
+}
+
+export const deleteReviewSentence = async (
+  url: string,
+  reviewSentenceId: number,
+  token: string | null
+): Promise<any> => {
+  try {
+    console.log(`${reviewSentenceId}를 삭제합니다.`)
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}${url}/${reviewSentenceId}`,
+      {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      }
+    )
+    if (!response.ok) {
+      throw new ApiError(
+        response.status,
+        `Network response was not ok: ${response.status} ${response.statusText}`
+      )
+    }
+    console.log(`${reviewSentenceId}를 삭제했습니다.`)
   } catch (error: any) {
     console.error(error)
     throw error
