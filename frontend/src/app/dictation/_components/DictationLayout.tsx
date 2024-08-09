@@ -6,7 +6,7 @@ export default function DictationLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="relative w-full h-main-screen flex items-center justify-center overflow-x-hidden">
+    <div className="relative w-full h-main-screen flex items-center justify-center">
       {children}
       <Image
         width={0}
