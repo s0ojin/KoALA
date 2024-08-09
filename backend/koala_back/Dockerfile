@@ -1,15 +1,18 @@
-FROM bellsoft/liberica-openjdk-alpine:17 AS builder
-
-COPY gradlew .
-COPY gradle gradle
-COPY build.gradle .
-COPY settings.gradle .
-COPY src src
-RUN chmod +x ./gradlew
-RUN ./gradlew bootJar
+FROM bellsoft/liberica-openjdk-alpine:17 AS build
+WORKDIR /app
+COPY . .
+RUN ./gradlew clean build
 
 FROM bellsoft/liberica-openjdk-alpine:17
-COPY --from=builder build/libs/*.jar app.jar
+LABEL authors="SSAFY"
+
+CMD ["./gradlew", "clean", "build"]
+
+VOLUME /tmp
+
+ARG JAR_FILE=build/libs/*.jar
+
+COPY ${JAR_FILE} app.jar
 
 EXPOSE 8080
 
