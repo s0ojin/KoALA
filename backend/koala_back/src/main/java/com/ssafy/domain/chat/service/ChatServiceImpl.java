@@ -14,8 +14,11 @@ import com.ssafy.domain.chat.dto.request.ChatRequest;
 import com.ssafy.domain.chat.dto.request.ChatSituationRequest;
 import com.ssafy.domain.chat.dto.request.GPTRequest;
 import com.ssafy.domain.chat.dto.request.GPTSituationRequest;
+import com.ssafy.domain.chat.dto.response.ChatFinishResponse;
 import com.ssafy.domain.chat.dto.response.ChatResponse;
 import com.ssafy.domain.chat.dto.response.GPTResponse;
+import com.ssafy.domain.user.model.entity.User;
+import com.ssafy.domain.user.repository.UserRepository;
 import com.ssafy.domain.user.service.AiTalkLogService;
 import com.ssafy.domain.user.service.StudyTimeService;
 import com.ssafy.global.common.UserInfoProvider;
@@ -29,6 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ChatServiceImpl implements ChatService {
 
 	private final UserInfoProvider userInfoProvider;
+	private final UserRepository userRepository;
 	private final CacheService cacheService;
 	private final StudyTimeService studyTimeService;
 	private final AiTalkLogService aiTalkLogService;
@@ -88,12 +92,30 @@ public class ChatServiceImpl implements ChatService {
 	}
 
 	@Override
-	public void finishAIResponse() {
+	public ChatFinishResponse finishAIResponse() {
 		// 이외에 AI 응답 끝내는 로직 추가
-		Long userId = userInfoProvider.getCurrentUserId();
-		aiTalkLogService.createEndTimeLog(userId);
-		studyTimeService.increaseAiTalkMinutes();
+		User user = userInfoProvider.getCurrentUser();
+		cacheService.clearChatHistory(user.getLoginId());
 
-		cacheService.clearChatHistory(userInfoProvider.getCurrentLoginId());
+		aiTalkLogService.createEndTimeLog(user.getUserId());
+		Integer leaves = calculateLeaves(studyTimeService.increaseAiTalkMinutes());
+
+		user.increaseUserLeaves(leaves);
+		userRepository.save(user);
+
+		return ChatFinishResponse.toDto(leaves);
+
+	}
+
+	public Integer calculateLeaves(Integer aiTalkTime) {
+		if (aiTalkTime >= 15)
+			return 10;
+		if (aiTalkTime >= 8)
+			return 5;
+		if (aiTalkTime >= 5)
+			return 3;
+		if (aiTalkTime >= 2)
+			return 1;
+		return 0;
 	}
 }

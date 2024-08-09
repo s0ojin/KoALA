@@ -3,15 +3,11 @@ package com.ssafy.domain.sentence.model.dto.response;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ssafy.domain.sentence.model.entity.Sentence;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class SentenceDictationResponse {
 
 	@JsonProperty("sentence_id")

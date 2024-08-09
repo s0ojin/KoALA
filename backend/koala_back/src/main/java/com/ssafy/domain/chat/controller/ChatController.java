@@ -1,7 +1,5 @@
 package com.ssafy.domain.chat.controller;
 
-import java.util.Map;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.domain.chat.dto.request.ChatRequest;
 import com.ssafy.domain.chat.dto.request.ChatSituationRequest;
+import com.ssafy.domain.chat.dto.response.ChatFinishResponse;
 import com.ssafy.domain.chat.dto.response.ChatResponse;
 import com.ssafy.domain.chat.service.ChatService;
 
@@ -41,7 +40,7 @@ public class ChatController {
 	@Operation(summary = "AI 회화 끝내기")
 	@GetMapping("/finish")
 	public ResponseEntity<?> closeChat() {
-		chatService.finishAIResponse();
-		return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "finish AI chat"));
+		ChatFinishResponse chatFinishResponse = chatService.finishAIResponse();
+		return ResponseEntity.status(HttpStatus.OK).body(chatFinishResponse);
 	}
 }

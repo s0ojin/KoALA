@@ -2,11 +2,11 @@ package com.ssafy.domain.sentence.model.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
+@Builder
 public class SentenceTestResponse {
 
 	@JsonProperty("origin_text")
@@ -19,5 +19,14 @@ public class SentenceTestResponse {
 	private String resultTag;
 
 	private boolean correct;
+
+	public static SentenceTestResponse toDto(String originText, String userText, String resultTag, boolean correct) {
+		return SentenceTestResponse.builder()
+			.originText(originText)
+			.userText(userText)
+			.resultTag(resultTag)
+			.correct(correct)
+			.build();
+	}
 
 }
