@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.domain.ai_talk.service.CacheService;
+import com.ssafy.domain.koala.service.KoalaService;
 import com.ssafy.domain.user.model.dto.request.UserSignUpRequest;
 import com.ssafy.domain.user.model.dto.request.UserUpdateRequest;
 import com.ssafy.domain.user.model.dto.response.RankingResponse;
@@ -44,13 +45,14 @@ public class UserServiceImpl implements UserService {
 	private final UserInfoProvider userInfoProvider;
 	private final JwtTokenProvider jwtTokenProvider;
 	private final AuthenticationManagerBuilder authenticationManagerBuilder;
+	private final CacheService cacheService;
 	private final PasswordEncoder passwordEncoder;
 	private final UserRepository userRepository;
+	private final KoalaService koalaService;
 	private final AuthRepository authRepository;
-	private final RankingRepository rankingRepository;
-	private final CacheService cacheService;
 	private final StudyTimeService studyTimeService;
 	private final AiTalkLogService aiTalkLogService;
+	private final RankingRepository rankingRepository;
 
 	@Transactional
 	public UserFindResponse signUp(UserSignUpRequest userSignUpRequest) {
@@ -65,6 +67,7 @@ public class UserServiceImpl implements UserService {
 		User user = userRepository.save(userSignUpRequest.toEntity(encodedPassword, auth));
 		studyTimeService.initStudyTime(user.getUserId());
 		aiTalkLogService.initAiTalkLog(user);
+		koalaService.addKoala(user.getUserId());
 
 		return UserFindResponse.toDto(user);
 	}
