@@ -10,8 +10,6 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class SentenceDictationResponse {
 
 	@JsonProperty("sentence_id")

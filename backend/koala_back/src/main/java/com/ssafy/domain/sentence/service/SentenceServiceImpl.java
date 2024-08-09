@@ -90,7 +90,7 @@ public class SentenceServiceImpl implements SentenceService {
 				correct = false;
 			}
 
-			sentenceTestResponses.add(new SentenceTestResponse(originText, userText, resultTag, correct));
+			sentenceTestResponses.add(SentenceTestResponse.toDto(originText, userText, resultTag, correct));
 		}
 
 		// 1. 복습페이지에 틀린 문장 저장
