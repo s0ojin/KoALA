@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.domain.board.model.dto.request.BoardCommentCreateRequest;
 import com.ssafy.domain.board.model.dto.request.BoardCreateRequest;
 import com.ssafy.domain.board.model.dto.response.BoardCommentResponse;
@@ -41,10 +42,14 @@ public class BoardController {
 	private final BoardCommentService boardCommentService;
 
 	@Operation(summary = "게시글 작성")
-	@PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+	@PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
 	public ResponseEntity<?> createBoard(
-		@Valid @RequestPart(value = "board_detail") BoardCreateRequest boardCreateRequest,
+		@Valid @RequestPart(value = "board_detail") String boardDetail,
 		@RequestPart(value = "board_images", required = false) List<MultipartFile> images) throws IOException {
+
+		// JSON 문자열을 객체로 변환
+		ObjectMapper objectMapper = new ObjectMapper();
+		BoardCreateRequest boardCreateRequest = objectMapper.readValue(boardDetail, BoardCreateRequest.class);
 
 		if (BoardValidation.validateKoreanAndNumeric(boardCreateRequest.getTitle())) {
 			throw new IllegalArgumentException(
@@ -54,7 +59,6 @@ public class BoardController {
 			throw new IllegalArgumentException(
 				"Post content can only contain Korean letters, numbers, and special characters.");
 		}
-
 		// 추가: files 리스트를 boardCreateRequest에 설정
 		boardCreateRequest.setBoardImages(images != null ? images : new ArrayList<>());
 
