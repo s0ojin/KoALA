@@ -28,4 +28,7 @@ public interface ReviewRepository extends JpaRepository<ReviewSentence, Long> {
 	List<ReviewSentence> findAllByKeywordAndTopicAndUser(@Param("user") User user,
 		@Param("keyword") String keyword, @Param("topic") String topic);
 
+	@Query("select rs from ReviewSentence rs where rs.user.userId = :userId and rs.sentence.sentenceId = :sentenceId")
+	ReviewSentence findByUserIdAndSentenceId(@Param("userId") Long userId, @Param("sentenceId") Long sentenceId);
+
 }
