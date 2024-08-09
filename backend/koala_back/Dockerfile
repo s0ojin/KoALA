@@ -1,4 +1,4 @@
-FROM gradle:7.4.2-jdk17 AS build
+FROM bellsoft/liberica-openjdk-alpine:17 AS build
 WORKDIR /app
 COPY . .
 RUN ./gradlew clean build
