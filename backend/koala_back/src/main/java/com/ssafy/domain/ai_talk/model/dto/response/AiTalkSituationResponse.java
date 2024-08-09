@@ -1,8 +1,8 @@
 package com.ssafy.domain.ai_talk.model.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ssafy.domain.ai_talk.model.entity.AiTalkSituation;
 
-import jakarta.persistence.Column;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -23,4 +23,15 @@ public class AiTalkSituationResponse {
 
 	@JsonProperty("situation_img_url")
 	private String situationImgUrl;
+
+	public static AiTalkSituationResponse toDto(AiTalkSituation aiTalkSituation) {
+		return AiTalkSituationResponse.builder()
+			.situationId(aiTalkSituation.getSituationId())
+			.situationPlace(aiTalkSituation.getSituationPlace())
+			.situationTitle(aiTalkSituation.getSituationTitle())
+			.situationDetail(aiTalkSituation.getSituationDetail())
+			.situationImgUrl(aiTalkSituation.getSituationImgUrl())
+			.build();
+	}
+
 }

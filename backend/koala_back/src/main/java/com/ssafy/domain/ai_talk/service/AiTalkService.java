@@ -14,7 +14,7 @@ public interface AiTalkService {
 
 	AiTalkResponse setSituation(Long situationId);
 
-	AiTalkResponse getAIResponse(AiTalkRequest aiTalkRequest);
+	AiTalkResponse getAiResponse(AiTalkRequest aiTalkRequest);
 
-	AiTalkFinishResponse finishAIResponse();
+	AiTalkFinishResponse finishAiResponse();
 }

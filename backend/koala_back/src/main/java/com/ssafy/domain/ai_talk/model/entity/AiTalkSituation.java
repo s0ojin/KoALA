@@ -2,8 +2,6 @@ package com.ssafy.domain.ai_talk.model.entity;
 
 import static lombok.AccessLevel.*;
 
-import com.ssafy.domain.ai_talk.model.dto.response.AiTalkSituationResponse;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -43,15 +41,5 @@ public class AiTalkSituation {
 
 	@Column(name = "situation_img_url")
 	private String situationImgUrl;
-
-	public static AiTalkSituationResponse toDto(AiTalkSituation aiTalkSituation){
-		return AiTalkSituationResponse.builder()
-			.situationId(aiTalkSituation.getSituationId())
-			.situationPlace(aiTalkSituation.getSituationPlace())
-			.situationTitle(aiTalkSituation.getSituationTitle())
-			.situationDetail(aiTalkSituation.getSituationDetail())
-			.situationImgUrl(aiTalkSituation.getSituationImgUrl())
-			.build();
-	}
 
 }
