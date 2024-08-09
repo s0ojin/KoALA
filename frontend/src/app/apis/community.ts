@@ -1,8 +1,6 @@
 import { ApiError } from '@/app/utils/customError'
+import { getToken } from '@/app/utils/cookie/getToken'
 
-const baseUrl = 'http://localhost:8080/api'
-const token =
-  'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiYXV0aCI6IlJPTEVfdXNlciIsInR5cGUiOiJhY2Nlc3MiLCJleHAiOjE3MjMwODQ3MjN9.0faUQzpTKcjceIP2R9LNOyFx1vO4N1PQUHar6keX07U'
 interface SortOption {
   empty: boolean
   unsorted: boolean
@@ -52,11 +50,12 @@ interface Post {
 
 export const getPost = async (url: string): Promise<any> => {
   try {
-    const response = await fetch(`${baseUrl}${url}`, {
+    const accessToken = await getToken()
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${url}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        'Authorization': `Bearer ${accessToken}`,
       },
     })
 
@@ -84,14 +83,18 @@ export const postPostComment = async (
   payload: PostPostComment
 ) => {
   try {
-    const response = await fetch(`${baseUrl}/boards/${boardId}/comments`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      },
-      body: JSON.stringify(payload),
-    })
+    const accessToken = getToken()
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/boards/${boardId}/comments`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify(payload),
+      }
+    )
 
     if (!response.ok) {
       if (response.status === 400) {
@@ -117,10 +120,11 @@ export const postPostComment = async (
 }
 
 export const postPost = async (url: string, data: FormData) => {
-  const response = await fetch(`${baseUrl}${url}`, {
+  const accessToken = getToken()
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${url}`, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${accessToken}`,
     },
     body: data,
   })
@@ -130,11 +134,15 @@ export const postPost = async (url: string, data: FormData) => {
 
 export const getPostList = async (url: string) => {
   try {
-    const response = await fetch(`${baseUrl}${url}`, {
+    const accessToken = await getToken()
+
+    console.log('accessToken:', accessToken)
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${url}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        'Authorization': `Bearer ${accessToken}`,
       },
     })
 
