@@ -4,6 +4,7 @@ const nextConfig = {
     domains: ['koalabucket1.s3.amazonaws.com'],
   },
 
+  output: 'standalone',
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,

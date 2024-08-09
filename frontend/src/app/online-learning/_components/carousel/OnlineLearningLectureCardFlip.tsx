@@ -26,7 +26,7 @@ export default function OnlineLearningLectureCardFlip({
 
   const handleMouseMove = (event: React.MouseEvent<HTMLElement>) => {
     const element = ref.current
-    const elementRect = element.getBoundingClientRect()
+    const elementRect = (element as any).getBoundingClientRect()
     const elementWidth = elementRect.width
     const elementHeight = elementRect.height
     const elementCenterX = elementWidth / 2

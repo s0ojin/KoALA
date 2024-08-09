@@ -1,3 +1,5 @@
+'use client'
+
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { patchEditUser } from '@/app/apis/auth'
 import { useRouter } from 'next/navigation'

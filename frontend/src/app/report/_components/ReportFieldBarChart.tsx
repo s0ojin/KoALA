@@ -76,20 +76,22 @@ export default function ReportFieldBarChart({
       datalabels: {
         listeners: {
           enter: function (context: Context) {
-            context.hovered = true
+            ;(context as any).hovered = true
 
             return true
           },
           leave: function (context: Context) {
-            context.hovered = false
+            ;(context as any).hovered = false
             return true
           },
         },
         color: function (context: Context) {
-          return context.hovered ? 'white' : context.dataset.backgroundColor
+          return (context as any).hovered
+            ? 'white'
+            : (context as any).dataset.backgroundColor
         },
         display: function (context: Context) {
-          return context.dataset.data[context.dataIndex] > 1
+          return (context as any).dataset.data[context.dataIndex] > 1
         },
       },
     },
