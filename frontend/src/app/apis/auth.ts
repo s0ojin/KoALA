@@ -1,3 +1,6 @@
+import { setCookie } from 'cookies-next'
+import { getToken } from '../utils/cookie/getToken'
+
 interface SignUpRequestBody {
   login_id: string
   password: string
@@ -44,8 +47,31 @@ export const postLogin = async (url: string, payload: LoginRequestBody) => {
       console.log(response)
     }
     const data = await response.json()
-    localStorage.setItem('accessToken', data.access_token)
-    localStorage.setItem('refreshToken', data.refresh_token)
+
+    setCookie('accessToken', data.access_token)
+    setCookie('refreshToken', data.refresh_token)
+    return { data, status: response.status }
+  } catch (error) {
+    console.error('There was a problem with the fetch operation:', error)
+  }
+}
+
+export const getUserInfo = async (url: string) => {
+  try {
+    const accessToken = getToken()
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${url}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`,
+      },
+    })
+
+    if (!response.ok) {
+      console.log(response)
+    }
+    const data = await response.json()
+
     return { data, status: response.status }
   } catch (error) {
     console.error('There was a problem with the fetch operation:', error)
