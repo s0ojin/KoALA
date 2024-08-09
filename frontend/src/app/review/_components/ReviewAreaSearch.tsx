@@ -3,9 +3,18 @@
 import FilterIcon from '/public/icons/filter-square.svg'
 import SearchIcon from '/public/icons/search-normal.svg'
 import { useState } from 'react'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { motion, Variants } from 'framer-motion'
 import { useRouter } from 'next/navigation'
-import { Category, categoryList } from '@/app/review/_components/ReviewArea'
+import { Category } from '@/app/review/_components/ReviewArea'
+
+const categoryList = [
+  { id: '1', content: '전체' },
+  { id: '2', content: '일상' },
+  { id: '3', content: '행정' },
+  { id: '4', content: '교육' },
+  { id: '5', content: '사용자' },
+]
 
 const itemVariants: Variants = {
   open: {
@@ -37,38 +46,60 @@ const ulVariants: Variants = {
   },
 }
 
-export default function ReviewAriaSearch() {
-  const [isOpen, setIsOpen] = useState(false)
-  const [topic, setTopic] = useState('전체')
-  const [keyword, setKeyword] = useState('')
+interface SearchProps {
+  topic?: string | null
+  keyword?: string | null
+}
 
+interface KeywordFormValues {
+  keyword?: string
+}
+
+export default function ReviewAriaSearch({ topic, keyword }: SearchProps) {
+  const [isOpen, setIsOpen] = useState(false)
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<KeywordFormValues>()
   const router = useRouter()
 
   const handleTopic = (e: React.MouseEvent<HTMLLIElement>) => {
     e.preventDefault()
     const targetContent = e.target as HTMLLIElement
     const topicContent = targetContent.textContent || '전체'
-    setTopic(topic => topicContent)
-    setIsOpen(isOpen => !isOpen)
-    if (keyword) {
-      router.push(`/review?topic=${topic}&keyword=${keyword}`)
+    setIsOpen((isOpen) => !isOpen)
+    if (topicContent && topicContent !== '전체') {
+      if (keyword) {
+        router.push(`/review?topic=${topicContent}&keyword=${keyword}`)
+      } else {
+        router.push(`/review?topic=${topicContent}`)
+      }
     } else {
-      router.push(`/review?topic=${topic}`)
+      if (keyword) {
+        router.push(`/review?keyword=${keyword}`)
+      } else {
+        router.replace(`/review`)
+      }
     }
   }
 
-  const handleKeyword = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    const targetContent = e.target as HTMLLIElement
-    const formContent = targetContent
-    console.log(formContent)
-    if (keyword) {
-      router.push(`/review?topic=${topic}&keyword=${keyword}`)
+  const OnSubmit:SubmitHandler<KeywordFormValues> = (data) => {
+    if (data.keyword) {
+      if (topic) {
+        router.push(`/review?topic=${topic}&keyword=${data.keyword}`)
+      } else {
+        router.push(`/review?keyword=${data.keyword}`)
+      }
     } else {
-      router.push('/review')
+      if (topic) {
+        router.push(`/review?topic=${topic}`)
+      } else {
+        router.replace('/review')
+      }
     }
   }
-
 
   const LiElement = ({ id, content }: Category) => (
     <motion.li
@@ -94,7 +125,7 @@ export default function ReviewAriaSearch() {
           className="w-[11rem] h-full bg-primary-400 rounded-[4.5rem] flex items-center pr-5"
         >
           <FilterIcon width={24} height={24} className="ml-[1rem]" />
-          <p className="m-auto text-white">필터</p>
+          <p className="m-auto text-white">{topic ? topic : '전체'}</p>
         </motion.button>
         <motion.ul
           className="bg-white mt-1"
@@ -112,11 +143,15 @@ export default function ReviewAriaSearch() {
           })}
         </motion.ul>
       </motion.nav>
-      <form className="flex w-full h-full rounded-[4.5rem] bg-gray-100" onSubmit={handleKeyword}>
+      <form
+        className="flex w-full h-full rounded-[4.5rem] bg-gray-100"
+        onSubmit={handleSubmit(OnSubmit)}
+      >
         <SearchIcon width={24} height={24} className="mx-[1rem] my-auto" />
         <input
           type="text"
           className="focus:outline-none bg-gray-100 rounded-r-[4.5rem] pr-[1.5rem] text-xl grow"
+          {...register('keyword')}
         />
       </form>
     </>
