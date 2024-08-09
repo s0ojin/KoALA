@@ -13,6 +13,7 @@ import com.ssafy.domain.review.model.dto.request.ReviewSentenceRequest;
 import com.ssafy.domain.review.model.dto.response.ReviewSentenceResponse;
 import com.ssafy.domain.review.model.entity.ReviewSentence;
 import com.ssafy.domain.review.repository.ReviewRepository;
+import com.ssafy.domain.review.service.ReviewService;
 import com.ssafy.domain.sentence.model.dto.request.SentenceCreateRequest;
 import com.ssafy.domain.sentence.model.dto.request.SentenceTestRequest;
 import com.ssafy.domain.sentence.model.dto.response.LectureSentenceResponse;
@@ -38,6 +39,7 @@ public class SentenceServiceImpl implements SentenceService {
 	private final ReviewRepository reviewRepository;
 	private final SentenceRepository sentenceRepository;
 	private final LectureSentenceRepository lectureSentenceRepository;
+	private final ReviewService reviewService;
 
 	@Override
 	@Transactional
@@ -95,7 +97,11 @@ public class SentenceServiceImpl implements SentenceService {
 		}
 
 		// 1. 복습페이지에 틀린 문장 저장
-		reviewRepository.saveAll(reviewSentences);
+		for (ReviewSentence reviewSentence : reviewSentences) {
+			reviewService.addReviewSentence(ReviewSaveRequest.builder()
+				.sentenceId(reviewSentence.getSentence().getSentenceId())
+				.build());
+		}
 		// 2. 유칼립투스 증가
 		// 문제 별로 토글을 키고 했다면 -> 1개
 		// 문제 별로 토글을 끄고 했다면 -> 2개
