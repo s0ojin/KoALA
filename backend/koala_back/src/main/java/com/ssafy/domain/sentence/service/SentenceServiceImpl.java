@@ -17,6 +17,7 @@ import com.ssafy.domain.sentence.model.dto.request.SentenceCreateRequest;
 import com.ssafy.domain.sentence.model.dto.request.SentenceTestRequest;
 import com.ssafy.domain.sentence.model.dto.response.LectureSentenceResponse;
 import com.ssafy.domain.sentence.model.dto.response.SentenceDictationResponse;
+import com.ssafy.domain.sentence.model.dto.response.SentenceTestLeavesResponse;
 import com.ssafy.domain.sentence.model.dto.response.SentenceTestResponse;
 import com.ssafy.domain.sentence.model.entity.Sentence;
 import com.ssafy.domain.sentence.repository.LectureSentenceRepository;
@@ -55,7 +56,7 @@ public class SentenceServiceImpl implements SentenceService {
 
 	@Override
 	@Transactional
-	public List<SentenceTestResponse> testWritingPaper(List<SentenceTestRequest> writingPaper) {
+	public SentenceTestLeavesResponse testWritingPaper(List<SentenceTestRequest> writingPaper) {
 		List<SentenceTestResponse> sentenceTestResponses = new ArrayList<>();
 		List<ReviewSentence> reviewSentences = new ArrayList<>();
 		User user = userInfoProvider.getCurrentUser();
@@ -101,7 +102,7 @@ public class SentenceServiceImpl implements SentenceService {
 		user.setLeaves(user.getLeaves() + leaves);
 		userRepository.save(user);
 
-		return sentenceTestResponses; // 3. 틀린거 보여주기
+		return SentenceTestLeavesResponse.toDto(sentenceTestResponses, leaves);
 	}
 
 	@Override

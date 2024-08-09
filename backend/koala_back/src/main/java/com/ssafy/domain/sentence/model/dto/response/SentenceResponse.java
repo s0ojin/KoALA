@@ -6,11 +6,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ssafy.domain.sentence.model.entity.Sentence;
 import com.ssafy.domain.user.model.entity.User;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Getter
 @Builder
