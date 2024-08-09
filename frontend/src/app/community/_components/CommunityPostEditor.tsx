@@ -1,8 +1,14 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import CommunityImageUploader from '@/app/community/_components/CommunityImageUploader'
+import { postPost } from '@/app/apis/community'
+
+export interface ImageList {
+  preview: string
+  file: File
+}
 
 export default function CommunityPostEditor() {
   const {
@@ -10,9 +16,24 @@ export default function CommunityPostEditor() {
     handleSubmit,
     formState: { errors },
   } = useForm({ mode: 'onChange' })
+  const [imageList, setImageList] = useState<ImageList[]>([])
 
-  const onSubmit = (data: any) => {
-    console.log(data)
+  const onSubmit = async (data: any) => {
+    const formData = new FormData()
+    formData.append(
+      'board_detail',
+      JSON.stringify({
+        board_title: data.title,
+        board_content: data.content,
+      })
+    )
+
+    imageList.forEach((file) => {
+      formData.append('board_images', file.file, file.file.name)
+    })
+
+    const result = await postPost('/boards', formData)
+    console.log(result)
   }
 
   return (
@@ -36,7 +57,10 @@ export default function CommunityPostEditor() {
       </div>
 
       <div className="flex items-start justify-between px-11">
-        <CommunityImageUploader />
+        <CommunityImageUploader
+          imageList={imageList}
+          setImageList={setImageList}
+        />
         <button
           type="submit"
           className="bg-primary-400 py-2 px-12 text-white rounded-full whitespace-nowrap"

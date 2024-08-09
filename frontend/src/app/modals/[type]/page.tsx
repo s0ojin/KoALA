@@ -2,6 +2,7 @@ import AddSentenceModal from '@/app/modals/_components/AddSentenceModal'
 import BasicModal from '@/app/modals/_components/BasicModal'
 import ConfirmCancelModal from '@/app/modals/_components/ConfirmCancelModal'
 import DictationCategoryModal from '@/app/modals/_components/DictationCategoryModal'
+import EditNicknameModal from '@/app/modals/_components/EditNicknameModal'
 
 export default function Modal({ params }: { params: { type: string } }) {
   const renderModal = () => {
@@ -19,6 +20,8 @@ export default function Modal({ params }: { params: { type: string } }) {
         return <DictationCategoryModal />
       case 'add-sentence':
         return <AddSentenceModal />
+      case 'edit-nickname':
+        return <EditNicknameModal />
     }
   }
 
