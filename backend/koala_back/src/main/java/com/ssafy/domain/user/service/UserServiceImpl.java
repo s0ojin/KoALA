@@ -17,7 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ssafy.domain.chat.service.CacheService;
+import com.ssafy.domain.ai_talk.service.CacheService;
 import com.ssafy.domain.user.model.dto.request.UserSignUpRequest;
 import com.ssafy.domain.user.model.dto.request.UserUpdateRequest;
 import com.ssafy.domain.user.model.dto.response.RankingResponse;
@@ -82,6 +82,9 @@ public class UserServiceImpl implements UserService {
 		Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 		// 인증 정보를 기반으로 JWT 토큰 생성
 		JwtToken jwtToken = jwtTokenProvider.generateToken(authentication);
+		User user = userRepository.findByLoginId(loginId).get();
+		user.setRefreshToken(jwtToken.getRefreshToken());
+		userRepository.save(user);
 		return jwtToken;
 	}
 
@@ -104,11 +107,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public UserResponse updateUser(UserUpdateRequest userUpdateRequest) {
+		if (userRepository.existsByNickname(userUpdateRequest.getNickname())) {
+			throw new IllegalArgumentException("닉네임 중복");
+		}
 		User user = userInfoProvider.getCurrentUser();
-
-		String encodedPassword = passwordEncoder.encode(userUpdateRequest.getPassword());
 		user.setNickname(userUpdateRequest.getNickname());
-		user.setPassword(encodedPassword);
 		return UserResponse.toDto(userRepository.save(user));
 	}
 
@@ -143,17 +146,22 @@ public class UserServiceImpl implements UserService {
 	public JwtToken makeNewToken(String bearerToken) {
 		if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
 			String refreshToken = bearerToken.substring(7);
+
 			if (!jwtTokenProvider.validateToken(refreshToken)) {
 				throw new IllegalArgumentException("Invalid refresh token");
 			}
 			Claims claims = jwtTokenProvider.parseClaims(refreshToken);
 			String loginId = claims.get("sub").toString();
-			Optional<User> userOptional = userRepository.findByLoginId(loginId);
-			if (!userOptional.isPresent()) {
+
+			Optional<User> user = userRepository.findByLoginId(loginId);
+			if (!user.isPresent()) {
 				throw new UsernameNotFoundException("User not found with loginId: " + loginId);
 			}
+			if (!user.get().getRefreshToken().equals(refreshToken)) {
+				throw new IllegalArgumentException("Invalid refresh token");
+			}
 			// 이미 사용자 정보를 가지고 있고, 이를 통해 직접 인증 객체를 생성
-			String encodedPassword = userOptional.get().getPassword();
+			String encodedPassword = user.get().getPassword();
 			List<GrantedAuthority> authorities = new ArrayList<>();
 			authorities.add(new SimpleGrantedAuthority("ROLE_user"));
 			UserDetails userDetails = new org.springframework.security.core.userdetails.User(loginId, encodedPassword,
@@ -167,6 +175,9 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void logout() {
+		User user = userRepository.findByLoginId(userInfoProvider.getCurrentLoginId()).get();
+		user.setRefreshToken(null);
+		userRepository.save(user);
 		cacheService.clearChatHistory(userInfoProvider.getCurrentLoginId());
 		SecurityContextHolder.clearContext();
 	}

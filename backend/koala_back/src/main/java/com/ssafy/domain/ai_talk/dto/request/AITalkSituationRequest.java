@@ -1,11 +1,11 @@
-package com.ssafy.domain.chat.dto.request;
+package com.ssafy.domain.ai_talk.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
 
 @Getter
-public class ChatSituationRequest {
+public class AITalkSituationRequest {
 	private String place;
 	@JsonProperty("ai_role")
 	private String aiRole;
