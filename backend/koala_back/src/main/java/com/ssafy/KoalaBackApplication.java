@@ -14,7 +14,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 public class KoalaBackApplication {
 
 	public static void main(String[] args) {
-		System.out.println("반갑습니다");
 		SpringApplication.run(KoalaBackApplication.class, args);
 	}
 
