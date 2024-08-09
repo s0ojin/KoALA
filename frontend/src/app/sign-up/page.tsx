@@ -5,7 +5,7 @@ import Logo from '/public/images/logo.svg'
 import NextBtn from '/public/icons/next-btn.svg'
 import BackBtn from '/public/icons/arrow-left.svg'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import AuthLayout from '@/app/_components/AuthLayout'
 import { postSignUp } from '../apis/auth'
 import { useRouter } from 'next/navigation'
@@ -24,6 +24,7 @@ export default function SignUp() {
     register,
     handleSubmit,
     watch,
+    setFocus,
     formState: { errors, isValid },
   } = useForm<SignUpFormValues>({ mode: 'onChange' })
   const router = useRouter()
@@ -36,11 +37,25 @@ export default function SignUp() {
       nickname: data.nickname,
     }
     const res = await postSignUp('/users', payload)
+    console.log(res)
     if (res?.status === 201) {
       alert('회원가입이 완료되었습니다!')
       router.push('/login')
+    } else if (res?.status === 400) {
+      if (res?.data.message === '아이디 중복') {
+        alert('중복된 아이디입니다!')
+        setPage(1)
+      }
+      if (res.data.message === '닉네임 중복') {
+        alert('중복된 닉네임입니다!')
+        setFocus('nickname')
+      }
     }
   }
+
+  useEffect(() => {
+    setFocus('login_id')
+  }, [page, setFocus])
 
   return (
     <AuthLayout>
@@ -118,7 +133,7 @@ export default function SignUp() {
                 disabled={!isValid}
                 className={`${isValid ? 'text-primary-400' : 'text-gray-400'} transition-colors duration-300 self-end`}
               >
-                <NextBtn />
+                <NextBtn className="w-10" />
               </button>
             </>
           )}
