@@ -1,4 +1,4 @@
-package com.ssafy.domain.ai_talk.dto.request;
+package com.ssafy.domain.ai_talk.model.dto.request;
 
 import lombok.Getter;
 
