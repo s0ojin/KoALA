@@ -4,7 +4,7 @@ import Play from '/public/icons/play.svg'
 import Pause from '/public/icons/pause.svg'
 import { useState } from 'react'
 
-export default function Sentence() {
+export default function ReviewAreaSentence({ sentence }: any) {
   const [isSelected, setSelected] = useState<Boolean>(false)
   const [isPlaying, setPlaying] = useState<Boolean>(false)
 
@@ -24,8 +24,7 @@ export default function Sentence() {
         onClick={handleChangeSelected}
         className={`h-full grow py-4 ${isSelected ? 'text-white' : ''}`}
       >
-        안녕? 나는 이주형이라고 해 안녕? 나는 이주형이라고 해 안녕? 나는
-        이주형이라고 해
+        {sentence.sentence_text}
       </p>
       <button onClick={handlePlaying}>
         {isPlaying ? (
