@@ -1,12 +1,15 @@
 import Image from 'next/image'
 import View from '/public/icons/view.svg'
 import Comment from '/public/icons/comment.svg'
+import Link from 'next/link'
 
 export default function Element({ post }: any) {
   return (
     <div className="flex gap-6  py-3 px-8 items-center border-b-[1px] border-gray-400">
       <div className="w-full flex flex-col gap-4">
-        <p>{post.title}</p>
+        <Link href={`/community/${post.board_id}`}>
+          <p>{post.title}</p>
+        </Link>
         <div className="flex justify-between">
           <div className="flex text-gray-500 text-xs font-normal items-center gap-3">
             <div className="flex items-center">
@@ -31,7 +34,7 @@ export default function Element({ post }: any) {
             </div>
             <div className="inline-flex items-center gap-1 text-gray-500">
               <Comment width={16} height={16} />
-              <p className="text-xs font-normal">{post.commentNum}</p>
+              <p className="text-xs font-normal">{post.comment_num}</p>
             </div>
           </div>
         </div>
