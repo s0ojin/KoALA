@@ -11,4 +11,6 @@ public interface KoalaService {
 
 	KoalaResponse increaseKoalaExp(Long koalaId);
 
+	void addKoala(Long userId);
+
 }
