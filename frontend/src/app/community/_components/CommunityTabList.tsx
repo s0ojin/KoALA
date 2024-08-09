@@ -1,9 +1,10 @@
 'use client'
 
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 
 interface Tab {
-  id: String
+  id: string
   label: string
 }
 
@@ -25,7 +26,13 @@ export const tabList: Tab[] = [
 ]
 
 export default function CommunityTabList() {
-  const [selected, setSelected] = useState<string>(`total-post`)
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const tabId = searchParams.get('tab') || 'total-post'
+
+  const handleClickTab = (tabId: string) => {
+    router.replace(`/community?page=0&tab=${tabId}`)
+  }
 
   return (
     <ul className="inline-flex gap-6 items-end">
@@ -33,8 +40,8 @@ export default function CommunityTabList() {
         return (
           <li
             key={tab.label}
-            className={`hover:text-primary-400 cursor-pointer ${selected === tab.id ? 'text-primary-400 border-b-2' : 'text-gray-400'} text-lg font-medium px-2 border-primary-400`}
-            onClick={() => setSelected(tab.id as string)}
+            className={`hover:text-primary-400 cursor-pointer ${tabId === tab.id ? 'text-primary-400 border-b-2' : 'text-gray-400'} text-lg font-medium px-2 border-primary-400`}
+            onClick={() => handleClickTab(tab.id)}
           >
             {tab.label}
           </li>
