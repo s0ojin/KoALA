@@ -8,7 +8,7 @@ import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.domain.ai_talk.dto.Message;
-import com.ssafy.domain.ai_talk.dto.request.AITalkSituationRequest;
+import com.ssafy.domain.ai_talk.dto.request.AiTalkSituationRequest;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +37,7 @@ public class CacheServiceImpl implements CacheService {
 
 	// 해당하는 캐시가 있으면 지우고 생성한다
 	@Override
-	public void initCacheMemory(String loginId, AITalkSituationRequest AITalkSituationRequest) {
+	public void initCacheMemory(String loginId, AiTalkSituationRequest AITalkSituationRequest) {
 		Cache cache = cacheManager.getCache("chatHistory");
 		if (!isEmpty(loginId))
 			cache.evict(loginId);

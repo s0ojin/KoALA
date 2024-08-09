@@ -5,14 +5,14 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class AITalkFinishResponse {
+public class AiTalkFinishResponse {
 
 	private String message = "finish AI chat";
 
 	private int leaves;
 
-	public static AITalkFinishResponse toDto(int leaves) {
-		return AITalkFinishResponse.builder()
+	public static AiTalkFinishResponse toDto(int leaves) {
+		return AiTalkFinishResponse.builder()
 			.leaves(leaves)
 			.build();
 	}
