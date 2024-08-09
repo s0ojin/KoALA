@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.ssafy.domain.review.model.entity.ReviewSentence;
+import com.ssafy.domain.sentence.model.entity.Sentence;
 import com.ssafy.domain.user.model.entity.User;
 
 public interface ReviewRepository extends JpaRepository<ReviewSentence, Long> {
@@ -28,7 +29,6 @@ public interface ReviewRepository extends JpaRepository<ReviewSentence, Long> {
 	List<ReviewSentence> findAllByKeywordAndTopicAndUser(@Param("user") User user,
 		@Param("keyword") String keyword, @Param("topic") String topic);
 
-	@Query("select rs from ReviewSentence rs where rs.user.userId = :userId and rs.sentence.sentenceId = :sentenceId")
-	ReviewSentence findByUserIdAndSentenceId(@Param("userId") Long userId, @Param("sentenceId") Long sentenceId);
+	boolean existsByUserAndSentence(User user, Sentence sentence);
 
 }
