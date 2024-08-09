@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.domain.review.model.dto.request.ReviewSaveRequest;
+import com.ssafy.domain.review.model.dto.response.ReviewSentenceResponse;
 import com.ssafy.domain.review.service.ReviewService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -39,7 +40,11 @@ public class ReviewController {
 	@Operation(summary = "복습문장 저장")
 	@PostMapping
 	public ResponseEntity<?> createReviewSentence(@Valid @RequestBody ReviewSaveRequest reviewSaveRequest) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(reviewService.addReviewSentence(reviewSaveRequest));
+		ReviewSentenceResponse reviewSentenceResponse = reviewService.addReviewSentence(reviewSaveRequest);
+		if (reviewSentenceResponse == null) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "Already exists"));
+		}
+		return ResponseEntity.status(HttpStatus.CREATED).body(reviewSentenceResponse);
 	}
 
 	@Operation(summary = "복습에 저장된 특정 문장 삭제")
