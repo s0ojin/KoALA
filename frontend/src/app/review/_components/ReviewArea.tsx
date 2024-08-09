@@ -36,6 +36,7 @@ export default async function ReviewArea({ topic, keyword, sentenceList }:Review
               <ReviewAreaSentence
                 key={sentence.review_sentence_id}
                 sentence={sentence}
+                on
               />
             )
           })

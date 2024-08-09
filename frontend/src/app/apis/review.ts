@@ -1,9 +1,5 @@
 import { ApiError } from '@/app/utils/customError'
 
-const baseUrl = 'https://ko-ala.site/api'
-const token =
-  'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0amRndXMxMjM0IiwiYXV0aCI6IlJPTEVfdXNlciIsInR5cGUiOiJhY2Nlc3MiLCJleHAiOjE3MjMxNzU2MDN9.ygZqVmBT1Bzon0_8rn771wKHWZypUKsZMoh7YN8MDpY'
-
 export interface SentenceContent {
   review_sentence_id: number
   sentence_id: number
@@ -11,10 +7,12 @@ export interface SentenceContent {
   sentence_text: string
 }
 
-export const getReviewSentence = async (url: string): Promise<any> => {
+export const getReviewSentence = async (
+  url: string,
+  token: string | null
+): Promise<any> => {
   try {
-    console.log(`${baseUrl}${url}`)
-    const response = await fetch(`${baseUrl}${url}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${url}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -38,10 +36,11 @@ export const getReviewSentence = async (url: string): Promise<any> => {
 
 export const postReviewSentenceSave = async (
   url: string,
-  sentenceId: number
+  sentenceId: number,
+  token: string | null
 ): Promise<any> => {
   try {
-    const response = await fetch(`${baseUrl}${url}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${url}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
