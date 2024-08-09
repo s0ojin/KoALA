@@ -93,6 +93,7 @@ public class ChatServiceImpl implements ChatService {
 		Long userId = userInfoProvider.getCurrentUserId();
 		aiTalkLogService.createEndTimeLog(userId);
 		studyTimeService.increaseAiTalkMinutes();
+		Integer talkTime = aiTalkLogService.calculateTalkTime(userId);
 
 		cacheService.clearChatHistory(userInfoProvider.getCurrentLoginId());
 	}
