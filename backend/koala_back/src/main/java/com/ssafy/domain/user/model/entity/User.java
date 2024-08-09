@@ -40,7 +40,6 @@ import lombok.Setter;
 
 @Entity
 @Getter
-@Setter
 @Builder
 @Table(name = "users")
 @NoArgsConstructor(access = PROTECTED)
@@ -65,6 +64,7 @@ public class User implements UserDetails {
 	@Column(name = "name", nullable = false)
 	private String name;
 
+	@Setter
 	@Column(name = "nickname", nullable = false)
 	private String nickname;
 
@@ -72,6 +72,7 @@ public class User implements UserDetails {
 	@Column(name = "leaves")
 	private Integer leaves = 0;
 
+	@Setter
 	@Builder.Default
 	@Column(name = "user_exp")
 	private Long userExp = 0L;
@@ -83,6 +84,10 @@ public class User implements UserDetails {
 	@Builder.Default
 	@Column(name = "user_created_at")
 	private LocalDateTime userCreatedAt = LocalDateTime.now();
+
+	@Setter
+	@Column(name="refresh_token")
+	private String refreshToken;
 
 	@Builder.Default
 	@OneToMany(mappedBy = "teacher", cascade = ALL, fetch = LAZY, orphanRemoval = true)
