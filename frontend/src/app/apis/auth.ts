@@ -14,7 +14,6 @@ interface LoginRequestBody {
 }
 
 interface EditUserRequestBody {
-  password: string
   nickname: string
 }
 
@@ -66,10 +65,12 @@ export const patchEditUser = async (
   payload: EditUserRequestBody
 ) => {
   try {
+    const accessToken = getToken()
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${url}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`,
       },
       body: JSON.stringify(payload),
     })
@@ -79,8 +80,6 @@ export const patchEditUser = async (
     }
     const data = await response.json()
 
-    setCookie('accessToken', data.access_token)
-    setCookie('refreshToken', data.refresh_token)
     return { data, status: response.status }
   } catch (error) {
     console.error('There was a problem with the fetch operation:', error)
