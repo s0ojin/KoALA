@@ -90,7 +90,7 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.OK).body(userFindResponse);
 	}
 
-	@Operation(summary = "유저 정보 수정")
+	@Operation(summary = "닉네임 수정")
 	@PatchMapping
 	public ResponseEntity<?> updateUser(@Valid @RequestBody UserUpdateRequest userUpdateRequest) {
 		UserResponse userResponse = userService.updateUser(userUpdateRequest);

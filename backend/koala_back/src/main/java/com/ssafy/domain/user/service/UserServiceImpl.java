@@ -104,11 +104,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public UserResponse updateUser(UserUpdateRequest userUpdateRequest) {
+		if (userRepository.existsByNickname(userUpdateRequest.getNickname())) {
+			throw new IllegalArgumentException("닉네임 중복");
+		}
 		User user = userInfoProvider.getCurrentUser();
-
-		String encodedPassword = passwordEncoder.encode(userUpdateRequest.getPassword());
 		user.setNickname(userUpdateRequest.getNickname());
-		user.setPassword(encodedPassword);
 		return UserResponse.toDto(userRepository.save(user));
 	}
 
