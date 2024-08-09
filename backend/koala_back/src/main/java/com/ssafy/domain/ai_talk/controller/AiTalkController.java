@@ -54,12 +54,12 @@ public class AiTalkController {
 	@Operation(summary = "AI 회화 메세지 전송")
 	@PostMapping
 	public ResponseEntity<?> sendMessage(@Valid @RequestBody AiTalkRequest aiTalkRequest) {
-		return ResponseEntity.status(HttpStatus.OK).body(talkService.getAIResponse(aiTalkRequest));
+		return ResponseEntity.status(HttpStatus.OK).body(talkService.getAiResponse(aiTalkRequest));
 	}
 
 	@Operation(summary = "AI 회화 끝내기")
 	@GetMapping("/finish")
 	public ResponseEntity<?> closeChat() {
-		return ResponseEntity.status(HttpStatus.OK).body(talkService.finishAIResponse());
+		return ResponseEntity.status(HttpStatus.OK).body(talkService.finishAiResponse());
 	}
 }

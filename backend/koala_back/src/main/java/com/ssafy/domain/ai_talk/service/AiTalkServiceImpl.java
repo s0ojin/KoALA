@@ -56,7 +56,7 @@ public class AiTalkServiceImpl implements AiTalkService {
 		List<AiTalkSituation> aiTalkSituations = aiTalkRepository.findAll();
 		if (aiTalkSituations.isEmpty())
 			return null;
-		return aiTalkSituations.stream().map(AiTalkSituation::toDto).collect(Collectors.toList());
+		return aiTalkSituations.stream().map(AiTalkSituationResponse::toDto).collect(Collectors.toList());
 	}
 
 	@Override
@@ -64,7 +64,7 @@ public class AiTalkServiceImpl implements AiTalkService {
 		List<AiTalkSituation> aiTalkSituations = aiTalkRepository.findByTopic(topic);
 		if (aiTalkSituations.isEmpty())
 			return null;
-		return aiTalkSituations.stream().map(AiTalkSituation::toDto).collect(Collectors.toList());
+		return aiTalkSituations.stream().map(AiTalkSituationResponse::toDto).collect(Collectors.toList());
 	}
 
 	@Override
@@ -97,7 +97,7 @@ public class AiTalkServiceImpl implements AiTalkService {
 	}
 
 	@Override
-	public AiTalkResponse getAIResponse(AiTalkRequest aiTalkRequest) {
+	public AiTalkResponse getAiResponse(AiTalkRequest aiTalkRequest) {
 		String loginId = userInfoProvider.getCurrentLoginId();
 		// 이전 대화 가져오기
 		List<Message> chatHistory = cacheService.getChatHistory(loginId);
@@ -122,7 +122,7 @@ public class AiTalkServiceImpl implements AiTalkService {
 	}
 
 	@Override
-	public AiTalkFinishResponse finishAIResponse() {
+	public AiTalkFinishResponse finishAiResponse() {
 		// 이외에 AI 응답 끝내는 로직 추가
 		User user = userInfoProvider.getCurrentUser();
 		cacheService.clearChatHistory(user.getLoginId());
