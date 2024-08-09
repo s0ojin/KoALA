@@ -13,7 +13,7 @@ export default function Main() {
           <div className="w-2/5 h-1/2 min-h-[32rem] self-end ml-12 mb-8 relative flex items-end justify-center">
             <div className="flex flex-col gap-6 absolute top-0 -left-10 z-10">
               <MainCommunityButton />
-              <EucalyptusButton eucalyptusCount={100} />
+              <EucalyptusButton />
             </div>
             <MainKoala />
           </div>
