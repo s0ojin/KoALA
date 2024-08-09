@@ -17,7 +17,6 @@ public class SentenceTestRequest {
 	private String userSentence;
 
 	@NotNull(message = "토글 여부는 필수 입력 값입니다.")
-	@JsonProperty("is_toggled")
-	private boolean isToggled;
+	private boolean toggled;
 
 }

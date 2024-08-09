@@ -1,17 +1,15 @@
-package com.ssafy.domain.ai_talk.dto.request;
+package com.ssafy.domain.ai_talk.model.dto.request;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ssafy.domain.ai_talk.dto.Message;
+import com.ssafy.domain.ai_talk.model.dto.Message;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 
 @Getter
 @Setter
-@Slf4j
 public class GPTRequest {
 
 	private final String model = "gpt-4o-mini";
