@@ -7,13 +7,13 @@ import com.ssafy.domain.sentence.model.dto.request.SentenceCreateRequest;
 import com.ssafy.domain.sentence.model.dto.request.SentenceTestRequest;
 import com.ssafy.domain.sentence.model.dto.response.LectureSentenceResponse;
 import com.ssafy.domain.sentence.model.dto.response.SentenceDictationResponse;
-import com.ssafy.domain.sentence.model.dto.response.SentenceTestResponse;
+import com.ssafy.domain.sentence.model.dto.response.SentenceTestLeavesResponse;
 
 public interface SentenceService {
 
 	List<SentenceDictationResponse> getRandomSentence(String topic);
 
-	List<SentenceTestResponse> testWritingPaper(List<SentenceTestRequest> writingPaper);
+	SentenceTestLeavesResponse testWritingPaper(List<SentenceTestRequest> writingPaper);
 
 	ReviewSentenceResponse createSentence(SentenceCreateRequest sentenceCreateRequest);
 
