@@ -1,5 +1,4 @@
-const token =
-  'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiYXV0aCI6IlJPTEVfdXNlciIsInR5cGUiOiJhY2Nlc3MiLCJleHAiOjE3MjMxODYwNDB9.baX0sCzkK08KSjIy4lkKXdTYoVjo3luwuYPUBCKhsco'
+import { getToken } from '../utils/cookie/getToken'
 
 export interface KoalaInfo {
   koala_exp: number
@@ -11,11 +10,12 @@ export interface KoalaInfo {
 
 export const fetchKoalaInfo = async (url: string) => {
   try {
+    const accessToken = getToken()
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${url}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        'Authorization': `Bearer ${accessToken}`,
       },
     })
 
@@ -35,11 +35,12 @@ interface EditKoalaName {
 
 export const editKoalaName = async (url: string, data: EditKoalaName) => {
   try {
+    const accessToken = getToken()
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${url}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        'Authorization': `Bearer ${accessToken}`,
       },
       body: JSON.stringify(data),
     })
@@ -62,11 +63,12 @@ export const editKoalaName = async (url: string, data: EditKoalaName) => {
 
 export const feedKoala = async (url: string) => {
   try {
+    const accessToken = getToken()
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${url}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        'Authorization': `Bearer ${accessToken}`,
       },
     })
 

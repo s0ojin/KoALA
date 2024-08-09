@@ -3,8 +3,8 @@
 import { useState } from 'react'
 import Pencil from '/public/icons/pencil.svg'
 import { useForm } from 'react-hook-form'
-import { editKoalaName } from '@/app/apis/koala'
-import { useSWRConfig } from 'swr'
+import { KoalaInfo, editKoalaName, fetchKoalaInfo } from '@/app/apis/koala'
+import useSWR, { useSWRConfig } from 'swr'
 
 interface MainKoalaNameEditorProps {
   koalaName: string
@@ -14,6 +14,10 @@ export default function MainKoalaNameEditor({
   koalaName = '코알라',
 }: MainKoalaNameEditorProps) {
   const { mutate } = useSWRConfig()
+  const { data: koalaInfo, error } = useSWR<KoalaInfo>(
+    '/koalas',
+    fetchKoalaInfo
+  )
   const [isEdit, setIsEdit] = useState(false)
   const {
     register,
@@ -28,7 +32,7 @@ export default function MainKoalaNameEditor({
   const onSubmit = async (data: any) => {
     if (!isValid) return
     try {
-      const result = await editKoalaName('/koalas/2', {
+      const result = await editKoalaName(`/koalas/${koalaInfo?.koala_id}`, {
         koala_name: data.koalaName,
       })
 
