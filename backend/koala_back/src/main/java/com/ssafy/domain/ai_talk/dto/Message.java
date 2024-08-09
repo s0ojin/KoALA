@@ -1,4 +1,4 @@
-package com.ssafy.domain.chat.dto;
+package com.ssafy.domain.ai_talk.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

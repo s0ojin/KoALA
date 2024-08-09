@@ -1,4 +1,4 @@
-package com.ssafy.domain.chat.controller;
+package com.ssafy.domain.ai_talk.controller;
 
 import java.util.Map;
 
@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.domain.chat.dto.request.ChatRequest;
-import com.ssafy.domain.chat.dto.request.ChatSituationRequest;
-import com.ssafy.domain.chat.dto.response.ChatResponse;
-import com.ssafy.domain.chat.service.ChatService;
+import com.ssafy.domain.ai_talk.dto.request.AITalkRequest;
+import com.ssafy.domain.ai_talk.dto.request.AITalkSituationRequest;
+import com.ssafy.domain.ai_talk.dto.response.AITalkResponse;
+import com.ssafy.domain.ai_talk.service.AITalkService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -24,24 +24,24 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/chat")
-public class ChatController {
-	private final ChatService chatService;
+public class AITalkController {
+	private final AITalkService AITalkService;
 
 	@PostMapping("/start")
-	public ResponseEntity<ChatResponse> createChat(@RequestBody @Valid ChatSituationRequest chatSituationRequest) {
-		return ResponseEntity.status(HttpStatus.OK).body(chatService.setSituation(chatSituationRequest));
+	public ResponseEntity<AITalkResponse> createChat(@RequestBody @Valid AITalkSituationRequest AITalkSituationRequest) {
+		return ResponseEntity.status(HttpStatus.OK).body(AITalkService.setSituation(AITalkSituationRequest));
 	}
 
 	@Operation(summary = "AI 회화 메세지 전송")
 	@PostMapping
-	public ResponseEntity<?> sendMessage(@Valid @RequestBody ChatRequest chatRequest) {
-		return ResponseEntity.status(HttpStatus.OK).body(chatService.getAIResponse(chatRequest));
+	public ResponseEntity<?> sendMessage(@Valid @RequestBody AITalkRequest AITalkRequest) {
+		return ResponseEntity.status(HttpStatus.OK).body(AITalkService.getAIResponse(AITalkRequest));
 	}
 
 	@Operation(summary = "AI 회화 끝내기")
 	@GetMapping("/finish")
 	public ResponseEntity<?> closeChat() {
-		chatService.finishAIResponse();
+		AITalkService.finishAIResponse();
 		return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "finish AI chat"));
 	}
 }

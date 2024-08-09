@@ -1,10 +1,10 @@
-package com.ssafy.domain.chat.dto.response;
+package com.ssafy.domain.ai_talk.dto.response;
 
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.ssafy.domain.chat.dto.Message;
+import com.ssafy.domain.ai_talk.dto.Message;
 
 public class GPTResponse {
 
