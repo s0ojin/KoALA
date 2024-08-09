@@ -3,6 +3,8 @@
 import Image from 'next/image'
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { useSWRConfig } from 'swr'
+import { feedKoala } from '@/app/apis/koala'
 
 const SCALE_FACTOR = 0.3
 const TOP_OFFSET = 20
@@ -14,14 +16,25 @@ interface MainEucalyptusButtonProps {
 export default function MainEucalyptusButton({
   eucalyptusCount = 0,
 }: MainEucalyptusButtonProps) {
+  const { mutate } = useSWRConfig()
   const [eucalyptus, setEucalyptusCount] = useState(eucalyptusCount)
   const [isAnimate, setIsAnimate] = useState(false)
   const [isPressed, setIsPressed] = useState(false)
 
-  const handleClickEucalyptusButton = () => {
+  const handleClickEucalyptusButton = async () => {
     if (eucalyptus <= 0) return
     setIsAnimate(true)
     setEucalyptusCount((eucalyptus) => eucalyptus - 1)
+
+    try {
+      const result = await feedKoala('/koalas/2/leaves')
+
+      if (result?.ok) {
+        mutate('/koalas')
+      }
+    } catch (error) {
+      console.error('Failed to update:', error)
+    }
   }
 
   return (
@@ -30,6 +43,7 @@ export default function MainEucalyptusButton({
         {new Array(5).fill(0).map((_, index) => {
           return (
             <motion.p
+              // key={index}
               key={`${eucalyptus}`}
               className={`absolute z-10 ${isAnimate ? 'block' : 'hidden'}  pointer-events-none`}
               animate={
@@ -79,7 +93,7 @@ export default function MainEucalyptusButton({
         />
       </button>
       <span className="select-none cursor-pointer absolute -right-2 top-0 bg-[#FF7A7A] text-white text-sm h-8 aspect-square rounded-full flex justify-center items-center font-semibold z-0">
-        {eucalyptus}
+        {eucalyptus >= 100 ? '99+' : eucalyptus}
       </span>
     </div>
   )
