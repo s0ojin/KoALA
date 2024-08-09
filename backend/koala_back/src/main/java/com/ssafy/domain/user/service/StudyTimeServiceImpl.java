@@ -89,7 +89,7 @@ public class StudyTimeServiceImpl implements StudyTimeService {
 
 	@Override
 	@Transactional
-	public void increaseAiTalkMinutes() {
+	public Integer increaseAiTalkMinutes() {
 		Long userId = userInfoProvider.getCurrentUserId();
 		StudyTime studyTime = studyTimeRepository.findByUserIdAndTimeCalType(userId, 1);
 		Integer talkMinutes = aiTalkLogService.calculateTalkTime(userId);
@@ -97,6 +97,7 @@ public class StudyTimeServiceImpl implements StudyTimeService {
 		studyTimeRepository.save(studyTime);
 
 		increaseTotalStudyTime(userId, 0, talkMinutes);
+		return talkMinutes;
 	}
 
 	@Override
