@@ -11,13 +11,13 @@ import lombok.Getter;
 public class SentenceDictationResponse {
 
 	@JsonProperty("sentence_id")
-	Long sentenceId;
+	private Long sentenceId;
 
 	@JsonProperty("sentence_text")
-	String sentenceText;
+	private String sentenceText;
 
 	@JsonProperty("sentence_length")
-	Integer sentenceLength;
+	private Integer sentenceLength;
 
 	public static SentenceDictationResponse toDto(Sentence sentence) {
 		return SentenceDictationResponse.builder()

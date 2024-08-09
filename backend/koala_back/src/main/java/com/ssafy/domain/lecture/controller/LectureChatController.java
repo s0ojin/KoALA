@@ -30,7 +30,7 @@ public class LectureChatController {
 		if (chatRoom == null) {
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		} else {
-			return ResponseEntity.badRequest().body(Map.of("message", "Chat room creation failed"));
+			return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("message", "Successfully created chat room"));
 		}
 	}
 
