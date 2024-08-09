@@ -9,9 +9,6 @@ import org.springframework.stereotype.Component;
 import com.ssafy.domain.user.model.entity.User;
 import com.ssafy.domain.user.repository.UserRepository;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @Component
 public class UserInfoProvider {
 	private final UserRepository userRepository;

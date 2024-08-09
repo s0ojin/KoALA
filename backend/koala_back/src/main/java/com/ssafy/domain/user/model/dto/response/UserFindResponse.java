@@ -1,22 +1,21 @@
 package com.ssafy.domain.user.model.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ssafy.domain.user.model.entity.User;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Getter
 @Builder
-@ToString
-@AllArgsConstructor
-@NoArgsConstructor
 public class UserFindResponse {
 
+	@JsonProperty("user_id")
 	private Long userId;
+
+	@JsonProperty("login_id")
 	private String longinId;
+
 	private String nickname;
 	private String name;
 

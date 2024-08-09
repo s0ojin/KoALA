@@ -22,12 +22,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Getter
 @Entity
+@Getter
 @Builder
 @Table(name = "lectures")
-@NoArgsConstructor
+@NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PROTECTED)
 public class Lecture {
 
@@ -46,8 +47,12 @@ public class Lecture {
 	@Column(name = "lecture_detail")
 	private String lectureDetail;
 
-	@Column(name = "lecture_url", nullable = false)
+	@Column(name = "lecture_url")
 	private String lectureUrl;
+
+	@Setter
+	@Column(name = "session_id")
+	private String sessionId;
 
 	@Builder.Default
 	@Column(name = "is_open")
