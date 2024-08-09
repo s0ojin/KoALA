@@ -14,6 +14,7 @@ import com.ssafy.domain.chat.dto.request.ChatRequest;
 import com.ssafy.domain.chat.dto.request.ChatSituationRequest;
 import com.ssafy.domain.chat.dto.request.GPTRequest;
 import com.ssafy.domain.chat.dto.request.GPTSituationRequest;
+import com.ssafy.domain.chat.dto.response.ChatFinishResponse;
 import com.ssafy.domain.chat.dto.response.ChatResponse;
 import com.ssafy.domain.chat.dto.response.GPTResponse;
 import com.ssafy.domain.user.service.AiTalkLogService;
@@ -88,13 +89,27 @@ public class ChatServiceImpl implements ChatService {
 	}
 
 	@Override
-	public void finishAIResponse() {
+	public ChatFinishResponse finishAIResponse() {
 		// 이외에 AI 응답 끝내는 로직 추가
 		Long userId = userInfoProvider.getCurrentUserId();
-		aiTalkLogService.createEndTimeLog(userId);
-		studyTimeService.increaseAiTalkMinutes();
-		Integer talkTime = aiTalkLogService.calculateTalkTime(userId);
-
 		cacheService.clearChatHistory(userInfoProvider.getCurrentLoginId());
+
+		aiTalkLogService.createEndTimeLog(userId);
+		Integer leaves = calculateLeaves(studyTimeService.increaseAiTalkMinutes());
+
+		return ChatFinishResponse.toDto(leaves);
+
+	}
+
+	public Integer calculateLeaves(Integer aiTalkTime) {
+		if (aiTalkTime >= 15)
+			return 10;
+		if (aiTalkTime >= 8)
+			return 5;
+		if (aiTalkTime >= 5)
+			return 3;
+		if (aiTalkTime >= 2)
+			return 1;
+		return 0;
 	}
 }
