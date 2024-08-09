@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -66,8 +67,11 @@ public class ImageServiceImpl implements ImageService {
 		// 제미나이 API를 사용하여 텍스트 추출
 		GeminiRequest.InlineData inlineData = new GeminiRequest.InlineData(multipartFile.getContentType(), base64Image);
 		String extractedText = geminiService.getCompletionWithImage(
-			"이 이미지에서 받아쓰기로 사용할 수 있는 문장을 추출하고 싶어. 문장 길이가 공백을 포함해서 5자에서 40자 이내인 문장만 추출해줘. 한글, 마침표, 쉼표, 느낌표, 물음표를 제외한 문자가 있는 문장은 반드시 제외해줘.\n"
-				+ "마침표로 끝나는 구체적인 문장만 반환해줘. 문장은 마침표로 끝나야해. 한 문장마다 큰따옴표로 묶어줘.", inlineData);
+			"이 이미지에서 문장을 추출해줘. \n"
+				+ "괄호, 슬래시(/), 대시(-) 등 특수문자가 있는 문장은 반드시 반환에서 제외해줘. 문장에는 한글, 마침표(.), 쉼표(,), 느낌표(!), 물음표(?)만 있어야 해. \n"
+				+ "마침표로 끝나는 구체적인 문장만 반환해줘. 모든 문장은 꼭 마침표로 끝나야 해. 한 문장마다 큰따옴표로 묶어줘.",
+			inlineData);
+
 		log.info("Extracted text from image: {}", extractedText);
 
 		// 텍스트를 문장별로 분리하여 객체 리스트에 담음
@@ -76,20 +80,24 @@ public class ImageServiceImpl implements ImageService {
 		String passportKey = null;
 
 		// passportKey 확인
-
 		passportKey = readKey();
-		checkSpelling("테스트 문장", passportKey);
-		if (passportKey == null || passportKey.isEmpty()) {
+		try {
+			// passportKey 유효한지 확인
+			checkSpelling("테스트 문장", passportKey);
+			log.info(passportKey + "는 유효합니다.");
+		} catch (Exception e) {
 			try {
 				passportKey = updateKey();
-				log.warn("토큰 값 문제 있어서 다시 받아요");
+				log.info(passportKey+"를 업데이트 하였습니다.");
 			} catch (IOException updateError) {
 				resultTexts = texts;
+				log.warn("passportKey 오류로 맞춤법 검사를 건너뜁니다.");
 			}
 		}
 
 		if (resultTexts.isEmpty()) {
 			// 문제 없다면 맞춤법 검사 시작
+			log.info("맞춤법 검사를 시작합니다.");
 			for (String text : texts) {
 				try {
 					resultTexts.add(checkSpelling(text, passportKey));
@@ -109,7 +117,11 @@ public class ImageServiceImpl implements ImageService {
 		String[] lines = text.split("\n");
 		for (String line : lines) {
 			if (line.startsWith("\"") && line.endsWith("\"")) {
-				sentences.add(line.substring(1, line.length() - 1));
+				String sentence = line.substring(1, line.length() - 1);
+				int length = sentence.length();
+				if (length >= 5 && length <= 36) {
+					sentences.add(sentence);
+				}
 			}
 		}
 		return sentences;
@@ -117,28 +129,35 @@ public class ImageServiceImpl implements ImageService {
 
 	// 스펠링 체크
 	public static String checkSpelling(String text, String passportKey) throws IOException {
-		String payload = "color_blindness=0&q=" + text + "&passportKey=" + passportKey;
+		String encodedText = URLEncoder.encode(text, "UTF-8");
+		String payload = "color_blindness=0&q=" + encodedText + "&passportKey=" + passportKey;
 		URL url = new URL(baseUrl + "?" + payload);
 		HttpURLConnection connection = (HttpURLConnection)url.openConnection();
 		connection.setRequestMethod("GET");
 		connection.setRequestProperty("User-Agent", USER_AGENT);
 		connection.setRequestProperty("Referer", REFERER);
+		int responseCode = connection.getResponseCode();
+		log.info("Response Code : " + responseCode);
 
-		BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-		String inputLine;
-		StringBuilder content = new StringBuilder();
-		while ((inputLine = in.readLine()) != null) {
-			content.append(inputLine);
+		if (responseCode == HttpURLConnection.HTTP_OK) { // 200이면 정상
+			BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+			String inputLine;
+			StringBuilder content = new StringBuilder();
+			while ((inputLine = in.readLine()) != null) {
+				content.append(inputLine);
+			}
+			in.close();
+			connection.disconnect();
+
+			String response = content.toString();
+			// JSON 파싱
+			JSONObject data = new JSONObject(response);
+			String html = data.getJSONObject("message").getJSONObject("result").getString("notag_html");
+			System.out.println(html);
+			return html;
+		} else {
+			throw new IOException("Failed to connect, HTTP response code: " + responseCode);
 		}
-		in.close();
-		connection.disconnect();
-
-		String response = content.toString();
-		// JSON 파싱
-		JSONObject data = new JSONObject(response);
-		String html = data.getJSONObject("message").getJSONObject("result").getString("notag_html");
-
-		return html;
 	}
 
 	public static String readKey() {
