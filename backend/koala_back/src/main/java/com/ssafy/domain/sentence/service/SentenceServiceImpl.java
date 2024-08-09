@@ -99,7 +99,7 @@ public class SentenceServiceImpl implements SentenceService {
 		// 2. 유칼립투스 증가
 		// 문제 별로 토글을 키고 했다면 -> 1개
 		// 문제 별로 토글을 끄고 했다면 -> 2개
-		user.setLeaves(user.getLeaves() + leaves);
+		user.increaseUserLeaves(leaves);
 		userRepository.save(user);
 
 		return SentenceTestLeavesResponse.toDto(sentenceTestResponses, leaves);

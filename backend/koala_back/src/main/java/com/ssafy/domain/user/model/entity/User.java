@@ -86,7 +86,7 @@ public class User implements UserDetails {
 	private LocalDateTime userCreatedAt = LocalDateTime.now();
 
 	@Setter
-	@Column(name="refresh_token")
+	@Column(name = "refresh_token")
 	private String refreshToken;
 
 	@Builder.Default
@@ -189,6 +189,10 @@ public class User implements UserDetails {
 			increaseUserLevel();
 			this.userExp -= 100L;
 		}
+	}
+
+	public void increaseUserLeaves(Integer value) {
+		this.leaves += value;
 	}
 
 	public void decreaseLeaves() {
