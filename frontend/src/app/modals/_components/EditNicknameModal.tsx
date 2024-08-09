@@ -1,5 +1,6 @@
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { patchEditUser } from '@/app/apis/auth'
+import { useRouter } from 'next/navigation'
 
 interface EditNicknameFormValue {
   nickname: string
@@ -12,6 +13,7 @@ export default function EditNicknameModal() {
     setFocus,
     formState: { isValid },
   } = useForm<EditNicknameFormValue>()
+  const rounter = useRouter()
 
   const onSubmit: SubmitHandler<EditNicknameFormValue> = async (data) => {
     const payload = {
@@ -20,6 +22,7 @@ export default function EditNicknameModal() {
     const res = await patchEditUser('/users', payload)
     if (res?.status === 200) {
       alert('수정이 완료되었습니다!')
+      rounter.back()
     } else if (res?.status === 400) {
       alert('중복된 닉네임입니다!')
       setFocus('nickname')
