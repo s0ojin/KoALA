@@ -3,25 +3,41 @@
 import Image from 'next/image'
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import useSWR, { useSWRConfig } from 'swr'
+import { KoalaInfo, feedKoala, fetchKoalaInfo } from '@/app/apis/koala'
+import { getUserInfo } from '@/app/apis/auth'
 
 const SCALE_FACTOR = 0.3
 const TOP_OFFSET = 20
 
-interface MainEucalyptusButtonProps {
-  eucalyptusCount: number
-}
+export default function MainEucalyptusButton() {
+  const { mutate } = useSWRConfig()
+  const { data: userInfo } = useSWR('/users', getUserInfo)
+  const { data: koalaInfo, error } = useSWR<KoalaInfo>(
+    '/koalas',
+    fetchKoalaInfo
+  )
 
-export default function MainEucalyptusButton({
-  eucalyptusCount = 0,
-}: MainEucalyptusButtonProps) {
-  const [eucalyptus, setEucalyptusCount] = useState(eucalyptusCount)
+  // const [eucalyptus, setEucalyptusCount] = useState(eucalyptusCount)
   const [isAnimate, setIsAnimate] = useState(false)
   const [isPressed, setIsPressed] = useState(false)
 
-  const handleClickEucalyptusButton = () => {
-    if (eucalyptus <= 0) return
+  console.log(userInfo)
+
+  const handleClickEucalyptusButton = async () => {
+    if (userInfo?.data.leaves <= 0) return
     setIsAnimate(true)
-    setEucalyptusCount((eucalyptus) => eucalyptus - 1)
+
+    try {
+      const result = await feedKoala(`/koalas/${koalaInfo?.koala_id}/leaves`)
+
+      if (result?.ok) {
+        mutate('/koalas')
+        mutate('/users')
+      }
+    } catch (error) {
+      console.error('Failed to update:', error)
+    }
   }
 
   return (
@@ -30,7 +46,8 @@ export default function MainEucalyptusButton({
         {new Array(5).fill(0).map((_, index) => {
           return (
             <motion.p
-              key={`${eucalyptus}`}
+              // key={index}
+              key={`${userInfo?.data.leaves}`}
               className={`absolute z-10 ${isAnimate ? 'block' : 'hidden'}  pointer-events-none`}
               animate={
                 isAnimate
@@ -62,7 +79,7 @@ export default function MainEucalyptusButton({
         className={`bg-[#FFF8DA] w-24 h-24 rounded-full shadow-lg cursor-pointer transition-transform duration-200 ease-in-out ${isPressed ? 'transform scale-95 shadow-inner' : ''}`}
         onClick={handleClickEucalyptusButton}
         onMouseDown={() => {
-          if (eucalyptus <= 0) return
+          if (userInfo?.data.leaves <= 0) return
           setIsPressed(true)
         }}
         onMouseUp={() => setIsPressed(false)}
@@ -78,8 +95,8 @@ export default function MainEucalyptusButton({
           draggable="false"
         />
       </button>
-      <span className="select-none cursor-pointer absolute -right-2 top-0 bg-[#FF7A7A] text-white text-sm h-8 aspect-square rounded-full flex justify-center items-center font-bold z-0">
-        {eucalyptus}
+      <span className="select-none cursor-pointer absolute -right-2 top-0 bg-[#FF7A7A] text-white text-sm h-8 aspect-square rounded-full flex justify-center items-center font-semibold z-0">
+        {userInfo?.data.leaves >= 100 ? '99+' : userInfo?.data.leaves}
       </span>
     </div>
   )
