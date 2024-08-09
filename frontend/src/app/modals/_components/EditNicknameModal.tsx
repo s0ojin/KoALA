@@ -3,23 +3,27 @@ import { patchEditUser } from '@/app/apis/auth'
 
 interface EditNicknameFormValue {
   nickname: string
-  password: string
 }
 
 export default function EditNicknameModal() {
   const {
     register,
     handleSubmit,
+    setFocus,
     formState: { isValid },
   } = useForm<EditNicknameFormValue>()
 
   const onSubmit: SubmitHandler<EditNicknameFormValue> = async (data) => {
     const payload = {
       nickname: data.nickname,
-      password: data.password,
     }
-    const res = await patchEditUser('/users/login', payload)
-    console.log(res)
+    const res = await patchEditUser('/users', payload)
+    if (res?.status === 200) {
+      alert('수정이 완료되었습니다!')
+    } else if (res?.status === 400) {
+      alert('중복된 닉네임입니다!')
+      setFocus('nickname')
+    }
   }
   return (
     <div className="w-80 max-h-80 bg-white rounded-3xl flex flex-col justify-between items-center gap-10 px-8 py-10">
@@ -31,12 +35,6 @@ export default function EditNicknameModal() {
           {...register('nickname', { required: true })}
           type="text"
           placeholder="새 닉네임"
-          className="w-full rounded-full border outline-none px-4 py-2 text-sm"
-        />
-        <input
-          {...register('password', { required: true })}
-          type="password"
-          placeholder="비밀번호"
           className="w-full rounded-full border outline-none px-4 py-2 text-sm"
         />
         <button
