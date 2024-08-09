@@ -29,6 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 public class AITalkServiceImpl implements AITalkService {
 
 	private final UserInfoProvider userInfoProvider;
+	private final UserRepository userRepository;
 	private final CacheService cacheService;
 	private final StudyTimeService studyTimeService;
 	private final AiTalkLogService aiTalkLogService;
@@ -88,12 +89,30 @@ public class AITalkServiceImpl implements AITalkService {
 	}
 
 	@Override
-	public void finishAIResponse() {
+	public ChatFinishResponse finishAIResponse() {
 		// 이외에 AI 응답 끝내는 로직 추가
-		Long userId = userInfoProvider.getCurrentUserId();
-		aiTalkLogService.createEndTimeLog(userId);
-		studyTimeService.increaseAiTalkMinutes();
+		User user = userInfoProvider.getCurrentUser();
+		cacheService.clearChatHistory(user.getLoginId());
 
-		cacheService.clearChatHistory(userInfoProvider.getCurrentLoginId());
+		aiTalkLogService.createEndTimeLog(user.getUserId());
+		Integer leaves = calculateLeaves(studyTimeService.increaseAiTalkMinutes());
+
+		user.increaseUserLeaves(leaves);
+		userRepository.save(user);
+
+		return ChatFinishResponse.toDto(leaves);
+
+	}
+
+	public Integer calculateLeaves(Integer aiTalkTime) {
+		if (aiTalkTime >= 15)
+			return 10;
+		if (aiTalkTime >= 8)
+			return 5;
+		if (aiTalkTime >= 5)
+			return 3;
+		if (aiTalkTime >= 2)
+			return 1;
+		return 0;
 	}
 }

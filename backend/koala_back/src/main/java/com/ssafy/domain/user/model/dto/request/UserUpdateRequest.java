@@ -11,7 +11,7 @@ public class UserUpdateRequest {
 	@NotBlank(message = "닉네임은 필수 입력 값입니다.")
 	String nickname;
 
-	public User toEntity(String nickname, String encodedPassword) {
+	public User toEntity(String nickname) {
 		return User.builder().nickname(nickname).build();
 	}
 }

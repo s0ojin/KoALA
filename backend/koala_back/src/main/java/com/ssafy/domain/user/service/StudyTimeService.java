@@ -12,7 +12,7 @@ public interface StudyTimeService {
 
 	void increaseLectureCount();
 
-	void increaseAiTalkMinutes();
+	Integer increaseAiTalkMinutes();
 
 	void increaseTotalStudyTime(Long userId, Integer timeCalType, Integer studyTime);
 

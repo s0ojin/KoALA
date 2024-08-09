@@ -17,6 +17,8 @@ import com.ssafy.domain.lecture.model.entity.RegisteredLectureId;
 import com.ssafy.domain.lecture.repository.LectureNoteRepository;
 import com.ssafy.domain.lecture.repository.LectureRepository;
 import com.ssafy.domain.lecture.repository.RegisteredLectureRepository;
+import com.ssafy.domain.user.model.entity.User;
+import com.ssafy.domain.user.repository.UserRepository;
 import com.ssafy.domain.user.service.StudyTimeService;
 import com.ssafy.global.common.UserInfoProvider;
 
@@ -27,6 +29,7 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 public class LectureServiceImpl implements LectureService {
 
+	private final UserRepository userRepository;
 	private final StudyTimeService studyTimeService;
 	private final LectureRepository lectureRepository;
 	private final LectureNoteRepository lectureNoteRepository;
@@ -52,6 +55,10 @@ public class LectureServiceImpl implements LectureService {
 
 			registeredLectureRepository.save(registeredLecture);
 			studyTimeService.increaseLectureCount();
+
+			User user = userInfoProvider.getCurrentUser();
+			user.increaseUserLeaves(1);
+			userRepository.save(user);
 
 			return RegisteredLectureResponse.toDto(registeredLecture);
 		}
