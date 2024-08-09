@@ -9,8 +9,6 @@ services:
       - "8080:8080"
     environment:
       - TZ=Asia/Seoul
-    env_file:
-      - /home/ubuntu/.env
     networks:
       - koala
 
