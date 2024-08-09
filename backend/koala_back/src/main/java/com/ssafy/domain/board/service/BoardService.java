@@ -11,7 +11,7 @@ import com.ssafy.domain.board.model.dto.response.BoardResponse;
 
 public interface BoardService {
 
-	BoardDetailResponse createBoard(BoardCreateRequest boardCreateRequest) throws IOException;
+	BoardDetailResponse writeBoard(BoardCreateRequest boardCreateRequest) throws IOException;
 
 	Page<BoardResponse> getBoards(Pageable pageable);
 
@@ -26,6 +26,8 @@ public interface BoardService {
 	void deleteBoard(Long boardId);
 
 	void increaseCommentNum(Long boardId);
+
+	void decreaseCommentNum(Long boardId);
 
 	void increaseHit(Long boardId);
 

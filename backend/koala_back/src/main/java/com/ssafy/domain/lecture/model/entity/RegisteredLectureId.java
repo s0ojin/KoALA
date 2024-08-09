@@ -1,12 +1,13 @@
 package com.ssafy.domain.lecture.model.entity;
 
-import jakarta.persistence.Embeddable;
-import lombok.*;
-
 import java.io.Serializable;
 import java.util.Objects;
 
-import static lombok.AccessLevel.*;
+import jakarta.persistence.Embeddable;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
