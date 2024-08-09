@@ -28,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/lectures")
 public class LectureController {
+
 	private final LectureService lectureService;
 	private final SentenceService sentenceService;
 
