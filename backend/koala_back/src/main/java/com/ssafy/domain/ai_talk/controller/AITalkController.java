@@ -23,23 +23,23 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @RequestMapping("/chat")
 public class AITalkController {
-	private final AITalkService AITalkService;
+	private final AITalkService talkService;
 
 	@PostMapping("/start")
-	public ResponseEntity<AITalkResponse> createChat(@RequestBody @Valid AITalkSituationRequest AITalkSituationRequest) {
-		return ResponseEntity.status(HttpStatus.OK).body(AITalkService.setSituation(AITalkSituationRequest));
+	public ResponseEntity<AITalkResponse> createChat(
+		@RequestBody @Valid AITalkSituationRequest aiTalkSituationRequest) {
+		return ResponseEntity.status(HttpStatus.OK).body(talkService.setSituation(aiTalkSituationRequest));
 	}
 
 	@Operation(summary = "AI 회화 메세지 전송")
 	@PostMapping
-	public ResponseEntity<?> sendMessage(@Valid @RequestBody AITalkRequest AITalkRequest) {
-		return ResponseEntity.status(HttpStatus.OK).body(AITalkService.getAIResponse(AITalkRequest));
+	public ResponseEntity<?> sendMessage(@Valid @RequestBody AITalkRequest aiTalkRequest) {
+		return ResponseEntity.status(HttpStatus.OK).body(talkService.getAIResponse(aiTalkRequest));
 	}
 
 	@Operation(summary = "AI 회화 끝내기")
 	@GetMapping("/finish")
 	public ResponseEntity<?> closeChat() {
-		AITalkService.finishAIResponse();
-		return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "finish AI chat"));
+		return ResponseEntity.status(HttpStatus.OK).body(talkService.finishAIResponse());
 	}
 }

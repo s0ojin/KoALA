@@ -14,8 +14,11 @@ import com.ssafy.domain.ai_talk.dto.request.AITalkRequest;
 import com.ssafy.domain.ai_talk.dto.request.AITalkSituationRequest;
 import com.ssafy.domain.ai_talk.dto.request.GPTRequest;
 import com.ssafy.domain.ai_talk.dto.request.GPTSituationRequest;
+import com.ssafy.domain.ai_talk.dto.response.AITalkFinishResponse;
 import com.ssafy.domain.ai_talk.dto.response.AITalkResponse;
 import com.ssafy.domain.ai_talk.dto.response.GPTResponse;
+import com.ssafy.domain.user.model.entity.User;
+import com.ssafy.domain.user.repository.UserRepository;
 import com.ssafy.domain.user.service.AiTalkLogService;
 import com.ssafy.domain.user.service.StudyTimeService;
 import com.ssafy.global.common.UserInfoProvider;
@@ -89,22 +92,22 @@ public class AITalkServiceImpl implements AITalkService {
 	}
 
 	@Override
-	public ChatFinishResponse finishAIResponse() {
+	public AITalkFinishResponse finishAIResponse() {
 		// 이외에 AI 응답 끝내는 로직 추가
 		User user = userInfoProvider.getCurrentUser();
 		cacheService.clearChatHistory(user.getLoginId());
 
 		aiTalkLogService.createEndTimeLog(user.getUserId());
-		Integer leaves = calculateLeaves(studyTimeService.increaseAiTalkMinutes());
+		int leaves = calculateLeaves(studyTimeService.increaseAiTalkMinutes());
 
 		user.increaseUserLeaves(leaves);
 		userRepository.save(user);
 
-		return ChatFinishResponse.toDto(leaves);
+		return AITalkFinishResponse.toDto(leaves);
 
 	}
 
-	public Integer calculateLeaves(Integer aiTalkTime) {
+	public int calculateLeaves(int aiTalkTime) {
 		if (aiTalkTime >= 15)
 			return 10;
 		if (aiTalkTime >= 8)
