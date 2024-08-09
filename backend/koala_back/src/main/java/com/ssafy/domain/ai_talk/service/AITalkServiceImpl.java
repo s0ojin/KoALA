@@ -1,4 +1,4 @@
-package com.ssafy.domain.chat.service;
+package com.ssafy.domain.ai_talk.service;
 
 import java.util.List;
 
@@ -9,14 +9,14 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.ssafy.domain.chat.dto.Message;
-import com.ssafy.domain.chat.dto.request.ChatRequest;
-import com.ssafy.domain.chat.dto.request.ChatSituationRequest;
-import com.ssafy.domain.chat.dto.request.GPTRequest;
-import com.ssafy.domain.chat.dto.request.GPTSituationRequest;
-import com.ssafy.domain.chat.dto.response.ChatFinishResponse;
-import com.ssafy.domain.chat.dto.response.ChatResponse;
-import com.ssafy.domain.chat.dto.response.GPTResponse;
+import com.ssafy.domain.ai_talk.dto.Message;
+import com.ssafy.domain.ai_talk.dto.request.AITalkRequest;
+import com.ssafy.domain.ai_talk.dto.request.AITalkSituationRequest;
+import com.ssafy.domain.ai_talk.dto.request.GPTRequest;
+import com.ssafy.domain.ai_talk.dto.request.GPTSituationRequest;
+import com.ssafy.domain.ai_talk.dto.response.AITalkFinishResponse;
+import com.ssafy.domain.ai_talk.dto.response.AITalkResponse;
+import com.ssafy.domain.ai_talk.dto.response.GPTResponse;
 import com.ssafy.domain.user.model.entity.User;
 import com.ssafy.domain.user.repository.UserRepository;
 import com.ssafy.domain.user.service.AiTalkLogService;
@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class ChatServiceImpl implements ChatService {
+public class AITalkServiceImpl implements AITalkService {
 
 	private final UserInfoProvider userInfoProvider;
 	private final UserRepository userRepository;
@@ -46,13 +46,13 @@ public class ChatServiceImpl implements ChatService {
 		.build();
 
 	@Override
-	public ChatResponse setSituation(ChatSituationRequest chatSituationRequest) {
+	public AITalkResponse setSituation(AITalkSituationRequest AITalkSituationRequest) {
 		Long userId = userInfoProvider.getCurrentUserId();
 		aiTalkLogService.createStartTimeLog(userId);
 
 		String loginId = userInfoProvider.getCurrentLoginId();
-		cacheService.initCacheMemory(loginId, chatSituationRequest);
-		GPTSituationRequest gptSituationRequest = new GPTSituationRequest(chatSituationRequest);
+		cacheService.initCacheMemory(loginId, AITalkSituationRequest);
+		GPTSituationRequest gptSituationRequest = new GPTSituationRequest(AITalkSituationRequest);
 		GPTResponse gptResponse = webClient.method(HttpMethod.POST)
 			.uri("chat/completions")
 			.header(HttpHeaders.AUTHORIZATION, "Bearer " + apiKey)
@@ -63,17 +63,17 @@ public class ChatServiceImpl implements ChatService {
 
 		String aiResponse = gptResponse.getChoices().get(0).getMessage().getContent();
 		cacheService.addChatHistory(loginId, new Message("assistant", aiResponse));
-		return new ChatResponse(aiResponse);
+		return new AITalkResponse(aiResponse);
 	}
 
 	@Override
-	public ChatResponse getAIResponse(ChatRequest chatRequest) {
+	public AITalkResponse getAIResponse(AITalkRequest AITalkRequest) {
 		String loginId = userInfoProvider.getCurrentLoginId();
 		// 이전 대화 가져오기
 		List<Message> chatHistory = cacheService.getChatHistory(loginId);
 		log.info(chatHistory.toString());
 		GPTRequest gptRequest = new GPTRequest(chatHistory);
-		gptRequest.addMessage(chatRequest.getMessage());
+		gptRequest.addMessage(AITalkRequest.getMessage());
 
 		GPTResponse gptResponse = webClient.method(HttpMethod.POST)
 			.uri("chat/completions")
@@ -85,29 +85,29 @@ public class ChatServiceImpl implements ChatService {
 
 		String aiResponse = gptResponse.getChoices().get(0).getMessage().getContent();
 
-		cacheService.addChatHistory(loginId, new Message("user", chatRequest.getMessage()));
+		cacheService.addChatHistory(loginId, new Message("user", AITalkRequest.getMessage()));
 		cacheService.addChatHistory(loginId, new Message("assistant", aiResponse));
 
-		return new ChatResponse(aiResponse);
+		return new AITalkResponse(aiResponse);
 	}
 
 	@Override
-	public ChatFinishResponse finishAIResponse() {
+	public AITalkFinishResponse finishAIResponse() {
 		// 이외에 AI 응답 끝내는 로직 추가
 		User user = userInfoProvider.getCurrentUser();
 		cacheService.clearChatHistory(user.getLoginId());
 
 		aiTalkLogService.createEndTimeLog(user.getUserId());
-		Integer leaves = calculateLeaves(studyTimeService.increaseAiTalkMinutes());
+		int leaves = calculateLeaves(studyTimeService.increaseAiTalkMinutes());
 
 		user.increaseUserLeaves(leaves);
 		userRepository.save(user);
 
-		return ChatFinishResponse.toDto(leaves);
+		return AITalkFinishResponse.toDto(leaves);
 
 	}
 
-	public Integer calculateLeaves(Integer aiTalkTime) {
+	public int calculateLeaves(int aiTalkTime) {
 		if (aiTalkTime >= 15)
 			return 10;
 		if (aiTalkTime >= 8)

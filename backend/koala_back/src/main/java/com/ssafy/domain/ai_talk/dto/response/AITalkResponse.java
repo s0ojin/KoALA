@@ -5,6 +5,8 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class ChatResponse {
+public class AITalkResponse {
+
 	private String message;
+
 }
