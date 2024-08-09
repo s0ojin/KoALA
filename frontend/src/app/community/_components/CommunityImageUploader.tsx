@@ -3,16 +3,18 @@
 import Image from 'next/image'
 import Close from '/public/icons/close.svg'
 import Add from '/public/icons/add.svg'
-import { useState } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
+import { ImageList } from './CommunityPostEditor'
 
-interface ImageList {
-  preview: string
-  file: string
+interface CommunityImageUploaderProps {
+  imageList: ImageList[]
+  setImageList: Dispatch<SetStateAction<ImageList[]>>
 }
 
-export default function CommunityImageUploader() {
-  const [imageList, setImageList] = useState<ImageList[]>([])
-
+export default function CommunityImageUploader({
+  imageList,
+  setImageList,
+}: CommunityImageUploaderProps) {
   const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
@@ -20,7 +22,7 @@ export default function CommunityImageUploader() {
       let nImageList = [...imageList]
       nImageList.push({
         preview,
-        file: '',
+        file,
       })
       setImageList(nImageList)
     }

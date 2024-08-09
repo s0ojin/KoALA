@@ -33,8 +33,9 @@ export default function DictationLayout({
         src="/images/cloud.svg"
       />
       <Image
-        width={300}
-        height={300}
+        width={0}
+        height={0}
+        sizes="100%"
         className="absolute w-[8%] top-[30%] left-[10%] -z-10 scale-x-[-1]"
         alt="astronaut"
         src="/images/astronaut.png"
