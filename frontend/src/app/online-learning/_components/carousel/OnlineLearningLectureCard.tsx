@@ -47,7 +47,7 @@ export default function OnlineLearningLectureCard({ ...cardData }: CardProps) {
             <p>{cardLectureSchedule}</p>
           </div>
           <Link
-            href={`online-learning/lecture/${cardLectureSessionID}`}
+            href={`online-learning/${cardLectureSessionID}`}
             className="max-w-[14rem] min-w-[10rem]"
           >
             <button className="bg-primary-400 w-full aspect-[5/1] rounded-3xl text-white font-medium md:text-sm lg:text-base">
