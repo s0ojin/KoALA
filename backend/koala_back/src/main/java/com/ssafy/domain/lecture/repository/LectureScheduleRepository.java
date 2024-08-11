@@ -1,8 +1,8 @@
 package com.ssafy.domain.lecture.repository;
 
+import com.ssafy.domain.lecture.model.entity.LectureSchedule;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.ssafy.domain.lecture.model.entity.LectureSchedule;
-
 public interface LectureScheduleRepository extends JpaRepository<LectureSchedule, Long> {
+
 }

@@ -84,7 +84,7 @@ public class LectureServiceImpl implements LectureService {
 
 	@Override
 	public List<LectureNoteResponse> getLectureNote(Long lectureId) {
-		return lectureNoteRepository.findById(lectureId)
+		return lectureNoteRepository.findByLectureId(userInfoProvider.getCurrentUserId(),lectureId)
 			.stream()
 			.map(LectureNoteResponse::toDto)
 			.collect(Collectors.toList());
