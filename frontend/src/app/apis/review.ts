@@ -1,4 +1,6 @@
 import { ApiError } from '@/app/utils/customError'
+import { getToken } from '@/app/utils/cookie/getToken'
+
 
 export interface SentenceContent {
   review_sentence_id: number
@@ -9,14 +11,14 @@ export interface SentenceContent {
 
 export const getReviewSentence = async (
   url: string,
-  token: string | null
 ): Promise<any> => {
   try {
+    const accessToken = await getToken()
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${url}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        'Authorization': `Bearer ${accessToken}`,
       },
     })
     if (!response.ok) {
@@ -37,15 +39,15 @@ export const getReviewSentence = async (
 export const postReviewSentenceSave = async (
   url: string,
   sentenceId: number,
-  token: string | null
 ): Promise<any> => {
   try {
+    const accessToken = await getToken()
     console.log(`${sentenceId} 추가하는 중입니다.`)
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${url}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        'Authorization': `Bearer ${accessToken}`,
       },
       body: JSON.stringify({
         sentence_id: sentenceId,
@@ -66,9 +68,9 @@ export const postReviewSentenceSave = async (
 export const deleteReviewSentence = async (
   url: string,
   reviewSentenceId: number,
-  token: string | null
 ): Promise<any> => {
   try {
+    const accessToken = await getToken()
     console.log(`${reviewSentenceId}를 삭제합니다.`)
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}${url}/${reviewSentenceId}`,
@@ -76,7 +78,7 @@ export const deleteReviewSentence = async (
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          'Authorization': `Bearer ${accessToken}`,
         },
       }
     )
