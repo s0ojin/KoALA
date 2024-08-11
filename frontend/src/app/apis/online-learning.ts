@@ -13,6 +13,11 @@ interface LectureNote {
   note_created_at: string
 }
 
+interface TeacherSentence {
+  sentence_id: number
+  sentence_text: string
+}
+
 export const postCreateOpenViduSession = async (url: string) => {
   try {
     const accessToken = getToken()
@@ -103,13 +108,34 @@ export const getLectureNoteList = async (
   }
 }
 
-export const deleteLectureNoteList = async (
-  url: string
-): Promise<{ data: LectureNote[]; status: number } | undefined> => {
+export const deleteLectureNoteList = async (url: string) => {
   try {
     const accessToken = getToken()
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${url}`, {
       method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`,
+      },
+    })
+
+    if (!response.ok) {
+      console.log(response)
+    }
+    const data = await response.json()
+    return { data: data, status: response.status }
+  } catch (error) {
+    console.error('There was a problem with the fetch operation:', error)
+  }
+}
+
+export const getTeacherSentenceList = async (
+  url: string
+): Promise<{ data: TeacherSentence[]; status: number } | undefined> => {
+  try {
+    const accessToken = getToken()
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${url}`, {
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${accessToken}`,
