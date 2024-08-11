@@ -1,16 +1,31 @@
 'use client'
 
-import { useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import NoteAddBtn from '/public/icons/simple-edit.svg'
+import { postCreateLectureNote } from '@/app/apis/online-learning'
+import { useParams } from 'next/navigation'
+import { mutate } from 'swr'
+
+interface LectureNoteFormValues {
+  title: string
+  content: string
+}
 
 export default function OnlineLearningLectureNoteInput() {
-  const { register, handleSubmit } = useForm()
-
-  const onSubmit = (data: any) => {
-    console.log(
-      'api연결 후 삭제될거지만 필요해서 console찍어놨어요 ㅠ이건 지우면 안되어요...',
-      data
-    )
+  const { register, handleSubmit, reset } = useForm<LectureNoteFormValues>()
+  const params = useParams()
+  const { lecture_id } = params
+  const onSubmit: SubmitHandler<LectureNoteFormValues> = async (data) => {
+    const payload = {
+      lecture_id: Number(lecture_id),
+      note_title: data.title,
+      note_content: data.content,
+    }
+    const res = await postCreateLectureNote('/lectures/note', payload)
+    if (res?.status === 201) {
+      mutate(`/lectures/${lecture_id}/note`)
+      reset()
+    }
   }
 
   return (
