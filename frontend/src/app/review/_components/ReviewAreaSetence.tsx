@@ -3,6 +3,7 @@
 import Play from '/public/icons/play.svg'
 import Pause from '/public/icons/pause.svg'
 import { useState } from 'react'
+import { getWebSpeech } from '@/app/apis/ttsSententce'
 
 interface SentenceProps {
   sentence: any
@@ -19,6 +20,8 @@ export default function ReviewAreaSentence({ sentence, isSelected, OnSentenceSel
   }
 
   const handlePlaying = () => {
+    setPlaying((isPlaying) => !isPlaying)
+    getWebSpeech(sentence.sentence_text)
     setPlaying((isPlaying) => !isPlaying)
   }
 

@@ -2,16 +2,16 @@
 import ReviewAreaSearch from '@/app/review/_components/ReviewAreaSearch'
 import ReviewAreaSentence from '@/app/review/_components/ReviewAreaSetence'
 import ReviewMenuButton from '@/app/review/_components/ReviewMenuButton'
-import { SentenceContent } from '@/app/apis/review'
-import { deleteReviewSentence, postReviewSentenceSave } from '@/app/apis/review'
-import { useState } from 'react'
+import { SentenceContent, deleteReviewSentence } from '@/app/apis/review'
+import { getWebSpeech } from '@/app/apis/ttsSententce'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
 interface ReviewContentProps {
-  token: string | null
   topic?: string | null
   keyword?: string | null
   sentenceList?: SentenceContent[]
+  url: string
 }
 
 export interface Category {
@@ -28,14 +28,20 @@ export const categoryList = [
 ]
 
 export default function ReviewArea({
-  token,
   topic,
   keyword,
   sentenceList,
+  url
 }: ReviewContentProps) {
-  const [selectedSentences, setSentences] = useState<number[]>([])
+  const [selectedSentences, setSelectedSentences] = useState<number[]>([])
   const router = useRouter()
+  
+  useEffect(()=>{
+    window.speechSynthesis.getVoices()
+  })
+
   let copySentences: number[] = []
+
   const handleSentenceList = (review_sentence_id: number) => {
     copySentences = [...selectedSentences]
     if (selectedSentences.includes(review_sentence_id)) {
@@ -44,18 +50,45 @@ export default function ReviewArea({
     } else {
       copySentences.push(review_sentence_id)
     }
-    setSentences(selectedSentences => copySentences)
+    setSelectedSentences(selectedSentences => copySentences)
   }
 
-  const handleSetenceDelete = () => {
-    // postReviewSentenceSave('/reviews',2,token)
+  const handleSetenceDelete = async () => {
     if (selectedSentences.length) {
-      selectedSentences.map(async (review_sentence_id) => {
-        await deleteReviewSentence('/reviews', review_sentence_id, token)
-      })
-    setSentences(selectedSentences => [])
-    router.push('/review')
+      try {
+        await Promise.all(
+          selectedSentences.map((review_sentence_id) => {
+            deleteReviewSentence('/reviews', review_sentence_id)
+          })
+        )
+        await setSelectedSentences(selectedSentences => [])
+        await router.refresh()
+      } catch (error) {
+      console.error(error)
+      }
     }
+  }
+
+  const handleSentencePlay = () => {
+    if (selectedSentences.length) {
+        selectedSentences.sort()
+        selectedSentences.map((review_sentence_id) => {
+          sentenceList?.forEach((sentence) => {
+            if (sentence.review_sentence_id === review_sentence_id) {
+              getWebSpeech(sentence.sentence_text)
+              return
+            }
+          })
+        })
+      }
+    }
+
+  const handleSentenceDictation = () => {
+    getWebSpeech('안녕하세요 주형이 어머님. 요새 생활은 좀 어떠세요?')
+  }
+
+  const handleSentenceSpeaking = () => {
+
   }
 
   return (
@@ -66,7 +99,7 @@ export default function ReviewArea({
         </div>
         <hr className="bg-gray-200" />
         <div className="w-full pr-4 overflow-auto flex flex-col gap-2">
-          {sentenceList ? (
+          {(sentenceList !== undefined && sentenceList.length) ? (
             sentenceList?.map((sentence: SentenceContent) => {
               return (
                 <ReviewAreaSentence
@@ -85,9 +118,9 @@ export default function ReviewArea({
         </div>
       </div>
       <div className="flex flex-col self-end mb-4">
-        <ReviewMenuButton content="재생" />
-        <ReviewMenuButton content="읽고 따라 말하기" />
-        <ReviewMenuButton content="받아쓰기" />
+        <ReviewMenuButton onClick={handleSentencePlay} content="재생" />
+        <ReviewMenuButton onClick={handleSentenceSpeaking} content="읽고 따라 말하기" />
+        <ReviewMenuButton onClick={handleSentenceDictation} content="받아쓰기" />
         <ReviewMenuButton onClick={handleSetenceDelete} content="삭제하기" />
       </div>
     </>
