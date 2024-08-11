@@ -28,6 +28,12 @@ body {
   background: #afafaf;
 }
 
+video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 @layer components {
   .input {
     @apply h-14 px-5 pt-1 w-full rounded-full border border-slate-300 focus:outline-primary-400;
