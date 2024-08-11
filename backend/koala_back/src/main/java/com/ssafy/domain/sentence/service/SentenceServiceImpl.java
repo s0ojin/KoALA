@@ -44,7 +44,7 @@ public class SentenceServiceImpl implements SentenceService {
 	@Transactional
 	public List<SentenceDictationResponse> getRandomSentence(String topic) {
 		List<Sentence> sentences;
-		if (topic.isEmpty()) {
+		if (topic == null || topic.isEmpty()) {
 			sentences = sentenceRepository.findRandomSentences(userInfoProvider.getCurrentUserId());
 		} else if (topic.equals("사용자")) {
 			sentences = sentenceRepository.findRandomSentencesByUser(userInfoProvider.getCurrentUserId());
