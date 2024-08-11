@@ -50,7 +50,7 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public Page<BoardResponse> getBoards(Pageable pageable) {
-		Page<Board> boards = boardRepository.findAll(pageable);
+		Page<Board> boards = boardRepository.findAllByOrderByBoardCreatedAtDesc(pageable);
 		return boards.map(BoardResponse::toDto);
 	}
 
