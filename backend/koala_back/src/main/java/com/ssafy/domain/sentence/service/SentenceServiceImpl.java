@@ -142,15 +142,15 @@ public class SentenceServiceImpl implements SentenceService {
 				if (correctChar == ' ') {
 					// 정답에서는 공백인데 답안이 공백이 아닌 경우
 					//                    result.append("<span class='extra-char'>").append(answerChar).append("</span>");
-					result.append("<span className='extra-char'> </span>");
+					result.append("<span className='text-extra-char'> </span>");
 					correctIndex++;
 				} else if (answerChar == ' ') {
 					// 정답에서는 공백이 아닌데 답안이 공백인 경우
-					result.append("<span className='missing-char'> </span>");
+					result.append("<span className='text-missing-char'> </span>");
 					answerIndex++;
 				} else {
 					// 글자 자체가 틀린 경우
-					result.append("<span className='char-error'>").append(answerChar).append("</span>");
+					result.append("<span className='text-char-error'>").append(answerChar).append("</span>");
 					correctIndex++;
 					answerIndex++;
 				}
@@ -159,14 +159,14 @@ public class SentenceServiceImpl implements SentenceService {
 
 		// 남은 답안 인덱스 처리
 		while (answerIndex < userText.length()) {
-			result.append("<span className='char-error'>").append(userText.charAt(answerIndex)).append("</span>");
+			result.append("<span className='text-char-error'>").append(userText.charAt(answerIndex)).append("</span>");
 			answerIndex++;
 		}
 
 		if (userText.length() < originText.length()) {
 			correctIndex = userText.length();
 			while (correctIndex < originText.length()) {
-				result.append("<span className='char-error'>").append(originText.charAt(correctIndex)).append("</span>");
+				result.append("<span className='text-char-error'>").append(originText.charAt(correctIndex)).append("</span>");
 				correctIndex++;
 			}
 		}
