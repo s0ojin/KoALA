@@ -1,3 +1,4 @@
+import { postTeacherSentence } from '@/app/apis/online-learning'
 import SentenceAddBtn from '/public/icons/plus-circle.svg'
 
 interface SentenceAddCardProps {
@@ -9,8 +10,12 @@ export default function SentenceAddCard({
   sentence,
   sentenceId,
 }: SentenceAddCardProps) {
-  const handleAddSeuntence = () => {
-    console.log('문장추가~')
+  const handleAddSeuntence = async () => {
+    const res = await postTeacherSentence('/reviews', {
+      sentence_id: sentenceId,
+    })
+    if (res?.status === 201) {
+    }
   }
 
   return (

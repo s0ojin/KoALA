@@ -151,3 +151,28 @@ export const getTeacherSentenceList = async (
     console.error('There was a problem with the fetch operation:', error)
   }
 }
+
+export const postTeacherSentence = async (
+  url: string,
+  payload: { sentence_id: number }
+) => {
+  try {
+    const accessToken = getToken()
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${url}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify(payload),
+    })
+
+    if (!response.ok) {
+      console.log(response)
+    }
+    const data = await response.json()
+    return { data: data, status: response.status }
+  } catch (error) {
+    console.error('There was a problem with the fetch operation:', error)
+  }
+}
