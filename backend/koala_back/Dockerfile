@@ -1,8 +1,3 @@
-FROM bellsoft/liberica-openjdk-alpine:17 AS build
-WORKDIR /app
-COPY . .
-RUN ./gradlew clean build
-
 FROM bellsoft/liberica-openjdk-alpine:17
 LABEL authors="SSAFY"
 
