@@ -14,6 +14,7 @@ import {
   Legend,
 } from 'chart.js'
 import { Line } from 'react-chartjs-2'
+import { WeekRange } from '@/app/report/_components/ReportFieldLayout'
 import { StudyInfoProps } from '@/app/report/_components/ReportFieldStudyInfo'
 
 ChartJS.register(
@@ -28,70 +29,78 @@ ChartJS.register(
 )
 
 export interface WeekData {
-  Mon: StudyInfoProps
-  Tue: StudyInfoProps
-  Wed: StudyInfoProps
-  Thu: StudyInfoProps
-  Fri: StudyInfoProps
-  Sat: StudyInfoProps
-  Sun: StudyInfoProps
+  mon: StudyInfoProps
+  tue: StudyInfoProps
+  wed: StudyInfoProps
+  thu: StudyInfoProps
+  fri: StudyInfoProps
+  sat: StudyInfoProps
+  sun: StudyInfoProps
 }
+
+interface WeekRangeProps {
+  thisWeek: WeekRange
+  lastWeek: WeekRange
+}
+
 
 interface WeekDataProps {
   lastWeekData: WeekData
   thisWeekData: WeekData
+  weekRangeData: WeekRangeProps
 }
 
 export default function ReportFieldWeekLineChart({
   lastWeekData,
   thisWeekData,
+  weekRangeData,
 }: WeekDataProps) {
   const lastWeek: number[] = [
-    lastWeekData.Mon.writing +
-      lastWeekData.Mon.speaking +
-      lastWeekData.Mon.lectures,
-    lastWeekData.Tue.writing +
-      lastWeekData.Tue.speaking +
-      lastWeekData.Tue.lectures,
-    lastWeekData.Wed.writing +
-      lastWeekData.Wed.speaking +
-      lastWeekData.Wed.lectures,
-    lastWeekData.Thu.writing +
-      lastWeekData.Thu.speaking +
-      lastWeekData.Thu.lectures,
-    lastWeekData.Fri.writing +
-      lastWeekData.Fri.speaking +
-      lastWeekData.Fri.lectures,
-    lastWeekData.Sat.writing +
-      lastWeekData.Sat.speaking +
-      lastWeekData.Sat.lectures,
-    lastWeekData.Sun.writing +
-      lastWeekData.Sun.speaking +
-      lastWeekData.Sun.lectures,
+    lastWeekData.mon.writing +
+      lastWeekData.mon.speaking +
+      lastWeekData.mon.lectures,
+    lastWeekData.tue.writing +
+      lastWeekData.tue.speaking +
+      lastWeekData.tue.lectures,
+    lastWeekData.wed.writing +
+      lastWeekData.wed.speaking +
+      lastWeekData.wed.lectures,
+    lastWeekData.thu.writing +
+      lastWeekData.thu.speaking +
+      lastWeekData.thu.lectures,
+    lastWeekData.fri.writing +
+      lastWeekData.fri.speaking +
+      lastWeekData.fri.lectures,
+    lastWeekData.sat.writing +
+      lastWeekData.sat.speaking +
+      lastWeekData.sat.lectures,
+    lastWeekData.sun.writing +
+      lastWeekData.sun.speaking +
+      lastWeekData.sun.lectures,
   ]
 
   const thisWeek: number[] = [
-    thisWeekData.Mon.writing +
-      thisWeekData.Mon.speaking +
-      thisWeekData.Mon.lectures,
-    thisWeekData.Tue.writing +
-      thisWeekData.Tue.speaking +
-      thisWeekData.Tue.lectures,
-    thisWeekData.Wed.writing +
-      thisWeekData.Wed.speaking +
-      thisWeekData.Wed.lectures,
-    thisWeekData.Thu.writing +
-      thisWeekData.Thu.speaking +
-      thisWeekData.Thu.lectures,
-    thisWeekData.Fri.writing +
-      thisWeekData.Fri.speaking +
-      thisWeekData.Fri.lectures,
-    thisWeekData.Sat.writing +
-      thisWeekData.Sat.speaking +
-      thisWeekData.Sat.lectures,
-    thisWeekData.Sun.writing +
-      thisWeekData.Sun.speaking +
-      thisWeekData.Sun.lectures,
+    thisWeekData.mon.writing +
+      thisWeekData.mon.speaking +
+      thisWeekData.mon.lectures,
+    thisWeekData.tue.writing +
+      thisWeekData.tue.speaking +
+      thisWeekData.tue.lectures,
+    thisWeekData.wed.writing +
+      thisWeekData.wed.speaking +
+      thisWeekData.wed.lectures,
+    thisWeekData.thu.writing +
+      thisWeekData.thu.speaking +
+      thisWeekData.thu.lectures,
+    thisWeekData.fri.writing +
+      thisWeekData.fri.speaking +
+      thisWeekData.fri.lectures,
+    thisWeekData.sat.writing +
+      thisWeekData.sat.speaking +
+      thisWeekData.sat.lectures,
+    thisWeekData.sun.writing +
+      thisWeekData.sun.speaking +
+      thisWeekData.sun.lectures,
   ]
 
   const options: ChartOptions<'line'> = {
@@ -141,11 +150,11 @@ export default function ReportFieldWeekLineChart({
       <div className="flex mb-8">
         <div className="inline-flex items-center mr-8">
           <div className="xl:w-[3rem] md:w-[1rem] h-[1rem] mr-1.5 bg-pink-400 rounded-2xl my-auto" />
-          <p className="text-pink-400">7/8 ~ 7/14</p>
+          <p className="text-pink-400">{`${weekRangeData.lastWeek.startDate} ~ ${weekRangeData.lastWeek.endDate}`}</p>
         </div>
         <div className="inline-flex items-center">
           <div className="xl:w-[3rem] md:w-[1rem] h-[1rem] mr-1.5 bg-primary-400 rounded-2xl my-auto" />
-          <p className="text-primary-400">7/15 ~ 7/21</p>
+          <p className="text-primary-400">{`${weekRangeData.thisWeek.startDate} ~ ${weekRangeData.thisWeek.endDate}`}</p>
         </div>
       </div>
       <div>
