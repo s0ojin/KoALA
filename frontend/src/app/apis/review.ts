@@ -27,7 +27,6 @@ export const getReviewSentence = async (
         `Network response was not ok: ${response.status} ${response.statusText}`
       )
     }
-
     const data = await response.json()
     return data
   } catch (error: any) {
@@ -42,7 +41,6 @@ export const postReviewSentenceSave = async (
 ): Promise<any> => {
   try {
     const accessToken = await getToken()
-    console.log(`${sentenceId} 추가하는 중입니다.`)
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${url}`, {
       method: 'POST',
       headers: {
@@ -71,7 +69,6 @@ export const deleteReviewSentence = async (
 ): Promise<any> => {
   try {
     const accessToken = await getToken()
-    console.log(`${reviewSentenceId}를 삭제합니다.`)
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}${url}/${reviewSentenceId}`,
       {
@@ -88,7 +85,7 @@ export const deleteReviewSentence = async (
         `Network response was not ok: ${response.status} ${response.statusText}`
       )
     }
-    console.log(`${reviewSentenceId}를 삭제했습니다.`)
+    alert('문장을 삭제하였습니다.')
   } catch (error: any) {
     console.error(error)
     throw error
