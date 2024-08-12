@@ -16,6 +16,7 @@ interface LectureNote {
 interface TeacherSentence {
   sentence_id: number
   sentence_text: string
+  registered: boolean
 }
 
 export const postCreateOpenViduSession = async (url: string) => {
