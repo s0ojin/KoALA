@@ -2,27 +2,37 @@
 
 import Play from '/public/icons/play.svg'
 import Pause from '/public/icons/pause.svg'
-import { useState } from 'react'
-import { getWebSpeech } from '@/app/apis/ttsSententce'
+import { useEffect, useState } from 'react'
+import { SentenceContent } from '@/app/apis/review'
+import { getWebSpeech, stopWebSpeech } from '@/app/apis/ttsSententce'
 
 interface SentenceProps {
-  sentence: any
+  sentence: SentenceContent
   isSelected: boolean
-  OnSentenceSelect: (sentence_id:number) => void
+  isNowPlaying: boolean
+  OnSentenceSelect: (sentence_id: number) => void
 }
 
-export default function ReviewAreaSentence({ sentence, isSelected, OnSentenceSelect }: SentenceProps) {
-  
+export default function ReviewAreaSentence({
+  sentence,
+  isSelected,
+  isNowPlaying,
+  OnSentenceSelect,
+}: SentenceProps) {
   const [isPlaying, setPlaying] = useState<Boolean>(false)
+
 
   const handleChangeSelected = () => {
     OnSentenceSelect(sentence.review_sentence_id)
   }
-
-  const handlePlaying = () => {
-    setPlaying((isPlaying) => !isPlaying)
-    getWebSpeech(sentence.sentence_text)
-    setPlaying((isPlaying) => !isPlaying)
+  
+  const handlePlaying = async () => {
+    if (isPlaying) {
+      setPlaying(isPlaying => false)
+      stopWebSpeech()
+    } else {
+      getWebSpeech(sentence.sentence_text, () => setPlaying(true), () => setPlaying(false))
+    }
   }
 
   return (
@@ -36,7 +46,7 @@ export default function ReviewAreaSentence({ sentence, isSelected, OnSentenceSel
         {sentence.sentence_text}
       </p>
       <button onClick={handlePlaying}>
-        {isPlaying ? (
+        {isPlaying || isNowPlaying ? (
           <Pause fill={`${isSelected ? 'white' : ''}`} />
         ) : (
           <Play fill={`${isSelected ? 'white' : ''}`} />

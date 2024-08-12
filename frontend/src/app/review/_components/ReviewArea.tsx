@@ -14,6 +14,12 @@ interface ReviewContentProps {
   url: string
 }
 
+interface dictSentence {
+  sentence_id: number
+  sentence_text: string
+  sentence_length: number
+}
+
 export interface Category {
   id: string
   content: string
@@ -31,12 +37,13 @@ export default function ReviewArea({
   topic,
   keyword,
   sentenceList,
-  url
+  url,
 }: ReviewContentProps) {
   const [selectedSentences, setSelectedSentences] = useState<number[]>([])
+  const [nowPlaying, setNowPlayingSentence] = useState<number>()
   const router = useRouter()
-  
-  useEffect(()=>{
+
+  useEffect(() => {
     window.speechSynthesis.getVoices()
   })
 
@@ -50,7 +57,7 @@ export default function ReviewArea({
     } else {
       copySentences.push(review_sentence_id)
     }
-    setSelectedSentences(selectedSentences => copySentences)
+    setSelectedSentences((selectedSentences) => copySentences)
   }
 
   const handleSetenceDelete = async () => {
@@ -61,34 +68,61 @@ export default function ReviewArea({
             deleteReviewSentence('/reviews', review_sentence_id)
           })
         )
-        await setSelectedSentences(selectedSentences => [])
+        await setSelectedSentences((selectedSentences) => [])
         await router.refresh()
       } catch (error) {
-      console.error(error)
+        console.error(error)
       }
     }
   }
 
   const handleSentencePlay = () => {
     if (selectedSentences.length) {
-        selectedSentences.sort()
-        selectedSentences.map((review_sentence_id) => {
-          sentenceList?.forEach((sentence) => {
-            if (sentence.review_sentence_id === review_sentence_id) {
-              getWebSpeech(sentence.sentence_text)
-              return
-            }
-          })
+      selectedSentences.sort()
+      selectedSentences.map((review_sentence_id) => {
+        sentenceList?.forEach(async (sentence) => {
+          if (sentence.review_sentence_id === review_sentence_id) {
+            getWebSpeech(
+              sentence.sentence_text,
+              () => setNowPlayingSentence(sentence.review_sentence_id),
+              () => setNowPlayingSentence(undefined)
+            )
+            return
+          }
         })
-      }
+      })
     }
+  }
 
   const handleSentenceDictation = () => {
-    getWebSpeech('안녕하세요 주형이 어머님. 요새 생활은 좀 어떠세요?')
+    if (selectedSentences.length >= 10) {
+      const dictationData:dictSentence[] = []
+      let sentenceData:dictSentence
+
+      copySentences = [...selectedSentences]
+      copySentences.sort(() => Math.random() - 0.5)
+      copySentences = copySentences.splice(0,10)
+      copySentences.map((review_sentence_id) => {
+        sentenceList?.forEach((sentence) => {
+          if (sentence.review_sentence_id === review_sentence_id) {
+            sentenceData = {
+              sentence_id: sentence.sentence_id,
+              sentence_text: sentence.sentence_text,
+              sentence_length: sentence.sentence_text.length
+            }
+            dictationData.push(sentenceData)
+          }
+        })
+      })
+      localStorage.setItem('dictationData', JSON.stringify(dictationData))
+      router.push('/dictation')
+    } else {
+      alert('문장을 10개 이상 선택해주세요!')
+    }
   }
 
   const handleSentenceSpeaking = () => {
-
+    alert('준비 중입니다.')
   }
 
   return (
@@ -99,7 +133,7 @@ export default function ReviewArea({
         </div>
         <hr className="bg-gray-200" />
         <div className="w-full pr-4 overflow-auto flex flex-col gap-2">
-          {(sentenceList !== undefined && sentenceList.length) ? (
+          {sentenceList !== undefined && sentenceList.length ? (
             sentenceList?.map((sentence: SentenceContent) => {
               return (
                 <ReviewAreaSentence
@@ -108,6 +142,7 @@ export default function ReviewArea({
                   isSelected={selectedSentences.includes(
                     sentence.review_sentence_id
                   )}
+                  isNowPlaying={sentence.review_sentence_id === nowPlaying}
                   OnSentenceSelect={handleSentenceList}
                 />
               )
@@ -119,8 +154,14 @@ export default function ReviewArea({
       </div>
       <div className="flex flex-col self-end mb-4">
         <ReviewMenuButton onClick={handleSentencePlay} content="재생" />
-        <ReviewMenuButton onClick={handleSentenceSpeaking} content="읽고 따라 말하기" />
-        <ReviewMenuButton onClick={handleSentenceDictation} content="받아쓰기" />
+        <ReviewMenuButton
+          onClick={handleSentenceSpeaking}
+          content="읽고 따라 말하기"
+        />
+        <ReviewMenuButton
+          onClick={handleSentenceDictation}
+          content="받아쓰기"
+        />
         <ReviewMenuButton onClick={handleSetenceDelete} content="삭제하기" />
       </div>
     </>

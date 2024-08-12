@@ -4,7 +4,7 @@ export function getGoogleSpeech ( text:string ) {
   
 }
 
-export const getWebSpeech = (text:string) => {
+export const getWebSpeech = (text:string, onStartCallback: () => void, onEndCallback: () => void) => {
   let voices:SpeechSynthesisVoice[] = [];
 
   const setVoiceList = () => {
@@ -29,8 +29,14 @@ export const getWebSpeech = (text:string) => {
     } else {
       return;
     }
+    utterThis.onstart = onStartCallback
+    utterThis.onend = onEndCallback
     window.speechSynthesis.speak(utterThis);
   };
 
   speech(text);
 };
+
+export function stopWebSpeech() {
+    window.speechSynthesis.cancel()
+}
