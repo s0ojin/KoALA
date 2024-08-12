@@ -92,14 +92,14 @@ public class SentenceServiceImpl implements SentenceService {
 				correct = false;
 			}
 
-			sentenceTestResponses.add(SentenceTestResponse.toDto(originText, userText, resultTag, correct));
+			sentenceTestResponses.add(SentenceTestResponse.toDto(originText, userText, resultTag, correct,
+				reviewRepository.existsByUserAndSentence(user, originSentence.get())));
 		}
 
 		// 1. 복습페이지에 틀린 문장 저장
 		for (ReviewSentence reviewSentence : reviewSentences) {
-			reviewService.addReviewSentence(ReviewSaveRequest.builder()
-				.sentenceId(reviewSentence.getSentence().getSentenceId())
-				.build());
+			reviewService.addReviewSentence(
+				ReviewSaveRequest.builder().sentenceId(reviewSentence.getSentence().getSentenceId()).build());
 		}
 		// 2. 유칼립투스 증가
 		// 문제 별로 토글을 키고 했다면 -> 1개
@@ -117,9 +117,7 @@ public class SentenceServiceImpl implements SentenceService {
 		Sentence sentence = sentenceCreateRequest.toEntity(user);
 		sentenceRepository.save(sentence);
 
-		ReviewSaveRequest reviewSaveRequest = ReviewSaveRequest.builder()
-			.sentenceId(sentence.getSentenceId())
-			.build();
+		ReviewSaveRequest reviewSaveRequest = ReviewSaveRequest.builder().sentenceId(sentence.getSentenceId()).build();
 
 		return ReviewSentenceResponse.toDto(
 			reviewRepository.save(reviewSaveRequest.toReviewSentenceEntity(sentence, user)));
@@ -166,7 +164,9 @@ public class SentenceServiceImpl implements SentenceService {
 		if (userText.length() < originText.length()) {
 			correctIndex = userText.length();
 			while (correctIndex < originText.length()) {
-				result.append("<span className='text-char-error'>").append(originText.charAt(correctIndex)).append("</span>");
+				result.append("<span className='text-char-error'>")
+					.append(originText.charAt(correctIndex))
+					.append("</span>");
 				correctIndex++;
 			}
 		}
@@ -176,9 +176,12 @@ public class SentenceServiceImpl implements SentenceService {
 
 	@Override
 	public List<LectureSentenceResponse> getLectureSentences(Long lectureId) {
+		User user = userInfoProvider.getCurrentUser();
+
 		return lectureSentenceRepository.findByLectureId(lectureId)
 			.stream()
-			.map(LectureSentenceResponse::toDto)
+			.map(lectureSentence -> LectureSentenceResponse.toDto(lectureSentence,
+				reviewRepository.existsByUserAndSentence(user, lectureSentence.getSentence())))
 			.collect(Collectors.toList());
 	}
 }
