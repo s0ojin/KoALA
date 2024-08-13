@@ -5,6 +5,7 @@ import Pause from '/public/icons/pause.svg'
 import { useEffect, useState } from 'react'
 import { SentenceContent } from '@/app/apis/review'
 import { getWebSpeech, stopWebSpeech } from '@/app/apis/ttsSententce'
+import { getSpeech } from '@/app/apis/googleSentence'
 
 interface SentenceProps {
   sentence: SentenceContent
@@ -21,7 +22,6 @@ export default function ReviewAreaSentence({
 }: SentenceProps) {
   const [isPlaying, setPlaying] = useState<Boolean>(false)
 
-
   const handleChangeSelected = () => {
     OnSentenceSelect(sentence.review_sentence_id)
   }
@@ -31,7 +31,8 @@ export default function ReviewAreaSentence({
       setPlaying(isPlaying => false)
       stopWebSpeech()
     } else {
-      getWebSpeech(sentence.sentence_text, () => setPlaying(true), () => setPlaying(false))
+      // getWebSpeech(sentence.sentence_text, () => setPlaying(true), () => setPlaying(false))
+      getSpeech(sentence.sentence_text)
     }
   }
 

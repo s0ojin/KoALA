@@ -1,9 +1,5 @@
 import { ApiError } from '@/app/utils/customError'
 
-export function getGoogleSpeech ( text:string ) {
-  
-}
-
 export const getWebSpeech = (text:string, onStartCallback: () => void, onEndCallback: () => void) => {
   let voices:SpeechSynthesisVoice[] = [];
 
