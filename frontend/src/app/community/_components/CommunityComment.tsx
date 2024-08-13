@@ -7,7 +7,12 @@ import Comment from '/public/icons/comment.svg'
 import CommunityCommentInput from '@/app/community/_components/CommunityCommentInput'
 import CommunityPostKebabMenu from '@/app/community/_components/CommunityPostKebabMenu'
 import { getConvertedTime } from '@/app/utils/getConvertedTime'
-import { CommentContent, CommunityComment, getPost } from '@/app/apis/community'
+import {
+  CommentContent,
+  CommunityComment,
+  deletePostComment,
+  getPost,
+} from '@/app/apis/community'
 import Pagination from '@/app/community/_components/CommunityCommentPagination'
 
 interface CommnunityCommentProps {
@@ -36,8 +41,12 @@ export default function CommnunityComment({
     setCommentPage(newPage)
   }
 
-  const handleClickDeleteButton = () => {
-    alert('게시글 댓글 삭제 버튼을 클릭했습니다')
+  const handleClickDeleteButton = async (commentId: number) => {
+    const data = await deletePostComment(`/boards/comments/${commentId}`)
+
+    if (data.status === 200) {
+      alert('댓글을 삭제했습니다')
+    }
   }
 
   if (isLoading) {
@@ -85,7 +94,9 @@ export default function CommnunityComment({
                       </p>
                       <CommunityPostKebabMenu
                         size={{ width: 16, height: 16 }}
-                        onClick={handleClickDeleteButton}
+                        onClick={() =>
+                          handleClickDeleteButton(comment.comment_id)
+                        }
                         nickname={comment.nickname}
                       />
                     </div>
