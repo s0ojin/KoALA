@@ -3,7 +3,7 @@ import ReviewAreaSearch from '@/app/review/_components/ReviewAreaSearch'
 import ReviewAreaSentence from '@/app/review/_components/ReviewAreaSetence'
 import ReviewMenuButton from '@/app/review/_components/ReviewMenuButton'
 import { SentenceContent, deleteReviewSentence } from '@/app/apis/review'
-import { getWebSpeech } from '@/app/apis/ttsSententce'
+import { getWebSpeech, getGoogleSpeech } from '@/app/apis/ttsSententce'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
@@ -42,6 +42,7 @@ export default function ReviewArea({
   const [selectedSentences, setSelectedSentences] = useState<number[]>([])
   const [nowPlaying, setNowPlayingSentence] = useState<number>()
   const router = useRouter()
+  let source:AudioBufferSourceNode
 
   useEffect(() => {
     window.speechSynthesis.getVoices()
@@ -82,11 +83,15 @@ export default function ReviewArea({
       selectedSentences.map((review_sentence_id) => {
         sentenceList?.forEach(async (sentence) => {
           if (sentence.review_sentence_id === review_sentence_id) {
-            getWebSpeech(
-              sentence.sentence_text,
-              () => setNowPlayingSentence(sentence.review_sentence_id),
-              () => setNowPlayingSentence(undefined)
-            )
+            const audioContext = new window.AudioContext()
+            const arraybuff = await getGoogleSpeech(sentence.sentence_text)
+            const audiobuff = await audioContext.decodeAudioData(arraybuff)
+            source = await audioContext.createBufferSource()
+            source.buffer = audiobuff
+            await source.connect(audioContext.destination)
+            await setNowPlayingSentence(review_sentence_id)
+            await source.start()
+            source.onended = () => setNowPlayingSentence(undefined)
             return
           }
         })
