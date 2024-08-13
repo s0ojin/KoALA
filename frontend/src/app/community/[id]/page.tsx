@@ -7,6 +7,7 @@ import CommnunityComment from '@/app/community/_components/CommunityComment'
 import CommunityActionMenu from '@/app/community/_components/CommunityActionMenu'
 import { getConvertedTime } from '@/app/utils/getConvertedTime'
 import { getPost } from '@/app/apis/community'
+import Link from 'next/link'
 
 interface CommunityDetailProps {
   params: {
@@ -44,17 +45,17 @@ export default async function CommunityDetail({
                   <div className="flex items-center gap-1">
                     <View width={16} height={16} />
                     <p className="text-gray-700 text-xs">
-                      조회 {post.viewCount}
+                      조회 {post.view_count}
                     </p>
                   </div>
                   <div className="flex items-center gap-1">
                     <Comment width={16} height={16} />
                     <p className="text-gray-700 text-xs">
-                      댓글 {post.commentNum}
+                      댓글 {post.comment_num}
                     </p>
                   </div>
                   <p className="text-gray-700 text-xs">
-                    {getConvertedTime(post.createdAt)}
+                    {getConvertedTime(post.created_at)}
                   </p>
                   <CommunityActionMenu />
                 </div>
@@ -62,23 +63,27 @@ export default async function CommunityDetail({
             </div>
 
             <div className="px-12 relative mb-24">
-              <CommunityCarousel boardImageList={post.boardImages} />
+              <CommunityCarousel boardImageList={post.board_images} />
               <p>{post.content} </p>
             </div>
 
             <CommnunityComment
               commentList={post.comments}
-              postId={post.boardId}
+              postId={post.board_id}
             />
           </div>
 
           <div className="flex justify-between px-8">
-            <button className="bg-primary-400 text-white py-2 px-10 rounded-full">
-              글쓰기
-            </button>
-            <button className="bg-gray-500 text-white py-2 px-10 rounded-full">
-              목록
-            </button>
+            <Link href="/community/write">
+              <button className="bg-primary-400 text-white py-2 px-10 rounded-full">
+                글쓰기
+              </button>
+            </Link>
+            <Link href="/community">
+              <button className="bg-gray-500 text-white py-2 px-10 rounded-full">
+                목록
+              </button>
+            </Link>
           </div>
         </div>
       )}
