@@ -18,7 +18,6 @@ export default function OnlineLearningVideoChat({
   const [publisher, setPublisher] = useState<Publisher | null>(null)
 
   useEffect(() => {
-    console.log('useEffect 계속 작동하는중!!!!!!')
     const initializeSession = async () => {
       if (!userInfo || !userInfo.data) return
 
@@ -50,7 +49,7 @@ export default function OnlineLearningVideoChat({
                 videoSource: true,
                 publishAudio: true,
                 publishVideo: true,
-                resolution: '320x240',
+                resolution: '1280x720',
                 insertMode: 'REPLACE',
                 mirror: true,
               })
@@ -73,20 +72,17 @@ export default function OnlineLearningVideoChat({
     return () => {
       if (session) {
         session.disconnect()
-        setSession(null)
       }
     }
-  }, [lectureId, userInfo?.data?.nickname])
+  }, [lectureId, userInfo])
 
   return (
-    <div className="flex flex-col items-center justify-center gap-4 h-full">
-      <div className="flex-1 bg-black w-full max-w-[720px] h-[480px] rounded-[3rem] overflow-hidden">
-        {userInfo && userInfo.data.auth_id === 2 ? (
-          <div id="publisher"></div>
-        ) : (
-          <div id="subscriber"></div>
-        )}
-      </div>
+    <div className="bg-black w-full h-full rounded-[3rem] overflow-hidden">
+      {userInfo && userInfo.data.auth_id === 2 ? (
+        <div id="publisher"></div>
+      ) : (
+        <div id="subscriber"></div>
+      )}
     </div>
   )
 }
