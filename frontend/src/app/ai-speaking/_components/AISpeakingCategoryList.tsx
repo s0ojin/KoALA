@@ -1,8 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 
-type CategoryId = 'school' | 'government-office' | 'etc' | 'wwww'
+type CategoryId = 'all' | 'daily' | 'education' | 'administration'
 
 interface Category {
   id: CategoryId
@@ -11,35 +12,37 @@ interface Category {
 
 const CATEGORY_LIST: Category[] = [
   {
-    id: 'school',
-    label: '학교',
+    id: 'all',
+    label: '전체',
   },
   {
-    id: 'government-office',
-    label: '관공서',
+    id: 'daily',
+    label: '일상',
   },
   {
-    id: 'etc',
-    label: '기타',
+    id: 'education',
+    label: '교육',
   },
   {
-    id: 'wwww',
-    label: '또뭐있낭',
+    id: 'administration',
+    label: '행정',
   },
 ]
 
 export default function AISpeakingCategoryList() {
-  const [activeCategory, setActiveCategory] = useState('school')
+  const searchParams = useSearchParams()
+  const topic = searchParams.get('topic')
   return (
     <ul className="flex gap-3 mt-8">
       {CATEGORY_LIST.map((category) => (
         <li key={category.id}>
-          <button
-            onClick={() => setActiveCategory(category.id)}
-            className={`${activeCategory === category.id ? 'bg-primary-400' : 'bg-gray-300'} text-white py-2 px-6 rounded-full`}
-          >
-            {category.label}
-          </button>
+          <Link href={`/ai-speaking/?topic=${category.label}`}>
+            <button
+              className={`${topic === category.label ? 'bg-primary-400' : 'bg-gray-300'} text-white py-2 px-6 rounded-full`}
+            >
+              {category.label}
+            </button>
+          </Link>
         </li>
       ))}
     </ul>
