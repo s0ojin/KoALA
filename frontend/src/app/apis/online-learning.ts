@@ -1,5 +1,15 @@
 import { getToken } from '@/app/utils/cookie/getToken'
 
+export interface LectureCard {
+  lecture_id: number
+  teacher_name: string
+  lecture_title: string
+  lecture_detail: string
+  session_id: string
+  lecture_schedule: string
+  lecture_img_url: string
+}
+
 interface CreateLectureNoteRequestBody {
   lecture_id: number
   note_title: string
@@ -19,6 +29,28 @@ interface TeacherSentence {
   registered: boolean
 }
 
+export const getLectureList = async (
+  url: string
+): Promise<{ data: LectureCard[]; status: number } | undefined> => {
+  try {
+    const accessToken = getToken()
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${url}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`,
+      },
+    })
+
+    if (!response.ok) {
+      console.log(response)
+    }
+    const data = await response.json()
+    return { data: data, status: response.status }
+  } catch (error) {
+    console.error('There was a problem with the fetch operation:', error)
+  }
+}
 export const postCreateOpenViduSession = async (url: string) => {
   try {
     const accessToken = getToken()
