@@ -8,9 +8,9 @@ interface SortOption {
 }
 
 export interface CommentContent {
-  commentId: number
+  comment_id: number
   content: string
-  createdAt: string
+  created_at: string
   nickname: string
 }
 
