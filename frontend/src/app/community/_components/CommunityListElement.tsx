@@ -2,6 +2,7 @@ import Image from 'next/image'
 import View from '/public/icons/view.svg'
 import Comment from '/public/icons/comment.svg'
 import Link from 'next/link'
+import { getConvertedTime } from '@/app/utils/getConvertedTime'
 
 export default function Element({ post }: any) {
   return (
@@ -25,7 +26,7 @@ export default function Element({ post }: any) {
               <p>{post.nickname}</p>
             </div>
             <hr className="h-4 w-[1px] bg-gray-500 border-none" />
-            <p>{post.createdAt}</p>
+            <p>{getConvertedTime(post.created_at)}</p>
           </div>
           <div className="inline-flex gap-6 ">
             <div className="inline-flex items-center gap-1 text-gray-500">
@@ -41,12 +42,12 @@ export default function Element({ post }: any) {
       </div>
       <Image
         src={post.thumbnail ? post.thumbnail : '/images/eucalyptus.png'}
-        width={0}
-        height={0}
-        sizes="100%"
-        className="w-20 h-20 rounded-2xl border border-gray-200 "
+        width={80}
+        height={80}
+        className="w-20 h-20 rounded-2xl border aspect-square border-gray-200 object-cover"
         alt="eucalyptus"
         draggable="false"
+        priority
       />
     </div>
   )
