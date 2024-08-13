@@ -13,7 +13,7 @@ export default function OnlineLearningRoom({
   return (
     <div className="flex items-center pr-20 h-main-screen">
       <div
-        className={`${isOpenSideBar ? 'w-[calc(100vw-43rem)]' : 'w-[calc(100vw-15rem)]'} ml-20 transition-all duration-300`}
+        className={`${isOpenSideBar ? 'w-[calc(100vw-43rem)]' : 'w-[calc(100vw-25rem)] ml-40'}  ml-20 transition-all duration-300`}
       >
         <OnlineLearningVideoChat lectureId={params.lecture_id} />
       </div>
