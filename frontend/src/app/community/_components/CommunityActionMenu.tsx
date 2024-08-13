@@ -2,7 +2,11 @@
 
 import CommunityPostKebabMenu from '@/app/community/_components/CommunityPostKebabMenu'
 
-export default function CommunityActionMenu() {
+export default function CommunityActionMenu({
+  nickname,
+}: {
+  nickname: string
+}) {
   const handleClickDeleteButton = () => {
     console.log('게시글 삭제 버튼을 눌렀습니다')
   }
@@ -12,6 +16,7 @@ export default function CommunityActionMenu() {
       <CommunityPostKebabMenu
         size={{ width: 24, height: 24 }}
         onClick={handleClickDeleteButton}
+        nickname={nickname}
       />
     </div>
   )
