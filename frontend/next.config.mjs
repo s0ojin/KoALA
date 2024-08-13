@@ -1,8 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-
   images: {
-    domains: ['koalabucket1.s3.amazonaws.com'],
+    domains: ['koalabucket1.s3.amazonaws.com', 'images.unsplash.com'],
   },
 
   output: 'standalone',
