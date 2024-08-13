@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react'
 import KebabMenu from '/public/icons/kebab-menu.svg'
+import useSWR from 'swr'
+import { getUserInfo } from '@/app/apis/auth'
 
 interface CommunityPostKebabMenuProps {
   size: {
@@ -9,14 +11,16 @@ interface CommunityPostKebabMenuProps {
     height: number
   }
   onClick: React.MouseEventHandler<HTMLButtonElement>
+  nickname: string
 }
 
 export default function CommunityPostKebabMenu({
   size: { width, height },
   onClick,
+  nickname,
 }: CommunityPostKebabMenuProps) {
+  const { data: userInfo } = useSWR('/users', getUserInfo)
   const [isVisible, setIsVisible] = useState(false)
-  const [isLogin, setIsLogin] = useState(true)
   const menuRef = useRef<HTMLDivElement>(null)
 
   const handleClickReportButton = () => {
@@ -47,7 +51,7 @@ export default function CommunityPostKebabMenu({
 
       {isVisible ? (
         <div className="bg-white flex flex-col border shadow-md rounded-md absolute top-8 z-10 right-0">
-          {isLogin ? (
+          {nickname === userInfo?.data.nickname ? (
             <button
               onClick={onClick}
               className="py-3 text-left pl-4 w-36 text-base text-slate-900 hover:bg-gray-50"

@@ -86,6 +86,7 @@ export default function CommnunityComment({
                       <CommunityPostKebabMenu
                         size={{ width: 16, height: 16 }}
                         onClick={handleClickDeleteButton}
+                        nickname={comment.nickname}
                       />
                     </div>
                   </div>
