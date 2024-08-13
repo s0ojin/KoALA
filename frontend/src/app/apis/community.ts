@@ -135,9 +135,6 @@ export const postPost = async (url: string, data: FormData) => {
 export const getPostList = async (url: string) => {
   try {
     const accessToken = await getToken()
-
-    console.log('accessToken:', accessToken)
-
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${url}`, {
       method: 'GET',
       headers: {
@@ -155,6 +152,67 @@ export const getPostList = async (url: string) => {
 
     const data = await response.json()
     return data
+  } catch (error: any) {
+    console.error(error)
+    throw error
+  }
+}
+
+export const deletePost = async (url: string) => {
+  try {
+    const accessToken = await getToken()
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${url}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`,
+      },
+    })
+
+    if (!response.ok) {
+      throw new ApiError(
+        response.status,
+        `Network response was not ok: ${response.status} ${response.statusText}`
+      )
+    }
+
+    const data = await response.json()
+    return {
+      data,
+      status: response.status,
+    }
+  } catch (error: any) {
+    console.error(error)
+    throw error
+  }
+}
+
+export const deletePostComment = async (url: string) => {
+  try {
+    console.log(url)
+    const accessToken = await getToken()
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${url}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`,
+      },
+    })
+
+    console.log(response)
+
+    if (!response.ok) {
+      throw new ApiError(
+        response.status,
+        `Network response was not ok: ${response.status} ${response.statusText}`
+      )
+    }
+
+    const data = await response.json()
+    return {
+      data,
+      status: response.status,
+    }
   } catch (error: any) {
     console.error(error)
     throw error

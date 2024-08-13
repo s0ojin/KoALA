@@ -57,7 +57,10 @@ export default async function CommunityDetail({
                   <p className="text-gray-700 text-xs">
                     {getConvertedTime(post.created_at)}
                   </p>
-                  <CommunityActionMenu nickname={post.nickname} />
+                  <CommunityActionMenu
+                    nickname={post.nickname}
+                    postId={post.board_id}
+                  />
                 </div>
               </div>
             </div>
