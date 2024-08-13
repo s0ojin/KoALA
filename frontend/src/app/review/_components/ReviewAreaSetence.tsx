@@ -4,8 +4,9 @@ import Play from '/public/icons/play.svg'
 import Pause from '/public/icons/pause.svg'
 import { useEffect, useState } from 'react'
 import { SentenceContent } from '@/app/apis/review'
-import { getWebSpeech, stopWebSpeech } from '@/app/apis/ttsSententce'
+import { getWebSpeech, stopWebSpeech, getGoogleSpeech } from '@/app/apis/ttsSententce'
 import { getSpeech } from '@/app/apis/googleSentence'
+import { buffer } from 'stream/consumers'
 
 interface SentenceProps {
   sentence: SentenceContent
@@ -21,19 +22,22 @@ export default function ReviewAreaSentence({
   OnSentenceSelect,
 }: SentenceProps) {
   const [isPlaying, setPlaying] = useState<Boolean>(false)
-
+  let source:AudioBufferSourceNode
+  
   const handleChangeSelected = () => {
     OnSentenceSelect(sentence.review_sentence_id)
   }
   
   const handlePlaying = async () => {
-    if (isPlaying) {
-      setPlaying(isPlaying => false)
-      stopWebSpeech()
-    } else {
-      // getWebSpeech(sentence.sentence_text, () => setPlaying(true), () => setPlaying(false))
-      getSpeech(sentence.sentence_text)
-    }
+    const audioContext = new window.AudioContext()
+    const arraybuff = await getGoogleSpeech(sentence.sentence_text)
+      const audiobuff = await audioContext.decodeAudioData(arraybuff)
+    source = await audioContext.createBufferSource()
+    source.buffer = audiobuff
+    await source.connect(audioContext.destination)
+    await setPlaying(true)
+    source.start()
+    source.onended = () => setPlaying(false)
   }
 
   return (

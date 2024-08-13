@@ -1,4 +1,5 @@
 import { ApiError } from '@/app/utils/customError'
+import { getSpeech } from '@/app/apis/googleSentence';
 
 export const getWebSpeech = (text:string, onStartCallback: () => void, onEndCallback: () => void) => {
   let voices:SpeechSynthesisVoice[] = [];
@@ -35,4 +36,12 @@ export const getWebSpeech = (text:string, onStartCallback: () => void, onEndCall
 
 export function stopWebSpeech() {
     window.speechSynthesis.cancel()
+}
+
+export const getGoogleSpeech = async (text:string) => {
+  const response = await getSpeech(text)
+  const parsedres = await JSON.parse(response)
+  const buff = await Buffer.from(parsedres.blob,'base64')
+  const arraybuff = await buff.buffer.slice(buff.byteOffset, buff.byteOffset + buff.byteLength)
+  return arraybuff
 }
