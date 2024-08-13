@@ -61,16 +61,16 @@ export default function CommnunityComment({
           <>
             {commentList?.comments?.content?.map((comment: CommentContent) => (
               <div
-                key={comment.commentId}
+                key={comment.comment_id}
                 className="max-w-[56rem] w-full flex py-6 px-6 items-start gap-3 border-b border-gray-300"
               >
                 <Image
                   src={'/images/koala-sleep.png'}
-                  width={0}
-                  height={0}
-                  sizes="100%"
-                  className="w-[3rem] h-[3rem] aspect-square border rounded-full"
+                  width={48}
+                  height={48}
+                  className="w-12 h-12 aspect-square border rounded-full"
                   alt="profile"
+                  priority
                 />
                 <div className="w-full flex flex-col gap-3">
                   <div className="flex justify-between items-center">
@@ -81,7 +81,7 @@ export default function CommnunityComment({
                     </div>
                     <div className="flex gap-4">
                       <p className="text-gray-400 text-sm font-normal">
-                        {getConvertedTime(comment.createdAt)}
+                        {getConvertedTime(comment.created_at)}
                       </p>
                       <CommunityPostKebabMenu
                         size={{ width: 16, height: 16 }}
