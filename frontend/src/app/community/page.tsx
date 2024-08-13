@@ -3,6 +3,8 @@ import ListElement from '@/app/community/_components/CommunityListElement'
 import SearchBar from '@/app/community/_components/CommunitySearchBar'
 import Pagination from '@/app/community/_components/CommunityPostPagination'
 import { getPostList } from '../apis/community'
+import Link from 'next/link'
+import Image from 'next/image'
 
 interface CommunityProps {
   searchParams: {
@@ -73,7 +75,14 @@ export default async function Community({ searchParams }: CommunityProps) {
       <div className="w-full h-full max-w-[65rem] bg-white rounded-t-[3.75rem] pt-6 pb-5 px-14 min-h-screen">
         <div className="pb-3 mb-5 pt-9 flex justify-between px-8">
           <TabList />
-          <SearchBar />
+          <div className="flex gap-2">
+            <SearchBar />
+            <Link href={'/community/write'}>
+              <button className="rounded-2xl py-2 px-10 bg-primary-400 text-white text-base">
+                글쓰기
+              </button>
+            </Link>
+          </div>
         </div>
         <div>
           {postList && postList?.content?.length > 0 ? (
@@ -81,13 +90,21 @@ export default async function Community({ searchParams }: CommunityProps) {
               <ListElement key={post.id} post={post} />
             ))
           ) : (
-            <div className="flex justify-center">
-              <p>게시글 내용이 없습니다</p>
+            <div className="flex flex-col justify-center items-center h-full min-h-56 gap-3">
+              <Image
+                src="/images/koala-sleep.png"
+                width={80}
+                height={80}
+                className="w-28 h-28"
+                alt="koala"
+                draggable="false"
+              />
+              <p className="text-xl">게시글 내용이 없습니다</p>
             </div>
           )}
         </div>
         <div>
-          {postList ? (
+          {postList?.totalPages ? (
             <Pagination
               totalPages={postList?.totalPages}
               type={search ? 'search' : 'tab'}
