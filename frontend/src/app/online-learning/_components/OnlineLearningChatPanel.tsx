@@ -30,7 +30,7 @@ export default function OnlineLearningChatPanel() {
     formState: { isValid },
   } = useForm()
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: any) => {
     console.log('Sending message:', data)
   }
 
