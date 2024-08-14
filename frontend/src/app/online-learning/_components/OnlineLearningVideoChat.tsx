@@ -7,12 +7,11 @@ import {
   postCreateOpenViduSession,
 } from '@/app/apis/online-learning'
 import useSWR from 'swr'
+import { useParams } from 'next/navigation'
 
-export default function OnlineLearningVideoChat({
-  lectureId,
-}: {
-  lectureId: string
-}) {
+export default function OnlineLearningVideoChat() {
+  const params = useParams()
+  const lectureId = params
   const { data: userInfo } = useSWR('/users')
   const [session, setSession] = useState<Session | null>(null)
   const [publisher, setPublisher] = useState<Publisher | null>(null)
