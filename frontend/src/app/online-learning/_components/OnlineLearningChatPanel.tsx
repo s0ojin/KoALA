@@ -16,7 +16,9 @@ interface ChatMessage {
 }
 
 export default function OnlineLearningChatPanel() {
-  const [messages, setMessages] = useState<ChatMessage[]>([])
+  const [messages, setMessages] = useState<ChatMessage[]>(
+    JSON.parse(sessionStorage.getItem('messages') || '[]')
+  )
   const { data: userInfo } = useSWR('/users')
   const clientRef = useRef<Client | null>(null)
   const bottomRef = useRef<HTMLDivElement>(null)
@@ -72,6 +74,7 @@ export default function OnlineLearningChatPanel() {
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
+    sessionStorage.setItem('messages', JSON.stringify(messages))
   }, [messages])
 
   const onSubmit: SubmitHandler<{ chat: string }> = (data) => {
@@ -110,6 +113,7 @@ export default function OnlineLearningChatPanel() {
       >
         <textarea
           {...register('chat', { required: true })}
+          // onKeyDown={handleKeyDown}
           placeholder="메시지 보내기"
           className="bg-transparent w-full outline-none text-gray-900 resize-none"
         />

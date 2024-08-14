@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import OnlineLearningSideBar from '@/app/online-learning/_components/OnlineLearningSideBar'
 import OnlineLearningVideoChat from '@/app/online-learning/_components/OnlineLearningVideoChat'
@@ -8,6 +8,13 @@ import OnlineLearningLayout from '@/app/online-learning/_components/OnlineLearni
 
 export default function OnlineLearningRoom() {
   const [isOpenSideBar, setIsOpenSideBar] = useState(false)
+
+  useEffect(() => {
+    return () => {
+      sessionStorage.clear()
+    }
+  }, [])
+
   return (
     <OnlineLearningLayout>
       <div className="flex items-center pr-20 h-full">
