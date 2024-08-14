@@ -27,7 +27,7 @@ export default function ChatBubble({
   return (
     <div className={`flex gap-2 ${isMine && 'self-end flex-row-reverse'}`}>
       {!isMine && senderProfile && (
-        <div className="w-10 h-10 rounded-3xl bg-gray-100 shrink-0">
+        <div className="w-10 h-10 rounded-3xl bg-gray-100 shrink-0 overflow-hidden">
           <Image src={senderProfile} alt="profile" width={100} height={100} />
         </div>
       )}
