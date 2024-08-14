@@ -31,7 +31,7 @@ const CATEGORY_LIST: Category[] = [
 
 export default function AISpeakingCategoryList() {
   const searchParams = useSearchParams()
-  const topic = searchParams.get('topic')
+  const topic = searchParams.get('topic') || '전체'
   return (
     <ul className="flex gap-3 mt-8">
       {CATEGORY_LIST.map((category) => (
