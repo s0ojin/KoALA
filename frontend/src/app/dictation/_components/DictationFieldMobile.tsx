@@ -7,7 +7,7 @@ const MobileDictation = ({
   userAnswer: { userAnswer, setUserAnswer },
 }: any) => {
   const editorRef = useRef(null)
-  const [editor, setEditor] = useState(null)
+  const [editor, setEditor] = useState<any>(null)
   const [clearFlag, setClearFlag] = useState(false)
 
   useEffect(() => {
@@ -55,7 +55,7 @@ const MobileDictation = ({
         }
 
         try {
-          const iinkEditor = new (window as any).iink.Editor(
+          const iinkEditor: any = new (window as any).iink.Editor(
             editorElement,
             options
           )
@@ -73,15 +73,15 @@ const MobileDictation = ({
             }
           })
 
-          iinkEditor.events.addEventListener('exported', (event) => {
+          iinkEditor.events.addEventListener('exported', (event: any) => {
             let str = event.detail['application/vnd.myscript.jiix'].label
 
             const splitString = str.split(/V|✓|v|\n/)
 
             const filteredSplitString = splitString.filter(
-              (part) => part.trim() !== ''
+              (part: any) => part.trim() !== ''
             )
-            const noSpaces = filteredSplitString.map((part) =>
+            const noSpaces = filteredSplitString.map((part: any) =>
               part.replace(/\s+/g, '')
             )
             const result = noSpaces.join(' ')
@@ -158,7 +158,7 @@ const MobileDictation = ({
       <div
         id="editor"
         ref={editorRef}
-        touchAction="none"
+        // touchAction="none"
         className="bg-red-100 w-[1040px] h-[300px] bg-dictation-field bg-center"
       >
         {/* <img src="/images/dictationField.png" className="w-full" /> */}

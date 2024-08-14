@@ -17,17 +17,17 @@ export default function DictationGradingResult({
   result: { correct, origin_text, user_text, result_tag },
   idx,
 }: GradingResultProps) {
-  function extractTextAndClasses(htmlString) {
+  function extractTextAndClasses(htmlString: any) {
     const container = document.createElement('div')
     container.innerHTML = htmlString
 
-    const result = []
+    const result: any = []
 
-    function traverseNode(node) {
+    function traverseNode(node: any) {
       if (node.nodeType === Node.TEXT_NODE) {
         // Extract text nodes including spaces
         const text = node.nodeValue
-        result.push(...text.split('').map((char) => char))
+        result.push(...text.split('').map((char: any) => char))
       } else if (node.nodeType === Node.ELEMENT_NODE) {
         const tagName = node.tagName.toLowerCase()
         if (tagName === 'span') {
@@ -42,7 +42,7 @@ export default function DictationGradingResult({
         } else {
           // console.log('node2', node)
           // For other tags, add text content normally
-          node.childNodes.forEach((childNode) => traverseNode(childNode))
+          node.childNodes.forEach((childNode: any) => traverseNode(childNode))
         }
       }
     }
