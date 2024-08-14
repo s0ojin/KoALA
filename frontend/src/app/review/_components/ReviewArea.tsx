@@ -3,7 +3,7 @@ import ReviewAreaSearch from '@/app/review/_components/ReviewAreaSearch'
 import ReviewAreaSentence from '@/app/review/_components/ReviewAreaSetence'
 import ReviewMenuButton from '@/app/review/_components/ReviewMenuButton'
 import { SentenceContent, deleteReviewSentence } from '@/app/apis/review'
-import { getWebSpeech, getGoogleSpeech } from '@/app/apis/ttsSententce'
+import { getGoogleSpeech } from '@/app/apis/ttsSententce'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
@@ -42,7 +42,7 @@ export default function ReviewArea({
   const [selectedSentences, setSelectedSentences] = useState<number[]>([])
   const [nowPlaying, setNowPlayingSentence] = useState<number>()
   const router = useRouter()
-  let source:AudioBufferSourceNode
+  let source: AudioBufferSourceNode
 
   useEffect(() => {
     window.speechSynthesis.getVoices()
@@ -101,19 +101,19 @@ export default function ReviewArea({
 
   const handleSentenceDictation = () => {
     if (selectedSentences.length >= 10) {
-      const dictationData:dictSentence[] = []
-      let sentenceData:dictSentence
+      const dictationData: dictSentence[] = []
+      let sentenceData: dictSentence
 
       copySentences = [...selectedSentences]
       copySentences.sort(() => Math.random() - 0.5)
-      copySentences = copySentences.splice(0,10)
+      copySentences = copySentences.splice(0, 10)
       copySentences.map((review_sentence_id) => {
         sentenceList?.forEach((sentence) => {
           if (sentence.review_sentence_id === review_sentence_id) {
             sentenceData = {
               sentence_id: sentence.sentence_id,
               sentence_text: sentence.sentence_text,
-              sentence_length: sentence.sentence_text.length
+              sentence_length: sentence.sentence_text.length,
             }
             dictationData.push(sentenceData)
           }
