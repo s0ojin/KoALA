@@ -6,7 +6,7 @@ export default function OnlineLearningLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="relative overflow-hidden">
+    <div className="relative overflow-hidden h-main-screen">
       {children}
       <Image
         src="/images/cloud.svg"
