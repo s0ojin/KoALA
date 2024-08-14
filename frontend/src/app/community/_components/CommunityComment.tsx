@@ -81,7 +81,7 @@ export default function CommnunityComment({
                   src={'/images/koala-sleep.png'}
                   width={48}
                   height={48}
-                  className="w-12 h-12 aspect-square border rounded-full"
+                  className="w-12 h-12 aspect-square border rounded-full object-cover"
                   alt="profile"
                   priority
                 />
