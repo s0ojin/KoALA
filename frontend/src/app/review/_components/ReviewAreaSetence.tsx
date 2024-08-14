@@ -5,8 +5,6 @@ import Pause from '/public/icons/pause.svg'
 import { useEffect, useState } from 'react'
 import { SentenceContent } from '@/app/apis/review'
 import { getWebSpeech, stopWebSpeech, getGoogleSpeech } from '@/app/apis/ttsSententce'
-import { getSpeech } from '@/app/apis/googleSentence'
-import { buffer } from 'stream/consumers'
 
 interface SentenceProps {
   sentence: SentenceContent
@@ -31,12 +29,12 @@ export default function ReviewAreaSentence({
   const handlePlaying = async () => {
     const audioContext = new window.AudioContext()
     const arraybuff = await getGoogleSpeech(sentence.sentence_text)
-      const audiobuff = await audioContext.decodeAudioData(arraybuff)
+    const audiobuff = await audioContext.decodeAudioData(arraybuff)
     source = await audioContext.createBufferSource()
     source.buffer = audiobuff
     await source.connect(audioContext.destination)
-    await setPlaying(true)
     source.start()
+    await setPlaying(true)
     source.onended = () => setPlaying(false)
   }
 

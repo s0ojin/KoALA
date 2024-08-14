@@ -34,7 +34,7 @@ export const getWebSpeech = (text:string, onStartCallback: () => void, onEndCall
   speech(text);
 };
 
-export function stopWebSpeech() {
+export const stopWebSpeech = () => {
     window.speechSynthesis.cancel()
 }
 
