@@ -1,30 +1,33 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { OpenVidu, Publisher, Session } from 'openvidu-browser'
-import {
-  postCreateOpenViduConnection,
-  postCreateOpenViduSession,
-} from '@/app/apis/online-learning'
 import useSWR from 'swr'
-import { useParams } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import { OpenVidu, Session } from 'openvidu-browser'
+import { postCreateOpenViduConnection } from '@/app/apis/online-learning'
+import { useParams, useRouter } from 'next/navigation'
 
 export default function OnlineLearningVideoChat() {
   const params = useParams()
-  const lectureId = params
+  const { lecture_id } = params
   const { data: userInfo } = useSWR('/users')
   const [session, setSession] = useState<Session | null>(null)
-  const [publisher, setPublisher] = useState<Publisher | null>(null)
+  const router = useRouter()
 
   useEffect(() => {
     const initializeSession = async () => {
       if (!userInfo || !userInfo.data) return
 
       try {
-        // await postCreateOpenViduSession(`/lectures/${lectureId}/session`)
         const tokenResponse = await postCreateOpenViduConnection(
-          `/lectures/${lectureId}/connections`
+          `/lectures/${lecture_id}/connections`
         )
+
+        if (tokenResponse?.status === 404) {
+          alert('아직 수업이 열리지 않았습니다.')
+          router.push('/main')
+          return
+        }
+
         const token = tokenResponse?.data
 
         if (!token) {
@@ -54,7 +57,6 @@ export default function OnlineLearningVideoChat() {
               })
 
               session.publish(publisher)
-              setPublisher(publisher)
             }
             setSession(session)
           })
@@ -73,7 +75,7 @@ export default function OnlineLearningVideoChat() {
         session.disconnect()
       }
     }
-  }, [lectureId, userInfo])
+  }, [lecture_id, userInfo])
 
   return (
     <div className="bg-black w-full h-full rounded-[3rem] overflow-hidden">
