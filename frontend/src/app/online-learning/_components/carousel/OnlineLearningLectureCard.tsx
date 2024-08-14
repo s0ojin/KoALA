@@ -6,9 +6,11 @@ interface CardProps extends LectureCard {
   cardVariant: string
 }
 
-export default function OnlineLearningLectureCard({ ...cardData }: CardProps) {
+export default function OnlineLearningLectureCard({
+  cardVariant,
+  ...cardData
+}: CardProps) {
   const {
-    cardVariant,
     lecture_id,
     teacher_name,
     lecture_title,

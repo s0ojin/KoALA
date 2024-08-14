@@ -36,7 +36,7 @@ interface DictationGrading {
 export const postDictationGrading = async (
   url: string,
   payload: DictationGrading[]
-): any => {
+): Promise<any> => {
   try {
     const accessToken = getToken()
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${url}`, {

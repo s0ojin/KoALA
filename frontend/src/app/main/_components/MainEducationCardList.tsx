@@ -12,7 +12,7 @@ const CARD_LIST = [
   {
     title: '받아쓰기',
     content: '음성을 듣고 쓰기 연습을 해요',
-    href: '/dictation',
+    href: '/modals/dictation-category',
   },
   {
     title: 'AI회화',
@@ -22,7 +22,7 @@ const CARD_LIST = [
   {
     title: '화상수업',
     content: '한국인 강사와 함께 한국어를 즐겁게 배워보아요',
-    href: 'online-learning',
+    href: '/online-learning',
   },
   {
     title: '복습하기',

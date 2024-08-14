@@ -49,9 +49,10 @@ const imageVariants = {
 
 export default function AISpeakingSlider() {
   const searchParams = useSearchParams()
-  const topic = searchParams.get('topic')
+  const topic = searchParams.get('topic') || '전체'
+
   const { data: cardList } = useSWR(
-    topic === '전체' || topic === null
+    topic === '전체'
       ? '/ai-talk/situation'
       : `/ai-talk/situation?topic=${topic}`,
     getAIConversationList

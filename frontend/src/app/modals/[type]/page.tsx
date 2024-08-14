@@ -8,13 +8,7 @@ export default function Modal({ params }: { params: { type: string } }) {
   const renderModal = () => {
     switch (params.type) {
       case 'basic':
-        return (
-          <BasicModal
-            imageSrc="/images/astronaut.png"
-            content="커뮤니티에서는 '한글'만 써주세요"
-            hightlight="한글"
-          />
-        )
+        return <BasicModal />
       case 'confirm-cancel':
         return (
           <ConfirmCancelModal
