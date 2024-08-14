@@ -88,7 +88,7 @@ export const patchEditUser = async (
 
 export const getUserInfo = async (url: string) => {
   try {
-    const accessToken = getToken()
+    const accessToken = await getToken()
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${url}`, {
       method: 'GET',
       headers: {

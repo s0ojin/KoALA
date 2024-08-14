@@ -16,6 +16,7 @@ import { Bar } from 'react-chartjs-2'
 import ChartDataLabels from 'chartjs-plugin-datalabels'
 import { Context } from 'chartjs-plugin-datalabels'
 import { WeekData } from '@/app/report/_components/ReportFieldWeekLineChart'
+import { WeekRange } from '@/app/report/_components/ReportFieldLayout'
 
 ChartJS.register(
   CategoryScale,
@@ -29,42 +30,45 @@ ChartJS.register(
 
 interface ThisWeekDataProps {
   thisWeekData: WeekData
+  thisWeekRange: WeekRange
 }
 
 export default function ReportFieldBarChart({
   thisWeekData,
+  thisWeekRange,
 }: ThisWeekDataProps) {
   const dictationData: number[] = [
-    thisWeekData.Mon.writing,
-    thisWeekData.Tue.writing,
-    thisWeekData.Wed.writing,
-    thisWeekData.Thu.writing,
-    thisWeekData.Fri.writing,
-    thisWeekData.Sat.writing,
-    thisWeekData.Sun.writing,
+    thisWeekData.mon.writing,
+    thisWeekData.tue.writing,
+    thisWeekData.wed.writing,
+    thisWeekData.thu.writing,
+    thisWeekData.fri.writing,
+    thisWeekData.sat.writing,
+    thisWeekData.sun.writing,
   ]
 
   const speakingData: number[] = [
-    thisWeekData.Mon.speaking,
-    thisWeekData.Tue.speaking,
-    thisWeekData.Wed.speaking,
-    thisWeekData.Thu.speaking,
-    thisWeekData.Fri.speaking,
-    thisWeekData.Sat.speaking,
-    thisWeekData.Sun.speaking,
+    thisWeekData.mon.speaking,
+    thisWeekData.tue.speaking,
+    thisWeekData.wed.speaking,
+    thisWeekData.thu.speaking,
+    thisWeekData.fri.speaking,
+    thisWeekData.sat.speaking,
+    thisWeekData.sun.speaking,
   ]
 
   const lectureData: number[] = [
-    thisWeekData.Mon.lectures,
-    thisWeekData.Tue.lectures,
-    thisWeekData.Wed.lectures,
-    thisWeekData.Thu.lectures,
-    thisWeekData.Fri.lectures,
-    thisWeekData.Sat.lectures,
-    thisWeekData.Sun.lectures,
+    thisWeekData.mon.lectures,
+    thisWeekData.tue.lectures,
+    thisWeekData.wed.lectures,
+    thisWeekData.thu.lectures,
+    thisWeekData.fri.lectures,
+    thisWeekData.sat.lectures,
+    thisWeekData.sun.lectures,
   ]
 
   const options: ChartOptions<'bar'> = {
+    maintainAspectRatio: false,
     responsive: true,
     plugins: {
       legend: {
@@ -130,7 +134,7 @@ export default function ReportFieldBarChart({
     <div className="md:p-3 xl:px-11 xl:py-6 bg-white rounded-2xl w-full h-full">
       <div className="flex justify-between mb-8">
         <p className="text-primary-400 mr-2 flex items-center xl:ml-8 whitespace-nowrap md:text-sm lg:text-base">
-          7/15 ~ 7/21
+          {`${thisWeekRange.startDate} ~ ${thisWeekRange.endDate}`}
         </p>
         <div className="flex md:gap-1 lg:gap-4 xl:gap-8 lg:flex-grow justify-end">
           <div className="inline-flex items-center">
@@ -153,7 +157,7 @@ export default function ReportFieldBarChart({
           </div>
         </div>
       </div>
-      <div>
+      <div className="w-full aspect-[5/2]">
         <Bar options={options} data={data} plugins={[ChartDataLabels]} />
       </div>
     </div>
