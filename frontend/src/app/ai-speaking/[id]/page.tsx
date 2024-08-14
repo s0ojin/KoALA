@@ -9,6 +9,7 @@ import AISpeakingBackgroundLayout from '@/app/ai-speaking/_components/AISpeaking
 import { useParams, useSearchParams } from 'next/navigation'
 import useSWR from 'swr'
 import { getStartAISpeaking } from '@/app/apis/ai-speaking'
+import { playTextToSpeech } from '@/app/utils/playTextToSpeech'
 
 type TopicKey = '일상' | '행정' | '교육'
 
@@ -34,7 +35,6 @@ interface AISpeakingMessage {
 }
 
 export default function AISpeakingLearningRoom() {
-  const [isSpeakMode, setIsSpeakMode] = useState(true)
   const [messages, setMessages] = useState<AISpeakingMessage[]>([])
   const searchParams = useSearchParams()
   const topic = searchParams.get('topic') as TopicKey
@@ -54,6 +54,7 @@ export default function AISpeakingLearningRoom() {
           isMine: false,
         },
       ])
+      playTextToSpeech(startData.data.message)
     }
   }, [startData])
 
@@ -91,18 +92,9 @@ export default function AISpeakingLearningRoom() {
               ))}
             </div>
             <div className="w-full text-center">
-              {isSpeakMode ? (
-                <button>
-                  <MicBtn className="w-16 text-primary-400" />
-                </button>
-              ) : (
-                <div className="flex gap-3">
-                  <input type="text" className="input" />
-                  <button className="w-16 text-white bg-primary-400 rounded-full p-3">
-                    <SendBtn />
-                  </button>
-                </div>
-              )}
+              <button>
+                <MicBtn className="w-16 text-primary-400" />
+              </button>
             </div>
           </div>
         </div>
