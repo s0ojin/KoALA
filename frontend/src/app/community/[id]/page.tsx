@@ -8,6 +8,7 @@ import CommunityActionMenu from '@/app/community/_components/CommunityActionMenu
 import { getConvertedTime } from '@/app/utils/getConvertedTime'
 import { getPost } from '@/app/apis/community'
 import Link from 'next/link'
+import Image from 'next/image'
 
 interface CommunityDetailProps {
   params: {
@@ -26,9 +27,11 @@ export default async function CommunityDetail({
       {post && (
         <div className="mt-32 mb-16">
           <div className="flex justify-end px-8 mb-3">
-            <button className="bg-gray-500 text-white py-2 px-12 rounded-full">
-              목록
-            </button>
+            <Link href="/community">
+              <button className="bg-gray-500 text-white py-2 px-12 rounded-full">
+                목록
+              </button>
+            </Link>
           </div>
 
           <div className="pt-16 pb-14 bg-white max-w-[65rem] min-w-[65rem]  w-full px-11 rounded-[3.75rem] mb-5 relative">
@@ -40,7 +43,17 @@ export default async function CommunityDetail({
                 {post.title}
               </h3>
               <div className="flex justify-between py-5 bg-white whitespace-nowrap gap-5">
-                <p className="text-base text-gray-700">{post.nickname}</p>
+                <div className="flex items-center gap-1">
+                  <Image
+                    src="/images/eucalyptus.png"
+                    width={16}
+                    height={16}
+                    className="w-6 h-6 rounded-full"
+                    alt="eucalyptus"
+                    draggable="false"
+                  />
+                  <p className="text-base text-gray-700">{post.nickname}</p>
+                </div>
                 <div className="flex gap-6 items-center">
                   <div className="flex items-center gap-1">
                     <View width={16} height={16} />

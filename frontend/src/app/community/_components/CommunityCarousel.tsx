@@ -6,12 +6,6 @@ import Image from 'next/image'
 import LeftButton from '/public/icons/left-circle-button.svg'
 import RightButton from '/public/icons/right-circle-button.svg'
 
-const slides = [
-  '/images/koala-sleep.png',
-  '/images/koala-sleep.png',
-  '/images/koala-sleep.png',
-]
-
 interface CommunityCarouselProps {
   boardImageList: string[]
 }
@@ -47,11 +41,10 @@ export default function CommunityCarousel({
                 return (
                   <Image
                     src={src}
-                    width={0}
-                    height={0}
-                    sizes="100%"
+                    width={460}
+                    height={460}
                     className={`w-[460px] h-[460px] aspect-square border border-gray-200 rounded-2xl ${index === currentSlide ? '' : 'opacity-30'}`}
-                    alt="profile"
+                    alt="content_image"
                     key={index}
                   />
                 )
