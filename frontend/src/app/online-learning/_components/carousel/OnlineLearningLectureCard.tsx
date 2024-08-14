@@ -42,7 +42,7 @@ export default function OnlineLearningLectureCard({ ...cardData }: CardProps) {
             <p>{lecture_schedule}</p>
           </div>
           <Link
-            href={`online-learning/${lecture_id}`}
+            href={`online-learning/${lecture_id}?title=${lecture_title}&teacher_name=${teacher_name}`}
             className="max-w-[14rem] min-w-[10rem]"
           >
             <button
@@ -57,22 +57,23 @@ export default function OnlineLearningLectureCard({ ...cardData }: CardProps) {
     )
   } else {
     return (
-      <div className="w-full h-full bg-white rounded-tr-3xl overflow-hidden shadow-lg">
+      <div className="w-full h-full bg-white rounded-tr-3xl overflow-hidden shadow-lg cursor-pointer">
         <div className="w-full aspect-square r">
           <Image
             src={lecture_img_url}
             alt="Lecture Card"
-            width={200}
-            height={200}
-            className="w-full h-full object-cove"
+            width={300}
+            height={300}
+            className="w-full h-full object-cover"
           />
         </div>
         <div className="m-auto py-[1.25rem]">
-          <p className="text-primary-900 font-medium text-xl text-center mb-2 mx-5 break-words truncate">
+          <p className="text-primary-900 text-xl font-medium text-center mb-2 mx-5 break-words truncate">
             {lecture_title}
           </p>
           <p className="text-primary-900 text-base text-center font-regular">
-            {teacher_name}
+            <span className="font-medium mr-1">{teacher_name}</span>
+            선생님
           </p>
         </div>
       </div>
