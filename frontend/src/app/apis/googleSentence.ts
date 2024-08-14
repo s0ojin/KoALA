@@ -29,3 +29,7 @@ export const getSpeech = async (inputText: string) => {
     throw new Error('Audio Content is undefined')
   }
 }
+
+export const postSpeech = async (audio: string) => {
+  
+}

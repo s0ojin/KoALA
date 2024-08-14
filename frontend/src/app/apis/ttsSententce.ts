@@ -59,3 +59,7 @@ export const getGoogleSpeech = async (text: string) => {
   )
   return arraybuff
 }
+
+export const postGoogleSpeech = async (audio:string) => {
+
+}
