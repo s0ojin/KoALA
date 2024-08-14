@@ -27,14 +27,14 @@ export default function ChatBubble({
   return (
     <div className={`flex gap-2 ${isMine && 'self-end flex-row-reverse'}`}>
       {!isMine && senderProfile && (
-        <div className="profile w-10 h-10 rounded-full bg-black">
+        <div className="profile w-10 h-10 rounded-3xl bg-black">
           <Image src={senderProfile} alt="profile" width={16} height={16} />
         </div>
       )}
       <div>
         {!isMine && <p className="text-sm mb-1">{senderName}</p>}
         <div
-          className={`w-full px-4 py-3 ${isMine ? 'bg-primary-400 text-white rounded-full rounded-tr-none' : 'bg-gray-100 rounded-full rounded-tl-none'}`}
+          className={`w-full px-4 py-3 ${isMine ? 'bg-primary-400 text-white rounded-3xl rounded-tr-none' : 'bg-gray-100 rounded-full rounded-tl-none'}`}
         >
           <p>{message}</p>
         </div>
