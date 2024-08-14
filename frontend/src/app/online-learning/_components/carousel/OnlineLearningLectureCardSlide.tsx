@@ -22,16 +22,6 @@ export interface CardDataProps {
   cardLectureSessionID: String
 }
 
-// {
-//   "lecture_id": 1,
-//   "teacher_name": "teacher",
-//   "lecture_title": "한국어 기초 강의",
-//   "lecture_detail": "이거 들으면 기초 완료",
-//   "session_id": "ses_QrYAlauJ0B",
-//   "lecture_schedule": "월 수 금 15:00 ~ 17:00",
-//   "lecture_img_url": "https://images.unsplash.com/photo-1550177205-89d100b75c34?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-// },
-
 export default function OnlineLearningLectureCardSlide() {
   const { data: cardList } = useSWR('/lectures/all', getLectureList)
   const [swiper, setSwiper] = useState<SwiperClass>()
@@ -92,10 +82,6 @@ export default function OnlineLearningLectureCardSlide() {
         centeredSlides={false}
         spaceBetween={30}
         loop={true}
-        autoplay={{
-          delay: 5000,
-          disableOnInteraction: false,
-        }}
       >
         {slides.map((card, index) => (
           <SwiperSlide key={index} virtualIndex={index}>
