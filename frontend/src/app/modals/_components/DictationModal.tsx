@@ -70,8 +70,9 @@ export default function DictationCategoryModal() {
                 <Image
                   src={mode.imageUrl}
                   alt="cloud"
-                  width={100}
+                  width={96}
                   height={0}
+                  className="w-24"
                   priority
                 />
                 <p>{mode.label}</p>
@@ -94,8 +95,9 @@ export default function DictationCategoryModal() {
                 <Image
                   src={category.imageUrl}
                   alt="cloud"
-                  width={70}
+                  width={64}
                   height={0}
+                  className="w-16"
                   priority
                 />
                 <p>{category.label}</p>
