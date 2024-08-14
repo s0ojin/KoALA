@@ -27,17 +27,17 @@ export default function ChatBubble({
   return (
     <div className={`flex gap-2 ${isMine && 'self-end flex-row-reverse'}`}>
       {!isMine && senderProfile && (
-        <div className="profile w-10 h-10 rounded-3xl bg-black">
-          <Image src={senderProfile} alt="profile" width={16} height={16} />
+        <div className="w-10 h-10 rounded-3xl bg-gray-100 shrink-0">
+          <Image src={senderProfile} alt="profile" width={100} height={100} />
         </div>
       )}
-      <div>
+      <div className="flex flex-col gap-1">
         {!isMine && <p className="text-sm mb-1">{senderName}</p>}
-        <div
-          className={`w-full px-4 py-3 ${isMine ? 'bg-primary-400 text-white rounded-3xl rounded-tr-none' : 'bg-gray-100 rounded-full rounded-tl-none'}`}
+        <p
+          className={`w-full px-4 py-3 ${isMine ? 'bg-primary-400 text-white rounded-3xl rounded-tr-none' : 'bg-gray-100 rounded-3xl rounded-tl-none'}`}
         >
-          <p>{message}</p>
-        </div>
+          {message}
+        </p>
       </div>
       <p className="whitespace-nowrap self-end text-xs text-gray-500">
         {timeStamp && getFormattedTime(timeStamp)}
