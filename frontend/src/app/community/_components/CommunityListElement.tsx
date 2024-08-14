@@ -16,11 +16,10 @@ export default function Element({ post }: any) {
             <div className="flex items-center">
               <Image
                 src="/images/eucalyptus.png"
-                width={0}
-                height={0}
-                sizes="100%"
+                width={16}
+                height={16}
                 className="w-4 h-4 rounded-full"
-                alt="유칼립투스"
+                alt="eucalyptus"
                 draggable="false"
               />
               <p>{post.nickname}</p>
