@@ -31,8 +31,8 @@ const MobileDictation = ({
               protocol: 'WEBSOCKET',
               scheme: 'https',
               host: 'cloud.myscript.com',
-              applicationKey: 'c63de9e3-6e0e-4fa3-88b1-43b836a23aac',
-              hmacKey: 'faea0c01-5d60-498a-a97c-b9a3a8ea6ad6',
+              applicationKey: process.env.NEXT_PUBLIC_APPLICATION_KEY,
+              hmacKey: process.env.NEXT_PUBLIC_HMAC_KEY,
             },
             recognition: {
               type: 'TEXT',
