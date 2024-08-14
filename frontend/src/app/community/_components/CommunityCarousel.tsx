@@ -43,7 +43,7 @@ export default function CommunityCarousel({
                     src={src}
                     width={460}
                     height={460}
-                    className={`w-[460px] h-[460px] aspect-square border border-gray-200 rounded-2xl ${index === currentSlide ? '' : 'opacity-30'}`}
+                    className={`w-[460px] h-[460px] aspect-square border border-gray-200 object-cover rounded-2xl ${index === currentSlide ? '' : 'opacity-30'}`}
                     alt="content_image"
                     key={index}
                   />

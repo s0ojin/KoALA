@@ -53,7 +53,7 @@ export default function CommunityImageUploader({
               src={image.preview}
               width={96}
               height={96}
-              className="w-24 h-24 aspect-square border rounded-lg"
+              className="w-24 h-24 aspect-square border rounded-lg object-cover"
               alt="image-preview"
               draggable={false}
               priority
