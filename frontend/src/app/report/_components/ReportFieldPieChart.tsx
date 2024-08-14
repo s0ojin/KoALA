@@ -60,6 +60,9 @@ export default function ReportFieldPieChart({
             return `${customblank}${context.chart.data.labels[context.dataIndex]}${customblank}`
           }
         },
+        display: (context: Context) => {
+          return (context as any).dataset.data[context.dataIndex] > 0
+        },
       },
     },
   }

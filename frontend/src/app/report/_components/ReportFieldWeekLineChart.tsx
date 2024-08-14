@@ -43,7 +43,6 @@ interface WeekRangeProps {
   lastWeek: WeekRange
 }
 
-
 interface WeekDataProps {
   lastWeekData: WeekData
   thisWeekData: WeekData
@@ -104,6 +103,7 @@ export default function ReportFieldWeekLineChart({
   ]
 
   const options: ChartOptions<'line'> = {
+    maintainAspectRatio: false,
     responsive: true,
     plugins: {
       legend: {
@@ -157,7 +157,7 @@ export default function ReportFieldWeekLineChart({
           <p className="text-primary-400">{`${weekRangeData.thisWeek.startDate} ~ ${weekRangeData.thisWeek.endDate}`}</p>
         </div>
       </div>
-      <div>
+      <div className="w-full aspect-[5/2]">
         <Line options={options} data={data} />
       </div>
     </div>

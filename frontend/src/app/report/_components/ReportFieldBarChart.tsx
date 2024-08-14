@@ -35,7 +35,7 @@ interface ThisWeekDataProps {
 
 export default function ReportFieldBarChart({
   thisWeekData,
-  thisWeekRange
+  thisWeekRange,
 }: ThisWeekDataProps) {
   const dictationData: number[] = [
     thisWeekData.mon.writing,
@@ -68,6 +68,7 @@ export default function ReportFieldBarChart({
   ]
 
   const options: ChartOptions<'bar'> = {
+    maintainAspectRatio: false,
     responsive: true,
     plugins: {
       legend: {
@@ -133,7 +134,7 @@ export default function ReportFieldBarChart({
     <div className="md:p-3 xl:px-11 xl:py-6 bg-white rounded-2xl w-full h-full">
       <div className="flex justify-between mb-8">
         <p className="text-primary-400 mr-2 flex items-center xl:ml-8 whitespace-nowrap md:text-sm lg:text-base">
-        {`${thisWeekRange.startDate} ~ ${thisWeekRange.endDate}`}
+          {`${thisWeekRange.startDate} ~ ${thisWeekRange.endDate}`}
         </p>
         <div className="flex md:gap-1 lg:gap-4 xl:gap-8 lg:flex-grow justify-end">
           <div className="inline-flex items-center">
@@ -156,7 +157,7 @@ export default function ReportFieldBarChart({
           </div>
         </div>
       </div>
-      <div>
+      <div className="w-full aspect-[5/2]">
         <Bar options={options} data={data} plugins={[ChartDataLabels]} />
       </div>
     </div>
