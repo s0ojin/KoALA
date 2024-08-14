@@ -31,6 +31,7 @@ export default function CommnunityComment({
     data: commentList,
     error,
     isLoading,
+    mutate,
   } = useSWR(
     `/boards/${postId}/comments?page=${commentPage}&size=10`,
     fetcher,
@@ -42,10 +43,13 @@ export default function CommnunityComment({
   }
 
   const handleClickDeleteButton = async (commentId: number) => {
-    const data = await deletePostComment(`/boards/comments/${commentId}`)
+    const data = await deletePostComment(
+      `/boards/${postId}/comments/${commentId}`
+    )
 
     if (data.status === 200) {
       alert('댓글을 삭제했습니다')
+      mutate()
     }
   }
 
@@ -83,10 +87,18 @@ export default function CommnunityComment({
                 />
                 <div className="w-full flex flex-col gap-3">
                   <div className="flex justify-between items-center">
-                    <div className="flex gap-4 items-center">
+                    <div className="flex items-center">
                       <p className="text-gray-900 font-medium text-sm">
                         {comment.nickname}
                       </p>
+                      <Image
+                        src="/images/eucalyptus.png"
+                        width={16}
+                        height={16}
+                        className="w-6 h-6 rounded-full"
+                        alt="eucalyptus"
+                        draggable="false"
+                      />
                     </div>
                     <div className="flex gap-4">
                       <p className="text-gray-400 text-sm font-normal">
