@@ -2,9 +2,9 @@
 
 import Play from '/public/icons/play.svg'
 import Pause from '/public/icons/pause.svg'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { SentenceContent } from '@/app/apis/review'
-import { getWebSpeech, stopWebSpeech, getGoogleSpeech } from '@/app/apis/ttsSententce'
+import { getGoogleSpeech } from '@/app/apis/ttsSententce'
 
 interface SentenceProps {
   sentence: SentenceContent
@@ -20,12 +20,13 @@ export default function ReviewAreaSentence({
   OnSentenceSelect,
 }: SentenceProps) {
   const [isPlaying, setPlaying] = useState<Boolean>(false)
-  let source:AudioBufferSourceNode
-  
+  let source: AudioBufferSourceNode
+  let response: string
+
   const handleChangeSelected = () => {
     OnSentenceSelect(sentence.review_sentence_id)
   }
-  
+
   const handlePlaying = async () => {
     const audioContext = new window.AudioContext()
     const arraybuff = await getGoogleSpeech(sentence.sentence_text)
