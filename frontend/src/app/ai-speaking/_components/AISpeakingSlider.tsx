@@ -4,58 +4,12 @@ import { useState } from 'react'
 import { motion, PanInfo } from 'framer-motion'
 import AISpeakingConversationCard from './AISpeakingConversationCard'
 import NextBtn from '/public/icons/arrow-right.svg'
-import { useRouter } from 'next/navigation'
-
-const dummy = [
-  {
-    id: 1,
-    title: '관공서에서 민원을 넣을 때',
-    description:
-      '관공서에서 민원을 넣는 상황을 가정합니다. AI와 함께 연습해 봅시다!',
-  },
-  {
-    id: 2,
-    title: '1',
-    description:
-      '관공서에서 민원을 넣는 상황을 가정합니다. AI와 함께 연습해 봅시다! 관공서에서 민원을 넣는 상황을 가정합니다. AI와 함께 연습해 봅시다!',
-  },
-  {
-    id: 3,
-    title: '2',
-    description:
-      '관공서에서 민원을 넣는 상황을 가정합니다. AI와 함께 연습해 봅시다! 관공서에서 민원을 넣는 상황을 가정합니다. AI와 함께 연습해 봅시다!',
-  },
-  {
-    id: 4,
-    title: '3',
-    description:
-      '관공서에서 민원을 넣는 상황을 가정합니다. AI와 함께 연습해 봅시다! 관공서에서 민원을 넣는 상황을 가정합니다. AI와 함께 연습해 봅시다!',
-  },
-  {
-    id: 5,
-    title: '4',
-    description:
-      '관공서에서 민원을 넣는 상황을 가정합니다. AI와 함께 연습해 봅시다! 관공서에서 민원을 넣는 상황을 가정합니다. AI와 함께 연습해 봅시다!',
-  },
-  {
-    id: 6,
-    title: '5',
-    description:
-      '관공서에서 민원을 넣는 상황을 가정합니다. AI와 함께 연습해 봅시다! 관공서에서 민원을 넣는 상황을 가정합니다. AI와 함께 연습해 봅시다!',
-  },
-  {
-    id: 7,
-    title: '6',
-    description:
-      '관공서에서 민원을 넣는 상황을 가정합니다. AI와 함께 연습해 봅시다! 관공서에서 민원을 넣는 상황을 가정합니다. AI와 함께 연습해 봅시다!',
-  },
-  {
-    id: 8,
-    title: '7',
-    description:
-      '관공서에서 민원을 넣는 상황을 가정합니다. AI와 함께 연습해 봅시다! 관공서에서 민원을 넣는 상황을 가정합니다. AI와 함께 연습해 봅시다!',
-  },
-]
+import { useRouter, useSearchParams } from 'next/navigation'
+import {
+  AIConversationCard,
+  getAIConversationList,
+} from '@/app/apis/ai-speaking'
+import useSWR from 'swr'
 
 const POSITIONS = ['farLeft', 'left', 'center', 'right', 'farRight']
 
@@ -94,13 +48,23 @@ const imageVariants = {
 }
 
 export default function AISpeakingSlider() {
-  const [cardList, setCardList] = useState(dummy)
+  const searchParams = useSearchParams()
+  const topic = searchParams.get('topic')
+  const { data: cardList } = useSWR(
+    topic === '전체' || topic === null
+      ? '/ai-talk/situation'
+      : `/ai-talk/situation?topic=${topic}`,
+    getAIConversationList
+  )
+
   const [activeIndex, setActiveIndex] = useState(0)
   const router = useRouter()
 
   const handleClick = (direction: number) => {
     setActiveIndex(
-      (prevIndex) => (prevIndex + direction + cardList.length) % cardList.length
+      (prevIndex) =>
+        (prevIndex + direction + (cardList?.data.length as number)) %
+        (cardList?.data.length as number)
     )
   }
 
@@ -114,17 +78,16 @@ export default function AISpeakingSlider() {
       handleClick(-1)
     }
   }
-
   const getVisibleCards = () => {
-    const totalCards = cardList.length
+    const totalCards = cardList?.data.length as number
     const visibleCards = []
     for (let i = -2; i <= 2; i++) {
-      visibleCards.push(cardList[(activeIndex + i + totalCards) % totalCards])
+      visibleCards.push(
+        cardList?.data[(activeIndex + i + totalCards) % totalCards]
+      )
     }
-    return visibleCards
+    return visibleCards as AIConversationCard[]
   }
-
-  const visibleCardList = getVisibleCards()
 
   return (
     <div className="h-main-screen flex flex-col items-center justify-center w-full">
@@ -138,37 +101,39 @@ export default function AISpeakingSlider() {
           className="left-[30%] w-10 cursor-pointer"
         />
       </div>
-      {visibleCardList.map((card, idx) => {
-        const canDrag = POSITIONS[idx] === 'center'
-        return (
-          <motion.div
-            key={card.id}
-            className={`absolute ${canDrag ? 'cursor-pointer' : 'cursor-auto'}`}
-            initial="center"
-            animate={POSITIONS[idx]}
-            variants={imageVariants}
-            transition={{ duration: 0.5 }}
-            drag={canDrag ? 'x' : false}
-            onDragEnd={handleDragEnd}
-            dragConstraints={{ left: 0, right: 0 }}
-          >
-            {
-              <div
-                onClick={() => {
-                  if (canDrag) {
-                    router.push(`ai-speaking/${card.id}`)
-                  }
-                }}
-              >
-                <AISpeakingConversationCard
-                  conversationTitle={card.title}
-                  conversationDescription={card.description}
-                />
-              </div>
-            }
-          </motion.div>
-        )
-      })}
+      {cardList?.data &&
+        getVisibleCards().map((card, idx) => {
+          const canDrag = POSITIONS[idx] === 'center'
+          return (
+            <motion.div
+              key={card.situation_id}
+              className={`absolute ${canDrag ? 'cursor-pointer' : 'cursor-auto'}`}
+              initial="center"
+              animate={POSITIONS[idx]}
+              variants={imageVariants}
+              transition={{ duration: 0.5 }}
+              drag={canDrag ? 'x' : false}
+              onDragEnd={handleDragEnd}
+              dragConstraints={{ left: 0, right: 0 }}
+            >
+              {
+                <div
+                  onClick={() => {
+                    if (canDrag) {
+                      router.push(`ai-speaking/${card.situation_id}`)
+                    }
+                  }}
+                >
+                  <AISpeakingConversationCard
+                    conversationTitle={card.situation_title}
+                    conversationDescription={card.situation_detail}
+                    conversationCoverImg={card.situation_img_url}
+                  />
+                </div>
+              }
+            </motion.div>
+          )
+        })}
     </div>
   )
 }

@@ -49,4 +49,16 @@ public class StudyTime implements Serializable {
 	@Builder.Default
 	@Column(name = "lecture_num")
 	private Integer lectureNum = 0;
+
+	public void increaseTalkTime(Integer talkTime) {
+		this.talkTime += talkTime;
+	}
+
+	public void increaseSentenceNum(Integer sentenceNum) {
+		this.sentenceNum += sentenceNum;
+	}
+
+	public void increaseLectureNum() {
+		this.lectureNum += 1;
+	}
 }

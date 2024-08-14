@@ -2,37 +2,42 @@ package com.ssafy.domain.user.model.dto.response;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ssafy.domain.user.model.entity.User;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Getter
 @Builder
-@ToString
-@AllArgsConstructor
-@NoArgsConstructor
 public class UserResponse {
 
+	@JsonProperty("user_id")
 	private Long userId;
+
+	@JsonProperty("login_id")
 	private String loginId;
-	private String password;
+
 	private String name;
 	private String nickname;
 	private Integer leaves;
+
+	@JsonProperty("user_exp")
 	private Long userExp;
+
+	@JsonProperty("user_level")
 	private Integer userLevel;
+
+	@JsonProperty("user_created_at")
 	private LocalDateTime userCreatedAt;
+
+	@JsonProperty("auth_id")
 	private Long authId;
 
 	public static UserResponse toDto(User user) {
 		return UserResponse.builder()
 			.userId(user.getUserId())
 			.loginId(user.getLoginId())
-			.password(user.getPassword())
 			.name(user.getName())
 			.nickname(user.getNickname())
 			.leaves(user.getLeaves())

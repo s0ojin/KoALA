@@ -17,14 +17,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ssafy.domain.chat.service.CacheService;
+import com.ssafy.domain.ai_talk.service.CacheService;
+import com.ssafy.domain.koala.service.KoalaService;
 import com.ssafy.domain.user.model.dto.request.UserSignUpRequest;
 import com.ssafy.domain.user.model.dto.request.UserUpdateRequest;
+import com.ssafy.domain.user.model.dto.response.RankingResponse;
+import com.ssafy.domain.user.model.dto.response.RankingWithMyRankResponse;
 import com.ssafy.domain.user.model.dto.response.UserFindResponse;
 import com.ssafy.domain.user.model.dto.response.UserResponse;
 import com.ssafy.domain.user.model.entity.Auth;
 import com.ssafy.domain.user.model.entity.User;
 import com.ssafy.domain.user.repository.AuthRepository;
+import com.ssafy.domain.user.repository.RankingRepository;
 import com.ssafy.domain.user.repository.UserRepository;
 import com.ssafy.global.auth.jwt.JwtTokenProvider;
 import com.ssafy.global.auth.jwt.dto.JwtToken;
@@ -32,30 +36,41 @@ import com.ssafy.global.common.UserInfoProvider;
 
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
 
-	private final UserRepository userRepository;
-	private final AuthRepository authRepository;
-	private final AuthenticationManagerBuilder authenticationManagerBuilder;
-	private final JwtTokenProvider jwtTokenProvider;
-	private final PasswordEncoder passwordEncoder;
 	private final UserInfoProvider userInfoProvider;
+	private final JwtTokenProvider jwtTokenProvider;
+	private final AuthenticationManagerBuilder authenticationManagerBuilder;
 	private final CacheService cacheService;
+	private final PasswordEncoder passwordEncoder;
+	private final UserRepository userRepository;
+	private final KoalaService koalaService;
+	private final AuthRepository authRepository;
+	private final StudyTimeService studyTimeService;
+	private final AiTalkLogService aiTalkLogService;
+	private final RankingRepository rankingRepository;
 
+	@Override
 	@Transactional
-	public UserResponse signUp(UserSignUpRequest userSignUpRequest) {
+	public UserFindResponse signUp(UserSignUpRequest userSignUpRequest) {
 		if (userRepository.existsByLoginId(userSignUpRequest.getLoginId())) {
-			throw new IllegalArgumentException("이미 사용 중인 사용자 아이디입니다.");
+			throw new IllegalArgumentException("아이디 중복");
+		}
+		if (userRepository.existsByNickname(userSignUpRequest.getNickname())) {
+			throw new IllegalArgumentException("닉네임 중복");
 		}
 		String encodedPassword = passwordEncoder.encode(userSignUpRequest.getPassword());
 		Auth auth = authRepository.findByAuthName("user");
-		return UserResponse.toDto(userRepository.save(userSignUpRequest.toEntity(encodedPassword, auth)));
+		User user = userRepository.save(userSignUpRequest.toEntity(encodedPassword, auth));
+		studyTimeService.initStudyTime(user.getUserId());
+		aiTalkLogService.initAiTalkLog(user);
+		koalaService.addKoala(user.getUserId());
+
+		return UserFindResponse.toDto(user);
 	}
 
 	@Transactional
@@ -71,50 +86,41 @@ public class UserServiceImpl implements UserService {
 		Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 		// 인증 정보를 기반으로 JWT 토큰 생성
 		JwtToken jwtToken = jwtTokenProvider.generateToken(authentication);
+		User user = userRepository.findByLoginId(loginId).get();
+		user.setRefreshToken(jwtToken.getRefreshToken());
+		userRepository.save(user);
 		return jwtToken;
 	}
 
 	@Override
-	public boolean checkLoginId(String loginId) {
-		return userRepository.existsByLoginId(loginId);
-	}
-
-	@Override
-	public boolean checkNickname(String nickname) {
-		return userRepository.existsByNickname(nickname);
-	}
-
 	@Transactional
-	@Override
-	public UserFindResponse findUser() {
+	public UserResponse getUser() {
 		String currentLoginId = userInfoProvider.getCurrentLoginId();
 		if (currentLoginId == null) {
 			throw new IllegalStateException("Current login_ID is null. User might not be authenticated.");
 		}
 
-		Optional<User> optionalUser = userRepository.findByLoginId(currentLoginId);
-		if (!optionalUser.isPresent()) {
+		Optional<User> user = userRepository.findByLoginId(currentLoginId);
+		if (!user.isPresent()) {
 			throw new NoSuchElementException("User not found with login_ID: " + currentLoginId);
 		}
 
-		User user = optionalUser.get();
-		return UserFindResponse.toDto(user);
+		return UserResponse.toDto(user.get());
 	}
 
-	@Transactional
 	@Override
+	@Transactional
 	public UserResponse updateUser(UserUpdateRequest userUpdateRequest) {
-
+		if (userRepository.existsByNickname(userUpdateRequest.getNickname())) {
+			throw new IllegalArgumentException("닉네임 중복");
+		}
 		User user = userInfoProvider.getCurrentUser();
-
-		String encodedPassword = passwordEncoder.encode(userUpdateRequest.getPassword());
 		user.setNickname(userUpdateRequest.getNickname());
-		user.setPassword(encodedPassword);
 		return UserResponse.toDto(userRepository.save(user));
 	}
 
-	@Transactional
 	@Override
+	@Transactional
 	public void deleteUser() {
 		User user = userInfoProvider.getCurrentUser();
 		userRepository.delete(user);
@@ -141,20 +147,25 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public JwtToken createNewToken(String bearerToken) {
+	public JwtToken makeNewToken(String bearerToken) {
 		if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
 			String refreshToken = bearerToken.substring(7);
+
 			if (!jwtTokenProvider.validateToken(refreshToken)) {
 				throw new IllegalArgumentException("Invalid refresh token");
 			}
 			Claims claims = jwtTokenProvider.parseClaims(refreshToken);
 			String loginId = claims.get("sub").toString();
-			Optional<User> userOptional = userRepository.findByLoginId(loginId);
-			if (!userOptional.isPresent()) {
+
+			Optional<User> user = userRepository.findByLoginId(loginId);
+			if (!user.isPresent()) {
 				throw new UsernameNotFoundException("User not found with loginId: " + loginId);
 			}
+			if (!user.get().getRefreshToken().equals(refreshToken)) {
+				throw new IllegalArgumentException("Invalid refresh token");
+			}
 			// 이미 사용자 정보를 가지고 있고, 이를 통해 직접 인증 객체를 생성
-			String encodedPassword = userOptional.get().getPassword();
+			String encodedPassword = user.get().getPassword();
 			List<GrantedAuthority> authorities = new ArrayList<>();
 			authorities.add(new SimpleGrantedAuthority("ROLE_user"));
 			UserDetails userDetails = new org.springframework.security.core.userdetails.User(loginId, encodedPassword,
@@ -168,8 +179,19 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void logout() {
+		User user = userRepository.findByLoginId(userInfoProvider.getCurrentLoginId()).get();
+		user.setRefreshToken(null);
+		userRepository.save(user);
 		cacheService.clearChatHistory(userInfoProvider.getCurrentLoginId());
 		SecurityContextHolder.clearContext();
 	}
 
+	@Override
+	public RankingWithMyRankResponse getRanking() {
+		Long userId = userInfoProvider.getCurrentUserId();
+		Integer myRank = rankingRepository.findByUserId(userId).getRanking();
+		List<RankingResponse> rankings = new ArrayList<>();
+		rankingRepository.findTop10ByOrderByRanking().forEach(ranking -> rankings.add(RankingResponse.toDto(ranking)));
+		return RankingWithMyRankResponse.toDto(rankings, myRank);
+	}
 }
