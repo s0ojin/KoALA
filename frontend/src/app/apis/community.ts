@@ -108,7 +108,6 @@ export const postPostComment = async (
     const data = await response.json()
     return { data, error: null }
   } catch (error: any) {
-    console.error(error)
     return {
       data: null,
       error: {
@@ -119,17 +118,37 @@ export const postPostComment = async (
   }
 }
 
-export const postPost = async (url: string, data: FormData) => {
-  const accessToken = getToken()
-  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${url}`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: data,
-  })
+export const postPost = async (url: string, payload: FormData) => {
+  try {
+    const accessToken = getToken()
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${url}`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: payload,
+    })
 
-  console.log(response)
+    if (!response.ok) {
+      if (response.status === 400) {
+        throw new ApiError(
+          response.status,
+          `Network response was not ok: ${response.status} ${response.statusText}`
+        )
+      }
+    }
+
+    const data = await response.json()
+    return { data, error: null }
+  } catch (error: any) {
+    return {
+      data: null,
+      error: {
+        message: error,
+        status: error.status,
+      },
+    }
+  }
 }
 
 export const getPostList = async (url: string) => {
