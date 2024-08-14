@@ -8,6 +8,7 @@ import com.ssafy.domain.lecture.model.entity.Lecture;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -24,7 +25,7 @@ import lombok.NoArgsConstructor;
 public class LectureSentence {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "lecture_sentence_id")
 	private Long lectureSentenceId;
 

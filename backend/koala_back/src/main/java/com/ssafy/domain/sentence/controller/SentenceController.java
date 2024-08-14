@@ -33,7 +33,7 @@ public class SentenceController {
 
 	@Operation(summary = "받아쓰기 문장 조회")
 	@GetMapping
-	public ResponseEntity<?> getDictationSentence(@RequestParam("topic") String topic) {
+	public ResponseEntity<?> getDictationSentence(@RequestParam(value = "topic", required = false) String topic) {
 		List<SentenceDictationResponse> sentenceList = sentenceService.getRandomSentence(topic);
 		if (sentenceList == null || sentenceList.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

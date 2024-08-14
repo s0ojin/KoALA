@@ -54,6 +54,7 @@ public class UserServiceImpl implements UserService {
 	private final AiTalkLogService aiTalkLogService;
 	private final RankingRepository rankingRepository;
 
+	@Override
 	@Transactional
 	public UserFindResponse signUp(UserSignUpRequest userSignUpRequest) {
 		if (userRepository.existsByLoginId(userSignUpRequest.getLoginId())) {

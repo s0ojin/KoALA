@@ -66,7 +66,6 @@ public class ReviewServiceImpl implements ReviewService {
 		if (reviewRepository.existsByUserAndSentence(currentUser, sentence)) {
 			return null;
 		}
-
 		return ReviewSentenceResponse.toDto(
 			reviewRepository.save(reviewSaveRequest.toReviewSentenceEntity(sentence, currentUser)));
 	}

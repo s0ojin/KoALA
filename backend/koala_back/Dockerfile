@@ -1,8 +1,3 @@
-FROM gradle:7.4.2-jdk17 AS build
-WORKDIR /app
-COPY . .
-RUN ./gradlew clean build
-
 FROM bellsoft/liberica-openjdk-alpine:17
 LABEL authors="SSAFY"
 
@@ -10,7 +5,7 @@ CMD ["./gradlew", "clean", "build"]
 
 VOLUME /tmp
 
-ARG JAR_FILE=build/libs/*.jar
+ARG JAR_FILE=build/libs/koala_back-0.0.1-SNAPSHOT.jar
 
 COPY ${JAR_FILE} app.jar
 
