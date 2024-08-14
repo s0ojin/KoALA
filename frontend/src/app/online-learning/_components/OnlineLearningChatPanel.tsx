@@ -90,6 +90,13 @@ export default function OnlineLearningChatPanel() {
     }
   }
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault()
+      handleSubmit(onSubmit)()
+    }
+  }
+
   return (
     <div className="h-full flex flex-col justify-between gap-6">
       <div className="overflow-auto">
@@ -113,7 +120,7 @@ export default function OnlineLearningChatPanel() {
       >
         <textarea
           {...register('chat', { required: true })}
-          // onKeyDown={handleKeyDown}
+          onKeyDown={handleKeyDown}
           placeholder="메시지 보내기"
           className="bg-transparent w-full outline-none text-gray-900 resize-none"
         />
