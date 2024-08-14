@@ -6,6 +6,13 @@ export interface AIConversationCard {
   situation_img_url: string
   situation_place: string
   situation_title: string
+  topic_category: '일상' | '행정' | '교육'
+}
+
+interface StartAISpeakingResponse {
+  message: string
+  user_role: string
+  ai_role: string
 }
 
 export const getAIConversationList = async (
@@ -33,7 +40,7 @@ export const getAIConversationList = async (
 
 export const getStartAISpeaking = async (
   url: string
-): Promise<{ data: { message: string }; status: number } | undefined> => {
+): Promise<{ data: StartAISpeakingResponse; status: number } | undefined> => {
   try {
     const accessToken = getToken()
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${url}`, {
