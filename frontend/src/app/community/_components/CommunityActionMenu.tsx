@@ -2,6 +2,7 @@
 
 import { deletePost } from '@/app/apis/community'
 import CommunityPostKebabMenu from '@/app/community/_components/CommunityPostKebabMenu'
+import { useRouter } from 'next/navigation'
 
 export default function CommunityActionMenu({
   nickname,
@@ -10,11 +11,12 @@ export default function CommunityActionMenu({
   nickname: string
   postId: string
 }) {
+  const router = useRouter()
   const handleClickDeleteButton = async () => {
     const data = await deletePost(`/boards/${postId}`)
 
     if (data.status === 200) {
-      alert('게시글 삭제 버튼을 클릭했습니다')
+      router.replace('/community')
     }
   }
 
