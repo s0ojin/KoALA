@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import CommunityImageUploader from '@/app/community/_components/CommunityImageUploader'
 import { postPost } from '@/app/apis/community'
+import { useRouter } from 'next/navigation'
 
 export interface ImageList {
   preview: string
@@ -11,6 +12,7 @@ export interface ImageList {
 }
 
 export default function CommunityPostEditor() {
+  const router = useRouter()
   const {
     register,
     handleSubmit,
@@ -32,8 +34,16 @@ export default function CommunityPostEditor() {
       formData.append('board_images', file.file, file.file.name)
     })
 
-    const result = await postPost('/boards', formData)
-    console.log(result)
+    const { error } = await postPost('/boards', formData)
+    if (error) {
+      if (error.status === 400) {
+        alert('한글을 사용한 게시글만 등록할 수 있습니다')
+      } else {
+        alert('오류가 발생했습니다. 다시 시도해주세요')
+      }
+      return
+    }
+    router.replace('/community')
   }
 
   return (
