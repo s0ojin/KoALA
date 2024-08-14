@@ -121,7 +121,9 @@ export default function AISpeakingSlider() {
                 <div
                   onClick={() => {
                     if (canDrag) {
-                      router.push(`ai-speaking/${card.situation_id}`)
+                      router.push(
+                        `ai-speaking/${card.situation_id}?topic=${card.topic_category}`
+                      )
                     }
                   }}
                 >
