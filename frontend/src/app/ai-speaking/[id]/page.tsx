@@ -1,43 +1,14 @@
 'use client'
+
 import ChatBubble from '@/app/_components/ChatBubble'
 import MicBtn from '/public/icons/microphone.svg'
 import SendBtn from '/public/icons/send.svg'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import AISpeakingBackgroundLayout from '@/app/ai-speaking/_components/AISpeakingBackgroundLayout'
-import { useSearchParams } from 'next/navigation'
-
-const dummy = [
-  {
-    id: 1,
-    isMine: true,
-    message: '내가보낸 메세지',
-    timeStamp: '2024-07-30T13:45:00+09:00',
-  },
-  {
-    id: 2,
-    isMine: false,
-    message: '내가보낸 메세지',
-    senderName: '응 위엔',
-    senderProfile: '/images/koala-sleep.png',
-    timeStamp: '2024-07-30T13:45:00+09:00',
-  },
-  {
-    id: 1,
-    isMine: true,
-    message: '내가보낸 메세지',
-    timeStamp: '2024-07-30T13:45:00+09:00',
-  },
-  {
-    id: 2,
-    isMine: false,
-    message:
-      '내가보낸 메세지내가보낸 메세지내가보낸 메세지내가보낸 메세지내가보낸 메세지내가보낸 메세지',
-    senderName: '응 위엔',
-    senderProfile: '/images/koala-sleep.png',
-    timeStamp: '2024-07-30T13:45:00+09:00',
-  },
-]
+import { useParams, useSearchParams } from 'next/navigation'
+import useSWR from 'swr'
+import { getStartAISpeaking } from '@/app/apis/ai-speaking'
 
 type TopicKey = '일상' | '행정' | '교육'
 
@@ -56,11 +27,35 @@ const BACKGROUND_DATA: Record<TopicKey, { bgImage: string; avatar: string }> = {
   },
 }
 
+interface AISpeakingMessage {
+  sender: string
+  message: string
+  isMine: boolean
+}
+
 export default function AISpeakingLearningRoom() {
   const [isSpeakMode, setIsSpeakMode] = useState(true)
+  const [messages, setMessages] = useState<AISpeakingMessage[]>([])
   const searchParams = useSearchParams()
-  const topic =
-    (searchParams.get('topic') as '일상' | '행정' | '교육') || '일상'
+  const topic = searchParams.get('topic') as TopicKey
+  const params = useParams()
+  const { id } = params
+  const { data: startData } = useSWR(
+    `/ai-talk/start?situation=${id}`,
+    getStartAISpeaking
+  )
+
+  useEffect(() => {
+    if (startData?.data && messages.length === 0) {
+      setMessages([
+        {
+          sender: startData.data.ai_role,
+          message: startData.data.message,
+          isMine: false,
+        },
+      ])
+    }
+  }, [startData])
 
   return (
     <AISpeakingBackgroundLayout>
@@ -85,14 +80,13 @@ export default function AISpeakingLearningRoom() {
           </div>
           <div className="w-[50%] flex flex-col gap-12 items-center justify-between">
             <div className="w-full overflow-auto pr-3 flex-1 flex flex-col gap-2">
-              {dummy.map((chat) => (
+              {messages.map((chat, idx) => (
                 <ChatBubble
-                  key={chat.id}
+                  key={idx}
                   isMine={chat.isMine}
                   message={chat.message}
-                  senderName={chat.senderName}
-                  senderProfile={chat.senderProfile}
-                  timeStamp={chat.timeStamp}
+                  senderName={chat.sender}
+                  senderProfile={BACKGROUND_DATA[topic].avatar}
                 />
               ))}
             </div>
