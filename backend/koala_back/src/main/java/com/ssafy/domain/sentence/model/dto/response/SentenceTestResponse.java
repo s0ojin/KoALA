@@ -20,12 +20,15 @@ public class SentenceTestResponse {
 
 	private boolean correct;
 
-	public static SentenceTestResponse toDto(String originText, String userText, String resultTag, boolean correct) {
+	private boolean registered;
+
+	public static SentenceTestResponse toDto(String originText, String userText, String resultTag, boolean correct, boolean registered) {
 		return SentenceTestResponse.builder()
 			.originText(originText)
 			.userText(userText)
 			.resultTag(resultTag)
 			.correct(correct)
+			.registered(registered)
 			.build();
 	}
 

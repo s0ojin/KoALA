@@ -1,8 +1,12 @@
 import Link from 'next/link'
 import VideoIcon from '/public/icons/video-square.svg'
 import Logo from '/public/images/logo.svg'
+import { useSearchParams } from 'next/navigation'
 
 export default function OnlineLearningHeader() {
+  const searchParams = useSearchParams()
+  const title = searchParams.get('title')
+  const teacher_name = searchParams.get('teacher_name')
   return (
     <header className="fixed h-20 w-full z-50 px-9 flex items-center">
       <Link href="/online-learning">
@@ -13,8 +17,8 @@ export default function OnlineLearningHeader() {
       </Link>
       <span className="p-3">|</span>
       <p className="text-primary-900 flex gap-2 items-end whitespace-nowrap">
-        <span className="text-bold text-lg">{'한국어 문법 기초 가이드'}</span>
-        <span className="leading-[1.65rem]">{'고동연'} 선생님</span>
+        <span className="text-bold text-lg">{title}</span>
+        <span className="leading-[1.65rem]">{teacher_name} 선생님</span>
       </p>
     </header>
   )

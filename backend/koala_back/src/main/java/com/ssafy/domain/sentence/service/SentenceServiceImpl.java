@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.domain.review.model.dto.request.ReviewSaveRequest;
-import com.ssafy.domain.review.model.dto.request.ReviewSentenceRequest;
 import com.ssafy.domain.review.model.dto.response.ReviewSentenceResponse;
 import com.ssafy.domain.review.model.entity.ReviewSentence;
 import com.ssafy.domain.review.repository.ReviewRepository;
@@ -45,7 +44,7 @@ public class SentenceServiceImpl implements SentenceService {
 	@Transactional
 	public List<SentenceDictationResponse> getRandomSentence(String topic) {
 		List<Sentence> sentences;
-		if (topic.isEmpty()) {
+		if (topic == null || topic.isEmpty()) {
 			sentences = sentenceRepository.findRandomSentences(userInfoProvider.getCurrentUserId());
 		} else if (topic.equals("사용자")) {
 			sentences = sentenceRepository.findRandomSentencesByUser(userInfoProvider.getCurrentUserId());
@@ -86,21 +85,21 @@ public class SentenceServiceImpl implements SentenceService {
 				}
 			} else {
 				resultTag = makeResultTag(originText, userText);
-				reviewSentences.add(ReviewSentenceRequest.builder()
+				reviewSentences.add(ReviewSaveRequest.builder()
 					.sentenceId(request.getSentenceId())
 					.build()
-					.toEntity(originSentence.get(), user));
+					.toReviewSentenceEntity(originSentence.get(), user));
 				correct = false;
 			}
 
-			sentenceTestResponses.add(SentenceTestResponse.toDto(originText, userText, resultTag, correct));
+			sentenceTestResponses.add(SentenceTestResponse.toDto(originText, userText, resultTag, correct,
+				reviewRepository.existsByUserAndSentence(user, originSentence.get())));
 		}
 
 		// 1. 복습페이지에 틀린 문장 저장
 		for (ReviewSentence reviewSentence : reviewSentences) {
-			reviewService.addReviewSentence(ReviewSaveRequest.builder()
-				.sentenceId(reviewSentence.getSentence().getSentenceId())
-				.build());
+			reviewService.addReviewSentence(
+				ReviewSaveRequest.builder().sentenceId(reviewSentence.getSentence().getSentenceId()).build());
 		}
 		// 2. 유칼립투스 증가
 		// 문제 별로 토글을 키고 했다면 -> 1개
@@ -118,9 +117,7 @@ public class SentenceServiceImpl implements SentenceService {
 		Sentence sentence = sentenceCreateRequest.toEntity(user);
 		sentenceRepository.save(sentence);
 
-		ReviewSaveRequest reviewSaveRequest = ReviewSaveRequest.builder()
-			.sentenceId(sentence.getSentenceId())
-			.build();
+		ReviewSaveRequest reviewSaveRequest = ReviewSaveRequest.builder().sentenceId(sentence.getSentenceId()).build();
 
 		return ReviewSentenceResponse.toDto(
 			reviewRepository.save(reviewSaveRequest.toReviewSentenceEntity(sentence, user)));
@@ -143,15 +140,15 @@ public class SentenceServiceImpl implements SentenceService {
 				if (correctChar == ' ') {
 					// 정답에서는 공백인데 답안이 공백이 아닌 경우
 					//                    result.append("<span class='extra-char'>").append(answerChar).append("</span>");
-					result.append("<span class='extra-char'> </span>");
+					result.append("<span className='text-extra-char'> </span>");
 					correctIndex++;
 				} else if (answerChar == ' ') {
 					// 정답에서는 공백이 아닌데 답안이 공백인 경우
-					result.append("<span class='missing-char'> </span>");
+					result.append("<span className='text-missing-char'> </span>");
 					answerIndex++;
 				} else {
 					// 글자 자체가 틀린 경우
-					result.append("<span class='char-error'>").append(answerChar).append("</span>");
+					result.append("<span className='text-char-error'>").append(answerChar).append("</span>");
 					correctIndex++;
 					answerIndex++;
 				}
@@ -160,14 +157,16 @@ public class SentenceServiceImpl implements SentenceService {
 
 		// 남은 답안 인덱스 처리
 		while (answerIndex < userText.length()) {
-			result.append("<span class='char-error'>").append(userText.charAt(answerIndex)).append("</span>");
+			result.append("<span className='text-char-error'>").append(userText.charAt(answerIndex)).append("</span>");
 			answerIndex++;
 		}
 
 		if (userText.length() < originText.length()) {
 			correctIndex = userText.length();
 			while (correctIndex < originText.length()) {
-				result.append("<span class='char-error'>").append(originText.charAt(correctIndex)).append("</span>");
+				result.append("<span className='text-char-error'>")
+					.append(originText.charAt(correctIndex))
+					.append("</span>");
 				correctIndex++;
 			}
 		}
@@ -177,9 +176,12 @@ public class SentenceServiceImpl implements SentenceService {
 
 	@Override
 	public List<LectureSentenceResponse> getLectureSentences(Long lectureId) {
+		User user = userInfoProvider.getCurrentUser();
+
 		return lectureSentenceRepository.findByLectureId(lectureId)
 			.stream()
-			.map(LectureSentenceResponse::toDto)
+			.map(lectureSentence -> LectureSentenceResponse.toDto(lectureSentence,
+				reviewRepository.existsByUserAndSentence(user, lectureSentence.getSentence())))
 			.collect(Collectors.toList());
 	}
 }

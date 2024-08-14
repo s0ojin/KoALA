@@ -16,10 +16,13 @@ public class LectureSentenceResponse {
 	@JsonProperty("sentence_text")
 	private String sentenceText;
 
-	public static LectureSentenceResponse toDto(LectureSentence lectureSentence) {
+	private boolean registered;
+
+	public static LectureSentenceResponse toDto(LectureSentence lectureSentence, boolean registered) {
 		return LectureSentenceResponse.builder()
 			.sentenceId(lectureSentence.getSentence().getSentenceId())
 			.sentenceText(lectureSentence.getSentence().getSentenceText())
+			.registered(registered)
 			.build();
 	}
 }
