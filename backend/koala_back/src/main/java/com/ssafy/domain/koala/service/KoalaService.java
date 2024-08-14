@@ -5,10 +5,12 @@ import com.ssafy.domain.koala.model.dto.response.KoalaResponse;
 
 public interface KoalaService {
 
-	KoalaResponse findKoala();
+	KoalaResponse getKoala();
 
-	KoalaResponse updateKoalaName(KoalaNameRequest koalaNameRequest, Long koalaId);
+	KoalaResponse changeKoalaName(KoalaNameRequest koalaNameRequest, Long koalaId);
 
 	KoalaResponse increaseKoalaExp(Long koalaId);
+
+	void addKoala(Long userId);
 
 }

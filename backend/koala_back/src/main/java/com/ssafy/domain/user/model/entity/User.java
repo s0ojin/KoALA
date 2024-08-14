@@ -20,12 +20,13 @@ import com.ssafy.domain.koala.model.entity.Koala;
 import com.ssafy.domain.lecture.model.entity.Lecture;
 import com.ssafy.domain.lecture.model.entity.LectureNote;
 import com.ssafy.domain.lecture.model.entity.RegisteredLecture;
-import com.ssafy.domain.sentence.model.entity.ReviewSentence;
+import com.ssafy.domain.review.model.entity.ReviewSentence;
 import com.ssafy.domain.sentence.model.entity.Sentence;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -40,7 +41,6 @@ import lombok.Setter;
 
 @Entity
 @Getter
-@Setter
 @Builder
 @Table(name = "users")
 @NoArgsConstructor(access = PROTECTED)
@@ -48,7 +48,7 @@ import lombok.Setter;
 public class User implements UserDetails {
 	// Spring Security는 인증 및 권한 부여 과정에서 UserDetails 객체를 사용
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "user_id")
 	private Long userId;
 
@@ -65,6 +65,7 @@ public class User implements UserDetails {
 	@Column(name = "name", nullable = false)
 	private String name;
 
+	@Setter
 	@Column(name = "nickname", nullable = false)
 	private String nickname;
 
@@ -72,6 +73,7 @@ public class User implements UserDetails {
 	@Column(name = "leaves")
 	private Integer leaves = 0;
 
+	@Setter
 	@Builder.Default
 	@Column(name = "user_exp")
 	private Long userExp = 0L;
@@ -83,6 +85,10 @@ public class User implements UserDetails {
 	@Builder.Default
 	@Column(name = "user_created_at")
 	private LocalDateTime userCreatedAt = LocalDateTime.now();
+
+	@Setter
+	@Column(name = "refresh_token")
+	private String refreshToken;
 
 	@Builder.Default
 	@OneToMany(mappedBy = "teacher", cascade = ALL, fetch = LAZY, orphanRemoval = true)
@@ -124,6 +130,9 @@ public class User implements UserDetails {
 
 	@OneToMany(mappedBy = "user", cascade = ALL, fetch = LAZY, orphanRemoval = true)
 	private List<Koala> koalas;
+
+	@OneToOne(mappedBy = "user", cascade = ALL, fetch = LAZY, orphanRemoval = true)
+	private AiTalkLog aiTalkLog;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -168,14 +177,23 @@ public class User implements UserDetails {
 
 	public void increaseUserExp() {
 		this.userExp++;
+		checkUserExp();
+	}
+
+	public void increaseUserExp(Integer value) {
+		this.userExp += value;
+		checkUserExp();
+	}
+
+	public void checkUserExp() {
 		if (this.userExp >= 100) {
 			increaseUserLevel();
 			this.userExp -= 100L;
 		}
 	}
 
-	public void increaseUserExp(Integer value) {
-		this.userExp += value;
+	public void increaseUserLeaves(Integer value) {
+		this.leaves += value;
 	}
 
 	public void decreaseLeaves() {

@@ -1,23 +1,23 @@
 package com.ssafy.domain.sentence.model.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ssafy.domain.sentence.model.entity.Sentence;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Getter
-@ToString
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder
 public class SentenceDictationResponse {
 
-	Long sentenceId;
-	String sentenceText;
-	Integer sentenceLength;
+	@JsonProperty("sentence_id")
+	private Long sentenceId;
+
+	@JsonProperty("sentence_text")
+	private String sentenceText;
+
+	@JsonProperty("sentence_length")
+	private Integer sentenceLength;
 
 	public static SentenceDictationResponse toDto(Sentence sentence) {
 		return SentenceDictationResponse.builder()

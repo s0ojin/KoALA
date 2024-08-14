@@ -16,17 +16,15 @@ import com.ssafy.domain.board.repository.BoardImageRepository;
 import com.ssafy.domain.board.repository.BoardRepository;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class BoardImageServiceImpl implements BoardImageService {
 
 	private static final String bucketName = "koalabucket1";
-	private final AmazonS3 amazonS3;
 
+	private final AmazonS3 amazonS3;
 	private final BoardImageRepository boardImageRepository;
 	private final BoardRepository boardRepository;
 
@@ -61,7 +59,7 @@ public class BoardImageServiceImpl implements BoardImageService {
 			String boardImgUrl = amazonS3.getUrl(bucketName, filename).toString();
 			board_image.setBoardImgUrl(boardImgUrl);
 		} catch (IOException e) {
-			throw new RuntimeException("Failed to upload file to S3", e);
+			throw new RuntimeException("S3에 파일 업로드 실패!", e);
 		}
 
 		boardImageRepository.save(board_image.toEntity(board));

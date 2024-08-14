@@ -1,6 +1,7 @@
 package com.ssafy.domain.user.model.entity;
 
 import static jakarta.persistence.FetchType.*;
+import static lombok.AccessLevel.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.List;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -16,12 +18,12 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = PROTECTED)
 @Table(name = "auth")
 public class Auth {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "auth_id")
 	private Long authId;
 
@@ -30,9 +32,5 @@ public class Auth {
 
 	@OneToMany(mappedBy = "auth", fetch = LAZY)
 	private final List<User> users = new ArrayList<>();
-
-	public Auth(String authName) {
-		this.authName = authName;
-	}
 
 }

@@ -60,12 +60,16 @@ public class JwtTokenProvider {
 			.signWith(secretKey, SignatureAlgorithm.HS256)
 			.compact();
 
+		log.info("access token 발급: " + accessToken);
+
 		String refreshToken = Jwts.builder()
 			.setSubject(authentication.getName())
 			.setExpiration(new Date(System.currentTimeMillis() + refreshTokenExpireTime))
 			.claim("type", "refresh")
 			.signWith(secretKey, SignatureAlgorithm.HS256)
 			.compact();
+
+		log.info("refresh token 발급: " + accessToken);
 
 		return JwtToken.builder().grantType("Bearer").accessToken(accessToken).refreshToken(refreshToken).build();
 	}

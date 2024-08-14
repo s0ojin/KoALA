@@ -10,13 +10,18 @@ spring:
     driver-class-name: ${SPRING_DATASOURCE_DRIVER_CLASS_NAME}
     hikari:
       connection-timeout: 15000
-      maximum-pool-size: 30
+      maximum-pool-size: 10
       max-lifetime: 240000
       leak-detection-threshold: 10000
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: update
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
 
 logging:
   level:
@@ -49,3 +54,10 @@ openai:
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
+
+gemini:
+  baseurl: ${GEMINI_BASE_URL}
+
+googleai:
+  api:
+    key: ${GEMINI_API_KEY}

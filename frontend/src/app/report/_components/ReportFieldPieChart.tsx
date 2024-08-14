@@ -45,17 +45,17 @@ export default function ReportFieldPieChart({
         align: 'end',
         backgroundColor: '#FAFAFA',
         borderColor: function (context: Context) {
-          return context.dataset.backgroundColor
+          return (context as any).dataset.backgroundColor
         },
         color: function (context: Context) {
-          return context.dataset.backgroundColor
+          return (context as any).dataset.backgroundColor
         },
         borderRadius: 16,
         borderWidth: 1,
         formatter: (value, context: Context) => {
           if (context.chart.data.labels) {
             const blanklength =
-              4 - context.chart.data.labels[context.dataIndex].length
+              4 - (context as any).chart.data.labels[context.dataIndex].length
             const customblank = ' '.repeat(blanklength)
             return `${customblank}${context.chart.data.labels[context.dataIndex]}${customblank}`
           }
@@ -79,7 +79,7 @@ export default function ReportFieldPieChart({
 
   return (
     <div className="w-full">
-      <Pie options={options} data={data} plugins={[ChartDataLabels]} />
+      <Pie options={options} data={data} plugins={[ChartDataLabels as any]} />
     </div>
   )
 }

@@ -21,9 +21,7 @@ import com.ssafy.domain.user.model.entity.User;
 import com.ssafy.global.common.UserInfoProvider;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -32,12 +30,12 @@ public class BoardServiceImpl implements BoardService {
 	private final UserInfoProvider userInfoProvider;
 	private final BoardRepository boardRepository;
 	private final BoardCommentRepository boardCommentRepository;
-	private final BoardImageService boardImageService;
 	private final BoardImageRepository boardImageRepository;
+	private final BoardImageService boardImageService;
 
 	@Override
 	@Transactional
-	public BoardDetailResponse createBoard(BoardCreateRequest boardCreateRequest) throws IOException {
+	public BoardDetailResponse writeBoard(BoardCreateRequest boardCreateRequest) throws IOException {
 		User user = userInfoProvider.getCurrentUser();
 		Board board = boardRepository.save(boardCreateRequest.toEntity(user));
 
@@ -52,7 +50,7 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public Page<BoardResponse> getBoards(Pageable pageable) {
-		Page<Board> boards = boardRepository.findAll(pageable);
+		Page<Board> boards = boardRepository.findAllByOrderByBoardCreatedAtDesc(pageable);
 		return boards.map(BoardResponse::toDto);
 	}
 
@@ -99,6 +97,14 @@ public class BoardServiceImpl implements BoardService {
 	public void increaseCommentNum(Long boardId) {
 		Board board = boardRepository.findById(boardId).orElseThrow();
 		board.increaseCommentNum();
+		boardRepository.save(board);
+	}
+
+	@Override
+	@Transactional
+	public void decreaseCommentNum(Long boardId) {
+		Board board = boardRepository.findById(boardId).orElseThrow();
+		board.decreaseCommentNum();
 		boardRepository.save(board);
 	}
 
