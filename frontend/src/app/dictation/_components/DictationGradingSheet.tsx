@@ -1,29 +1,36 @@
 import Image from 'next/image'
 import GradingResult from '@/app/dictation/_components/DictationGradingResult'
 
-const ResultList = [
-  { idx: 1, question: '아가라구욥', isCorrect: true },
-  { idx: 2, question: '아가라고요!', isCorrect: false },
-  { idx: 3, question: '아 가 라 고 요!', isCorrect: false },
-  { idx: 4, question: '아가라구욥', isCorrect: true },
-  { idx: 5, question: '아가라구욥', isCorrect: true },
-  { idx: 6, question: '아가라구욥', isCorrect: true },
-  { idx: 7, question: '아가라구욥', isCorrect: true },
-  { idx: 8, question: '아가라구욥', isCorrect: true },
-  { idx: 9, question: '아가라구욥', isCorrect: true },
-  { idx: 10, question: '아가라구욥', isCorrect: true },
-]
+interface result {
+  correct: boolean
+  origin_text: string
+  user_text: string
+  result_tag: string
+}
 
-export default function GradingSheet() {
+export default function GradingSheet({ resultList = [] }: any) {
+  let sum = 0
+  resultList.map((result: any) => {
+    if (result.correct) {
+      sum += 10
+    }
+  })
+
   return (
-    <div className="relative px-24 pt-20 pb-32 gap-20 flex flex-col items-center h-auto bg-[url('/images/texture.png')]">
+    <div className="w-full max-w-[58rem] relative px-24 pt-20 pb-32 gap-20 flex flex-col items-center h-auto bg-[url('/images/texture.png')]">
       <div className="flex items-end">
-        <p className="text-[#D14848] text-6xl font-black">80</p>
+        <p className="text-[#D14848] text-6xl font-black">{sum}</p>
         <p className="text-primary-900 text-xl font-medium">/100</p>
       </div>
-      <div className="flex flex-col gap-16">
-        {ResultList.map((result) => {
-          return <GradingResult result={result} key={result.idx} />
+      <div className="flex flex-col gap-16 w-full">
+        {resultList.map((result: result, index: number) => {
+          return (
+            <GradingResult
+              result={result}
+              idx={index + 1}
+              key={result.origin_text}
+            />
+          )
         })}
       </div>
       <Image

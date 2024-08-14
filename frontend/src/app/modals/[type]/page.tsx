@@ -1,14 +1,20 @@
 import AddSentenceModal from '@/app/modals/_components/AddSentenceModal'
 import BasicModal from '@/app/modals/_components/BasicModal'
 import ConfirmCancelModal from '@/app/modals/_components/ConfirmCancelModal'
-import DictationCategoryModal from '@/app/modals/_components/DictationCategoryModal'
+import DictationModal from '@/app/modals/_components/DictationModal'
 import EditNicknameModal from '@/app/modals/_components/EditNicknameModal'
 
 export default function Modal({ params }: { params: { type: string } }) {
   const renderModal = () => {
     switch (params.type) {
       case 'basic':
-        return <BasicModal />
+        return (
+          <BasicModal
+            imageSrc="/images/astronaut.png"
+            content="커뮤니티에서는 '한글'만 써주세요"
+            hightlight="한글"
+          />
+        )
       case 'confirm-cancel':
         return (
           <ConfirmCancelModal
@@ -17,7 +23,7 @@ export default function Modal({ params }: { params: { type: string } }) {
           />
         )
       case 'dictation-category':
-        return <DictationCategoryModal />
+        return <DictationModal />
       case 'add-sentence':
         return <AddSentenceModal />
       case 'edit-nickname':
