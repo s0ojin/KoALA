@@ -1,5 +1,6 @@
 'use server'
 import * as textToSpeech from '@google-cloud/text-to-speech'
+import * as speech from '@google-cloud/speech'
 import fs from 'fs'
 import util from 'util'
 
@@ -31,5 +32,27 @@ export const getSpeech = async (inputText: string) => {
 }
 
 export const postSpeech = async (audio: string) => {
-  
+  const client = new speech.SpeechClient(option)
+  const request:speech.protos.google.cloud.speech.v1p1beta1.IRecognizeRequest = {
+    config : {
+      encoding: "WEBM_OPUS",
+      languageCode: "ko-KR",
+      enableAutomaticPunctuation: true,
+      enableSpokenPunctuation: {value:true},
+      useEnhanced:true
+    },
+    audio: {
+      content: audio
+    }
+  }
+
+  const [response] = await client.recognize(request)
+  if (response.results) {
+    const transcription = response.results
+    .map(result => result.alternatives ? result.alternatives[0].transcript : '')
+    .join('\n');
+    return transcription
+  } else {
+    throw new Error('Text Content is undefined')
+  }
 }
