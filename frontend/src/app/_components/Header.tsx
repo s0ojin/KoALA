@@ -45,7 +45,7 @@ export default function Header() {
 
   return (
     <header className="z-50 fixed h-20 px-9 flex w-full items-center justify-between">
-      <Link href="/" className="h-7">
+      <Link href="/main" className="h-7">
         <Logo height="27" />
       </Link>
       <div className="flex gap-6 items-center">

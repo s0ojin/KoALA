@@ -9,7 +9,7 @@ export default function OnlineLearningHeader() {
   const teacher_name = searchParams.get('teacher_name')
   return (
     <header className="fixed h-20 w-full z-50 px-9 flex items-center">
-      <Link href="/online-learning">
+      <Link href="/main">
         <h1 className="flex gap-2 text-primary-400">
           <VideoIcon className="w-6" />
           <Logo className="h-7" />
