@@ -1,3 +1,6 @@
+'use client'
+
+import useSWR from 'swr'
 import TabList from '@/app/community/_components/CommunityTabList'
 import ListElement from '@/app/community/_components/CommunityListElement'
 import SearchBar from '@/app/community/_components/CommunitySearchBar'
@@ -45,29 +48,28 @@ interface PostListContent {
   created_at: string
 }
 
-export default async function Community({ searchParams }: CommunityProps) {
-  const currnetPage = searchParams.page || '0'
+const fetcher = (url: string) => getPostList(url)
+
+export default function Community({ searchParams }: CommunityProps) {
+  const currentPage = searchParams.page || '0'
   const tab = searchParams.tab || 'total-post'
   const search = searchParams.search
-  let postList: PostList | null = null
 
-  if (tab === 'total-post') {
-    postList = await getPostList(`/boards?page=${currnetPage}&size=10`)
-  } else if (tab === 'popular-post') {
-    postList = await getPostList(
-      `/boards/sorted-by-hit?page=${currnetPage}&size=10`
-    )
+  let apiEndpoint = `/boards?page=${currentPage}&size=10`
+
+  if (tab === 'popular-post') {
+    apiEndpoint = `/boards/sorted-by-hit?page=${currentPage}&size=10`
   } else if (tab === 'my-post') {
-    postList = await getPostList(
-      `/boards/my-content?page=${currnetPage}&size=10`
-    )
+    apiEndpoint = `/boards/my-content?page=${currentPage}&size=10`
   }
 
   if (search) {
-    postList = await getPostList(
-      `/boards/search?keyword=${search}&page=${currnetPage}&size=10`
-    )
+    apiEndpoint = `/boards/search?keyword=${search}&page=${currentPage}&size=10`
   }
+
+  const { data: postList, error } = useSWR<PostList>(apiEndpoint, fetcher)
+
+  if (error) return <div>Failed to load posts</div>
 
   return (
     <div className="flex flex-col items-center gap-5">
@@ -86,8 +88,8 @@ export default async function Community({ searchParams }: CommunityProps) {
         </div>
         <div>
           {postList && postList?.content?.length > 0 ? (
-            postList?.content?.map((post: any) => (
-              <ListElement key={post.id} post={post} />
+            postList?.content?.map((post) => (
+              <ListElement key={post.board_id} post={post} />
             ))
           ) : (
             <div className="flex flex-col justify-center items-center h-full min-h-56 gap-3">

@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form'
 import CommunityImageUploader from '@/app/community/_components/CommunityImageUploader'
 import { postPost } from '@/app/apis/community'
 import { useRouter } from 'next/navigation'
+import { mutate } from 'swr'
 
 export interface ImageList {
   preview: string
@@ -43,6 +44,7 @@ export default function CommunityPostEditor() {
       }
       return
     }
+    mutate('/boards?page=0&size=10')
     router.replace('/community')
   }
 

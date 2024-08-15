@@ -3,6 +3,7 @@
 import { deletePost } from '@/app/apis/community'
 import CommunityPostKebabMenu from '@/app/community/_components/CommunityPostKebabMenu'
 import { useRouter } from 'next/navigation'
+import { mutate } from 'swr'
 
 export default function CommunityActionMenu({
   nickname,
@@ -16,6 +17,7 @@ export default function CommunityActionMenu({
     const data = await deletePost(`/boards/${postId}`)
 
     if (data.status === 200) {
+      mutate('/boards?page=0&size=10')
       router.replace('/community')
     }
   }
