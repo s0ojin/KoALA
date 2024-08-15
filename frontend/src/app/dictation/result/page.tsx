@@ -11,11 +11,15 @@ import { useDictationResult } from '@/app/context/toggleContext'
 export default function DictationResult() {
   const router = useRouter()
   const { dictationResult } = useDictationResult()
-  const storedData = localStorage.getItem('dictationGradingResultData')
-  const parsedData = storedData ? JSON.parse(storedData) : null
 
   const [dictationGradingResultData, setDictationGradingResultData] =
-    useState(parsedData)
+    useState(null)
+
+  useEffect(() => {
+    const storedData = localStorage.getItem('dictationGradingResultData')
+    const parsedData = storedData ? JSON.parse(storedData) : null
+    setDictationGradingResultData(parsedData)
+  }, [])
 
   const gradingDictation = async () => {
     console.log('궁금', dictationResult)
@@ -40,6 +44,7 @@ export default function DictationResult() {
 
   const handleClickReplayButton = () => {
     localStorage.removeItem('dictationGradingResultData')
+    setDictationGradingResultData(null)
   }
 
   const handleClickFinishButton = () => {
@@ -50,7 +55,10 @@ export default function DictationResult() {
   useEffect(() => {
     gradingDictation()
 
-    localStorage.removeItem('dictationGradingResultData')
+    return () => {
+      // 컴포넌트가 언마운트될 때 localStorage를 정리
+      localStorage.removeItem('dictationGradingResultData')
+    }
   }, [])
 
   return (
@@ -60,11 +68,12 @@ export default function DictationResult() {
           <GradingSheet resultList={dictationGradingResultData} />
         ) : null}
         <div className="flex flex-col gap-12 items-center">
-          <button className="px-48 text-2xl font-medium text-white gap-2 items-center rounded-full py-4 bg-primary-400 flex">
+          <button
+            onClick={handleClickReplayButton}
+            className="px-48 text-2xl font-medium text-white gap-2 items-center rounded-full py-4 bg-primary-400 flex"
+          >
             <Replay className="w-8" />
-            <p onClick={handleClickReplayButton} className="leading-10">
-              다시하기
-            </p>
+            <p className="leading-10">다시하기</p>
           </button>
           <button
             onClick={handleClickFinishButton}

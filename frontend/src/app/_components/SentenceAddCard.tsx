@@ -6,7 +6,7 @@ import { postUserSentence } from '../apis/sentence'
 interface SentenceAddCardProps {
   sentence: string
   sentenceId: number
-  handleDeleteuserSentence: () => void
+  handleDeleteuserSentence?: () => void
 }
 
 export default function SentenceAddCard({
@@ -22,7 +22,7 @@ export default function SentenceAddCard({
     })
     if (res?.status === 201) {
       alert('문장이 잘 추가되었습니다')
-      handleDeleteuserSentence()
+      if (handleDeleteuserSentence) handleDeleteuserSentence()
       mutate(`/lectures/${lecture_id}/sentences`)
     }
   }
