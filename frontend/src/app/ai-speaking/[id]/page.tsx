@@ -2,7 +2,6 @@
 
 import ChatBubble from '@/app/_components/ChatBubble'
 import MicBtn from '/public/icons/microphone.svg'
-import SendBtn from '/public/icons/send.svg'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import AISpeakingBackgroundLayout from '@/app/ai-speaking/_components/AISpeakingBackgroundLayout'
@@ -10,6 +9,8 @@ import { useParams, useSearchParams } from 'next/navigation'
 import useSWR from 'swr'
 import { getStartAISpeaking } from '@/app/apis/ai-speaking'
 import { playTextToSpeech } from '@/app/utils/playTextToSpeech'
+import { useSpeechRecognition } from '@/app/utils/useSpeechRecognition'
+import LoadingDots from '@/app/_components/LoadingDots'
 
 type TopicKey = '일상' | '행정' | '교육'
 
@@ -36,6 +37,8 @@ interface AISpeakingMessage {
 
 export default function AISpeakingLearningRoom() {
   const [messages, setMessages] = useState<AISpeakingMessage[]>([])
+  const { isRecording, transcription, startRecording, stopRecording } =
+    useSpeechRecognition()
   const searchParams = useSearchParams()
   const topic = searchParams.get('topic') as TopicKey
   const params = useParams()
@@ -57,6 +60,19 @@ export default function AISpeakingLearningRoom() {
       playTextToSpeech(startData.data.message)
     }
   }, [startData])
+
+  useEffect(() => {
+    if (transcription) {
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        {
+          sender: 'user',
+          message: transcription,
+          isMine: true,
+        },
+      ])
+    }
+  }, [transcription])
 
   return (
     <AISpeakingBackgroundLayout>
@@ -91,8 +107,17 @@ export default function AISpeakingLearningRoom() {
                 />
               ))}
             </div>
-            <div className="w-full text-center">
-              <button>
+            {isRecording && (
+              <ChatBubble isMine={true} message={<LoadingDots />} />
+            )}
+            <div className="relative w-16 h-16 text-center">
+              {isRecording && (
+                <div className="animate-ping-slow absolute inline-flex h-full w-full rounded-full bg-primary-300 opacity-70" />
+              )}
+              <button
+                onClick={isRecording ? stopRecording : startRecording}
+                className="relative rounded-full inline-flex"
+              >
                 <MicBtn className="w-16 text-primary-400" />
               </button>
             </div>
