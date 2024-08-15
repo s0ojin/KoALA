@@ -1,83 +1,79 @@
 'use client'
+
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import DictationResultLayout from '@/app/dictation/_components/DictationResultLayout'
+import GradingSheet from '@/app/dictation/_components/DictationGradingSheet'
+import Replay from '/public/icons/re-button.svg'
+import { postDictationGrading } from '@/app/apis/dictation'
+import { useDictationResult } from '@/app/context/toggleContext'
+
 export default function DictationResult() {
-  return <></>
+  const router = useRouter()
+  const { dictationResult } = useDictationResult()
+  const storedData = localStorage.getItem('dictationGradingResultData')
+  const parsedData = storedData ? JSON.parse(storedData) : null
+
+  const [dictationGradingResultData, setDictationGradingResultData] =
+    useState(parsedData)
+
+  const gradingDictation = async () => {
+    console.log('궁금', dictationResult)
+    const gradingData = await postDictationGrading(
+      '/sentences/writing-test',
+      dictationResult
+    )
+
+    if (gradingData.status === 200) {
+      console.log('gradingData', gradingData)
+      if (gradingData && gradingData?.data) {
+        const { leaves, sentence_test_responses } = gradingData.data
+
+        localStorage.setItem(
+          'dictationGradingResultData',
+          JSON.stringify(sentence_test_responses)
+        )
+        setDictationGradingResultData(sentence_test_responses)
+      }
+    }
+  }
+
+  const handleClickReplayButton = () => {
+    localStorage.removeItem('dictationGradingResultData')
+  }
+
+  const handleClickFinishButton = () => {
+    localStorage.removeItem('dictationGradingResultData')
+    router.replace('/main')
+  }
+
+  useEffect(() => {
+    gradingDictation()
+
+    localStorage.removeItem('dictationGradingResultData')
+  }, [])
+
+  return (
+    <DictationResultLayout>
+      <div className="gap-20 pt-44 pb-40 w-full h-full min-h-main-screen flex items-center flex-col">
+        {dictationGradingResultData ? (
+          <GradingSheet resultList={dictationGradingResultData} />
+        ) : null}
+        <div className="flex flex-col gap-12 items-center">
+          <button className="px-48 text-2xl font-medium text-white gap-2 items-center rounded-full py-4 bg-primary-400 flex">
+            <Replay className="w-8" />
+            <p onClick={handleClickReplayButton} className="leading-10">
+              다시하기
+            </p>
+          </button>
+          <button
+            onClick={handleClickFinishButton}
+            className="text-gray-500 font-normal text-2xl py-2"
+          >
+            나가기
+          </button>
+        </div>
+      </div>
+    </DictationResultLayout>
+  )
 }
-// 'use client'
-
-// import { useEffect, useState } from 'react'
-// import { useRouter } from 'next/navigation'
-// import DictationResultLayout from '@/app/dictation/_components/DictationResultLayout'
-// import GradingSheet from '@/app/dictation/_components/DictationGradingSheet'
-// import Replay from '/public/icons/re-button.svg'
-// import { postDictationGrading } from '@/app/apis/dictation'
-// import { useDictationResult } from '@/app/context/toggleContext'
-
-// export default function DictationResult() {
-//   const router = useRouter()
-//   const { dictationResult } = useDictationResult()
-//   const storedData = localStorage.getItem('dictationGradingResultData')
-//   const parsedData = storedData ? JSON.parse(storedData) : null
-
-//   const [dictationGradingResultData, setDictationGradingResultData] =
-//     useState(parsedData)
-
-//   const gradingDictation = async () => {
-//     console.log('궁금', dictationResult)
-//     const gradingData = await postDictationGrading(
-//       '/sentences/writing-test',
-//       dictationResult
-//     )
-
-//     if (gradingData.status === 200) {
-//       console.log('gradingData', gradingData)
-//       if (gradingData && gradingData?.data) {
-//         const { leaves, sentence_test_responses } = gradingData.data
-
-//         localStorage.setItem(
-//           'dictationGradingResultData',
-//           JSON.stringify(sentence_test_responses)
-//         )
-//         setDictationGradingResultData(sentence_test_responses)
-//       }
-//     }
-//   }
-
-//   const handleClickReplayButton = () => {
-//     localStorage.removeItem('dictationGradingResultData')
-//   }
-
-//   const handleClickFinishButton = () => {
-//     localStorage.removeItem('dictationGradingResultData')
-//     router.replace('/main')
-//   }
-
-//   useEffect(() => {
-//     gradingDictation()
-
-//     localStorage.removeItem('dictationGradingResultData')
-//   }, [])
-
-//   return (
-//     <DictationResultLayout>
-//       <div className="gap-20 pt-44 pb-40 w-full h-full min-h-main-screen flex items-center flex-col">
-//         {dictationGradingResultData ? (
-//           <GradingSheet resultList={dictationGradingResultData} />
-//         ) : null}
-//         <div className="flex flex-col gap-12 items-center">
-//           <button className="px-48 text-2xl font-medium text-white gap-2 items-center rounded-full py-4 bg-primary-400 flex">
-//             <Replay className="w-8" />
-//             <p onClick={handleClickReplayButton} className="leading-10">
-//               다시하기
-//             </p>
-//           </button>
-//           <button
-//             onClick={handleClickFinishButton}
-//             className="text-gray-500 font-normal text-2xl py-2"
-//           >
-//             나가기
-//           </button>
-//         </div>
-//       </div>
-//     </DictationResultLayout>
-//   )
-// }

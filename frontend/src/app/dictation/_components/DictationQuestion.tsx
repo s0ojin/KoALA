@@ -4,6 +4,8 @@ import Image from 'next/image'
 import Notification from '/public/icons/notification.svg'
 import Repeat from '/public/icons/rotate.svg'
 import SoundWave from '@/app/dictation/_components/DictationSoundWave'
+import { getGoogleSpeech } from '@/app/apis/ttsSententce'
+import { useState } from 'react'
 
 interface DictationQuestionProps {
   questionIdx: number
@@ -25,6 +27,21 @@ export default function DictationQuestion({
 }: DictationQuestionProps) {
   const handleChangeToggle = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsToggled(event.target.checked)
+  }
+
+  const [isPlaying, setPlaying] = useState<Boolean>(false)
+  let source: AudioBufferSourceNode
+
+  const handlePlaying = async () => {
+    const audioContext = new window.AudioContext()
+    const arraybuff = await getGoogleSpeech(question.sentence_text)
+    const audiobuff = await audioContext.decodeAudioData(arraybuff)
+    source = await audioContext.createBufferSource()
+    source.buffer = audiobuff
+    await source.connect(audioContext.destination)
+    source.start()
+    await setPlaying(true)
+    source.onended = () => setPlaying(false)
   }
 
   return (
@@ -108,7 +125,10 @@ export default function DictationQuestion({
               <SoundWave />
             </p>
           )}
-          <button className="cursor-pointer z-10 text-primary-400">
+          <button
+            onClick={handlePlaying}
+            className="cursor-pointer z-10 text-primary-400"
+          >
             <Repeat />
           </button>
         </div>
