@@ -47,6 +47,9 @@ const config: Config = {
       gridTemplateColumns: {
         '14': 'repeat(14, minmax(80px, 80px))',
       },
+      animation: {
+        'ping-slow': 'ping 2s cubic-bezier(0, 0, 0.2, 1) infinite',
+      },
     },
   },
   plugins: [],
