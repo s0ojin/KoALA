@@ -3,87 +3,66 @@
 import SentenceAddCard from '@/app/_components/SentenceAddCard'
 import UploadIcon from '/public/icons/cloud-upload.svg'
 import { useState } from 'react'
-
-const dummy = [
-  {
-    sentence_id: 33,
-    sentence_text:
-      '선생님이 제공하는 개쩌는 문장선생님이 제공하는 개쩌는 문장선생님이 제공하는 개쩌는 문장선생님이 제공하는 개쩌는 문장선생님이 제공하는 개쩌는 문장선생님이 제공하는 개쩌는 문장선생님이 제공하는 개쩌는 문장선생님이 제공하는 개쩌는 문장',
-  },
-  {
-    sentence_id: 33,
-    sentence_text: '선생님이 제공하는 개쩌는 문장',
-  },
-  {
-    sentence_id: 33,
-    sentence_text: '선생님이 제공하는 개쩌는 문장',
-  },
-  {
-    sentence_id: 33,
-    sentence_text: '선생님이 제공하는 개쩌는 문장',
-  },
-  {
-    sentence_id: 33,
-    sentence_text: '선생님이 제공하는 개쩌는 문장',
-  },
-  {
-    sentence_id: 33,
-    sentence_text: '선생님이 제공하는 개쩌는 문장',
-  },
-  {
-    sentence_id: 33,
-    sentence_text: '선생님이 제공하는 개쩌는 문장',
-  },
-  {
-    sentence_id: 33,
-    sentence_text: '선생님이 제공하는 개쩌는 문장',
-  },
-  {
-    sentence_id: 33,
-    sentence_text: '선생님이 제공하는 개쩌는 문장',
-  },
-  {
-    sentence_id: 33,
-    sentence_text: '선생님이 제공하는 개쩌는 문장',
-  },
-  {
-    sentence_id: 33,
-    sentence_text: '선생님이 제공하는 개쩌는 문장',
-  },
-  {
-    sentence_id: 33,
-    sentence_text: '선생님이 제공하는 개쩌는 문장',
-  },
-  {
-    sentence_id: 33,
-    sentence_text: '선생님이 제공하는 개쩌는 문장',
-  },
-  {
-    sentence_id: 33,
-    sentence_text: '선생님이 제공하는 개쩌는 문장',
-  },
-  {
-    sentence_id: 33,
-    sentence_text: '선생님이 제공하는 개쩌는 문장',
-  },
-  {
-    sentence_id: 33,
-    sentence_text: '선생님이 제공하는 개쩌는 문장',
-  },
-]
+import { postSentenceImage } from '@/app/apis/sentence'
+import Image from 'next/image'
 
 export default function AddSentenceModal() {
   const [status, setStatus] = useState('initial')
+  const [extractedSentence, setExtractedSentence] = useState<any>()
+
+  const handleChangeImageFile = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    const formData = new FormData()
+    formData.append('file', file, file.name)
+
+    setStatus('loading')
+    const response = await postSentenceImage('/images', formData)
+
+    if (response?.status === 201) {
+      setExtractedSentence(response.data)
+      setStatus('done')
+    } else {
+      alert('문제가 발생했습니다. 다시 한 번 시도해주세요')
+    }
+  }
+
+  const handleClickDeleteUserSentence = (index: number) => {
+    const nExtractedSentence = [...extractedSentence]
+    nExtractedSentence.splice(index, 1)
+
+    setExtractedSentence(nExtractedSentence)
+  }
 
   return (
     <div className="bg-white max-w-[60rem] min-w-80 max-h-[44rem] rounded-3xl p-12 flex flex-col">
       {status === 'initial' ? (
-        <div className="bg-primary-400 rounded-full py-4 px-6 text-center text-white mx-auto flex gap-3 items-center shadow-md">
-          <UploadIcon className="w-8" />
-          추가할 문장을 업로드 해주세요.
-        </div>
+        <label htmlFor="imageUpload">
+          <input
+            type="file"
+            onChange={handleChangeImageFile}
+            className="hidden"
+            id="imageUpload"
+          />
+          <div className="bg-primary-400 rounded-full py-4 px-6 text-center cursor-pointer text-white mx-auto flex gap-3 items-center shadow-md">
+            <UploadIcon className="w-8" />
+            추가할 문장을 업로드 해주세요.
+          </div>
+        </label>
       ) : status === 'loading' ? (
-        <div>분석중입니다....</div>
+        <div className="flex flex-col items-center gap-2">
+          <Image
+            src="/images/spinner.gif"
+            alt="spinner"
+            width={80}
+            height={80}
+            className="w-20 h-20"
+          />
+          <p className="text-lg">분석중입니다....</p>
+        </div>
       ) : (
         <>
           <h1 className="text-2xl text-gray-900">
@@ -92,11 +71,14 @@ export default function AddSentenceModal() {
           <hr className="w-full my-4" />
           <div className="h-full overflow-auto">
             <ul className="flex flex-col gap-3 pr-3">
-              {dummy.map((sentence) => (
+              {extractedSentence?.map((sentence: any, index: number) => (
                 <SentenceAddCard
                   key={sentence.sentence_id}
                   sentenceId={sentence.sentence_id}
                   sentence={sentence.sentence_text}
+                  handleDeleteuserSentence={() =>
+                    handleClickDeleteUserSentence(index)
+                  }
                 />
               ))}
             </ul>
