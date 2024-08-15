@@ -5,9 +5,10 @@ import MicBtn from '/public/icons/microphone.svg'
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 import AISpeakingBackgroundLayout from '@/app/ai-speaking/_components/AISpeakingBackgroundLayout'
-import { useParams, useSearchParams } from 'next/navigation'
+import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import useSWR from 'swr'
 import {
+  getEndAISpeaking,
   getStartAISpeaking,
   postSendAISpeakingMessage,
 } from '@/app/apis/ai-speaking'
@@ -43,6 +44,7 @@ export default function AISpeakingLearningRoom() {
   const { isRecording, transcription, startRecording, stopRecording } =
     useSpeechRecognition()
   const bottomRef = useRef<HTMLDivElement>(null)
+  const router = useRouter()
   const searchParams = useSearchParams()
   const topic = searchParams.get('topic') as TopicKey
   const params = useParams()
@@ -103,10 +105,20 @@ export default function AISpeakingLearningRoom() {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
+  const handleExitConversation = async () => {
+    stopRecording()
+    const res = await getEndAISpeaking('/ai-talk/finish')
+    if (res?.status === 200) {
+      //TODO: router 모달로 유칼립투스 같이 보내기
+      alert(`유칼립투스${res.data.leaves}`)
+      router.push('/main')
+    }
+  }
+
   return (
     <AISpeakingBackgroundLayout>
-      <div className="h-main-screen flex items-center">
-        <div className="h-[90%] w-[80%] max-w-7xl bg-white rounded-3xl mx-auto flex gap-10 p-8">
+      <div className="h-main-screen flex flex-col justify-evenly items-center">
+        <div className="h-[80%] w-[80%] max-w-7xl bg-white rounded-3xl mx-auto flex gap-10 p-8">
           <div className="relative bg-gray-300 rounded-tr-3xl overflow-hidden w-[50%] ">
             <Image
               src={BACKGROUND_DATA[topic].bgImage}
@@ -148,11 +160,17 @@ export default function AISpeakingLearningRoom() {
                 onClick={isRecording ? stopRecording : startRecording}
                 className="relative rounded-full inline-flex"
               >
-                <MicBtn className="w-16 text-primary-400" />
+                <MicBtn className="w-16 text-primary-400 hover:text-primary-600 transition" />
               </button>
             </div>
           </div>
         </div>
+        <button
+          onClick={handleExitConversation}
+          className="submit-btn bg-red-600 h-12 px-6 py-2 hover:bg-red-700"
+        >
+          대화 종료하기
+        </button>
       </div>
     </AISpeakingBackgroundLayout>
   )
