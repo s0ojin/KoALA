@@ -1,7 +1,11 @@
+'use client'
+
 import Image from 'next/image'
 import Correct from '/public/icons/correct.svg'
 import Wrong from '/public/icons/wrong.svg'
 import parse from 'html-react-parser'
+import '@/app/styles/dictationResultStyle.css'
+import { postUserSentence } from '@/app/apis/sentence'
 
 interface GradingResultProps {
   result: {
@@ -17,55 +21,15 @@ export default function DictationGradingResult({
   result: { correct, origin_text, user_text, result_tag },
   idx,
 }: GradingResultProps) {
-  function extractTextAndClasses(htmlString: any) {
-    const container = document.createElement('div')
-    container.innerHTML = htmlString
+  const handleClickSaveUserSentenceButton = async () => {
+    const response = await postUserSentence('/sentences', {
+      sentence_text: origin_text,
+    })
 
-    const result: any = []
-
-    function traverseNode(node: any) {
-      if (node.nodeType === Node.TEXT_NODE) {
-        // Extract text nodes including spaces
-        const text = node.nodeValue
-        result.push(...text.split('').map((char: any) => char))
-      } else if (node.nodeType === Node.ELEMENT_NODE) {
-        const tagName = node.tagName.toLowerCase()
-        if (tagName === 'span') {
-          const className = node.classname
-          // console.log('node1', node)
-
-          // console.log(node.className)
-
-          if (className) {
-            result.push(className)
-          }
-        } else {
-          // console.log('node2', node)
-          // For other tags, add text content normally
-          node.childNodes.forEach((childNode: any) => traverseNode(childNode))
-        }
-      }
+    if (response.status === 201) {
+      alert('문장이 잘 추가되었습니다')
     }
-
-    traverseNode(container)
-
-    return result
   }
-
-  // console.log(result_tag)
-  const data = extractTextAndClasses(result_tag)
-  // console.log(data)
-
-  // const transform = (node) => {
-  //   if (node.type === 'tag') {
-  //     if (node.attribs && node.attribs.class) {
-  //       node.attribs.className = node.attribs.class
-  //       delete node.attribs.class
-  //     }
-  //   }
-  //   return node
-  // }
-
   return (
     <div className="flex flex-col gap-6 relative w-full">
       <p className="absolute -left-10 -top-5">
@@ -74,9 +38,32 @@ export default function DictationGradingResult({
       <div className="flex items-center gap-4 text-2xl font-normal">
         <p>{idx}.</p>
         <p>{origin_text}</p>
+        <button
+          onClick={handleClickSaveUserSentenceButton}
+          className="bg-primary-400 py-1 px-3 rounded-full text-white text-sm"
+        >
+          복습 문장 추가
+        </button>
       </div>
-      {/* <p>유저가 쓴 내용: {user_text}</p> */}
-      {/* <div className="text-2xl">{parse(result_tag, { transform })}</div> */}
+
+      {!correct ? (
+        <div className="flex pl-10 gap-3">
+          <p>틀린부분:</p>
+          <div>
+            {parse(result_tag, {
+              replace: (domNode) => {
+                if (domNode.type === 'tag' && domNode.attribs) {
+                  if (domNode.attribs.classname || domNode.attribs.class) {
+                    domNode.attribs.className = domNode.attribs.classname
+                    delete domNode.attribs.classname
+                  }
+                }
+                return domNode
+              },
+            })}
+          </div>
+        </div>
+      ) : null}
 
       <div className="px-8 w-full">
         <div className="relative w-full py-2 bg-white border-t border-b border-primary-400 px-3">
