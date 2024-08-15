@@ -85,7 +85,6 @@ export const deleteReviewSentence = async (
         `Network response was not ok: ${response.status} ${response.statusText}`
       )
     }
-    alert('문장을 삭제하였습니다.')
   } catch (error: any) {
     console.error(error)
     throw error

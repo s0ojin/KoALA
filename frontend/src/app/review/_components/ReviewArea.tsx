@@ -81,8 +81,9 @@ export default function ReviewArea({
             deleteReviewSentence('/reviews', review_sentence_id)
           })
         )
-        await setSelectedSentences((selectedSentences) => [])
-        await router.refresh()
+        setSelectedSentences([])
+        alert('문장을 삭제하였습니다.')
+        router.refresh()
       } catch (error) {
         console.error(error)
       }
@@ -166,7 +167,7 @@ export default function ReviewArea({
   }
 
   const handleSentenceSpeaking = () => {
-    alert('준비 중입니다.')
+    alert('서비스 준비 중입니다.')
   }
 
   return (
