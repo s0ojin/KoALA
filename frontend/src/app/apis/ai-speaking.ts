@@ -9,10 +9,14 @@ export interface AIConversationCard {
   topic_category: '일상' | '행정' | '교육'
 }
 
-interface StartAISpeakingResponse {
+interface AISpeakingResponse {
   message: string
   user_role: string
   ai_role: string
+}
+interface AISpeakingRequestBody {
+  situation_id: number
+  message: string
 }
 
 export const getAIConversationList = async (
@@ -40,7 +44,7 @@ export const getAIConversationList = async (
 
 export const getStartAISpeaking = async (
   url: string
-): Promise<{ data: StartAISpeakingResponse; status: number } | undefined> => {
+): Promise<{ data: AISpeakingResponse; status: number } | undefined> => {
   try {
     const accessToken = getToken()
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${url}`, {
@@ -88,8 +92,8 @@ export const getEndAISpeaking = async (
 
 export const postSendAISpeakingMessage = async (
   url: string,
-  payload: { message: string }
-): Promise<{ data: { message: string }; status: number } | undefined> => {
+  payload: AISpeakingRequestBody
+): Promise<{ data: AISpeakingResponse; status: number } | undefined> => {
   try {
     const accessToken = getToken()
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${url}`, {

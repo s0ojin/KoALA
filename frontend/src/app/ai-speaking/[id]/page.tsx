@@ -7,7 +7,10 @@ import { useEffect, useState } from 'react'
 import AISpeakingBackgroundLayout from '@/app/ai-speaking/_components/AISpeakingBackgroundLayout'
 import { useParams, useSearchParams } from 'next/navigation'
 import useSWR from 'swr'
-import { getStartAISpeaking } from '@/app/apis/ai-speaking'
+import {
+  getStartAISpeaking,
+  postSendAISpeakingMessage,
+} from '@/app/apis/ai-speaking'
 import { playTextToSpeech } from '@/app/utils/playTextToSpeech'
 import { useSpeechRecognition } from '@/app/utils/useSpeechRecognition'
 import LoadingDots from '@/app/_components/LoadingDots'
@@ -71,6 +74,27 @@ export default function AISpeakingLearningRoom() {
           isMine: true,
         },
       ])
+
+      const sendMessage = async () => {
+        const payload = {
+          situation_id: Number(id),
+          message: transcription,
+        }
+        const res = await postSendAISpeakingMessage('/ai-talk', payload)
+        if (res?.status === 200) {
+          setMessages((prevMessages) => [
+            ...prevMessages,
+            {
+              sender: res.data.ai_role,
+              message: res.data.message,
+              isMine: false,
+            },
+          ])
+          playTextToSpeech(res.data.message)
+        }
+      }
+
+      sendMessage()
     }
   }, [transcription])
 
