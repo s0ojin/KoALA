@@ -4,7 +4,7 @@ import ReviewAreaSentence from '@/app/review/_components/ReviewAreaSetence'
 import ReviewMenuButton from '@/app/review/_components/ReviewMenuButton'
 import { SentenceContent, deleteReviewSentence } from '@/app/apis/review'
 import { getGoogleSpeech } from '@/app/apis/ttsSententce'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 
 interface ReviewContentProps {
@@ -42,13 +42,25 @@ export default function ReviewArea({
   const [selectedSentences, setSelectedSentences] = useState<number[]>([])
   const [nowPlaying, setNowPlayingSentence] = useState<number>()
   const router = useRouter()
-  let source: AudioBufferSourceNode
-
+  const audioSourceRef = useRef<AudioBufferSourceNode | null>(null)
+  const audioContextRef = useRef<AudioContext | null>(null)
+  const [isPlaying, setIsPlaying] = useState<boolean>(false)
+  let copySentences: number[] = []
+  
   useEffect(() => {
     window.speechSynthesis.getVoices()
-  })
+    return () => {
+      if (audioSourceRef.current) {
+        audioSourceRef.current.stop()
+      }
+      if (audioContextRef.current) {
+        audioContextRef.current.close()
+      }
 
-  let copySentences: number[] = []
+      setIsPlaying(false)
+    }
+  }, [])
+
 
   const handleSentenceList = (review_sentence_id: number) => {
     copySentences = [...selectedSentences]
@@ -77,25 +89,52 @@ export default function ReviewArea({
     }
   }
 
+  const playSentence = async (sentence: SentenceContent) => {
+    if (isPlaying) {
+      if (audioSourceRef.current) {
+        audioSourceRef.current.stop()
+        setIsPlaying(false)
+      }
+    }
+
+    if (audioContextRef.current === null) {
+      audioContextRef.current = new window.AudioContext()
+    }
+
+    const arraybuff = await getGoogleSpeech(sentence.sentence_text)
+    const audiobuff = await audioContextRef.current.decodeAudioData(arraybuff)
+    const source = audioContextRef.current.createBufferSource()
+    source.buffer = audiobuff
+    source.connect(audioContextRef.current.destination)
+    
+    audioSourceRef.current = source
+    setNowPlayingSentence(sentence.review_sentence_id)
+
+    source.start()
+    source.onended = () => {
+      setNowPlayingSentence(undefined)
+      playNextSentence()
+    }
+  }
+
+  const playNextSentence = () => {
+    const nextSentenceId = copySentences.shift()
+    if (nextSentenceId !== undefined) {
+      const nextSentence = sentenceList?.find(
+        (sentence) => sentence.review_sentence_id === nextSentenceId
+      )
+      if (nextSentence) {
+        playSentence(nextSentence)
+      }
+    }
+  }
+
   const handleSentencePlay = () => {
     if (selectedSentences.length) {
-      selectedSentences.sort()
-      selectedSentences.map((review_sentence_id) => {
-        sentenceList?.forEach(async (sentence) => {
-          if (sentence.review_sentence_id === review_sentence_id) {
-            const audioContext = new window.AudioContext()
-            const arraybuff = await getGoogleSpeech(sentence.sentence_text)
-            const audiobuff = await audioContext.decodeAudioData(arraybuff)
-            source = await audioContext.createBufferSource()
-            source.buffer = audiobuff
-            await source.connect(audioContext.destination)
-            await setNowPlayingSentence(review_sentence_id)
-            await source.start()
-            source.onended = () => setNowPlayingSentence(undefined)
-            return
-          }
-        })
-      })
+      copySentences = [...selectedSentences]
+      playNextSentence()
+    } else {
+      alert('문장을 선택해주세요.')
     }
   }
 

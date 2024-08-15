@@ -2,7 +2,7 @@
 
 import Play from '/public/icons/play.svg'
 import Pause from '/public/icons/pause.svg'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { SentenceContent } from '@/app/apis/review'
 import { getGoogleSpeech } from '@/app/apis/ttsSententce'
 
@@ -20,23 +20,33 @@ export default function ReviewAreaSentence({
   OnSentenceSelect,
 }: SentenceProps) {
   const [isPlaying, setPlaying] = useState<Boolean>(false)
-  let source: AudioBufferSourceNode
-  let response: string
+  const audioSourceRef = useRef<AudioBufferSourceNode | null>(null)
+  const audioContextRef = useRef<AudioContext | null>(null)
 
   const handleChangeSelected = () => {
     OnSentenceSelect(sentence.review_sentence_id)
   }
 
   const handlePlaying = async () => {
-    const audioContext = new window.AudioContext()
-    const arraybuff = await getGoogleSpeech(sentence.sentence_text)
-    const audiobuff = await audioContext.decodeAudioData(arraybuff)
-    source = await audioContext.createBufferSource()
-    source.buffer = audiobuff
-    await source.connect(audioContext.destination)
-    source.start()
-    await setPlaying(true)
-    source.onended = () => setPlaying(false)
+    if (isPlaying) {
+      if (audioSourceRef.current) {
+        audioSourceRef.current.stop()
+        setPlaying(false)
+      }
+    } else {
+      if (audioContextRef.current === null) {
+        audioContextRef.current = new window.AudioContext()
+      }
+      const arraybuff = await getGoogleSpeech(sentence.sentence_text)
+      const audiobuff = await audioContextRef.current.decodeAudioData(arraybuff)
+      const source = audioContextRef.current.createBufferSource()
+      source.buffer = audiobuff
+      source.connect(audioContextRef.current.destination)
+      source.start()
+      source.onended = () => setPlaying(false)
+      audioSourceRef.current = source
+      setPlaying(true)
+    }
   }
 
   return (
