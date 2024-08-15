@@ -1,8 +1,9 @@
 import Image from 'next/image'
+import { ReactNode } from 'react'
 
 interface ChatBubbleProps {
   isMine: boolean
-  message: string
+  message: string | ReactNode
   senderName?: string
   senderProfile?: string
   timeStamp?: string
