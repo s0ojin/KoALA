@@ -9,7 +9,7 @@ import { DictationResultProvider } from './context/toggleContext'
 const notoSansKR = Noto_Sans_KR({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: '1등 한국어 교육 서비스 KoALA',
+  title: 'KoALA | 1등 한국어 교육 서비스 ',
   description: '이주배경 가정 학부모 특화 한국어 교육 서비스',
 }
 
