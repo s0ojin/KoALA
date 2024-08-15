@@ -50,6 +50,14 @@ const config: Config = {
       },
       animation: {
         'ping-slow': 'ping 2s cubic-bezier(0, 0, 0.2, 1) infinite',
+        'fade-in': 'fadeIn 1s ease-in-out forwards',
+        'fly-in': 'flyIn 1s ease-out forwards',
+      },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
       },
     },
   },
