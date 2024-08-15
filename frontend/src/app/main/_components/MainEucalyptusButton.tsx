@@ -18,14 +18,11 @@ export default function MainEucalyptusButton() {
     fetchKoalaInfo
   )
 
-  // const [eucalyptus, setEucalyptusCount] = useState(eucalyptusCount)
   const [isAnimate, setIsAnimate] = useState(false)
   const [isPressed, setIsPressed] = useState(false)
 
-  console.log(userInfo)
-
   const handleClickEucalyptusButton = async () => {
-    if (userInfo?.data.leaves <= 0) return
+    if (userInfo?.data?.leaves <= 0) return
     setIsAnimate(true)
 
     try {
@@ -46,8 +43,7 @@ export default function MainEucalyptusButton() {
         {new Array(5).fill(0).map((_, index) => {
           return (
             <motion.p
-              // key={index}
-              key={`${userInfo?.data.leaves}`}
+              key={`${userInfo?.data?.leaves}`}
               className={`absolute z-10 ${isAnimate ? 'block' : 'hidden'}  pointer-events-none`}
               animate={
                 isAnimate
@@ -79,7 +75,7 @@ export default function MainEucalyptusButton() {
         className={`bg-[#FFF8DA] w-24 h-24 rounded-full shadow-lg cursor-pointer transition-transform duration-200 ease-in-out ${isPressed ? 'transform scale-95 shadow-inner' : ''}`}
         onClick={handleClickEucalyptusButton}
         onMouseDown={() => {
-          if (userInfo?.data.leaves <= 0) return
+          if (userInfo?.data?.leaves <= 0) return
           setIsPressed(true)
         }}
         onMouseUp={() => setIsPressed(false)}
@@ -96,7 +92,7 @@ export default function MainEucalyptusButton() {
         />
       </button>
       <span className="select-none cursor-pointer absolute -right-2 top-0 bg-[#FF7A7A] text-white text-sm h-8 aspect-square rounded-full flex justify-center items-center font-semibold z-0">
-        {userInfo?.data.leaves >= 100 ? '99+' : userInfo?.data.leaves}
+        {userInfo?.data?.leaves >= 100 ? '99+' : userInfo?.data?.leaves}
       </span>
     </div>
   )
