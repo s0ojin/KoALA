@@ -1,25 +1,28 @@
-import { postTeacherSentence } from '@/app/apis/online-learning'
 import SentenceAddBtn from '/public/icons/plus-circle.svg'
 import { useParams } from 'next/navigation'
 import { mutate } from 'swr'
+import { postUserSentence } from '../apis/sentence'
 
 interface SentenceAddCardProps {
   sentence: string
   sentenceId: number
+  handleDeleteuserSentence: () => void
 }
 
 export default function SentenceAddCard({
   sentence,
-  sentenceId,
+  handleDeleteuserSentence,
 }: SentenceAddCardProps) {
   const params = useParams()
   const { lecture_id } = params
 
   const handleAddSeuntence = async () => {
-    const res = await postTeacherSentence('/reviews', {
-      sentence_id: sentenceId,
+    const res = await postUserSentence('/sentences', {
+      sentence_text: sentence,
     })
     if (res?.status === 201) {
+      alert('문장이 잘 추가되었습니다')
+      handleDeleteuserSentence()
       mutate(`/lectures/${lecture_id}/sentences`)
     }
   }
