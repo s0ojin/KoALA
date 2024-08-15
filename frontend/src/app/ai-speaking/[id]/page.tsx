@@ -3,7 +3,7 @@
 import ChatBubble from '@/app/_components/ChatBubble'
 import MicBtn from '/public/icons/microphone.svg'
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import AISpeakingBackgroundLayout from '@/app/ai-speaking/_components/AISpeakingBackgroundLayout'
 import { useParams, useSearchParams } from 'next/navigation'
 import useSWR from 'swr'
@@ -42,6 +42,7 @@ export default function AISpeakingLearningRoom() {
   const [messages, setMessages] = useState<AISpeakingMessage[]>([])
   const { isRecording, transcription, startRecording, stopRecording } =
     useSpeechRecognition()
+  const bottomRef = useRef<HTMLDivElement>(null)
   const searchParams = useSearchParams()
   const topic = searchParams.get('topic') as TopicKey
   const params = useParams()
@@ -98,6 +99,10 @@ export default function AISpeakingLearningRoom() {
     }
   }, [transcription])
 
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages])
+
   return (
     <AISpeakingBackgroundLayout>
       <div className="h-main-screen flex items-center">
@@ -120,7 +125,7 @@ export default function AISpeakingLearningRoom() {
             />
           </div>
           <div className="w-[50%] flex flex-col gap-12 items-center justify-between">
-            <div className="w-full overflow-auto pr-3 flex-1 flex flex-col gap-2">
+            <div className="w-full overflow-auto pr-3 flex-1 flex flex-col gap-4">
               {messages.map((chat, idx) => (
                 <ChatBubble
                   key={idx}
@@ -130,10 +135,11 @@ export default function AISpeakingLearningRoom() {
                   senderProfile={BACKGROUND_DATA[topic].avatar}
                 />
               ))}
+              {isRecording && (
+                <ChatBubble isMine={true} message={<LoadingDots />} />
+              )}
+              <div ref={bottomRef} />
             </div>
-            {isRecording && (
-              <ChatBubble isMine={true} message={<LoadingDots />} />
-            )}
             <div className="relative w-16 h-16 text-center">
               {isRecording && (
                 <div className="animate-ping-slow absolute inline-flex h-full w-full rounded-full bg-primary-300 opacity-70" />
