@@ -1,10 +1,23 @@
 'use client'
 
+import { deletePost } from '@/app/apis/community'
 import CommunityPostKebabMenu from '@/app/community/_components/CommunityPostKebabMenu'
+import { useRouter } from 'next/navigation'
 
-export default function CommunityActionMenu() {
-  const handleClickDeleteButton = () => {
-    console.log('게시글 삭제 버튼을 눌렀습니다')
+export default function CommunityActionMenu({
+  nickname,
+  postId,
+}: {
+  nickname: string
+  postId: string
+}) {
+  const router = useRouter()
+  const handleClickDeleteButton = async () => {
+    const data = await deletePost(`/boards/${postId}`)
+
+    if (data.status === 200) {
+      router.replace('/community')
+    }
   }
 
   return (
@@ -12,6 +25,7 @@ export default function CommunityActionMenu() {
       <CommunityPostKebabMenu
         size={{ width: 24, height: 24 }}
         onClick={handleClickDeleteButton}
+        nickname={nickname}
       />
     </div>
   )

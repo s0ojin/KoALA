@@ -7,6 +7,8 @@ import CommnunityComment from '@/app/community/_components/CommunityComment'
 import CommunityActionMenu from '@/app/community/_components/CommunityActionMenu'
 import { getConvertedTime } from '@/app/utils/getConvertedTime'
 import { getPost } from '@/app/apis/community'
+import Link from 'next/link'
+import Image from 'next/image'
 
 interface CommunityDetailProps {
   params: {
@@ -25,9 +27,11 @@ export default async function CommunityDetail({
       {post && (
         <div className="mt-32 mb-16">
           <div className="flex justify-end px-8 mb-3">
-            <button className="bg-gray-500 text-white py-2 px-12 rounded-full">
-              목록
-            </button>
+            <Link href="/community">
+              <button className="bg-gray-500 text-white py-2 px-12 rounded-full">
+                목록
+              </button>
+            </Link>
           </div>
 
           <div className="pt-16 pb-14 bg-white max-w-[65rem] min-w-[65rem]  w-full px-11 rounded-[3.75rem] mb-5 relative">
@@ -39,46 +43,63 @@ export default async function CommunityDetail({
                 {post.title}
               </h3>
               <div className="flex justify-between py-5 bg-white whitespace-nowrap gap-5">
-                <p className="text-base text-gray-700">{post.nickname}</p>
+                <div className="flex items-center gap-1">
+                  <Image
+                    src="/images/eucalyptus.png"
+                    width={16}
+                    height={16}
+                    className="w-6 h-6 rounded-full"
+                    alt="eucalyptus"
+                    draggable="false"
+                  />
+                  <p className="text-base text-gray-700">{post.nickname}</p>
+                </div>
                 <div className="flex gap-6 items-center">
                   <div className="flex items-center gap-1">
                     <View width={16} height={16} />
                     <p className="text-gray-700 text-xs">
-                      조회 {post.viewCount}
+                      조회 {post.view_count}
                     </p>
                   </div>
                   <div className="flex items-center gap-1">
                     <Comment width={16} height={16} />
                     <p className="text-gray-700 text-xs">
-                      댓글 {post.commentNum}
+                      댓글 {post.comment_num}
                     </p>
                   </div>
                   <p className="text-gray-700 text-xs">
-                    {getConvertedTime(post.createdAt)}
+                    {getConvertedTime(post.created_at)}
                   </p>
-                  <CommunityActionMenu />
+                  <CommunityActionMenu
+                    nickname={post.nickname}
+                    postId={post.board_id}
+                  />
                 </div>
               </div>
             </div>
 
             <div className="px-12 relative mb-24">
-              <CommunityCarousel boardImageList={post.boardImages} />
+              <CommunityCarousel boardImageList={post.board_images} />
               <p>{post.content} </p>
             </div>
 
             <CommnunityComment
               commentList={post.comments}
-              postId={post.boardId}
+              postId={post.board_id}
             />
           </div>
 
           <div className="flex justify-between px-8">
-            <button className="bg-primary-400 text-white py-2 px-10 rounded-full">
-              글쓰기
-            </button>
-            <button className="bg-gray-500 text-white py-2 px-10 rounded-full">
-              목록
-            </button>
+            <Link href="/community/write">
+              <button className="bg-primary-400 text-white py-2 px-10 rounded-full">
+                글쓰기
+              </button>
+            </Link>
+            <Link href="/community">
+              <button className="bg-gray-500 text-white py-2 px-10 rounded-full">
+                목록
+              </button>
+            </Link>
           </div>
         </div>
       )}

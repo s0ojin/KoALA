@@ -8,9 +8,9 @@ interface SortOption {
 }
 
 export interface CommentContent {
-  commentId: number
+  comment_id: number
   content: string
-  createdAt: string
+  created_at: string
   nickname: string
 }
 
@@ -108,7 +108,6 @@ export const postPostComment = async (
     const data = await response.json()
     return { data, error: null }
   } catch (error: any) {
-    console.error(error)
     return {
       data: null,
       error: {
@@ -119,25 +118,42 @@ export const postPostComment = async (
   }
 }
 
-export const postPost = async (url: string, data: FormData) => {
-  const accessToken = getToken()
-  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${url}`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: data,
-  })
+export const postPost = async (url: string, payload: FormData) => {
+  try {
+    const accessToken = getToken()
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${url}`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: payload,
+    })
 
-  console.log(response)
+    if (!response.ok) {
+      if (response.status === 400) {
+        throw new ApiError(
+          response.status,
+          `Network response was not ok: ${response.status} ${response.statusText}`
+        )
+      }
+    }
+
+    const data = await response.json()
+    return { data, error: null }
+  } catch (error: any) {
+    return {
+      data: null,
+      error: {
+        message: error,
+        status: error.status,
+      },
+    }
+  }
 }
 
 export const getPostList = async (url: string) => {
   try {
     const accessToken = await getToken()
-
-    console.log('accessToken:', accessToken)
-
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${url}`, {
       method: 'GET',
       headers: {
@@ -155,6 +171,67 @@ export const getPostList = async (url: string) => {
 
     const data = await response.json()
     return data
+  } catch (error: any) {
+    console.error(error)
+    throw error
+  }
+}
+
+export const deletePost = async (url: string) => {
+  try {
+    const accessToken = await getToken()
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${url}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`,
+      },
+    })
+
+    if (!response.ok) {
+      throw new ApiError(
+        response.status,
+        `Network response was not ok: ${response.status} ${response.statusText}`
+      )
+    }
+
+    const data = await response.json()
+    return {
+      data,
+      status: response.status,
+    }
+  } catch (error: any) {
+    console.error(error)
+    throw error
+  }
+}
+
+export const deletePostComment = async (url: string) => {
+  try {
+    console.log(url)
+    const accessToken = await getToken()
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${url}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`,
+      },
+    })
+
+    console.log(response)
+
+    if (!response.ok) {
+      throw new ApiError(
+        response.status,
+        `Network response was not ok: ${response.status} ${response.statusText}`
+      )
+    }
+
+    const data = await response.json()
+    return {
+      data,
+      status: response.status,
+    }
   } catch (error: any) {
     console.error(error)
     throw error

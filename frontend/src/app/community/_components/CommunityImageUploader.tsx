@@ -51,12 +51,12 @@ export default function CommunityImageUploader({
             </button>
             <Image
               src={image.preview}
-              width={0}
-              height={0}
-              sizes="100%"
-              className="w-24 h-24 aspect-square border rounded-lg"
+              width={96}
+              height={96}
+              className="w-24 h-24 aspect-square border rounded-lg object-cover"
               alt="image-preview"
               draggable={false}
+              priority
             />
           </div>
         )
