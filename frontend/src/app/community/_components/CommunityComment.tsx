@@ -7,7 +7,12 @@ import Comment from '/public/icons/comment.svg'
 import CommunityCommentInput from '@/app/community/_components/CommunityCommentInput'
 import CommunityPostKebabMenu from '@/app/community/_components/CommunityPostKebabMenu'
 import { getConvertedTime } from '@/app/utils/getConvertedTime'
-import { CommentContent, CommunityComment, getPost } from '@/app/apis/community'
+import {
+  CommentContent,
+  CommunityComment,
+  deletePostComment,
+  getPost,
+} from '@/app/apis/community'
 import Pagination from '@/app/community/_components/CommunityCommentPagination'
 
 interface CommnunityCommentProps {
@@ -26,6 +31,7 @@ export default function CommnunityComment({
     data: commentList,
     error,
     isLoading,
+    mutate,
   } = useSWR(
     `/boards/${postId}/comments?page=${commentPage}&size=10`,
     fetcher,
@@ -36,8 +42,15 @@ export default function CommnunityComment({
     setCommentPage(newPage)
   }
 
-  const handleClickDeleteButton = () => {
-    alert('게시글 댓글 삭제 버튼을 클릭했습니다')
+  const handleClickDeleteButton = async (commentId: number) => {
+    const data = await deletePostComment(
+      `/boards/${postId}/comments/${commentId}`
+    )
+
+    if (data.status === 200) {
+      alert('댓글을 삭제했습니다')
+      mutate()
+    }
   }
 
   if (isLoading) {
@@ -61,31 +74,42 @@ export default function CommnunityComment({
           <>
             {commentList?.comments?.content?.map((comment: CommentContent) => (
               <div
-                key={comment.commentId}
+                key={comment.comment_id}
                 className="max-w-[56rem] w-full flex py-6 px-6 items-start gap-3 border-b border-gray-300"
               >
                 <Image
                   src={'/images/koala-sleep.png'}
-                  width={0}
-                  height={0}
-                  sizes="100%"
-                  className="w-[3rem] h-[3rem] aspect-square border rounded-full"
+                  width={48}
+                  height={48}
+                  className="w-12 h-12 aspect-square border rounded-full object-cover"
                   alt="profile"
+                  priority
                 />
                 <div className="w-full flex flex-col gap-3">
                   <div className="flex justify-between items-center">
-                    <div className="flex gap-4 items-center">
+                    <div className="flex items-center">
                       <p className="text-gray-900 font-medium text-sm">
                         {comment.nickname}
                       </p>
+                      <Image
+                        src="/images/eucalyptus.png"
+                        width={16}
+                        height={16}
+                        className="w-6 h-6 rounded-full"
+                        alt="eucalyptus"
+                        draggable="false"
+                      />
                     </div>
                     <div className="flex gap-4">
                       <p className="text-gray-400 text-sm font-normal">
-                        {getConvertedTime(comment.createdAt)}
+                        {getConvertedTime(comment.created_at)}
                       </p>
                       <CommunityPostKebabMenu
                         size={{ width: 16, height: 16 }}
-                        onClick={handleClickDeleteButton}
+                        onClick={() =>
+                          handleClickDeleteButton(comment.comment_id)
+                        }
+                        nickname={comment.nickname}
                       />
                     </div>
                   </div>
