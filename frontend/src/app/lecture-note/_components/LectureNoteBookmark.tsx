@@ -1,3 +1,4 @@
+import { getConvertedTime } from '@/app/utils/getConvertedTime'
 import Image from 'next/image'
 
 interface LectureNoteBookmarkProps {
@@ -8,7 +9,6 @@ interface LectureNoteBookmarkProps {
 }
 
 export default function LectureNoteBookmark({
-  noteId,
   noteTitle,
   noteContent,
   noteCreatedAt,
@@ -18,13 +18,14 @@ export default function LectureNoteBookmark({
       <div className="flex gap-1 items-center px-5">
         <Image
           src="/icons/play.svg"
-          width={0}
-          height={0}
+          width={20}
+          height={20}
           alt="play"
-          sizes="100%"
           className="w-5 h-5"
         />
-        <p className="text-sm text-primary-900 font-normal">{noteCreatedAt}</p>
+        <p className="text-sm text-primary-900 font-normal">
+          {getConvertedTime(noteCreatedAt)}
+        </p>
       </div>
       <div className="flex flex-col items-start bg-gray-100 rounded-[2rem] py-5 px-7 gap-3 text-gray-900">
         <h3>{noteTitle}</h3>
