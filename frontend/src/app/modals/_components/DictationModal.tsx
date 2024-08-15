@@ -23,7 +23,7 @@ const DICTATION_CATEGORY = [
   },
   {
     id: 'custom',
-    label: '내가 등록한 문장',
+    label: '사용자',
     imageUrl: '/images/koala-listening.png',
   },
 ]
