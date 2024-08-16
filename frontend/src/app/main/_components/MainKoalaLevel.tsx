@@ -16,15 +16,15 @@ export default function MainKoalaLevel({
     },
     {
       name: '초등학생코알라',
-      imageUrl: '/images/koala-kindergarten.png',
+      imageUrl: '/images/koala-pencil.png',
     },
     {
       name: '고등학생코알라',
-      imageUrl: '/images/koala-kindergarten.png',
+      imageUrl: '/images/koala-business.png',
     },
     {
       name: '졸업코알라',
-      imageUrl: '/images/koala-kindergarten.png',
+      imageUrl: '/images/koala-graduation.png',
     },
   ]
 
