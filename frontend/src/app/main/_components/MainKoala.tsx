@@ -41,7 +41,7 @@ export default function MainKoala() {
         <div className="flex flex-col items-center w-full relative">
           <MainKoalaNameEditor koalaName={koalaInfo?.koala_name} />
           <Image
-            src={KOALA_LEVEL_NAME[koalaInfo.koala_level].imageUrl}
+            src={KOALA_LEVEL_NAME[koalaInfo.koala_level - 1].imageUrl}
             width={352}
             height={0}
             className="w-[22rem] mt-20"
