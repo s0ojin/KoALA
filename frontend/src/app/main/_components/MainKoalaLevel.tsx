@@ -5,6 +5,29 @@ export default function MainKoalaLevel({
   percent: number
   level: number
 }) {
+  const KOALA_LEVEL_NAME = [
+    {
+      name: '애기코알라',
+      imageUrl: '/images/koala-sleep.png',
+    },
+    {
+      name: '유치원코알라',
+      imageUrl: '/images/koala-kindergarten.png',
+    },
+    {
+      name: '초등학생코알라',
+      imageUrl: '/images/koala-kindergarten.png',
+    },
+    {
+      name: '고등학생코알라',
+      imageUrl: '/images/koala-kindergarten.png',
+    },
+    {
+      name: '졸업코알라',
+      imageUrl: '/images/koala-kindergarten.png',
+    },
+  ]
+
   return (
     <div className="w-full flex flex-col justify-center gap-3">
       <div className="text-white w-full flex justify-between items-end">
@@ -22,9 +45,11 @@ export default function MainKoalaLevel({
         ></div>
       </div>
       <div className="text-white w-full flex justify-between">
-        <p className="transform -translate-x-9 text-base">애기코알라</p>
+        <p className="transform -translate-x-9 text-base">
+          {KOALA_LEVEL_NAME[level - 1].name}
+        </p>
         <p className="transform translate-x-9 font-medium text-xl">
-          졸업코알라
+          {KOALA_LEVEL_NAME[level].name}
         </p>
       </div>
     </div>
