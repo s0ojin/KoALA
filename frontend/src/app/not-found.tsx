@@ -19,7 +19,7 @@ export default function NotFound() {
       />
       <div className="mt-4 text-xl flex flex-col">
         <Link
-          href="/"
+          href="/main"
           className="mt-20 px-12 py-2 text-gray-700  rounded-full border border-gray-700 shadow-md"
         >
           메인페이지로 가기
