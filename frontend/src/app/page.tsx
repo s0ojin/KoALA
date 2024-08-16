@@ -83,7 +83,10 @@ export default function Home() {
               </p>
             </address>
             <div className="flex items-center text-2xl gap-4 mt-auto">
-              <Link href="" className="text-slate-500 hover:text-slate-800">
+              <Link
+                href="https://www.youtube.com/watch?v=UfunP6Nt6vo"
+                className="text-slate-500 hover:text-slate-800"
+              >
                 <YoutubeLogo className="w-8 h-8" />
               </Link>
               <Link
