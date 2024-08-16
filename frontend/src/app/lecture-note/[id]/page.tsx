@@ -18,8 +18,6 @@ export default async function LectureNoteDetail({
 }: LectureNoteDetailProps) {
   const lectureNoteList = await getLectureNote(`/lectures/${id}/note`)
 
-  console.log(lectureNoteList)
-
   return (
     <LectureNoteLayout>
       <div className="flex flex-col items-center gap-6 h-full pt-20 min-h-screen">

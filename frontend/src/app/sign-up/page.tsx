@@ -37,7 +37,6 @@ export default function SignUp() {
       nickname: data.nickname,
     }
     const res = await postSignUp('/users', payload)
-    console.log(res)
     if (res?.status === 201) {
       alert('회원가입이 완료되었습니다!')
       router.push('/login')
