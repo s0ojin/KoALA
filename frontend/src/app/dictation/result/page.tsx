@@ -22,14 +22,12 @@ export default function DictationResult() {
   }, [])
 
   const gradingDictation = async () => {
-    console.log('궁금', dictationResult)
     const gradingData = await postDictationGrading(
       '/sentences/writing-test',
       dictationResult
     )
 
     if (gradingData.status === 200) {
-      console.log('gradingData', gradingData)
       if (gradingData && gradingData?.data) {
         const { leaves, sentence_test_responses } = gradingData.data
 

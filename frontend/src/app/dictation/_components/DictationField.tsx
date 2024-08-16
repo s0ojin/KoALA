@@ -40,7 +40,6 @@ export default function DictationField({
   }, [userAnswer])
 
   useEffect(() => {
-    console.log(hiddenInputRef)
     hiddenInputRef.current?.focus()
   }, [hiddenInputRef])
 

@@ -208,7 +208,6 @@ export const deletePost = async (url: string) => {
 
 export const deletePostComment = async (url: string) => {
   try {
-    console.log(url)
     const accessToken = await getToken()
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}${url}`, {
       method: 'DELETE',
