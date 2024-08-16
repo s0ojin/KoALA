@@ -6,6 +6,29 @@ import Image from 'next/image'
 import useSWR from 'swr'
 import { KoalaInfo, fetchKoalaInfo } from '@/app/apis/koala'
 
+const KOALA_LEVEL_NAME = [
+  {
+    name: '애기코알라',
+    imageUrl: '/images/koala-sleep.png',
+  },
+  {
+    name: '유치원코알라',
+    imageUrl: '/images/koala-kindergarten.png',
+  },
+  {
+    name: '초등학생코알라',
+    imageUrl: '/images/koala-kindergarten.png',
+  },
+  {
+    name: '고등학생코알라',
+    imageUrl: '/images/koala-kindergarten.png',
+  },
+  {
+    name: '졸업코알라',
+    imageUrl: '/images/koala-kindergarten.png',
+  },
+]
+
 export default function MainKoala() {
   const { data: koalaInfo, error } = useSWR<KoalaInfo>(
     '/koalas',
@@ -18,11 +41,10 @@ export default function MainKoala() {
         <div className="flex flex-col items-center w-full relative">
           <MainKoalaNameEditor koalaName={koalaInfo?.koala_name} />
           <Image
-            src="/images/koala-sleep.png"
-            width={0}
+            src={KOALA_LEVEL_NAME[koalaInfo.koala_level].imageUrl}
+            width={352}
             height={0}
-            sizes="100%"
-            className="w-[22rem] h-[22rem] mt-20"
+            className="w-[22rem] mt-20"
             alt="koala"
             draggable="false"
           />
