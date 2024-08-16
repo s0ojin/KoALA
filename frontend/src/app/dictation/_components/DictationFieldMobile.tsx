@@ -23,8 +23,6 @@ const MobileDictation = ({
       script.onload = async () => {
         const editorElement = editorRef.current
 
-        console.log('Editor Element:', editorElement)
-
         const options = {
           configuration: {
             server: {
@@ -60,13 +58,11 @@ const MobileDictation = ({
             options
           )
 
-          console.log('IINK Editor:', iinkEditor)
           setEditor(iinkEditor)
 
           await iinkEditor.initialize()
 
           window.addEventListener('resize', () => {
-            console.log('Window resized')
             // Call resize method if applicable
             if (iinkEditor.resize) {
               iinkEditor.resize()
@@ -120,7 +116,6 @@ const MobileDictation = ({
     if (editor) {
       try {
         await editor.clear()
-        console.log('Editor cleared')
         setClearFlag((prev) => !prev) // 상태를 변경하여 재렌더링 유도
       } catch (error) {
         console.error('Clear failed:', error)
@@ -132,7 +127,6 @@ const MobileDictation = ({
     if (editor) {
       try {
         await editor.export()
-        console.log('Export triggered')
       } catch (error) {
         console.error('Export failed:', error)
       }
